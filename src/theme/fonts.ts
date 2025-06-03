@@ -1,7 +1,5 @@
 import { useFonts } from 'expo-font';
 
-import { isExpoGo } from './constants';
-
 const fontAssets = {
   'WixMadeforText-Regular': require('../../assets/fonts/WixMadeFor/static/WixMadeforText-Regular.ttf'),
   'WixMadeforText-Medium': require('../../assets/fonts/WixMadeFor/static/WixMadeforText-Medium.ttf'),
@@ -11,12 +9,5 @@ const fontAssets = {
 };
 
 export const useCustomFonts = () => {
-  return useFonts(isExpoGo ? fontAssets : {});
-};
-
-export const getFontReadyState = (
-  fontsLoaded: boolean,
-  fontError: Error | null
-) => {
-  return isExpoGo ? fontsLoaded || fontError : true;
+  return useFonts(fontAssets);
 };
