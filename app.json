@@ -7,20 +7,36 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/WixMadeFor/static/WixMadeforText-Regular.ttf",
+            "./assets/fonts/WixMadeFor/static/WixMadeforText-Medium.ttf",
+            "./assets/fonts/WixMadeFor/static/WixMadeforText-SemiBold.ttf",
+            "./assets/fonts/WixMadeFor/static/WixMadeforText-Bold.ttf",
+            "./assets/fonts/WixMadeFor/static/WixMadeforText-ExtraBold.ttf"
+          ]
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.RealWorld"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.RealWorld"
     },
     "web": {
       "favicon": "./assets/favicon.png"
