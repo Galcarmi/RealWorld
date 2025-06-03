@@ -1,34 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
-import {View, Text, Button, Colors, Spacings, Typography} from 'react-native-ui-lib';
-import * as Font from 'expo-font';
+import { View, Text, Button } from 'react-native-ui-lib';
+import { initializeTheme } from './src/config/theme';
 
-Colors.loadColors({
-  primaryColor: '#2364AA',
-  secondaryColor: '#81C3D7',
-  textColor: '##221D23',
-  errorColor: '#E63B2E',
-  successColor: '#ADC76F',
-  warnColor: '#FF963C'
-});
-
-Typography.loadTypographies({
-  heading: { fontSize: 40, fontWeight: '600', fontFamily: 'WixMadeforText-Regular' },
-  subheading: { fontSize: 28, fontWeight: '500', fontFamily: 'WixMadeforText-Medium' },
-  body: { fontSize: 18, fontWeight: '400', fontFamily: 'WixMadeforText-Regular' },
-});
-
-Spacings.loadSpacings({
-  page: 20,
-  card: 12,
-  gridGutter: 16
-});
+initializeTheme();
 
 export default function App() {
-  // Debug: Log all loaded fonts (should include config plugin fonts)
-  const loadedFonts = Font.getLoadedFonts();
-  console.log('🔤 Loaded fonts:', loadedFonts);
-  
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 20, fontFamily: 'WixMadeforText-Regular', marginBottom: 10 }}>
@@ -43,7 +20,6 @@ export default function App() {
       <Text style={{ fontSize: 20, fontFamily: 'System', marginBottom: 10, color: 'red' }}>
         4. System Font (Reference)
       </Text>
-      <Text>Loaded fonts count: {loadedFonts.length}</Text>
       <StatusBar style="auto" />
       <Button 
         label="Click me" 
