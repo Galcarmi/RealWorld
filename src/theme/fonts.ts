@@ -1,4 +1,5 @@
 import { useFonts } from 'expo-font';
+
 import { isExpoGo } from './constants';
 
 const fontAssets = {
@@ -13,6 +14,9 @@ export const useCustomFonts = () => {
   return useFonts(isExpoGo ? fontAssets : {});
 };
 
-export const getFontReadyState = (fontsLoaded: boolean, fontError: Error | null) => {
-  return isExpoGo ? (fontsLoaded || fontError) : true;
-}; 
+export const getFontReadyState = (
+  fontsLoaded: boolean,
+  fontError: Error | null
+) => {
+  return isExpoGo ? fontsLoaded || fontError : true;
+};

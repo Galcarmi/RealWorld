@@ -1,7 +1,8 @@
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Button } from 'react-native-ui-lib';
+
 import { useAppTheme, fontLoadingInfo } from './src/theme';
-import * as SplashScreen from 'expo-splash-screen';
 
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -28,12 +29,14 @@ export default function App() {
         <Text marginB-small red30>
           4. System Font (Reference)
         </Text>
-        
-        <StatusBar style="auto" />
-        <Button 
-          label="Click me" 
+
+        <StatusBar style='auto' />
+        <Button
+          label='Click me'
           marginT-large
-          onPress={() => alert(`Using ${fontLoadingInfo.method} for font loading!`)} 
+          onPress={() =>
+            alert(`Using ${fontLoadingInfo.method} for font loading!`)
+          }
         />
       </View>
     );

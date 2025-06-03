@@ -6,9 +6,9 @@ export const themeColors = {
   textColor: '#221D23',
   errorColor: '#E63B2E',
   successColor: '#ADC76F',
-  warnColor: '#FF963C'
+  warnColor: '#FF963C',
 };
 
 export const loadColors = () => {
   Colors.loadColors(themeColors);
-}; 
+};

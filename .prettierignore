@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.expo/
+android/
+ios/
+
+# Generated files
+*.generated.*
+coverage/
+
+# Cache
+.eslintcache
+
+# Platform specific
+.DS_Store
+*.log 
