@@ -3,9 +3,9 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { NavioScreen } from 'rn-navio';
 
 import { InputField } from '../components/InputField';
+import { styles } from '../styles/globalStyles';
 import { themeColors } from '../theme/colors';
 import { emailValidation } from '../utils/validation';
-import { styles } from '../styles/globalStyles';
 
 export const Main: NavioScreen = observer(() => {
   return (
@@ -31,10 +31,18 @@ export const Main: NavioScreen = observer(() => {
           containerStyle={styles.width80}
         />
       </View>
-      <View marginT-small spread style={{...styles.height25, ...styles.width80}} paddingT-30 paddingB-30>
+      <View
+        marginT-small
+        spread
+        style={{ ...styles.height25, ...styles.width80 }}
+        paddingT-30
+        paddingB-30
+      >
         <Button
           label={'Sign Up'}
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Sign Up pressed - implement navigation logic');
+          }}
           fullWidth
           backgroundColor={themeColors.primaryColor}
         />
@@ -43,9 +51,11 @@ export const Main: NavioScreen = observer(() => {
         </Text>
         <Button
           label={'Sign In'}
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Sign In pressed - implement navigation logic');
+          }}
           link
-          labelStyle={{color: themeColors.primaryColor}}
+          labelStyle={{ color: themeColors.primaryColor }}
           backgroundColor={themeColors.primaryColor}
         />
       </View>

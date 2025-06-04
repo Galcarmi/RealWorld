@@ -1,10 +1,9 @@
+import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { TextField } from 'react-native-ui-lib';
 
 import { themeColors } from '../theme/colors';
 import { lengthValidation } from '../utils/validation';
-import { styles } from '../styles/globalStyles';
-import { StyleProp } from 'react-native';
-import { ViewStyle } from 'react-native';
 
 interface InputFieldProps {
   placeholder: string;

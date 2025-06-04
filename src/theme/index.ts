@@ -2,7 +2,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { loadColors } from './colors';
-import { isExpoGo } from './constants';
 import { useCustomFonts } from './fonts';
 import { loadSpacings } from './spacings';
 import { loadTypography } from './typography';
