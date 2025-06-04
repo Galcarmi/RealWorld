@@ -1,7 +1,8 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useAppTheme } from './src/theme';
+
 import { navio } from './src/navio';
+import { useAppTheme } from './src/theme';
 
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();

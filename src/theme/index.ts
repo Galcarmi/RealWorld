@@ -11,7 +11,6 @@ export const loadThemeConfiguration = () => {
   loadColors();
   loadTypography();
   loadSpacings();
-
 };
 
 export const useAppTheme = () => {
@@ -27,4 +26,3 @@ export const useAppTheme = () => {
 
   return isReady;
 };
-

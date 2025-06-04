@@ -26,12 +26,14 @@
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-ui-lib": "^7.43.0",
-    "rn-navio": "^0.1.0"
+    "rn-navio": "^0.1.0",
+    "validator": "^13.15.15"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@react-native/eslint-config": "^0.79.2",
     "@types/react": "~19.0.10",
+    "@types/validator": "^13.15.1",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^9.28.0",

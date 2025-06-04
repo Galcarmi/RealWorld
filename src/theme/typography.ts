@@ -5,6 +5,7 @@ export const themeTypography = {
   subheading: { fontSize: 28, fontFamily: 'WixMadeforText-Medium' },
   body: { fontSize: 18, fontFamily: 'WixMadeforText-Regular' },
   bold: { fontSize: 20, fontFamily: 'WixMadeforText-Bold' },
+  title: { fontSize: 28, weight: 700, fontFamily: 'WixMadeforText-Bold' },
 };
 
 export const loadTypography = () => {
