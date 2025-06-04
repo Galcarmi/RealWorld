@@ -9,7 +9,7 @@ import { emailValidation } from '../utils/validation';
 
 export const Main: NavioScreen = observer(() => {
   return (
-    <View flex center bg-white backgroundColor={themeColors.bgColor}>
+    <View flex center backgroundColor={themeColors.bgColor}>
       <View center style={styles.width100} marginB-20>
         <Text title primaryColor>
           Sign Up
