@@ -1,13 +1,12 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Button } from 'react-native-ui-lib';
-
 import { useAppTheme } from './src/theme';
+import { navio } from './src/navio';
 
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+export default function AppWrapper() {
   const isThemeReady = useAppTheme();
 
   if (!isThemeReady) {
@@ -15,22 +14,9 @@ export default function App() {
   }
 
   return (
-    <View flex center bg-white>
-      <Text heading marginB-small>
-        1. Typography: heading (should be Regular)
-      </Text>
-      <Text subheading marginB-small>
-        2. Typography: subheading (should be Medium)
-      </Text>
-      <Text bold marginB-small>
-        3. Typography: bold (should be Bold)
-      </Text>
-      <Text marginB-small red30>
-        7. System Font (Reference)
-      </Text>
-
+    <>
+      <navio.App />
       <StatusBar style='auto' />
-      <Button label='Click me' marginT-large onPress={() => alert(`Clicked`)} />
-    </View>
+    </>
   );
 }

@@ -7,6 +7,7 @@ export const themeColors = {
   errorColor: '#E63B2E',
   successColor: '#ADC76F',
   warnColor: '#FF963C',
+  bgColor: '#FFFFFF', // Background color for screens
 };
 
 export const loadColors = () => {
