@@ -15,11 +15,13 @@
     "code-quality": "npm run lint && npm run format:check && npm run type-check"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "expo": "~53.0.9",
     "expo-constants": "~17.1.6",
     "expo-font": "~13.3.1",
     "expo-splash-screen": "~0.30.8",
     "expo-status-bar": "~2.2.3",
+    "mobx": "^6.13.7",
     "mobx-react": "^9.2.0",
     "react": "19.0.0",
     "react-native": "0.79.2",

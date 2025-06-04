@@ -18,18 +18,18 @@ export const Main: NavioScreen = observer(() => {
         <InputField
           placeholder={'Username'}
           validationMessage={['Username is required', 'Username is too short']}
-          containerStyle={{...styles.width80Percent, ...styles.height60px}}
+          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
         />
         <InputField
           placeholder={'Email'}
           validationMessage={['Email is required', 'Not a valid email']}
           validation={emailValidation}
-          containerStyle={{...styles.width80Percent, ...styles.height60px}}
+          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
         />
         <InputField
           placeholder={'Password'}
           validationMessage={['Password is required', 'Password is too short']}
-          containerStyle={{...styles.width80Percent, ...styles.height60px}}
+          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
         />
       </View>
       <View
@@ -53,7 +53,10 @@ export const Main: NavioScreen = observer(() => {
         <Button
           label={'Sign In'}
           onPress={() => {
-            Alert.alert('Sign In', 'Sign In pressed - implement navigation logic');
+            Alert.alert(
+              'Sign In',
+              'Sign In pressed - implement navigation logic'
+            );
           }}
           link
           labelStyle={{ color: themeColors.primaryColor }}
