@@ -9,6 +9,7 @@ export const themeColors = {
   warnColor: '#FF963C',
   bgColor: '#FFFFFF',
   placeholderColor: '#6E7881',
+  greyColor: '#6E7881',
 };
 
 export const loadColors = () => {

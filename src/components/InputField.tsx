@@ -2,6 +2,9 @@ import { TextField } from 'react-native-ui-lib';
 
 import { themeColors } from '../theme/colors';
 import { lengthValidation } from '../utils/validation';
+import { styles } from '../styles/globalStyles';
+import { StyleProp } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 interface InputFieldProps {
   placeholder: string;
@@ -10,6 +13,7 @@ interface InputFieldProps {
   validationMessage: string[];
   onChangeText?: (text: string) => void;
   validation?: (value?: string) => boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,10 +23,11 @@ const InputField: React.FC<InputFieldProps> = ({
   validationMessage,
   onChangeText,
   validation,
+  containerStyle,
 }) => {
   return (
     <TextField
-      containerStyle={{ width: '80%' }}
+      containerStyle={containerStyle}
       floatingPlaceholderStyle={{ color: themeColors.placeholderColor }}
       placeholder={placeholder}
       floatingPlaceholder
