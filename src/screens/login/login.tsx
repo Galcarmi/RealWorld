@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react';
-import { Alert } from 'react-native';
 import { Button, Text, View } from 'react-native-ui-lib';
 import { NavioScreen } from 'rn-navio';
 
@@ -7,8 +6,11 @@ import { InputField } from '../../components/InputField';
 import { styles } from '../../styles/globalStyles';
 import { themeColors } from '../../theme/colors';
 import { emailValidation } from '../../utils/validation';
+import useAuth from './useAuth';
 
 export const Main: NavioScreen = observer(() => {
+  const { onNameChange, onEmailChange, onPasswordChange, onSignUp, onLogin } = useAuth();
+
   return (
     <View flex center backgroundColor={themeColors.bgColor}>
       <View center style={styles.width100Percent} marginB-40>
@@ -19,17 +21,20 @@ export const Main: NavioScreen = observer(() => {
           placeholder={'Username'}
           validationMessage={['Username is required', 'Username is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          onChangeText={onNameChange}
         />
         <InputField
           placeholder={'Email'}
           validationMessage={['Email is required', 'Not a valid email']}
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          onChangeText={onEmailChange}
         />
         <InputField
           placeholder={'Password'}
           validationMessage={['Password is required', 'Password is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          onChangeText={onPasswordChange}
         />
       </View>
       <View
@@ -41,9 +46,7 @@ export const Main: NavioScreen = observer(() => {
       >
         <Button
           label={'Sign Up'}
-          onPress={() => {
-            Alert.alert('Sign Up pressed - implement navigation logic');
-          }}
+          onPress={onSignUp}
           fullWidth
           backgroundColor={themeColors.primaryColor}
         />
@@ -52,12 +55,7 @@ export const Main: NavioScreen = observer(() => {
         </Text>
         <Button
           label={'Sign In'}
-          onPress={() => {
-            Alert.alert(
-              'Sign In',
-              'Sign In pressed - implement navigation logic'
-            );
-          }}
+          onPress={onLogin}
           link
           labelStyle={{ color: themeColors.primaryColor }}
           backgroundColor={themeColors.primaryColor}

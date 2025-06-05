@@ -22,6 +22,7 @@ const useAuth = () => {
   }, []);
 
   const onSignUp = useCallback(async () => {
+    console.log('onSignUp');
     Keyboard.dismiss();
     AuthStore.register();
   }, []);
