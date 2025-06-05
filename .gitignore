@@ -3,6 +3,11 @@
 # dependencies
 node_modules/
 
+# Yarn
+.yarn/cache
+.yarn/install-state.gz
+# Keep .yarn/releases - this should be committed for consistent yarn version
+
 # Expo
 .expo/
 dist/
