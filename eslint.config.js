@@ -102,6 +102,33 @@ module.exports = [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-empty-function': 'warn',
+      '@typescript-eslint/member-ordering': [
+        'error',
+        {
+          default: [
+            // Static members first
+            'public-static-field',
+            'protected-static-field',
+            'private-static-field',
+            'public-static-method',
+            'protected-static-method',
+            'private-static-method',
+
+            // Instance fields
+            'public-instance-field',
+            'protected-instance-field',
+            'private-instance-field',
+
+            // Constructor
+            'constructor',
+
+            // Instance methods (public first, then private)
+            'public-instance-method',
+            'protected-instance-method',
+            'private-instance-method',
+          ],
+        },
+      ],
 
       // React specific rules
       'react/react-in-jsx-scope': 'off', // Not needed in React 17+

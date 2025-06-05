@@ -53,6 +53,18 @@ class AuthStore implements IAuthStore {
     this.password = password;
   }
 
+  public login() {
+    this._$request(RequestType.login);
+  }
+
+  public register() {
+    this._$request(RequestType.register);
+  }
+
+  public logout() {
+    userStore.forgetUser();
+  }
+
   private _$request(type: RequestType) {
     this.isLoading = true;
     this.errors = undefined;
@@ -83,18 +95,6 @@ class AuthStore implements IAuthStore {
           this.isLoading = false;
         })
       );
-  }
-
-  public login() {
-    this._$request(RequestType.login);
-  }
-
-  public register() {
-    this._$request(RequestType.register);
-  }
-
-  public logout() {
-    userStore.forgetUser();
   }
 }
 

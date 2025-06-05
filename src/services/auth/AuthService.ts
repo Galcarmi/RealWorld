@@ -51,10 +51,6 @@ class AuthService implements IAuthService {
     );
   }
 
-  private _responseBody<T>(res: AxiosResponse<T>): T {
-    return res.data;
-  }
-
   public get(): Promise<UserResponse> {
     return this._api.get<UserResponse>('/user').then(this._responseBody);
   }
@@ -66,13 +62,19 @@ class AuthService implements IAuthService {
   }
 
   public register(user: RegisterUserRequest): Promise<UserResponse> {
-    return this._api.post<UserResponse>('/users', { user }).then(this._responseBody);
+    return this._api
+      .post<UserResponse>('/users', { user })
+      .then(this._responseBody);
   }
 
   public put(user: User): Promise<UserResponse> {
     return this._api
       .put<UserResponse>('/user', { user })
       .then(this._responseBody);
+  }
+
+  private _responseBody<T>(res: AxiosResponse<T>): T {
+    return res.data;
   }
 }
 
