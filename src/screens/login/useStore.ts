@@ -1,7 +1,7 @@
-import { AuthStore } from '../../store';
+import { authStore } from '../../store/authStore';
 
 const useStore = () => {
-  const { isLoading, errors, authValues: user } = AuthStore;
+  const { isLoading, errors, authValues: user } = authStore;
 
   return {
     isLoading,

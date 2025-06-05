@@ -1,7 +1,10 @@
 import { makeAutoObservable } from 'mobx';
 
-import { User } from './types';
-class Store {
+import { IUserStore, User } from './types';
+
+
+
+class UserStore implements IUserStore {
   user: User | null = null;
 
   constructor() {
@@ -17,4 +20,4 @@ class Store {
   }
 }
 
-export const UserStore = new Store();
+export const userStore = new UserStore();

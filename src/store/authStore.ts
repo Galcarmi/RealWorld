@@ -3,16 +3,16 @@ import { action, makeAutoObservable } from 'mobx';
 import { AuthService } from '../services';
 import { ResponseErrors } from '../services/types';
 
-import { User } from './types';
+import { IAuthStore, User } from './types';
 
-import { UserStore } from '.';
+import { userStore } from './userStore';
 
 enum RequestType {
   login,
   register,
 }
 
-class Store {
+class AuthStore implements IAuthStore {
   isLoading = false;
   errors?: ResponseErrors = undefined;
 
@@ -20,8 +20,12 @@ class Store {
   email = '';
   password = '';
 
+  private authService: InstanceType<typeof AuthService>;
+
   constructor() {
     makeAutoObservable(this);
+    // Create the service instance here to avoid circular dependency
+    this.authService = new AuthService(this, userStore);
   }
 
   clear() {
@@ -59,13 +63,13 @@ class Store {
 
     const apiCall =
       type === RequestType.login
-        ? AuthService.login({ email, password })
-        : AuthService.register(this.authValues);
+        ? this.authService.login({ email, password })
+        : this.authService.register(this.authValues);
 
     apiCall
       .then(
         action(({ user }: { user: User }) => {
-          UserStore.setUser(user);
+          userStore.setUser(user);
           this.clear();
         })
       )
@@ -92,8 +96,8 @@ class Store {
   }
 
   logout() {
-    UserStore.forgetUser();
+    userStore.forgetUser();
   }
 }
 
-export const AuthStore = new Store();
+export const authStore = new AuthStore();

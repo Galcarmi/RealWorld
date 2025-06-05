@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
-import { AuthStore } from '../../store';
+import { authStore } from '../../store/authStore';
 import { showErrorModals } from '../../utils/errors';
 
 import { useStore } from './useStore';
@@ -10,26 +10,26 @@ const useAuth = () => {
   const { isLoading, user, errors } = useStore();
 
   const onNameChange = useCallback((value: string) => {
-    AuthStore.setUsername(value);
+    authStore.setUsername(value);
   }, []);
 
   const onEmailChange = useCallback((value: string) => {
-    AuthStore.setEmail(value);
+    authStore.setEmail(value);
   }, []);
 
   const onPasswordChange = useCallback((value: string) => {
-    AuthStore.setPassword(value);
+    authStore.setPassword(value);
   }, []);
 
   const onSignUp = useCallback(async () => {
     console.log('onSignUp');
     Keyboard.dismiss();
-    AuthStore.register();
+    authStore.register();
   }, []);
 
   const onLogin = useCallback(async () => {
     Keyboard.dismiss();
-    AuthStore.login();
+    authStore.login();
   }, []);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const useAuth = () => {
     }
   }, [errors]);
 
-  useEffect(() => () => AuthStore.clear(), []);
+  useEffect(() => () => authStore.clear(), []);
 
   return {
     user,
