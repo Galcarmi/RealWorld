@@ -16,21 +16,21 @@ import {
 export const API_URI = 'https://node-express-conduit.appspot.com/api';
 
 class AuthService implements IAuthService {
-  private api: AxiosInstance;
-  private authStore: IAuthStore;
-  private userStore: IUserStore;
+  private _api: AxiosInstance;
+  private _authStore: IAuthStore;
+  private _userStore: IUserStore;
 
   constructor(authStore: IAuthStore, userStore: IUserStore) {
-    this.authStore = authStore;
-    this.userStore = userStore;
+    this._authStore = authStore;
+    this._userStore = userStore;
 
-    this.api = axios.create({
+    this._api = axios.create({
       baseURL: API_URI,
     });
 
-    this.api.interceptors.request.use(
+    this._api.interceptors.request.use(
       (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        const token = this.userStore.user?.token;
+        const token = this._userStore.user?.token;
 
         if (token) {
           config.headers.authorization = `Token ${token}`;
@@ -40,35 +40,40 @@ class AuthService implements IAuthService {
       }
     );
 
-    this.api.interceptors.response.use(
+    this._api.interceptors.response.use(
       (response: AxiosResponse): AxiosResponse => response,
       (error: AxiosError): Promise<never> => {
         if (error.response && error.response.status === 401) {
-          this.authStore.logout();
+          this._authStore.logout();
         }
         return Promise.reject(error);
       }
     );
   }
 
-  private responseBody = <T>(res: AxiosResponse<T>): T => res.data;
+  private _responseBody<T>(res: AxiosResponse<T>): T {
+    return res.data;
+  }
 
-  get = (): Promise<UserResponse> =>
-    this.api.get<UserResponse>('/user').then(this.responseBody);
+  public get(): Promise<UserResponse> {
+    return this._api.get<UserResponse>('/user').then(this._responseBody);
+  }
 
-  login = (user: LoginUserRequest): Promise<UserResponse> =>
-    this.api
+  public login(user: LoginUserRequest): Promise<UserResponse> {
+    return this._api
       .post<UserResponse>('/users/login', { user })
-      .then(this.responseBody);
+      .then(this._responseBody);
+  }
 
-  register = (user: RegisterUserRequest): Promise<UserResponse> =>
-    this.api.post<UserResponse>('/users', { user }).then(this.responseBody);
+  public register(user: RegisterUserRequest): Promise<UserResponse> {
+    return this._api.post<UserResponse>('/users', { user }).then(this._responseBody);
+  }
 
-  put = (user: User): Promise<UserResponse> => {
-    return this.api
+  public put(user: User): Promise<UserResponse> {
+    return this._api
       .put<UserResponse>('/user', { user })
-      .then(this.responseBody);
-  };
+      .then(this._responseBody);
+  }
 }
 
 export { AuthService, IAuthService };

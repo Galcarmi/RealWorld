@@ -3,17 +3,17 @@ import { makeAutoObservable } from 'mobx';
 import { IUserStore, User } from './types';
 
 class UserStore implements IUserStore {
-  user: User | null = null;
+  public user: User | null = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  forgetUser() {
+  public forgetUser() {
     this.user = null;
   }
 
-  setUser(user: User) {
+  public setUser(user: User) {
     this.user = user;
   }
 }

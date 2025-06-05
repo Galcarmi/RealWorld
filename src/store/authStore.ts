@@ -12,12 +12,11 @@ enum RequestType {
 }
 
 class AuthStore implements IAuthStore {
-  isLoading = false;
-  errors?: ResponseErrors = undefined;
-
-  username = '';
-  email = '';
-  password = '';
+  public isLoading = false;
+  public errors?: ResponseErrors = undefined;
+  public username = '';
+  public email = '';
+  public password = '';
 
   private _authService: AuthService;
 
@@ -27,14 +26,14 @@ class AuthStore implements IAuthStore {
     this._authService = new AuthService(this, userStore);
   }
 
-  clear() {
+  public clear() {
     this.username = '';
     this.email = '';
     this.password = '';
     this.errors = undefined;
   }
 
-  get authValues() {
+  public get authValues() {
     return {
       email: this.email,
       username: this.username,
@@ -42,19 +41,19 @@ class AuthStore implements IAuthStore {
     };
   }
 
-  setUsername(username: string) {
+  public setUsername(username: string) {
     this.username = username;
   }
 
-  setEmail(email: string) {
+  public setEmail(email: string) {
     this.email = email;
   }
 
-  setPassword(password: string) {
+  public setPassword(password: string) {
     this.password = password;
   }
 
-  $request(type: RequestType) {
+  private _$request(type: RequestType) {
     this.isLoading = true;
     this.errors = undefined;
 
@@ -86,15 +85,15 @@ class AuthStore implements IAuthStore {
       );
   }
 
-  login() {
-    this.$request(RequestType.login);
+  public login() {
+    this._$request(RequestType.login);
   }
 
-  register() {
-    this.$request(RequestType.register);
+  public register() {
+    this._$request(RequestType.register);
   }
 
-  logout() {
+  public logout() {
     userStore.forgetUser();
   }
 }
