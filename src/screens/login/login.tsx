@@ -6,10 +6,12 @@ import { InputField } from '../../components/InputField';
 import { styles } from '../../styles/globalStyles';
 import { themeColors } from '../../theme/colors';
 import { emailValidation } from '../../utils/validation';
+
 import useAuth from './useAuth';
 
 export const Main: NavioScreen = observer(() => {
-  const { onNameChange, onEmailChange, onPasswordChange, onSignUp, onLogin } = useAuth();
+  const { onNameChange, onEmailChange, onPasswordChange, onSignUp, onLogin } =
+    useAuth();
 
   return (
     <View flex center backgroundColor={themeColors.bgColor}>

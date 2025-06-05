@@ -18,3 +18,10 @@ export type RegisterUserRequest = BaseUserCredentials & {
 export type UserResponse = {
   user: User;
 };
+
+export interface IAuthService {
+  get(): Promise<UserResponse>;
+  login(user: LoginUserRequest): Promise<UserResponse>;
+  register(user: RegisterUserRequest): Promise<UserResponse>;
+  put(user: User): Promise<UserResponse>;
+}

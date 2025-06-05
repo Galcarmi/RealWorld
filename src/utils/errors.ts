@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
-import {ResponseErrors} from '../services/types';
+
+import { ResponseErrors } from '../services/types';
 
 export const showErrorModals = (errors: ResponseErrors) => {
   Object.entries(errors).forEach(([key, value]) => {

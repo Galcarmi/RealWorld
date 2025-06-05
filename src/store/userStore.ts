@@ -2,8 +2,6 @@ import { makeAutoObservable } from 'mobx';
 
 import { IUserStore, User } from './types';
 
-
-
 class UserStore implements IUserStore {
   user: User | null = null;
 

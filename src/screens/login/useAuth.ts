@@ -34,7 +34,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if (errors) {
-        showErrorModals(errors);
+      showErrorModals(errors);
     }
   }, [errors]);
 

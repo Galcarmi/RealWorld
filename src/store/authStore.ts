@@ -4,7 +4,6 @@ import { AuthService } from '../services';
 import { ResponseErrors } from '../services/types';
 
 import { IAuthStore, User } from './types';
-
 import { userStore } from './userStore';
 
 enum RequestType {
@@ -74,7 +73,7 @@ class AuthStore implements IAuthStore {
         })
       )
       .catch(
-        action((err: any) => {
+        action(err => {
           if (err?.response?.body?.errors) {
             this.errors = err?.response?.body?.errors;
           }
