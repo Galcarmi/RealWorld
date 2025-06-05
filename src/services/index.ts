@@ -1,3 +1,1 @@
-import { AuthServiceClass } from './auth/AuthService';
-
-export { AuthServiceClass as AuthService };
+export { AuthService } from './auth/AuthService';

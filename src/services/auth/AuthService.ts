@@ -9,7 +9,7 @@ import { LoginUserRequest, RegisterUserRequest, UserResponse } from '../types';
 
 export const API_URI = 'https://node-express-conduit.appspot.com/api';
 
-class AuthServiceClass {
+class AuthService {
   private api;
   private authStore: IAuthStore;
   private userStore: IUserStore;
@@ -58,4 +58,4 @@ class AuthServiceClass {
   };
 }
 
-export { AuthServiceClass };
+export { AuthService };

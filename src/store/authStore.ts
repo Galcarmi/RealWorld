@@ -20,12 +20,12 @@ class AuthStore implements IAuthStore {
   email = '';
   password = '';
 
-  private authService: InstanceType<typeof AuthService>;
+  private _authService: AuthService;
 
   constructor() {
     makeAutoObservable(this);
-    // Create the service instance here to avoid circular dependency
-    this.authService = new AuthService(this, userStore);
+
+    this._authService = new AuthService(this, userStore);
   }
 
   clear() {
@@ -63,8 +63,8 @@ class AuthStore implements IAuthStore {
 
     const apiCall =
       type === RequestType.login
-        ? this.authService.login({ email, password })
-        : this.authService.register(this.authValues);
+        ? this._authService.login({ email, password })
+        : this._authService.register(this.authValues);
 
     apiCall
       .then(
@@ -74,7 +74,7 @@ class AuthStore implements IAuthStore {
         })
       )
       .catch(
-        action(err => {
+        action((err: any) => {
           if (err?.response?.body?.errors) {
             this.errors = err?.response?.body?.errors;
           }
