@@ -37,6 +37,7 @@ export const Main: NavioScreen = observer(() => {
           validationMessage={['Password is required', 'Password is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
+          secureTextEntry={true}
         />
       </View>
       <View

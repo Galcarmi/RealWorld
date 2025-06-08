@@ -13,6 +13,7 @@ interface InputFieldProps {
   onChangeText?: (text: string) => void;
   validation?: (value?: string) => boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  secureTextEntry?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -23,6 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChangeText,
   validation,
   containerStyle,
+  secureTextEntry = false,
 }) => {
   return (
     <TextField
@@ -32,6 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
       floatingPlaceholder
       onChangeText={onChangeText}
       enableErrors
+      secureTextEntry={secureTextEntry}
       validate={[
         'required',
         validation || lengthValidation(minLength, maxLength),
