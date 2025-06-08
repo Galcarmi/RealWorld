@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+1. **Only UI concerns**: JSX, styling, layout, visual presentation
+2. **No business logic**: No API calls, validation logic, or complex state management
+3. **Hook consumption**: Import and use custom hooks for all logic
+4. **Props typing**: Properly type all props, even if none initially
+5. **Export pattern**: Named export with proper typing
+
+```typescript
+// ✅ Good UI Component Structure
+interface LoginScreenProps {
+  // Define props even if empty initially
+}
+
+export const LoginScreen: React.FC<LoginScreenProps> = observer(() => {
+  // Only hook calls and UI-related state
+  const { 
+    onEmailChange, 
+    onPasswordChange, 
+    onNavigateToSignUp, 
+    onLogin,
+    isLoading 
+  } = useAuth();
+
+  return (
+    // Only JSX and styling
+  );
+});
+```

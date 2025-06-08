@@ -1,17 +1,24 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { observer } from 'mobx-react';
 
 import { navio } from './src/navio';
+import { userStore } from './src/store/userStore';
 import { useAppTheme } from './src/theme';
 
-// Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
-export default function AppWrapper() {
+const AppWrapper = observer(() => {
   const isThemeReady = useAppTheme();
 
   if (!isThemeReady) {
     return null;
+  }
+
+  if (userStore.isAuthenticated()) {
+    navio.setRoot('tabs', 'MainTabs');
+  } else {
+    navio.setRoot('stacks', 'AuthStack');
   }
 
   return (
@@ -20,4 +27,6 @@ export default function AppWrapper() {
       <StatusBar style='auto' />
     </>
   );
-}
+});
+
+export default AppWrapper;

@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Never use comments to describe the code you write, always use meaningful variable and function namings.

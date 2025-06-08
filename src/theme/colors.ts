@@ -10,6 +10,9 @@ export const themeColors = {
   bgColor: '#FFFFFF',
   placeholderColor: '#6E7881',
   greyColor: '#6E7881',
+  tabBarActiveTint: '#007AFF',
+  tabBarInactiveTint: '#8E8E93',
+  tabBarBorder: '#E5E5E7',
 };
 
 export const loadColors = () => {
