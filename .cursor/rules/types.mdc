@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# TypeScript Strict Typing Rule
+
+## Core Principle
+NEVER use `any` or `never` types. Always use proper, specific TypeScript types.
+
+## Rules
+1. **Banned Types**: Never use `any`, `never`, or `unknown` unless absolutely necessary for advanced type manipulation
+2. **Required Approach**: Always infer or explicitly define proper types
+3. **Type Discovery**: When unsure of types, examine:
+   - The actual data structure being used
+   - npm package's `@types/*` definitions
+   - Source code documentation
+   - IDE type hints and autocomplete
+
+## Type Resolution Strategy
+When encountering unclear types:
+
+### For npm packages:
+1. Check if `@types/[package-name]` exists and install it
+2. Look at the package's TypeScript definitions in `node_modules/@types/`
+3. Examine the package's own `.d.ts` files if it includes them
+4. Check the package's documentation for type examples
+
+### For complex objects:
+1. Use `typeof` to infer from existing objects
+2. Create proper interfaces or types based on actual usage
+3. Use utility types like `Pick`, `Omit`, `Partial` when needed
+
+### For function parameters and returns:
+1. Explicitly type all function parameters
+2. Let TypeScript infer return types when obvious, otherwise be explicit
+3. Use generics for reusable type-safe functions
+
+## Examples of What TO DO:
+```typescript
+// ✅ Good - Proper interface
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ Good - Using npm package types
+import { Request, Response } from 'express';
+
+// ✅ Good - Utility types
+type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;
+
+// ✅ Good - Generic constraints
+function processData<T extends Record<string, unknown>>(data: T): T {
+  return data;
+}
+```
+
+## Examples of What NOT TO DO:
+```typescript
+// ❌ Bad - Using any
+function process(data: any): any {
+  return data;
+}
+
+// ❌ Bad - Using never inappropriately
+let result: never;
+
+// ❌ Bad - Avoiding proper typing
+const config = {} as any;
+```
+
+## Action Items:
+- Always investigate proper types before coding
+- Install necessary `@types/*` packages
+- Create custom interfaces when needed
+- Use TypeScript's built-in utility types
+- Leverage IDE suggestions for type discovery
