@@ -3,7 +3,7 @@ import { action, makeAutoObservable } from 'mobx';
 import { AuthService } from '../services';
 import { ResponseErrors } from '../services/types';
 
-import { IAuthStore, User } from './types';
+import { IAuthStore } from './types';
 import { userStore } from './userStore';
 
 enum RequestType {
@@ -78,15 +78,17 @@ class AuthStore implements IAuthStore {
 
     apiCall
       .then(
-        action(({ user }: { user: User }) => {
-          userStore.setUser(user);
+        action(response => {
+          userStore.setUser(response.user);
           this.clear();
         })
       )
       .catch(
         action(err => {
-          if (err?.response?.body?.errors) {
-            this.errors = err?.response?.body?.errors;
+          if (err?.response?.data?.errors) {
+            this.errors = err.response.data.errors;
+          } else {
+            console.error('Error message:', err?.message);
           }
         })
       )

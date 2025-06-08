@@ -13,7 +13,7 @@ import {
   UserResponse,
 } from '../types';
 
-export const API_URI = 'https://node-express-conduit.appspot.com/api';
+export const API_URI = 'http://node-express-conduit.appspot.com/api';
 
 class AuthService implements IAuthService {
   private _api: AxiosInstance;
