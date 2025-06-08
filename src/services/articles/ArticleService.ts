@@ -6,15 +6,14 @@ import axios, {
 } from 'axios';
 
 import { API_URI } from '../../constants';
-import { IAuthStore, IUserStore, User } from '../../store/types';
+import { IAuthStore, IUserStore } from '../../store/types';
 import {
-  IAuthService,
-  LoginUserRequest,
-  RegisterUserRequest,
-  UserResponse,
+  IArticleService,
+  ArticlesResponse,
+  SingleArticleResponse,
 } from '../types';
 
-class AuthService implements IAuthService {
+class ArticleService implements IArticleService {
   private _api: AxiosInstance;
   private _authStore: IAuthStore;
   private _userStore: IUserStore;
@@ -50,25 +49,30 @@ class AuthService implements IAuthService {
     );
   }
 
-  public get(): Promise<UserResponse> {
-    return this._api.get<UserResponse>('/user').then(this._responseBody);
-  }
-
-  public login(user: LoginUserRequest): Promise<UserResponse> {
+  public getArticles(params?: {
+    tag?: string;
+    author?: string;
+    favorited?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<ArticlesResponse> {
     return this._api
-      .post<UserResponse>('/users/login', { user })
+      .get<ArticlesResponse>('/articles', { params })
       .then(this._responseBody);
   }
 
-  public register(user: RegisterUserRequest): Promise<UserResponse> {
+  public getFeedArticles(params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ArticlesResponse> {
     return this._api
-      .post<UserResponse>('/users', { user })
+      .get<ArticlesResponse>('/articles/feed', { params })
       .then(this._responseBody);
   }
 
-  public put(user: User): Promise<UserResponse> {
+  public getArticle(slug: string): Promise<SingleArticleResponse> {
     return this._api
-      .put<UserResponse>('/user', { user })
+      .get<SingleArticleResponse>(`/articles/${slug}`)
       .then(this._responseBody);
   }
 
@@ -77,4 +81,4 @@ class AuthService implements IAuthService {
   }
 }
 
-export { AuthService, IAuthService };
+export { ArticleService, IArticleService };

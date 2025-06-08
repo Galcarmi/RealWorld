@@ -13,4 +13,4 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = () => {
       </Text>
     </View>
   );
-}; 
+};

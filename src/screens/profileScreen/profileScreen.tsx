@@ -13,4 +13,4 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = () => {
       </Text>
     </View>
   );
-}; 
+};

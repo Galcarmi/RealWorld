@@ -1,2 +1,9 @@
 export { AuthService } from './auth/AuthService';
-export type { ResponseErrors } from './types';
+export { ArticleService } from './articles/ArticleService';
+export type {
+  ResponseErrors,
+  Article,
+  Profile,
+  ArticlesResponse,
+  SingleArticleResponse,
+} from './types';

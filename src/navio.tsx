@@ -1,11 +1,11 @@
-import { Navio } from 'rn-navio';
 import { Ionicons } from '@expo/vector-icons';
+import { Navio } from 'rn-navio';
 
-import { HomeScreen } from './screens/homeScreen/homeScreen';
 import { FavoritesScreen } from './screens/favoritesScreen/favoritesScreen';
-import { ProfileScreen } from './screens/profileScreen/profileScreen';
+import { HomeScreen } from './screens/homeScreen/homeScreen';
 import { LoginScreen as SignInScreen } from './screens/login/loginScreen';
 import { Main as SignUpScreen } from './screens/login/signUpScreen';
+import { ProfileScreen } from './screens/profileScreen/profileScreen';
 import { themeColors } from './theme/colors';
 
 const navio = Navio.build({
@@ -25,30 +25,30 @@ const navio = Navio.build({
   tabs: {
     MainTabs: {
       layout: {
-        HomeTab: { 
+        HomeTab: {
           stack: 'HomeStack',
           options: () => ({
             title: 'Home',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" size={size} color={color} />
+              <Ionicons name='home' size={size} color={color} />
             ),
           }),
         },
-        FavoritesTab: { 
+        FavoritesTab: {
           stack: 'FavoritesStack',
           options: () => ({
             title: 'Favorites',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="heart" size={size} color={color} />
+              <Ionicons name='heart' size={size} color={color} />
             ),
           }),
         },
-        ProfileTab: { 
+        ProfileTab: {
           stack: 'ProfileStack',
           options: () => ({
             title: 'Profile',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person" size={size} color={color} />
+              <Ionicons name='person' size={size} color={color} />
             ),
           }),
         },
