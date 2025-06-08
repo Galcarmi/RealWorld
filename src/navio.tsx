@@ -2,14 +2,17 @@ import { Navio } from 'rn-navio';
 
 import { LoginScreen as SignInScreen } from './screens/login/loginScreen';
 import { Main as SignUpScreen } from './screens/login/signUpScreen';
+import { HomeScreen } from './screens/homeScreen/homeScreen';
 
 const navio = Navio.build({
   screens: {
     Login: SignUpScreen,
     SignIn: SignInScreen,
+    Home: HomeScreen,
   },
   stacks: {
-    MainStack: ['Login', 'SignIn'],
+    AuthStack: ['Login', 'SignIn'],
+    MainStack: ['Home'],
   },
   defaultOptions: {
     stacks: {
@@ -18,7 +21,7 @@ const navio = Navio.build({
       },
     },
   },
-  root: 'stacks.MainStack',
+  root: 'stacks.AuthStack',
 });
 
 export { navio };

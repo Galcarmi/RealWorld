@@ -31,6 +31,9 @@ export interface IAuthStore {
 
 export interface IUserStore {
   user: User | null;
+  token: string | null;
   forgetUser(): void;
   setUser(user: User): void;
+  getToken(): string | null;
+  isAuthenticated(): boolean;
 }
