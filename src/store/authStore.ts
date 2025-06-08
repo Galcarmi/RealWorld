@@ -1,8 +1,8 @@
 import { action, makeAutoObservable } from 'mobx';
 
+import { navio } from '../navio';
 import { AuthService } from '../services';
 import { ResponseErrors } from '../services/types';
-import { navio } from '../navio';
 
 import { IAuthStore } from './types';
 import { userStore } from './userStore';
