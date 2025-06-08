@@ -89,6 +89,7 @@ class AuthStore implements IAuthStore {
             this.errors = err.response.data.errors;
           } else {
             console.error('Error message:', err?.message);
+            this.errors = { general: ['Something went wrong'] };
           }
         })
       )
