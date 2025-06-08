@@ -1,13 +1,18 @@
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
+import type { RootStackParamList } from '../../navigation/types';
 import { authStore } from '../../store/authStore';
 import { showErrorModals } from '../../utils/errors';
 
 import { useStore } from './useStore';
 
+type NavigationProps = NavigationProp<RootStackParamList>;
+
 const useAuth = () => {
   const { isLoading, user, errors } = useStore();
+  const navigation = useNavigation<NavigationProps>();
 
   const onNameChange = useCallback((value: string) => {
     authStore.setUsername(value);
@@ -32,6 +37,14 @@ const useAuth = () => {
     authStore.login();
   }, []);
 
+  const onNavigateToLogin = useCallback(() => {
+    navigation.navigate('SignIn');
+  }, [navigation]);
+
+  const onNavigateToSignUp = useCallback(() => {
+    navigation.navigate('Login');
+  }, [navigation]);
+
   useEffect(() => {
     if (errors) {
       showErrorModals(errors);
@@ -48,6 +61,8 @@ const useAuth = () => {
     onPasswordChange,
     onLogin,
     onSignUp,
+    onNavigateToLogin,
+    onNavigateToSignUp,
   };
 };
 

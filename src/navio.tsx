@@ -1,13 +1,15 @@
 import { Navio } from 'rn-navio';
 
-import { Main as LoginScreen } from './screens/login/login';
+import { LoginScreen as SignInScreen } from './screens/login/loginScreen';
+import { Main as SignUpScreen } from './screens/login/signUpScreen';
 
 const navio = Navio.build({
   screens: {
-    Login: LoginScreen,
+    Login: SignUpScreen,
+    SignIn: SignInScreen,
   },
   stacks: {
-    MainStack: ['Login'],
+    MainStack: ['Login', 'SignIn'],
   },
   defaultOptions: {
     stacks: {

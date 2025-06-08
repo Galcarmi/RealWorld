@@ -9,22 +9,16 @@ import { emailValidation } from '../../utils/validation';
 
 import useAuth from './useAuth';
 
-export const Main: NavioScreen = observer(() => {
-  const { onNameChange, onEmailChange, onPasswordChange, onSignUp, onLogin } =
+export const LoginScreen: NavioScreen = observer(() => {
+  const { onEmailChange, onPasswordChange, onNavigateToSignUp, onLogin } =
     useAuth();
 
   return (
     <View flex center backgroundColor={themeColors.bgColor}>
       <View center style={styles.width100Percent} marginB-40>
         <Text title primaryColor marginB-70>
-          Sign Up
+          Sign In
         </Text>
-        <InputField
-          placeholder={'Username'}
-          validationMessage={['Username is required', 'Username is too short']}
-          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
-          onChangeText={onNameChange}
-        />
         <InputField
           placeholder={'Email'}
           validationMessage={['Email is required', 'Not a valid email']}
@@ -48,8 +42,8 @@ export const Main: NavioScreen = observer(() => {
         paddingB-30
       >
         <Button
-          label={'Sign Up'}
-          onPress={onSignUp}
+          label={'Sign In'}
+          onPress={onLogin}
           fullWidth
           backgroundColor={themeColors.primaryColor}
         />
@@ -57,8 +51,8 @@ export const Main: NavioScreen = observer(() => {
           Or
         </Text>
         <Button
-          label={'Sign In'}
-          onPress={onLogin}
+          label={'Sign Up'}
+          onPress={onNavigateToSignUp}
           link
           labelStyle={{ color: themeColors.primaryColor }}
           backgroundColor={themeColors.primaryColor}
