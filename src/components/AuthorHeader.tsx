@@ -5,7 +5,7 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Profile } from '../services/types';
 import { themeColors } from '../theme/colors';
-import { formatDate } from '../utils/dateUtils';
+import { formatDate, getInitials } from '../utils';
 
 interface AuthorHeaderProps {
   author: Profile;
@@ -28,7 +28,7 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
         source={{ uri: author.image || undefined }}
         size={32}
         backgroundColor={themeColors.placeholderColor}
-        label={author.username.slice(0, 1).toUpperCase()}
+        label={getInitials(author.username, 1)}
         labelColor={themeColors.bgColor}
       />
       <View flex marginL-8>

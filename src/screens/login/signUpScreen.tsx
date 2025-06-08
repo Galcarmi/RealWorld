@@ -5,7 +5,7 @@ import { NavioScreen } from 'rn-navio';
 import { InputField } from '../../components/InputField';
 import { styles } from '../../styles/globalStyles';
 import { themeColors } from '../../theme/colors';
-import { emailValidation } from '../../utils/validation';
+import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
 

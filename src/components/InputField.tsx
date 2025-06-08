@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { TextField } from 'react-native-ui-lib';
+import { TextField, View } from 'react-native-ui-lib';
 
 import { themeColors } from '../theme/colors';
-import { lengthValidation } from '../utils/validation';
+import { lengthValidation } from '../utils';
 
 interface InputFieldProps {
   placeholder: string;

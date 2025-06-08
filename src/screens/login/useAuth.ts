@@ -1,10 +1,10 @@
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
 import type { RootStackParamList } from '../../navigation/types';
 import { authStore } from '../../store/authStore';
-import { showErrorModals } from '../../utils/errors';
+import { showErrorModals } from '../../utils';
 
 import { useStore } from './useStore';
 

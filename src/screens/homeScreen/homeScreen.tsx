@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, TouchableOpacity, Colors } from 'react-native-ui-lib';
+import { View } from 'react-native-ui-lib';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
@@ -10,11 +10,7 @@ import { themeColors } from '../../theme/colors';
 
 import useArticles from './useArticles';
 
-interface HomeScreenProps {
-  // Define props even if empty initially
-}
-
-export const HomeScreen: React.FC<HomeScreenProps> = observer(() => {
+export const HomeScreen: React.FC<{}> = observer(() => {
   const {
     articles,
     isLoading,
