@@ -65,6 +65,14 @@ const useArticles = () => {
     loadArticles(0, true);
   }, [feedType, loadArticles]);
 
+  const handleGlobalFeedPress = useCallback(() => {
+    switchFeedType(FeedType.GLOBAL);
+  }, [switchFeedType]);
+
+  const handleUserFeedPress = useCallback(() => {
+    switchFeedType(FeedType.FEED);
+  }, [switchFeedType]);
+
   return {
     articles,
     isLoading,
@@ -73,6 +81,8 @@ const useArticles = () => {
     loadMoreArticles,
     refreshArticles,
     switchFeedType,
+    handleGlobalFeedPress,
+    handleUserFeedPress,
   };
 };
 

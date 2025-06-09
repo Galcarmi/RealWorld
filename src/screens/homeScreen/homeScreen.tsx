@@ -19,16 +19,9 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     feedType,
     refreshArticles,
     loadMoreArticles,
-    switchFeedType,
+    handleGlobalFeedPress,
+    handleUserFeedPress,
   } = useArticles();
-
-  const handleGlobalFeedPress = () => {
-    switchFeedType(FeedType.GLOBAL);
-  };
-
-  const handleUserFeedPress = () => {
-    switchFeedType(FeedType.FEED);
-  };
 
   const renderFeedTabs = () =>
     userStore.isAuthenticated() ? (
