@@ -70,9 +70,9 @@ const navio = Navio.build({
         ArticlesTab: {
           stack: 'HomeStack',
           options: () => ({
-            title: 'Articles',
+            title: 'Home',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name='newspaper' size={size} color={color} />
+              <Ionicons name='home' size={size} color={color} />
             ),
           }),
         },
