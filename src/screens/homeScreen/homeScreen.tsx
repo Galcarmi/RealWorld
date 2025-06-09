@@ -6,6 +6,7 @@ import { View } from 'react-native-ui-lib';
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
 import { FeedType } from '../../constants/feedTypes';
+import { userStore } from '../../store';
 import { componentStyles } from '../../styles/componentStyles';
 import { themeColors } from '../../theme/colors';
 
@@ -29,14 +30,19 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     switchFeedType(FeedType.FEED);
   };
 
+  const renderFeedTabs = () =>
+    userStore.isAuthenticated() ? (
+      <FeedTabs
+        feedType={feedType}
+        onGlobalFeedPress={handleGlobalFeedPress}
+        onUserFeedPress={handleUserFeedPress}
+      />
+    ) : null;
+
   return (
     <SafeAreaView style={componentStyles.homeScreenSafeArea}>
       <View flex backgroundColor={themeColors.bgColor}>
-        <FeedTabs
-          feedType={feedType}
-          onGlobalFeedPress={handleGlobalFeedPress}
-          onUserFeedPress={handleUserFeedPress}
-        />
+        {renderFeedTabs()}
 
         <ArticlesList
           articles={articles}

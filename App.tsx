@@ -18,7 +18,7 @@ const AppWrapper = observer(() => {
   if (userStore.isAuthenticated()) {
     navio.setRoot('tabs', 'MainTabs');
   } else {
-    navio.setRoot('stacks', 'AuthStack');
+    navio.setRoot('tabs', 'AuthTabs');
   }
 
   return (

@@ -21,6 +21,8 @@ const navio = Navio.build({
     HomeStack: ['Home'],
     FavoritesStack: ['Favorites'],
     ProfileStack: ['Profile'],
+    SignInStack: ['SignIn'],
+    RegisterStack: ['Login'],
   },
   tabs: {
     MainTabs: {
@@ -63,6 +65,46 @@ const navio = Navio.build({
         },
       },
     },
+    AuthTabs: {
+      layout: {
+        ArticlesTab: {
+          stack: 'HomeStack',
+          options: () => ({
+            title: 'Articles',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='newspaper' size={size} color={color} />
+            ),
+          }),
+        },
+        LoginTab: {
+          stack: 'SignInStack',
+          options: () => ({
+            title: 'Login',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='log-in' size={size} color={color} />
+            ),
+          }),
+        },
+        RegisterTab: {
+          stack: 'RegisterStack',
+          options: () => ({
+            title: 'Register',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='person-add' size={size} color={color} />
+            ),
+          }),
+        },
+      },
+      options: {
+        tabBarActiveTintColor: themeColors.tabBarActiveTint,
+        tabBarInactiveTintColor: themeColors.tabBarInactiveTint,
+        tabBarStyle: {
+          backgroundColor: themeColors.bgColor,
+          borderTopWidth: 1,
+          borderTopColor: themeColors.tabBarBorder,
+        },
+      },
+    },
   },
   defaultOptions: {
     stacks: {
@@ -71,7 +113,7 @@ const navio = Navio.build({
       },
     },
   },
-  root: 'tabs.MainTabs',
+  root: 'tabs.AuthTabs',
 });
 
 export { navio };

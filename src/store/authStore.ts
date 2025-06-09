@@ -1,5 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 
+import { navio } from '../navio';
 import { AuthService } from '../services';
 import { ResponseErrors } from '../services/types';
 
@@ -63,6 +64,7 @@ class AuthStore implements IAuthStore {
 
   public logout() {
     userStore.forgetUser();
+    navio.setRoot('tabs', 'AuthTabs');
   }
 
   private _$request(type: RequestType) {
@@ -81,6 +83,7 @@ class AuthStore implements IAuthStore {
         action(response => {
           userStore.setUser(response.user);
           this.clear();
+          navio.setRoot('tabs', 'MainTabs');
         })
       )
       .catch(
