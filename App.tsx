@@ -2,7 +2,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { observer } from 'mobx-react';
 
-import { navio } from './src/navio';
+import { navio } from './src/navigation/navio';
 import { userStore } from './src/store/userStore';
 import { useAppTheme } from './src/theme';
 

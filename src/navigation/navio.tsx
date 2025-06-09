@@ -1,12 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Navio } from 'rn-navio';
 
-import { FavoritesScreen } from './screens/favoritesScreen/favoritesScreen';
-import { HomeScreen } from './screens/homeScreen/homeScreen';
-import { LoginScreen as SignInScreen } from './screens/login/loginScreen';
-import { Main as SignUpScreen } from './screens/login/signUpScreen';
-import { ProfileScreen } from './screens/profileScreen/profileScreen';
-import { themeColors } from './theme/colors';
+import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
+import { HomeScreen } from '../screens/homeScreen/homeScreen';
+import { LoginScreen as SignInScreen } from '../screens/login/loginScreen';
+import { Main as SignUpScreen } from '../screens/login/signUpScreen';
+import { ProfileScreen } from '../screens/profileScreen/profileScreen';
+import { themeColors } from '../theme/colors';
 
 const navio = Navio.build({
   screens: {
