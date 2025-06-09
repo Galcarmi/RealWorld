@@ -29,7 +29,8 @@ class ArticleService extends BaseService implements IArticleService {
   }): Promise<ArticlesResponse> {
     return this._api
       .get<ArticlesResponse>('/articles/feed', { params })
-      .then(this._responseBody);
+      .then(this._responseBody)
+      .catch(this._logError);
   }
 
   public getArticle(slug: string): Promise<SingleArticleResponse> {

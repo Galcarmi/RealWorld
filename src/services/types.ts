@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { User } from '../store/types';
 
 export type ResponseErrors = {
@@ -69,3 +71,11 @@ export interface IArticleService {
   }): Promise<ArticlesResponse>;
   getArticle(slug: string): Promise<SingleArticleResponse>;
 }
+
+export type ApiErrorResponse = AxiosError & {
+  response: {
+    data: {
+      errors: ResponseErrors;
+    };
+  };
+};
