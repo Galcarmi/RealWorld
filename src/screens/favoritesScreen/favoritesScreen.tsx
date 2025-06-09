@@ -1,12 +1,29 @@
+import { observer } from 'mobx-react';
 import React from 'react';
-import { View, Text } from 'react-native-ui-lib';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native-ui-lib';
 
-export const FavoritesScreen: React.FC<{}> = () => {
+import { ArticlesList } from '../../components/ArticlesList';
+import { componentStyles } from '../../styles/componentStyles';
+import { themeColors } from '../../theme/colors';
+
+import { useFavoriteArticles } from './useFavoriteArticles';
+
+export const FavoritesScreen: React.FC<{}> = observer(() => {
+  const { articles, isLoading, refreshArticles, loadMoreArticles } =
+    useFavoriteArticles();
+
   return (
-    <View flex center>
-      <Text text50 bold>
-        Favorites
-      </Text>
-    </View>
+    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+      <View flex backgroundColor={themeColors.bgColor}>
+        <ArticlesList
+          articles={articles}
+          isLoading={isLoading}
+          onRefresh={refreshArticles}
+          onLoadMore={loadMoreArticles}
+          emptyMessage="You haven't favorited any articles yet"
+        />
+      </View>
+    </SafeAreaView>
   );
-};
+});
