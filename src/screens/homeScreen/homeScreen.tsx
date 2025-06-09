@@ -6,6 +6,7 @@ import { View } from 'react-native-ui-lib';
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
 import { FeedType } from '../../constants/feedTypes';
+import { componentStyles } from '../../styles/componentStyles';
 import { themeColors } from '../../theme/colors';
 
 import useArticles from './useArticles';
@@ -19,6 +20,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     loadMoreArticles,
     switchFeedType,
   } = useArticles();
+
   const handleGlobalFeedPress = () => {
     switchFeedType(FeedType.GLOBAL);
   };
@@ -28,7 +30,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bgColor }}>
+    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
       <View flex backgroundColor={themeColors.bgColor}>
         <FeedTabs
           feedType={feedType}

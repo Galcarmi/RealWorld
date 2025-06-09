@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { NavioScreen } from 'rn-navio';
 
 import { InputField } from '../../components/InputField';
+import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 import { themeColors } from '../../theme/colors';
 import { emailValidation } from '../../utils';
@@ -65,7 +66,7 @@ export const Main: NavioScreen = observer(() => {
           label={'Sign In'}
           onPress={onNavigateToLogin}
           link
-          labelStyle={{ color: themeColors.primaryColor }}
+          labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
         />
       </View>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { TextField, View } from 'react-native-ui-lib';
+import { TextField } from 'react-native-ui-lib';
 
-import { themeColors } from '../theme/colors';
+import { componentStyles } from '../styles/componentStyles';
 import { lengthValidation } from '../utils';
 
 interface InputFieldProps {
@@ -29,7 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
   return (
     <TextField
       containerStyle={containerStyle}
-      floatingPlaceholderStyle={{ color: themeColors.placeholderColor }}
+      floatingPlaceholderStyle={componentStyles.inputFieldFloatingPlaceholder}
       placeholder={placeholder}
       floatingPlaceholder
       onChangeText={onChangeText}

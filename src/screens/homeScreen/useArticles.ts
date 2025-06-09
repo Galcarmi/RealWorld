@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FeedType } from '../../constants/feedTypes';
 import { ArticleService } from '../../services';
@@ -13,7 +13,10 @@ const useArticles = () => {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [feedType, setFeedType] = useState<FeedType>(FeedType.GLOBAL);
 
-  const articleService = new ArticleService(authStore, userStore);
+  const articleService = useMemo(
+    () => new ArticleService(authStore, userStore),
+    []
+  );
 
   const loadArticles = useCallback(
     async (offset = 0, reset = true) => {
@@ -34,8 +37,8 @@ const useArticles = () => {
         }
 
         setArticlesCount(response.articlesCount);
-      } catch (error) {
-        console.error('Error loading articles:', error);
+      } catch {
+        // TODO add error handling
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +63,7 @@ const useArticles = () => {
 
   useEffect(() => {
     loadArticles(0, true);
-  }, [feedType]);
+  }, [feedType, loadArticles]);
 
   return {
     articles,

@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import { View, Text } from 'react-native-ui-lib';
 
 import { Article } from '../services/types';
+import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 
 import { ArticleCard } from './ArticleCard';
@@ -80,10 +81,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        flexGrow: 1,
-        paddingBottom: 20,
-      }}
+      contentContainerStyle={componentStyles.articlesListContentContainer}
     />
   );
 };

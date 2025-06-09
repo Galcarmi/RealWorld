@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { View, Text, TouchableOpacity } from 'react-native-ui-lib';
 
 import { FeedType } from '../constants/feedTypes';
+import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 
 interface Tab {
@@ -38,7 +38,9 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
         <View row>
           {tabs.map(tab => {
             const isActive = tab.id === feedType;
-            const tabStyle = isActive ? styles.activeTab : styles.inactiveTab;
+            const tabStyle = isActive
+              ? componentStyles.feedTabsActiveTab
+              : componentStyles.feedTabsInactiveTab;
 
             return (
               <TouchableOpacity
@@ -61,17 +63,3 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     );
   }
 );
-
-const styles = StyleSheet.create({
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: themeColors.primaryColor,
-    marginRight: 3,
-    marginLeft: 3,
-  },
-  inactiveTab: {
-    borderBottomWidth: 0,
-    marginRight: 3,
-    marginLeft: 3,
-  },
-});

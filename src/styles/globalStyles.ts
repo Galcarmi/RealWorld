@@ -16,3 +16,4 @@ const styles = StyleSheet.create({
 });
 
 export { styles };
+export { componentStyles } from './componentStyles';
