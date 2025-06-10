@@ -1,0 +1,65 @@
+import { useCallback, useEffect, useState } from 'react';
+
+import { Article } from '../../services/types';
+import { articlesStore } from '../../store/articlesStore';
+import { userStore } from '../../store/userStore';
+
+export const useProfile = () => {
+  const [userArticles, setUserArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const currentUser = userStore.user;
+
+  const fetchUserArticles = useCallback(async () => {
+    if (!currentUser?.username) return;
+
+    setIsLoading(true);
+    try {
+      const response = await articlesStore.getUserArticles(
+        currentUser.username,
+        10,
+        0
+      );
+      setUserArticles(response.articles);
+    } catch (error) {
+      console.error('Failed to fetch user articles:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentUser?.username]);
+
+  const onCreateNewArticle = useCallback(() => {
+    console.log('Navigate to create article');
+  }, []);
+
+  const onEditProfile = useCallback(() => {
+    console.log('Navigate to edit profile');
+  }, []);
+
+  const onArticlePress = useCallback((article: Article) => {
+    console.log('Navigate to article:', article.slug);
+  }, []);
+
+  const onToggleFavorite = useCallback(
+    async (slug: string, favorited: boolean) => {
+      await articlesStore.toggleArticleFavoriteStatus(slug, favorited);
+      await fetchUserArticles();
+    },
+    [fetchUserArticles]
+  );
+
+  useEffect(() => {
+    fetchUserArticles();
+  }, [currentUser?.username, fetchUserArticles]);
+
+  return {
+    currentUser,
+    userArticles,
+    isLoading,
+    onCreateNewArticle,
+    onEditProfile,
+    onArticlePress,
+    onToggleFavorite,
+    refreshUserArticles: fetchUserArticles,
+  };
+};

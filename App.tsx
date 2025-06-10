@@ -11,16 +11,17 @@ SplashScreen.preventAutoHideAsync();
 
 const AppWrapper = observer(() => {
   const isThemeReady = useAppTheme();
+  const isAuthenticated = userStore.isAuthenticated();
 
   useEffect(() => {
     if (isThemeReady) {
-      if (userStore.isAuthenticated()) {
+      if (isAuthenticated) {
         navio.setRoot('tabs', 'MainTabs');
       } else {
         navio.setRoot('tabs', 'AuthTabs');
       }
     }
-  }, [isThemeReady, userStore.isAuthenticated()]);
+  }, [isThemeReady, isAuthenticated]);
 
   if (!isThemeReady) {
     return null;

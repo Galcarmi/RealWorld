@@ -43,4 +43,17 @@ export const componentStyles = StyleSheet.create({
     marginLeft: 6,
     marginBottom: 2,
   },
+
+  // NewArticleButton styles
+  newArticleButton: {
+    borderRadius: 25,
+    height: 50,
+    borderWidth: 1,
+    borderColor: themeColors.primaryColor,
+  },
+
+  // ProfileHeader styles
+  profileHeaderContainer: {
+    backgroundColor: themeColors.primaryColor,
+  },
 });

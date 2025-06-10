@@ -72,6 +72,20 @@ class ArticlesStore {
     await this.fetchFavoriteArticles(0, true);
   }
 
+  public async getUserArticles(username: string, limit = 10, offset = 0) {
+    try {
+      const response = await this.articleService.getArticles({
+        author: username,
+        limit,
+        offset,
+      });
+      return response;
+    } catch (error) {
+      console.error('Failed to fetch user articles:', error);
+      throw error;
+    }
+  }
+
   public async toggleArticleFavoriteStatus(
     slug: string,
     currentlyFavorited: boolean

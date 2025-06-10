@@ -120,3 +120,4 @@ const navio = Navio.build({
 navigationService.setNavioInstance(navio);
 
 export { navio };
+export type NavioInstance = typeof navio;
