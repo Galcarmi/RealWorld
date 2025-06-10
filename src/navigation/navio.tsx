@@ -6,6 +6,7 @@ import { HomeScreen } from '../screens/homeScreen/homeScreen';
 import { LoginScreen as SignInScreen } from '../screens/login/loginScreen';
 import { Main as SignUpScreen } from '../screens/login/signUpScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
+import { navigationService } from '../services/navigationService';
 import { themeColors } from '../theme/colors';
 
 const navio = Navio.build({
@@ -115,5 +116,8 @@ const navio = Navio.build({
   },
   root: 'tabs.AuthTabs',
 });
+
+// Initialize the navigation service with the navio instance
+navigationService.setNavioInstance(navio);
 
 export { navio };
