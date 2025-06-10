@@ -57,13 +57,23 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     );
   };
 
-  const renderEmpty = () => (
-    <View flex center padding-32>
-      <Text text60 color={themeColors.placeholderColor} center>
-        {emptyMessage}
-      </Text>
-    </View>
-  );
+  const renderEmpty = () => {
+    if (articles.length === 0 && isLoading) {
+      return (
+        <View flex center padding-32>
+          <ActivityIndicator size='large' color={themeColors.primaryColor} />
+        </View>
+      );
+    }
+
+    return (
+      <View flex center padding-32>
+        <Text text60 color={themeColors.placeholderColor} center>
+          {emptyMessage}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <FlatList

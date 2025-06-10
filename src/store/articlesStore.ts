@@ -1,8 +1,8 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
+import { FeedType } from '../constants/feedTypes';
 import { ArticleService } from '../services';
 import { Article } from '../services/types';
-import { FeedType } from '../constants/feedTypes';
 
 import { authStore } from './authStore';
 import { userStore } from './userStore';
@@ -31,7 +31,10 @@ class ArticlesStore {
   }
 
   public async loadMoreHomeArticles() {
-    if (!this.homeIsLoading && this.homeArticles.length < this.homeArticlesCount) {
+    if (
+      !this.homeIsLoading &&
+      this.homeArticles.length < this.homeArticlesCount
+    ) {
       await this.fetchHomeArticles(this.homeCurrentOffset + 10, false);
     }
   }
@@ -57,7 +60,10 @@ class ArticlesStore {
   }
 
   public async loadMoreFavoriteArticles() {
-    if (!this.favoritesIsLoading && this.favoriteArticles.length < this.favoritesArticlesCount) {
+    if (
+      !this.favoritesIsLoading &&
+      this.favoriteArticles.length < this.favoritesArticlesCount
+    ) {
       await this.fetchFavoriteArticles(this.favoritesCurrentOffset + 10, false);
     }
   }
@@ -66,7 +72,10 @@ class ArticlesStore {
     await this.fetchFavoriteArticles(0, true);
   }
 
-  public async toggleArticleFavoriteStatus(slug: string, currentlyFavorited: boolean) {
+  public async toggleArticleFavoriteStatus(
+    slug: string,
+    currentlyFavorited: boolean
+  ) {
     try {
       const response = currentlyFavorited
         ? await this.articleService.unfavoriteArticle(slug)
@@ -74,7 +83,11 @@ class ArticlesStore {
 
       runInAction(() => {
         this.updateArticleInHomeList(slug, response.article);
-        this.updateArticleInFavoritesList(slug, response.article, currentlyFavorited);
+        this.updateArticleInFavoritesList(
+          slug,
+          response.article,
+          currentlyFavorited
+        );
       });
     } catch (error) {
       console.error('Failed to toggle favorite status:', error);
@@ -85,16 +98,20 @@ class ArticlesStore {
     try {
       this.homeIsLoading = true;
 
-      const response = this.feedType === FeedType.GLOBAL
-        ? await this.articleService.getArticles({ limit: 10, offset })
-        : await this.articleService.getFeedArticles({ limit: 10, offset });
+      const response =
+        this.feedType === FeedType.GLOBAL
+          ? await this.articleService.getArticles({ limit: 10, offset })
+          : await this.articleService.getFeedArticles({ limit: 10, offset });
 
       runInAction(() => {
         if (resetList) {
           this.homeArticles = response.articles;
           this.homeCurrentOffset = offset;
         } else {
-          this.homeArticles = this.mergeArticlesWithoutDuplicates(this.homeArticles, response.articles);
+          this.homeArticles = this.mergeArticlesWithoutDuplicates(
+            this.homeArticles,
+            response.articles
+          );
           this.homeCurrentOffset = offset;
         }
         this.homeArticlesCount = response.articlesCount;
@@ -127,7 +144,10 @@ class ArticlesStore {
           this.favoriteArticles = response.articles;
           this.favoritesCurrentOffset = offset;
         } else {
-          this.favoriteArticles = this.mergeArticlesWithoutDuplicates(this.favoriteArticles, response.articles);
+          this.favoriteArticles = this.mergeArticlesWithoutDuplicates(
+            this.favoriteArticles,
+            response.articles
+          );
           this.favoritesCurrentOffset = offset;
         }
         this.favoritesArticlesCount = response.articlesCount;
@@ -141,9 +161,16 @@ class ArticlesStore {
     }
   }
 
-  private mergeArticlesWithoutDuplicates(existingArticles: Article[], newArticles: Article[]): Article[] {
-    const existingSlugs = new Set(existingArticles.map(article => article.slug));
-    const uniqueNewArticles = newArticles.filter(article => !existingSlugs.has(article.slug));
+  private mergeArticlesWithoutDuplicates(
+    existingArticles: Article[],
+    newArticles: Article[]
+  ): Article[] {
+    const existingSlugs = new Set(
+      existingArticles.map(article => article.slug)
+    );
+    const uniqueNewArticles = newArticles.filter(
+      article => !existingSlugs.has(article.slug)
+    );
     return [...existingArticles, ...uniqueNewArticles];
   }
 
@@ -153,11 +180,19 @@ class ArticlesStore {
     );
   }
 
-  private updateArticleInFavoritesList(slug: string, updatedArticle: Article, wasUnfavorited: boolean) {
+  private updateArticleInFavoritesList(
+    slug: string,
+    updatedArticle: Article,
+    wasUnfavorited: boolean
+  ) {
     if (wasUnfavorited) {
-      this.favoriteArticles = this.favoriteArticles.filter(article => article.slug !== slug);
+      this.favoriteArticles = this.favoriteArticles.filter(
+        article => article.slug !== slug
+      );
     } else {
-      const existingIndex = this.favoriteArticles.findIndex(article => article.slug === slug);
+      const existingIndex = this.favoriteArticles.findIndex(
+        article => article.slug === slug
+      );
       if (existingIndex >= 0) {
         this.favoriteArticles[existingIndex] = updatedArticle;
       }
