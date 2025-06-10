@@ -117,7 +117,6 @@ const navio = Navio.build({
   root: 'tabs.AuthTabs',
 });
 
-// Initialize the navigation service with the navio instance
 navigationService.setNavioInstance(navio);
 
 export { navio };
