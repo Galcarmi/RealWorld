@@ -26,4 +26,4 @@ class NavigationService implements NavigationServiceType {
   }
 }
 
-export const navigationService = new NavigationService(); 
+export const navigationService = new NavigationService();
