@@ -70,6 +70,8 @@ export interface IArticleService {
     offset?: number;
   }): Promise<ArticlesResponse>;
   getArticle(slug: string): Promise<SingleArticleResponse>;
+  favoriteArticle(slug: string): Promise<SingleArticleResponse>;
+  unfavoriteArticle(slug: string): Promise<SingleArticleResponse>;
 }
 
 export type ApiErrorResponse = AxiosError & {

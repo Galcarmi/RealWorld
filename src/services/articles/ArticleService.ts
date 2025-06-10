@@ -38,6 +38,18 @@ class ArticleService extends BaseService implements IArticleService {
       .get<SingleArticleResponse>(`/articles/${slug}`)
       .then(this._responseBody);
   }
+
+  public favoriteArticle(slug: string): Promise<SingleArticleResponse> {
+    return this._api
+      .post<SingleArticleResponse>(`/articles/${slug}/favorite`)
+      .then(this._responseBody);
+  }
+
+  public unfavoriteArticle(slug: string): Promise<SingleArticleResponse> {
+    return this._api
+      .delete<SingleArticleResponse>(`/articles/${slug}/favorite`)
+      .then(this._responseBody);
+  }
 }
 
 export { ArticleService, IArticleService };

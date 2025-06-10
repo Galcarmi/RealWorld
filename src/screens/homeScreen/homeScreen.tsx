@@ -21,6 +21,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     loadMoreArticles,
     handleGlobalFeedPress,
     handleUserFeedPress,
+    handleFavoritePress,
   } = useArticles();
 
   const renderFeedTabs = () =>
@@ -42,6 +43,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
           isLoading={isLoading}
           onRefresh={refreshArticles}
           onLoadMore={loadMoreArticles}
+          onFavoritePress={handleFavoritePress}
           emptyMessage={
             feedType === FeedType.FEED
               ? 'Follow some users to see their articles here'

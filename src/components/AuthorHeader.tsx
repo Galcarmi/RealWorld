@@ -47,7 +47,6 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
             color={
               favorited ? themeColors.errorColor : themeColors.placeholderColor
             }
-            onPress={onFavorite}
           />
           <Text text80 color={themeColors.placeholderColor} marginL-4>
             {favoritesCount}

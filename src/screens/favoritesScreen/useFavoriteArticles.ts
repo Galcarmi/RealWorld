@@ -65,6 +65,25 @@ const useFavoriteArticles = () => {
     loadFavoriteArticles(0, true);
   }, [loadFavoriteArticles]);
 
+  const handleFavoritePress = useCallback(
+    async (slug: string, favorited: boolean) => {
+      try {
+        const response = favorited
+          ? await articleService.unfavoriteArticle(slug)
+          : await articleService.favoriteArticle(slug);
+
+        setArticles(prev =>
+          prev.map(article =>
+            article.slug === slug ? response.article : article
+          )
+        );
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+      }
+    },
+    [articleService]
+  );
+
   useEffect(() => {
     if (userStore.user?.username) {
       loadFavoriteArticles(0, true);
@@ -77,6 +96,7 @@ const useFavoriteArticles = () => {
     articlesCount,
     loadMoreArticles,
     refreshArticles,
+    handleFavoritePress,
   };
 };
 

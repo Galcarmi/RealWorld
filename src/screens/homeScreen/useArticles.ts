@@ -73,6 +73,26 @@ const useArticles = () => {
     switchFeedType(FeedType.FEED);
   }, [switchFeedType]);
 
+  const handleFavoritePress = useCallback(
+    async (slug: string, favorited: boolean) => {
+      try {
+        const response = favorited
+          ? await articleService.unfavoriteArticle(slug)
+          : await articleService.favoriteArticle(slug);
+
+        setArticles(prev =>
+          prev.map(article =>
+            article.slug === slug ? response.article : article
+          )
+        );
+      } catch (error) {
+        // TODO: Add proper error handling
+        console.error('Error toggling favorite:', error);
+      }
+    },
+    [articleService]
+  );
+
   return {
     articles,
     isLoading,
@@ -83,6 +103,7 @@ const useArticles = () => {
     switchFeedType,
     handleGlobalFeedPress,
     handleUserFeedPress,
+    handleFavoritePress,
   };
 };
 

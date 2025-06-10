@@ -10,8 +10,13 @@ import { themeColors } from '../../theme/colors';
 import { useFavoriteArticles } from './useFavoriteArticles';
 
 export const FavoritesScreen: React.FC<{}> = observer(() => {
-  const { articles, isLoading, refreshArticles, loadMoreArticles } =
-    useFavoriteArticles();
+  const {
+    articles,
+    isLoading,
+    refreshArticles,
+    loadMoreArticles,
+    handleFavoritePress,
+  } = useFavoriteArticles();
 
   return (
     <SafeAreaView style={componentStyles.homeScreenSafeArea}>
@@ -21,6 +26,7 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
           isLoading={isLoading}
           onRefresh={refreshArticles}
           onLoadMore={loadMoreArticles}
+          onFavoritePress={handleFavoritePress}
           emptyMessage="You haven't favorited any articles yet"
         />
       </View>
