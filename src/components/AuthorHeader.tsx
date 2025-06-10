@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Profile } from '../services/types';
+import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 import { formatDate, getInitials } from '../utils';
 
@@ -32,9 +33,19 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
         labelColor={themeColors.bgColor}
       />
       <View flex marginL-8>
-        <Text text70 color={themeColors.textColor} marginB-2>
-          {author.username}
-        </Text>
+        <View row centerV>
+          <Text text70 color={themeColors.textColor} marginB-2>
+            {author.username}
+          </Text>
+          {author.following && (
+            <Ionicons
+              name="checkmark-circle"
+              size={16}
+              color={themeColors.primaryColor}
+              style={componentStyles.authorFollowingIcon}
+            />
+          )}
+        </View>
         <Text text80 color={themeColors.placeholderColor}>
           {formatDate(createdAt)}
         </Text>

@@ -37,4 +37,10 @@ export const componentStyles = StyleSheet.create({
   authButtonLabel: {
     color: themeColors.primaryColor,
   },
+
+  // AuthorHeader styles
+  authorFollowingIcon: {
+    marginLeft: 6,
+    marginBottom: 2,
+  },
 });
