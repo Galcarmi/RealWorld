@@ -16,6 +16,7 @@ interface ArticlesListProps {
   onArticlePress?: (slug: string) => void;
   onFavoritePress?: (slug: string, favorited: boolean) => void;
   emptyMessage?: string;
+  contextKey: string;
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -26,6 +27,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onArticlePress,
   onFavoritePress,
   emptyMessage = 'No articles found',
+  contextKey,
 }) => {
   const renderArticle = ({ item }: { item: Article }) => {
     const handlePress = () => {
@@ -67,7 +69,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     <FlatList
       data={articles}
       renderItem={renderArticle}
-      keyExtractor={item => item.slug}
+      keyExtractor={item => `${contextKey}-${item.slug}`}
       refreshControl={
         <RefreshControl
           refreshing={isLoading && articles.length === 0}

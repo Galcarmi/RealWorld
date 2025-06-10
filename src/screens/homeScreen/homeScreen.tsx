@@ -49,6 +49,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
               ? 'Follow some users to see their articles here'
               : 'No articles available'
           }
+          contextKey="home"
         />
       </View>
     </SafeAreaView>

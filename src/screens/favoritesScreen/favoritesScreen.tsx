@@ -28,6 +28,7 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
           onLoadMore={loadMoreArticles}
           onFavoritePress={handleFavoritePress}
           emptyMessage="You haven't favorited any articles yet"
+          contextKey="favorites"
         />
       </View>
     </SafeAreaView>

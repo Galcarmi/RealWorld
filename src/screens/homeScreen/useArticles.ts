@@ -1,101 +1,42 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { FeedType } from '../../constants/feedTypes';
-import { ArticleService } from '../../services';
-import { Article } from '../../services/types';
-import { authStore } from '../../store/authStore';
-import { userStore } from '../../store/userStore';
+import { articlesStore } from '../../store';
 
 const useArticles = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [articlesCount, setArticlesCount] = useState(0);
-  const [currentOffset, setCurrentOffset] = useState(0);
-  const [feedType, setFeedType] = useState<FeedType>(FeedType.GLOBAL);
-
-  const articleService = useMemo(
-    () => new ArticleService(authStore, userStore),
-    []
-  );
-
-  const loadArticles = useCallback(
-    async (offset = 0, reset = true) => {
-      try {
-        setIsLoading(true);
-
-        const response =
-          feedType === FeedType.GLOBAL
-            ? await articleService.getArticles({ limit: 10, offset })
-            : await articleService.getFeedArticles({ limit: 10, offset });
-
-        if (reset) {
-          setArticles(response.articles);
-          setCurrentOffset(offset);
-        } else {
-          setArticles(prev => [...prev, ...response.articles]);
-          setCurrentOffset(offset);
-        }
-
-        setArticlesCount(response.articlesCount);
-      } catch {
-        // TODO add error handling
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [articleService, feedType]
-  );
-
-  const loadMoreArticles = useCallback(() => {
-    if (!isLoading && articles.length < articlesCount) {
-      loadArticles(currentOffset + 10, false);
-    }
-  }, [isLoading, articles.length, articlesCount, currentOffset, loadArticles]);
-
-  const refreshArticles = useCallback(() => {
-    loadArticles(0, true);
-  }, [loadArticles]);
-
-  const switchFeedType = useCallback((feedType: FeedType) => {
-    setFeedType(feedType);
-    setCurrentOffset(0);
+  const handleLoadMoreArticles = useCallback(() => {
+    articlesStore.loadMoreHomeArticles();
   }, []);
 
-  useEffect(() => {
-    loadArticles(0, true);
-  }, [feedType, loadArticles]);
+  const handleRefreshArticles = useCallback(() => {
+    articlesStore.refreshHomeArticles();
+  }, []);
 
   const handleGlobalFeedPress = useCallback(() => {
-    switchFeedType(FeedType.GLOBAL);
-  }, [switchFeedType]);
+    articlesStore.switchToGlobalFeed();
+  }, []);
 
   const handleUserFeedPress = useCallback(() => {
-    switchFeedType(FeedType.FEED);
-  }, [switchFeedType]);
+    articlesStore.switchToUserFeed();
+  }, []);
 
   const handleFavoritePress = useCallback(
     async (slug: string, favorited: boolean) => {
-      const response = favorited
-        ? await articleService.unfavoriteArticle(slug)
-        : await articleService.favoriteArticle(slug);
-
-      setArticles(prev =>
-        prev.map(article =>
-          article.slug === slug ? response.article : article
-        )
-      );
+      await articlesStore.toggleArticleFavoriteStatus(slug, favorited);
     },
-    [articleService]
+    []
   );
 
+  useEffect(() => {
+    articlesStore.loadHomeArticlesInitially();
+  }, []);
+
   return {
-    articles,
-    isLoading,
-    articlesCount,
-    feedType,
-    loadMoreArticles,
-    refreshArticles,
-    switchFeedType,
+    articles: articlesStore.homeArticles,
+    isLoading: articlesStore.homeIsLoading,
+    articlesCount: articlesStore.homeArticlesCount,
+    feedType: articlesStore.feedType,
+    loadMoreArticles: handleLoadMoreArticles,
+    refreshArticles: handleRefreshArticles,
     handleGlobalFeedPress,
     handleUserFeedPress,
     handleFavoritePress,
