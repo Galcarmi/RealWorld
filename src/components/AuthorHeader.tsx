@@ -39,7 +39,7 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           </Text>
           {author.following && (
             <Ionicons
-              name="checkmark-circle"
+              name='checkmark-circle'
               size={16}
               color={themeColors.primaryColor}
               style={componentStyles.authorFollowingIcon}
