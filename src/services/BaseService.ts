@@ -9,6 +9,7 @@ import { Alert } from 'react-native';
 import { API_URI } from '../constants';
 import { IAuthStore, IUserStore } from '../store/types';
 
+import { navigationService } from './navigationService';
 import { ApiErrorResponse } from './types';
 
 export abstract class BaseService {
@@ -58,7 +59,9 @@ export abstract class BaseService {
       (response: AxiosResponse): AxiosResponse => response,
       (error: AxiosError): Promise<never> => {
         if (error.response && error.response.status === 401) {
-          this._authStore.logout();
+          this._userStore.forgetUser();
+          navigationService.navigateToAuthTabs();
+          navigationService.navigateToLoginScreen();
         }
         return Promise.reject(error);
       }

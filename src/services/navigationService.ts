@@ -24,6 +24,10 @@ class NavigationService implements NavigationServiceType {
   public navigateToAuthTabs() {
     this.setRoot('tabs', 'AuthTabs');
   }
+
+  public navigateToLoginScreen() {
+    this.setRoot('stack', 'SignInStack');
+  }
 }
 
 export const navigationService = new NavigationService();

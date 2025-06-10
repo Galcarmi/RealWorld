@@ -67,18 +67,18 @@ const useFavoriteArticles = () => {
 
   const handleFavoritePress = useCallback(
     async (slug: string, favorited: boolean) => {
-      try {
-        const response = favorited
-          ? await articleService.unfavoriteArticle(slug)
-          : await articleService.favoriteArticle(slug);
+      const response = favorited
+        ? await articleService.unfavoriteArticle(slug)
+        : await articleService.favoriteArticle(slug);
 
+      if (favorited) {
+        setArticles(prev => prev.filter(article => article.slug !== slug));
+      } else {
         setArticles(prev =>
           prev.map(article =>
             article.slug === slug ? response.article : article
           )
         );
-      } catch (error) {
-        console.error('Error toggling favorite:', error);
       }
     },
     [articleService]
