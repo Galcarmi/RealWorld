@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NavigationInstance } from '../navigation/types';
+import { navigationService } from '../services/navigationService';
 
 interface UseScreenHeaderProps {
   showBackButton?: boolean;
@@ -19,18 +20,21 @@ export const useScreenHeader = ({
   const handleBackPress = useCallback(() => {
     if (onBackPress) {
       onBackPress();
-    } else if (navigation?.canGoBack()) {
-      navigation.goBack();
+    } else {
+      try {
+        navigationService.goBack();
+        // eslint-disable-next-line no-empty
+      } catch {}
     }
-  }, [onBackPress, navigation]);
+  }, [onBackPress]);
 
-  const canGoBack = navigation?.canGoBack() ?? true;
-  const shouldShowBackButton = showBackButton && canGoBack;
+  const shouldShowBackButton =
+    showBackButton && (!!onBackPress || !!navigation);
 
   return {
     insets,
     handleBackPress,
     shouldShowBackButton,
-    canGoBack,
+    canGoBack: !!onBackPress || !!navigation,
   };
 };

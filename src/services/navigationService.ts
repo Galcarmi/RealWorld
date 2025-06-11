@@ -7,6 +7,7 @@ interface NavigationServiceType {
   navigateToNewArticle: () => void;
   navigateToEditProfile: () => void;
   navigateToAuthorProfile: (username: string) => void;
+  goBack: () => void;
 }
 
 class NavigationService implements NavigationServiceType {
@@ -53,6 +54,12 @@ class NavigationService implements NavigationServiceType {
   public navigateToAuthorProfile(username: string) {
     if (this._navioInstance) {
       this._navioInstance.push('AuthorProfile', { username });
+    }
+  }
+
+  public goBack() {
+    if (this._navioInstance) {
+      this._navioInstance.goBack();
     }
   }
 }

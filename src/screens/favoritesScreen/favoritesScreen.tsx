@@ -22,7 +22,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
 
   return (
     <View style={componentStyles.homeScreenSafeArea}>
-      <ScreenHeader showBackButton={true} />
+      <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>
         <ArticlesList

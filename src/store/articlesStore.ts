@@ -92,7 +92,6 @@ class ArticlesStore {
       const response = await this.articleService.createArticle(articleData);
 
       runInAction(() => {
-        // Add the new article to the beginning of home articles if it exists
         if (this.homeArticles.length > 0) {
           this.homeArticles.unshift(response.article);
           this.homeArticlesCount += 1;
