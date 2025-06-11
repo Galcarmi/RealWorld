@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Keyboard } from 'react-native';
 
 import { RootStackParamList } from '../../navigation/types';
@@ -41,7 +41,7 @@ const useEditProfile = () => {
     }
   );
 
-  const authService = new AuthService(authStore, userStore);
+  const authService = useMemo(() => new AuthService(authStore, userStore), []);
 
   useEffect(() => {
     const currentUser = userStore.user;
