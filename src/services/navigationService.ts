@@ -34,6 +34,10 @@ class NavigationService implements NavigationServiceType {
     this.setRoot('stacks', 'SignInStack');
   }
 
+  public navigateToSignUpScreen() {
+    this.setRoot('stacks', 'SignUpStack');
+  }
+
   public navigateToNewArticle() {
     if (this._navioInstance) {
       this._navioInstance.push('NewArticle');

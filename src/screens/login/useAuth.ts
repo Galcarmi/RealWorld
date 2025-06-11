@@ -7,6 +7,7 @@ import { authStore } from '../../store/authStore';
 import { showErrorModals } from '../../utils';
 
 import { useStore } from './useStore';
+import { navigationService } from '../../services';
 
 type NavigationProps = NavigationProp<RootStackParamList>;
 
@@ -37,11 +38,11 @@ const useAuth = () => {
   }, []);
 
   const onNavigateToLogin = useCallback(() => {
-    navigation.navigate('SignIn');
+    navigationService.navigateToLoginScreen();
   }, [navigation]);
 
   const onNavigateToSignUp = useCallback(() => {
-    navigation.navigate('Login');
+    navigationService.navigateToSignUpScreen();
   }, [navigation]);
 
   useEffect(() => {

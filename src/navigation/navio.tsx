@@ -14,7 +14,7 @@ import { themeColors } from '../theme/colors';
 
 const navio = Navio.build({
   screens: {
-    Login: SignUpScreen,
+    SignUp: SignUpScreen,
     SignIn: SignInScreen,
     Home: HomeScreen,
     Favorites: FavoritesScreen,
@@ -24,12 +24,12 @@ const navio = Navio.build({
     NewArticle: NewArticleScreen,
   },
   stacks: {
-    AuthStack: ['Login', 'SignIn'],
+    AuthStack: ['SignUp', 'SignIn'],
     HomeStack: ['Home', 'AuthorProfile'],
     FavoritesStack: ['Favorites', 'AuthorProfile'],
     ProfileStack: ['Profile', 'EditProfile', 'NewArticle', 'AuthorProfile'],
     SignInStack: ['SignIn'],
-    RegisterStack: ['Login'],
+    SignUpStack: ['SignUp'],
   },
   tabs: {
     MainTabs: {

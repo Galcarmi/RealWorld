@@ -17,7 +17,7 @@ export const LoginScreen: NavioScreen = observer(() => {
 
   return (
     <SafeAreaView style={componentStyles.homeScreenSafeArea}>
-      <View center style={styles.width100Percent} marginB-40>
+      <View center style={styles.width100Percent} marginB-40 marginT-40>
         <Text title primaryColor marginB-70>
           Sign In
         </Text>
@@ -42,6 +42,7 @@ export const LoginScreen: NavioScreen = observer(() => {
         style={{ ...styles.height25Percent, ...styles.width80Percent }}
         paddingT-30
         paddingB-30
+        marginL-40
       >
         <Button
           label={'Sign In'}
