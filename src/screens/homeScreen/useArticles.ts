@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { navigationService } from '../../services/navigationService';
 import { articlesStore } from '../../store';
 
 const useArticles = () => {
@@ -26,6 +27,13 @@ const useArticles = () => {
     []
   );
 
+  const handleArticlePress = useCallback((slug: string) => {
+    const article = articlesStore.homeArticles.find(a => a.slug === slug);
+    if (article) {
+      navigationService.navigateToAuthorProfile(article.author.username);
+    }
+  }, []);
+
   useEffect(() => {
     articlesStore.loadHomeArticlesInitially();
   }, []);
@@ -40,6 +48,7 @@ const useArticles = () => {
     handleGlobalFeedPress,
     handleUserFeedPress,
     handleFavoritePress,
+    handleArticlePress,
   };
 };
 

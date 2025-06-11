@@ -5,6 +5,7 @@ interface NavigationServiceType {
   navigateToMainTabs: () => void;
   navigateToAuthTabs: () => void;
   navigateToNewArticle: () => void;
+  navigateToAuthorProfile: (username: string) => void;
 }
 
 class NavigationService implements NavigationServiceType {
@@ -35,6 +36,12 @@ class NavigationService implements NavigationServiceType {
   public navigateToNewArticle() {
     if (this._navioInstance) {
       this._navioInstance.push('NewArticle');
+    }
+  }
+
+  public navigateToAuthorProfile(username: string) {
+    if (this._navioInstance) {
+      this._navioInstance.push('AuthorProfile', { username });
     }
   }
 }

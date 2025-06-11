@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { View } from 'react-native-ui-lib';
+import { NavioScreen } from 'rn-navio';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -9,13 +10,14 @@ import { themeColors } from '../../theme/colors';
 
 import { useFavoriteArticles } from './useFavoriteArticles';
 
-export const FavoritesScreen: React.FC<{}> = observer(() => {
+export const FavoritesScreen: NavioScreen = observer(() => {
   const {
     articles,
     isLoading,
-    refreshArticles,
     loadMoreArticles,
+    refreshArticles,
     handleFavoritePress,
+    handleArticlePress,
   } = useFavoriteArticles();
 
   return (
@@ -28,8 +30,9 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
           isLoading={isLoading}
           onRefresh={refreshArticles}
           onLoadMore={loadMoreArticles}
+          onArticlePress={handleArticlePress}
           onFavoritePress={handleFavoritePress}
-          emptyMessage="You haven't favorited any articles yet"
+          emptyMessage='No favorite articles yet'
           contextKey='favorites'
         />
       </View>

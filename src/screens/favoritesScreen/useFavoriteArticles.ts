@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { navigationService } from '../../services/navigationService';
 import { articlesStore } from '../../store';
 import { userStore } from '../../store/userStore';
 
@@ -19,6 +20,13 @@ const useFavoriteArticles = () => {
     []
   );
 
+  const handleArticlePress = useCallback((slug: string) => {
+    const article = articlesStore.favoriteArticles.find(a => a.slug === slug);
+    if (article) {
+      navigationService.navigateToAuthorProfile(article.author.username);
+    }
+  }, []);
+
   useEffect(() => {
     if (userStore.user?.username) {
       articlesStore.loadFavoriteArticlesInitially();
@@ -32,6 +40,7 @@ const useFavoriteArticles = () => {
     loadMoreArticles: handleLoadMoreArticles,
     refreshArticles: handleRefreshArticles,
     handleFavoritePress,
+    handleArticlePress,
   };
 };
 

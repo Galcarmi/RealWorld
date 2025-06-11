@@ -35,6 +35,16 @@ export type Profile = {
   following: boolean;
 };
 
+export type ProfileResponse = {
+  profile: Profile;
+};
+
+export interface IProfileService {
+  getProfile(username: string): Promise<ProfileResponse>;
+  followUser(username: string): Promise<ProfileResponse>;
+  unfollowUser(username: string): Promise<ProfileResponse>;
+}
+
 export type Article = {
   slug: string;
   title: string;

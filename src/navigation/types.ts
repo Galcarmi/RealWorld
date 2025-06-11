@@ -1,4 +1,9 @@
 export type RootStackParamList = {
-  Login: void;
-  SignIn: void;
+  Login: undefined;
+  SignIn: undefined;
+  Home: undefined;
+  Favorites: undefined;
+  Profile: undefined;
+  AuthorProfile: { username: string };
+  NewArticle: undefined;
 };
