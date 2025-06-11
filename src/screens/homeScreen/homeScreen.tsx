@@ -35,7 +35,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
 
   return (
     <View style={componentStyles.homeScreenSafeArea}>
-      <ScreenHeader title='Home' showBackButton={true} />
+      <ScreenHeader showBackButton={true} />
 
       <View flex backgroundColor={themeColors.bgColor}>
         {renderFeedTabs()}

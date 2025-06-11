@@ -20,7 +20,7 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
 
   return (
     <View style={componentStyles.homeScreenSafeArea}>
-      <ScreenHeader title='Favorites' showBackButton={true} />
+      <ScreenHeader showBackButton={true} />
 
       <View flex backgroundColor={themeColors.bgColor}>
         <ArticlesList
