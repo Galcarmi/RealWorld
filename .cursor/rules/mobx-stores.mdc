@@ -1,0 +1,89 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# MobX Store Rules
+
+## Store Structure Pattern
+Follow this consistent pattern for all MobX stores:
+
+```typescript
+class ExampleStore implements IExampleStore {
+  // 1. Public observable properties first
+  public isLoading = false;
+  public errors?: ResponseErrors = undefined;
+  public data: DataType[] = [];
+
+  // 2. Private services/dependencies
+  private _apiService: ApiService;
+
+  // 3. Constructor with makeAutoObservable
+  constructor() {
+    makeAutoObservable(this);
+    this._apiService = new ApiService(this);
+  }
+
+  // 4. Public computed properties (getters)
+  public get hasData() {
+    return this.data.length > 0;
+  }
+
+  // 5. Public action methods
+  public setData(data: DataType[]) {
+    this.data = data;
+  }
+
+  public clear() {
+    this.data = [];
+    this.errors = undefined;
+  }
+
+  // 6. Private methods
+  private _handleApiCall() {
+    // implementation
+  }
+}
+
+// 7. Export singleton instance
+export const exampleStore = new ExampleStore();
+```
+
+## Rules
+
+### Class Structure
+- Implement interface for type safety: `implements IStoreInterface`
+- Use `makeAutoObservable()` in constructor
+- Export singleton instances, not classes
+
+### Property Organization
+1. **Public observables** - state that components observe
+2. **Private services** - prefixed with underscore `_`
+3. **Constructor** - with `makeAutoObservable()`
+4. **Computed properties** - getters for derived state
+5. **Public actions** - methods called by components
+6. **Private methods** - prefixed with underscore `_`
+
+### Naming Conventions
+- Store files: camelCase (`authStore.ts`, `userStore.ts`)
+- Store classes: PascalCase (`AuthStore`, `UserStore`)
+- Store instances: camelCase (`authStore`, `userStore`)
+- Private members: prefix with underscore (`_apiService`, `_handleError`)
+- Actions: descriptive verbs (`setUser`, `clearErrors`, `login`)
+
+### Error Handling
+- Always include `errors` property for API error states
+- Clear errors before new requests
+- Use consistent error structure: `ResponseErrors | undefined`
+
+### Loading States
+- Include `isLoading` for async operations
+- Set to `true` at start of operation
+- Set to `false` in `.finally()` block
+
+### Best Practices
+- Keep stores focused on single responsibilities
+- Use composition with services for API calls
+- Implement clear() methods for cleanup
+- Use consistent async patterns with try/catch/finally
+- Group related state in the same store

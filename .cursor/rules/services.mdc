@@ -1,0 +1,159 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Service Layer Rules
+
+## Service Architecture Pattern
+Follow this inheritance pattern for all API services:
+
+```typescript
+export class FeatureService extends BaseService {
+  constructor(authStore: IAuthStore, userStore: IUserStore) {
+    super(authStore, userStore);
+  }
+
+  // Public API methods
+  public async getData(): Promise<DataType[]> {
+    try {
+      const response = await this._api.get<ApiResponse<DataType[]>>('/endpoint');
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
+  public async postData(data: CreateDataRequest): Promise<DataType> {
+    try {
+      const response = await this._api.post<ApiResponse<DataType>>('/endpoint', data);
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+}
+```
+
+## Base Service Pattern
+The BaseService provides common functionality:
+
+### Features Provided by BaseService:
+- Axios instance with base configuration
+- Automatic token injection via interceptors
+- Error handling and logging
+- Response body extraction
+- 401 redirect handling
+
+### Rules for BaseService Usage:
+- Always extend `BaseService` for API services
+- Use `this._api` for HTTP requests
+- Use `this._responseBody()` to extract response data
+- Use `this._logError()` for consistent error handling
+
+## Service Structure
+
+### File Organization
+```
+services/
+├── BaseService.ts           # Abstract base class
+├── navigationService.ts     # Singleton utilities
+├── index.ts                # Export aggregation
+├── types.ts                # Service-related types
+└── feature/                # Feature-specific services
+    └── FeatureService.ts
+```
+
+### Class Structure
+1. **Constructor** - receive and pass dependencies to base
+2. **Public methods** - API endpoints and business logic
+3. **Private methods** - internal helper methods (prefixed with `_`)
+
+## Naming Conventions
+
+### Service Classes
+- Use PascalCase: `AuthService`, `ArticlesService`
+- Suffix with "Service": `UserService`, `NavigationService`
+
+### Methods
+- Use descriptive verbs: `login()`, `getArticles()`, `createArticle()`
+- Async methods return Promises: `Promise<ReturnType>`
+
+### Files
+- Class-based services: PascalCase (`AuthService.ts`)
+- Utility services: camelCase (`navigationService.ts`)
+
+## Error Handling Pattern
+
+### Consistent Try-Catch Structure
+```typescript
+public async apiMethod(): Promise<ReturnType> {
+  try {
+    const response = await this._api.method<ApiResponse<ReturnType>>('/endpoint');
+    return this._responseBody(response);
+  } catch (error) {
+    return this._logError(error as ApiErrorResponse);
+  }
+}
+```
+
+### Error Types
+- Use `ApiErrorResponse` for API errors
+- Let BaseService handle error logging and alerts
+- Services should not catch errors unless transforming them
+
+## Service Integration with Stores
+
+### Dependency Injection
+```typescript
+class FeatureStore {
+  private _featureService: FeatureService;
+
+  constructor() {
+    makeAutoObservable(this);
+    this._featureService = new FeatureService(this, userStore);
+  }
+}
+```
+
+### Async Action Pattern
+```typescript
+// In store
+public async performAction() {
+  this.isLoading = true;
+  this.errors = undefined;
+
+  try {
+    const result = await this._featureService.getData();
+    this.setData(result);
+  } catch (error) {
+    // Error already handled by service
+    // Store just needs to update loading state
+  } finally {
+    this.isLoading = false;
+  }
+}
+```
+
+## Best Practices
+
+### Service Responsibilities
+- Handle HTTP communication
+- Transform API data to/from internal types
+- Provide error handling and logging
+- NOT responsible for UI state management
+
+### Type Safety
+- Always type API responses: `Promise<ReturnType>`
+- Use generic types for flexible API responses
+- Define request/response interfaces
+
+### Performance
+- Don't create service instances in components
+- Use dependency injection through stores
+- Cache service instances appropriately
+
+### Testing
+- Services should be easily mockable
+- Separate HTTP logic from business logic when possible
+- Use dependency injection for better testability

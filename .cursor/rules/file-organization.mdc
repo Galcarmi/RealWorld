@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# File and Folder Organization Rules
+
+## Project Structure
+```
+src/
+├── components/          # Reusable UI components
+├── screens/            # Screen components with co-located hooks
+├── store/              # MobX stores and types
+├── services/           # API services and external integrations
+├── navigation/         # Navigation configuration
+├── utils/              # Utility functions
+├── theme/              # Theme, colors, and design tokens
+├── styles/             # Global and component styles
+└── constants/          # App constants
+```
+
+## File Naming Conventions
+
+### Components
+- Use PascalCase: `ArticleCard.tsx`, `InputField.tsx`
+- One component per file
+- File name should match the component name exactly
+
+### Screens
+- Use camelCase: `loginScreen.tsx`, `homeScreen.tsx`
+- Co-locate related files in folders: `screens/login/`
+- Include associated hooks in the same folder
+
+### Hooks
+- Use camelCase starting with "use": `useAuth.ts`, `useStore.ts`
+- Co-locate with screens when screen-specific
+- Place in `utils/` or dedicated folder when reusable
+
+### Services
+- Use PascalCase: `AuthService.ts`, `BaseService.ts`
+- Abstract base classes for common functionality
+- Organize by feature in subfolders when needed
+
+### Stores
+- Use camelCase: `authStore.ts`, `userStore.ts`
+- One store per file
+- Export singleton instances
+
+### Utils
+- Use camelCase: `stringUtils.ts`, `dateUtils.ts`
+- Group related utilities in same file
+- Export all utils through `utils/index.ts`
+
+## Co-location Rules
+
+### Screen Structure
+```
+screens/
+└── login/
+    ├── loginScreen.tsx      # Main screen component
+    ├── signUpScreen.tsx     # Related screen
+    ├── useAuth.ts           # Screen-specific hook
+    └── useStore.ts          # Screen-specific store hook
+```
+
+### Service Structure
+```
+services/
+├── BaseService.ts           # Abstract base
+├── navigationService.ts     # Singleton service
+├── auth/                    # Feature-specific services
+│   └── AuthService.ts
+└── articles/
+    └── ArticlesService.ts
+```
+
+## Rules
+- Keep related files close together
+- Use index files to aggregate exports from folders
+- Follow consistent naming patterns
+- One main export per file
+- Group by feature, not by file type when it makes sense

@@ -3,4 +3,94 @@ description:
 globs: 
 alwaysApply: true
 ---
+# Code Conventions
+
+## Core Principle
 Never use comments to describe the code you write, always use meaningful variable and function namings.
+
+## Naming Conventions
+
+### Variables and Functions
+- Use descriptive, self-documenting names
+- Prefer `isAuthenticated` over `authStatus` or `auth`
+- Use action-oriented names for functions: `onEmailChange`, `onNavigateToSignUp`
+
+### Constants and Configuration
+- Use UPPER_SNAKE_CASE for constants: `API_URI`
+- Use descriptive names for configuration objects: `themeColors`, `componentStyles`
+
+### Boolean Variables
+- Use prefixes: `is`, `has`, `can`, `should`
+- Examples: `isLoading`, `hasData`, `canEdit`, `shouldDisplay`
+
+## Code Organization
+
+### Function Organization
+- Group related functions together
+- Place most important/public functions first
+- Use consistent parameter ordering
+
+### Async/Await Pattern
+- Always use `async/await` instead of `.then()` chains
+- Handle errors with try/catch blocks consistently
+- Use proper error typing: `error as ApiErrorResponse`
+
+### Object Destructuring
+- Use destructuring for cleaner code
+- Destructure props and state at the top of functions
+
+```typescript
+// ✅ Good
+const { user, isLoading, errors } = useStore();
+const { email, password } = authValues;
+
+// ❌ Avoid
+const user = store.user;
+const isLoading = store.isLoading;
+```
+
+## Performance Patterns
+
+### Callback Optimization
+- Wrap event handlers in `useCallback`
+- Include proper dependencies in dependency arrays
+- Extract complex logic into separate functions
+
+### Memory Management
+- Clean up effects with cleanup functions
+- Clear store state when appropriate
+- Remove event listeners in cleanup effects
+
+## Consistency Rules
+
+### Import Patterns
+- Always use single quotes for strings and imports
+- Use consistent import grouping and alphabetical ordering
+- Import utilities from index files when available
+
+### Export Patterns
+- Use explicit named exports
+- Export single default when appropriate (for hooks)
+- Avoid mixing default and named exports in same file
+
+### Error Handling
+- Use consistent error structures across the app
+- Handle errors at appropriate levels (service vs. component)
+- Provide user-friendly error messages
+
+## Code Quality
+
+### Readability
+- Write code that reads like natural language
+- Use early returns to reduce nesting
+- Keep functions focused on single responsibilities
+
+### Maintainability
+- Favor composition over inheritance
+- Use dependency injection for better testability
+- Keep related code co-located
+
+### Type Safety
+- Always provide explicit types for public APIs
+- Use proper TypeScript constraints and generics
+- Avoid type assertions unless absolutely necessary

@@ -3,7 +3,133 @@ description:
 globs: 
 alwaysApply: true
 ---
+# React Native & Expo Development Rules
+
 You are an expert in TypeScript, React Native, Expo, and Mobile UI development.
+
+## Screen Components
+
+### Screen Type Definition
+- Use `NavioScreen` type for screen components
+- Wrap with `observer` for MobX integration
+- Use `SafeAreaView` from `react-native-safe-area-context`
+
+```typescript
+import { NavioScreen } from 'rn-navio';
+import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+export const ScreenName: NavioScreen = observer(() => {
+  return (
+    <SafeAreaView style={componentStyles.screenSafeArea}>
+      {/* Screen content */}
+    </SafeAreaView>
+  );
+});
+```
+
+## Navigation Integration
+
+### Navigation Setup
+- Use RN Navio for navigation management
+- Set navigation root based on authentication state
+- Use typed navigation props for type safety
+
+```typescript
+// App.tsx pattern
+const isAuthenticated = userStore.isAuthenticated();
+
+useEffect(() => {
+  if (isThemeReady) {
+    if (isAuthenticated) {
+      navio.setRoot('tabs', 'MainTabs');
+    } else {
+      navio.setRoot('tabs', 'AuthTabs');
+    }
+  }
+}, [isThemeReady, isAuthenticated]);
+```
+
+## UI Components
+
+### React Native UI Lib Integration
+- Use `react-native-ui-lib` components consistently
+- Apply theme colors through UI Lib color system
+- Use UI Lib layout props for spacing and positioning
+
+```typescript
+import { View, Text, Button } from 'react-native-ui-lib';
+
+// UI Lib layout props
+<View paddingH-16 paddingV-8 marginB-20 center>
+  <Button backgroundColor={themeColors.primaryColor} />
+</View>
+```
+
+### Icon Usage
+- Use `@expo/vector-icons` for icons
+- Import specific icon sets: `import { Ionicons } from '@expo/vector-icons'`
+- Use theme colors for icon colors
+
+## Performance Patterns
+
+### Keyboard Handling
+- Always dismiss keyboard before async operations
+- Import from React Native: `import { Keyboard } from 'react-native'`
+
+```typescript
+const onSubmit = useCallback(async () => {
+  Keyboard.dismiss();
+  await performAsyncAction();
+}, []);
+```
+
+### Touch Interactions
+- Use `TouchableOpacity` with `activeOpacity={0.7}` for consistent feedback
+- Wrap interactive elements properly for touch targets
+
+## App Lifecycle
+
+### Splash Screen
+- Use `expo-splash-screen` for app initialization
+- Prevent auto-hide and control splash screen manually
+
+```typescript
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
+```
+
+### Status Bar
+- Use `expo-status-bar` component
+- Set style to 'auto' for automatic dark/light mode
+
+```typescript
+import { StatusBar } from 'expo-status-bar';
+
+<StatusBar style='auto' />
+```
+
+## Best Practices
+
+### Component Structure
+- Keep components focused on UI presentation only
+- Use custom hooks for all business logic
+- Observer pattern for MobX state consumption
+
+### Error Handling
+- Use utility functions for consistent error display
+- Handle errors at the hook level, not in components
+
+### Type Safety
+- Type navigation props properly
+- Use proper TypeScript interfaces for all props
+- Leverage React Native and Expo TypeScript definitions
+
+### Development Workflow
+- Use Expo development tools for debugging
+- Leverage hot reloading for rapid iteration
+- Follow Expo best practices for app configuration
 
 Code Style and Structure
 

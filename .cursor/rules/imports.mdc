@@ -1,0 +1,54 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Import Organization Rules
+
+## Import Order (follows ESLint config)
+Always organize imports in this specific order with blank lines between groups:
+
+1. **External libraries** (React, React Native, third-party packages)
+2. **Internal services/stores** (from `../services`, `../store`)
+3. **Internal utilities/constants** (from `../utils`, `../constants`, `../theme`)
+4. **Relative imports** (components, hooks, types)
+
+## Examples
+
+### ✅ Good Import Structure
+```typescript
+// External libraries
+import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button, Text, View } from 'react-native-ui-lib';
+import { NavioScreen } from 'rn-navio';
+
+// Internal services/stores
+import { authStore } from '../../store/authStore';
+import { navigationService } from '../../services/navigationService';
+
+// Internal utilities/constants/theme
+import { componentStyles } from '../../styles/componentStyles';
+import { themeColors } from '../../theme/colors';
+import { emailValidation } from '../../utils';
+
+// Relative imports
+import { InputField } from '../../components/InputField';
+import useAuth from './useAuth';
+```
+
+### ❌ Bad Import Structure
+```typescript
+// Mixed order, no grouping
+import useAuth from './useAuth';
+import { themeColors } from '../../theme/colors';
+import { observer } from 'mobx-react';
+import { InputField } from '../../components/InputField';
+```
+
+## Rules
+- Always use single quotes for import paths
+- Group imports logically with blank lines between groups
+- Sort imports alphabetically within each group
+- Use explicit named imports, avoid wildcard imports (except for expo modules)
+- Import types separately when needed: `import type { TypeName }`
