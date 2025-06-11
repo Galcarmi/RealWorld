@@ -23,8 +23,11 @@ export const useScreenHeader = ({
     } else {
       try {
         navigationService.goBack();
-        // eslint-disable-next-line no-empty
-      } catch {}
+      } catch (error) {
+        // If navigation fails, do nothing - we're likely at the root screen
+        // eslint-disable-next-line no-console
+        console.warn('Navigation goBack failed:', error);
+      }
     }
   }, [onBackPress]);
 
