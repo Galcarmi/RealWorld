@@ -22,11 +22,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         barStyle='light-content'
         backgroundColor={themeColors.primaryColor}
       />
-      <View
-        backgroundColor={themeColors.secondaryColor}
-        paddingB-30
-        paddingT-20
-      >
+      <View paddingB-30 paddingT-20>
         <View row centerV right marginB-20>
           <TouchableOpacity onPress={onEditProfile} padding-8>
             <Ionicons

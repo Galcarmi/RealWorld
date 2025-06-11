@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text, View } from 'react-native-ui-lib';
 import { NavioScreen } from 'rn-navio';
 
@@ -15,7 +16,7 @@ export const LoginScreen: NavioScreen = observer(() => {
     useAuth();
 
   return (
-    <View flex center backgroundColor={themeColors.bgColor}>
+    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
       <View center style={styles.width100Percent} marginB-40>
         <Text title primaryColor marginB-70>
           Sign In
@@ -59,6 +60,6 @@ export const LoginScreen: NavioScreen = observer(() => {
           backgroundColor={themeColors.primaryColor}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 });

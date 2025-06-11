@@ -1,12 +1,14 @@
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
 import { ProfileHeader } from '../../components/ProfileHeader';
 import { navigationService } from '../../services';
+import { componentStyles } from '../../styles/componentStyles';
 import { themeColors } from '../../theme/colors';
 
 import { useProfile } from './useProfile';
@@ -39,10 +41,16 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   };
 
   return (
-    <View flex backgroundColor={themeColors.bgColor}>
-      <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
+    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+      <View
+        style={componentStyles.profileScreenHeaderSection}
+        paddingH-20
+        backgroundColor={themeColors.secondaryColor}
+      >
+        <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
+      </View>
 
-      <View flex paddingH-20>
+      <View style={componentStyles.profileScreenArticlesSection} paddingH-20>
         <NewArticleButton onPress={onCreateNewArticle} />
 
         <ArticlesList
@@ -56,6 +64,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
           contextKey='profile'
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 });

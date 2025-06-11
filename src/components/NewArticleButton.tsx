@@ -13,7 +13,7 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
   onPress,
 }) => {
   return (
-    <View marginT-20 marginB-20>
+    <View marginT-20 marginB-20 center>
       <Button
         label='New Article'
         onPress={onPress}
