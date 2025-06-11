@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { TouchableOpacity, StatusBar } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { User } from '../store/types';
@@ -17,36 +17,30 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   onEditProfile,
 }) => {
   return (
-    <>
-      <StatusBar
-        barStyle='light-content'
-        backgroundColor={themeColors.primaryColor}
-      />
-      <View paddingB-30 paddingT-20>
-        <View row centerV right marginB-20>
-          <TouchableOpacity onPress={onEditProfile} padding-8>
-            <Ionicons
-              name='create-outline'
-              size={24}
-              color={themeColors.primaryColor}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View center>
-          <Avatar
-            source={{ uri: user.image || undefined }}
-            size={100}
-            backgroundColor={themeColors.secondaryColor}
-            label={getInitials(user.username, 2)}
-            labelColor={themeColors.bgColor}
-            marginB-12
+    <View paddingB-30 paddingT-20>
+      <View row centerV right marginB-20>
+        <TouchableOpacity onPress={onEditProfile} padding-8>
+          <Ionicons
+            name='create-outline'
+            size={24}
+            color={themeColors.primaryColor}
           />
-          <Text text30 color={themeColors.blackColor} center>
-            {user.username}
-          </Text>
-        </View>
+        </TouchableOpacity>
       </View>
-    </>
+
+      <View center>
+        <Avatar
+          source={{ uri: user.image || undefined }}
+          size={100}
+          backgroundColor={themeColors.secondaryColor}
+          label={getInitials(user.username, 2)}
+          labelColor={themeColors.bgColor}
+          marginB-12
+        />
+        <Text text30 color={themeColors.blackColor} center>
+          {user.username}
+        </Text>
+      </View>
+    </View>
   );
 };
