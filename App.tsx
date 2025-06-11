@@ -1,5 +1,4 @@
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { observer } from 'mobx-react';
 import { useEffect } from 'react';
 
@@ -27,12 +26,7 @@ const AppWrapper = observer(() => {
     return null;
   }
 
-  return (
-    <>
-      <navio.App />
-      <StatusBar style='auto' />
-    </>
-  );
+  return <navio.App />;
 });
 
 export default AppWrapper;

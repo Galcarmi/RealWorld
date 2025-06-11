@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { View } from 'react-native-ui-lib';
 import { NavioScreen } from 'rn-navio';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
-import { NewArticleHeader } from '../../components/NewArticleHeader';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { componentStyles } from '../../styles/componentStyles';
 
 import { useNewArticle } from './useNewArticle';
@@ -27,8 +27,12 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
     } = useNewArticle();
 
     return (
-      <SafeAreaView style={componentStyles.homeScreenSafeArea}>
-        <NewArticleHeader onGoBack={onGoBack} />
+      <View style={componentStyles.homeScreenSafeArea}>
+        <ScreenHeader
+          title='New Article'
+          showBackButton={true}
+          onBackPress={onGoBack}
+        />
 
         <NewArticleForm
           title={title}
@@ -41,7 +45,7 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
           onBodyChange={onBodyChange}
           onPublishArticle={onPublishArticle}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 );

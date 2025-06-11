@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
 
 import { ArticlesList } from '../../components/ArticlesList';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { componentStyles } from '../../styles/componentStyles';
 import { themeColors } from '../../theme/colors';
 
@@ -19,7 +19,9 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
   } = useFavoriteArticles();
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+    <View style={componentStyles.homeScreenSafeArea}>
+      <ScreenHeader title='Favorites' showBackButton={true} />
+
       <View flex backgroundColor={themeColors.bgColor}>
         <ArticlesList
           articles={articles}
@@ -31,6 +33,6 @@ export const FavoritesScreen: React.FC<{}> = observer(() => {
           contextKey='favorites'
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 });

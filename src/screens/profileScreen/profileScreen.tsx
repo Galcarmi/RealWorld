@@ -1,12 +1,12 @@
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
 import { ProfileHeader } from '../../components/ProfileHeader';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { navigationService } from '../../services';
 import { componentStyles } from '../../styles/componentStyles';
 import { themeColors } from '../../theme/colors';
@@ -41,7 +41,9 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   };
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+    <View style={componentStyles.homeScreenSafeArea}>
+      <ScreenHeader title='Profile' showBackButton={true} />
+
       <View
         style={componentStyles.profileScreenHeaderSection}
         backgroundColor={themeColors.secondaryColor}
@@ -64,6 +66,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
           contextKey='profile'
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 });

@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
+import { ScreenHeader } from '../../components/ScreenHeader';
 import { FeedType } from '../../constants/feedTypes';
 import { userStore } from '../../store';
 import { componentStyles } from '../../styles/componentStyles';
@@ -34,7 +34,9 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     ) : null;
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+    <View style={componentStyles.homeScreenSafeArea}>
+      <ScreenHeader title='Home' showBackButton={true} />
+
       <View flex backgroundColor={themeColors.bgColor}>
         {renderFeedTabs()}
 
@@ -52,6 +54,6 @@ export const HomeScreen: React.FC<{}> = observer(() => {
           contextKey='home'
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 });

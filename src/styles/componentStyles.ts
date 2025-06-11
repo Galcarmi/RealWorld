@@ -53,14 +53,6 @@ export const componentStyles = StyleSheet.create({
     width: '50%',
   },
 
-  // NewArticleHeader styles
-  newArticleHeaderTitle: {
-    fontWeight: '600',
-  },
-  newArticleHeaderSpacer: {
-    width: 70,
-  },
-
   // NewArticleForm styles
   newArticleFormScrollView: {
     flex: 1,
@@ -95,5 +87,26 @@ export const componentStyles = StyleSheet.create({
   },
   profileScreenArticlesSection: {
     flex: 0.65,
+  },
+
+  // ScreenHeader styles
+  screenHeader: {
+    minHeight: 56,
+  },
+  screenHeaderContainer: {
+    backgroundColor: themeColors.primaryColor,
+  },
+  screenHeaderTitle: {
+    fontWeight: '600',
+  },
+  screenHeaderLeftSpacer: {
+    width: 70,
+  },
+  screenHeaderRightContainer: {
+    width: 70,
+    alignItems: 'flex-end',
+  },
+  screenHeaderRightSpacer: {
+    width: 70,
   },
 });
