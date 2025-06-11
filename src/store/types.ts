@@ -20,6 +20,8 @@ export interface IAuthStore {
     username: string;
     password: string;
   };
+  readonly isLoginFormValid: boolean;
+  readonly isSignUpFormValid: boolean;
   clear(): void;
   setUsername(username: string): void;
   setEmail(email: string): void;

@@ -93,7 +93,7 @@ const navio = Navio.build({
           }),
         },
         RegisterTab: {
-          stack: 'RegisterStack',
+          stack: 'SignUpStack',
           options: () => ({
             title: 'Register',
             tabBarIcon: ({ color, size }) => (

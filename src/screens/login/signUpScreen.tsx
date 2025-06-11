@@ -18,6 +18,8 @@ export const Main: NavioScreen = observer(() => {
     onPasswordChange,
     onSignUp,
     onNavigateToLogin,
+    isLoading,
+    isSignUpFormValid,
   } = useAuth();
 
   return (
@@ -59,7 +61,12 @@ export const Main: NavioScreen = observer(() => {
           label={'Sign Up'}
           onPress={onSignUp}
           fullWidth
-          backgroundColor={themeColors.primaryColor}
+          backgroundColor={
+            isSignUpFormValid && !isLoading 
+              ? themeColors.primaryColor 
+              : themeColors.greyColor
+          }
+          disabled={!isSignUpFormValid || isLoading}
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or

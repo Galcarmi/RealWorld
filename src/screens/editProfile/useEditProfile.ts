@@ -40,19 +40,54 @@ const useEditProfile = () => {
       password: '',
     }
   );
+  const [initialValues, setInitialValues] = useState<ProfileFormValues>({
+    image: '',
+    username: '',
+    bio: '',
+    email: '',
+    password: '',
+  });
 
   const authService = useMemo(() => new AuthService(authStore, userStore), []);
+
+  const isFormValid = useMemo(() => {
+    const { username, email, password } = profileFormValues;
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    const isUsernameValid = trimmedUsername.length > 0;
+    const isEmailValid = trimmedEmail.length > 0;
+    
+    const isPasswordValid = trimmedPassword.length === 0;
+
+    return isUsernameValid && isEmailValid && isPasswordValid;
+  }, [profileFormValues]);
+
+  const hasChanges = useMemo(() => {
+    return (
+      profileFormValues.image !== initialValues.image ||
+      profileFormValues.username !== initialValues.username ||
+      profileFormValues.bio !== initialValues.bio ||
+      profileFormValues.email !== initialValues.email ||
+      profileFormValues.password.trim().length > 0
+    );
+  }, [profileFormValues, initialValues]);
+
+  const canUpdate = isFormValid && hasChanges && !isLoading;
 
   useEffect(() => {
     const currentUser = userStore.user;
     if (currentUser) {
-      setProfileFormValues({
+      const values = {
         image: currentUser.image || '',
         username: currentUser.username || '',
         bio: currentUser.bio || '',
         email: currentUser.email || '',
         password: '',
-      });
+      };
+      setProfileFormValues(values);
+      setInitialValues(values);
     }
   }, []);
 
@@ -118,6 +153,7 @@ const useEditProfile = () => {
   return {
     profileFormValues,
     isLoading,
+    canUpdate,
     onImageChange,
     onNameChange,
     onBioChange,

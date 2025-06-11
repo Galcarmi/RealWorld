@@ -101,6 +101,23 @@ class AuthStore implements IAuthStore {
         })
       );
   }
+
+  public get isLoginFormValid(): boolean {
+    return (
+      this.email.trim().length > 0 &&
+      this.password.trim().length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())
+    );
+  }
+
+  public get isSignUpFormValid(): boolean {
+    return (
+      this.username.trim().length >= 3 &&
+      this.email.trim().length > 0 &&
+      this.password.trim().length >= 6 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())
+    );
+  }
 }
 
 export const authStore = new AuthStore();

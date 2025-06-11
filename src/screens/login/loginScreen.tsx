@@ -12,7 +12,7 @@ import { emailValidation } from '../../utils';
 import useAuth from './useAuth';
 
 export const LoginScreen: NavioScreen = observer(() => {
-  const { onEmailChange, onPasswordChange, onNavigateToSignUp, onLogin } =
+  const { onEmailChange, onPasswordChange, onNavigateToSignUp, onLogin, isLoading, isLoginFormValid } =
     useAuth();
 
   return (
@@ -48,7 +48,12 @@ export const LoginScreen: NavioScreen = observer(() => {
           label={'Sign In'}
           onPress={onLogin}
           fullWidth
-          backgroundColor={themeColors.primaryColor}
+          backgroundColor={
+            isLoginFormValid && !isLoading 
+              ? themeColors.primaryColor 
+              : themeColors.greyColor
+          }
+          disabled={!isLoginFormValid || isLoading}
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or

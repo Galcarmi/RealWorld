@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { Keyboard } from 'react-native';
 
 import { navigationService } from '../../services/navigationService';
@@ -40,12 +40,10 @@ export const useNewArticle = () => {
 
       await articlesStore.createArticle(articleData);
 
-      // Reset form after successful creation
       setTitle('');
       setDescription('');
       setBody('');
 
-      // Navigate back to main tabs
       navigationService.navigateToMainTabs();
     } catch (error) {
       console.error('Failed to create article:', error);
@@ -58,10 +56,19 @@ export const useNewArticle = () => {
     navigationService.navigateToMainTabs();
   }, []);
 
-  const canPublish =
-    title.trim().length > 0 &&
-    description.trim().length > 0 &&
-    body.trim().length > 0;
+  const canPublish = useMemo(() => {
+    const trimmedTitle = title.trim();
+    const trimmedDescription = description.trim();
+    const trimmedBody = body.trim();
+
+    const isValid = (
+      trimmedTitle.length > 0 &&
+      trimmedDescription.length > 0 &&
+      trimmedBody.length > 0
+    );
+
+    return isValid;
+  }, [title, description, body]);
 
   return {
     title,
