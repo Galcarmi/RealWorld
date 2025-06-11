@@ -4,10 +4,10 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
-import { Alert } from 'react-native';
 
 import { API_URI } from '../constants';
 import { IAuthStore, IUserStore } from '../store/types';
+import { showErrorAlert } from '../utils';
 
 import { navigationService } from './navigationService';
 import { ApiErrorResponse } from './types';
@@ -34,9 +34,12 @@ export abstract class BaseService {
 
   protected _logError(errorResponse: ApiErrorResponse): never {
     if (errorResponse?.response?.data?.errors) {
-      Alert.alert(JSON.stringify(errorResponse.response.data.errors.message));
+      showErrorAlert(
+        'Error',
+        JSON.stringify(errorResponse.response.data.errors.message)
+      );
     } else {
-      Alert.alert('Something went wrong');
+      showErrorAlert();
     }
 
     throw errorResponse;

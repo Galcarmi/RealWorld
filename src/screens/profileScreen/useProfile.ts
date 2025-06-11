@@ -4,6 +4,7 @@ import { navigationService } from '../../services/navigationService';
 import { Article } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
 import { userStore } from '../../store/userStore';
+import { showErrorAlert } from '../../utils';
 
 export const useProfile = () => {
   const [userArticles, setUserArticles] = useState<Article[]>([]);
@@ -22,8 +23,8 @@ export const useProfile = () => {
         0
       );
       setUserArticles(response.articles);
-    } catch (error) {
-      console.error('Failed to fetch user articles:', error);
+    } catch {
+      showErrorAlert('Failed to fetch articles');
     } finally {
       setIsLoading(false);
     }
@@ -35,10 +36,6 @@ export const useProfile = () => {
 
   const onEditProfile = useCallback(() => {
     navigationService.navigateToEditProfile();
-  }, []);
-
-  const onArticlePress = useCallback((article: Article) => {
-    console.log('Navigate to article:', article.slug);
   }, []);
 
   const onToggleFavorite = useCallback(
@@ -59,7 +56,6 @@ export const useProfile = () => {
     isLoading,
     onCreateNewArticle,
     onEditProfile,
-    onArticlePress,
     onToggleFavorite,
     refreshUserArticles: fetchUserArticles,
   };

@@ -22,7 +22,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     isLoading,
     onCreateNewArticle,
     onEditProfile,
-    onArticlePress,
     onToggleFavorite,
     refreshUserArticles,
   } = useProfile();
@@ -32,13 +31,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
 
     return null;
   }
-
-  const handleArticlePress = (slug: string) => {
-    const article = userArticles.find(a => a.slug === slug);
-    if (article) {
-      onArticlePress(article);
-    }
-  };
 
   return (
     <View style={componentStyles.homeScreenSafeArea}>
@@ -60,7 +52,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
           isLoading={isLoading}
           onRefresh={refreshUserArticles}
           onLoadMore={noop}
-          onArticlePress={handleArticlePress}
+          onArticlePress={noop}
           onFavoritePress={onToggleFavorite}
           emptyMessage="No articles yet. Tap 'New Article' to create your first post"
           contextKey='profile'

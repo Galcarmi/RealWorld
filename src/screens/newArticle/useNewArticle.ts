@@ -4,6 +4,7 @@ import { Keyboard } from 'react-native';
 import { navigationService } from '../../services/navigationService';
 import { CreateArticleRequest } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
+import { showErrorAlert } from '../../utils';
 
 export const useNewArticle = () => {
   const [title, setTitle] = useState('');
@@ -45,8 +46,8 @@ export const useNewArticle = () => {
       setBody('');
 
       navigationService.navigateToMainTabs();
-    } catch (error) {
-      console.error('Failed to create article:', error);
+    } catch {
+      showErrorAlert('Failed to create article');
     } finally {
       setIsLoading(false);
     }

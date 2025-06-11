@@ -1,9 +1,10 @@
-import { Alert } from 'react-native';
-
 import { ResponseErrors } from '../services/types';
+
+import { showErrorAlert } from './alertUtils';
 
 export const showErrorModals = (errors: ResponseErrors) => {
   Object.entries(errors).forEach(([key, value]) => {
-    Alert.alert(`${key} ${value}`);
+    const message = Array.isArray(value) ? value.join(', ') : value;
+    showErrorAlert(key, message);
   });
 };

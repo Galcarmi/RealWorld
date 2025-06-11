@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { FeedType } from '../constants/feedTypes';
 import { ArticleService } from '../services';
 import { Article, CreateArticleRequest } from '../services/types';
+import { showErrorAlert } from '../utils';
 
 import { authStore } from './authStore';
 import { userStore } from './userStore';
@@ -80,9 +81,9 @@ class ArticlesStore {
         offset,
       });
       return response;
-    } catch (error) {
-      console.error('Failed to fetch user articles:', error);
-      throw error;
+    } catch {
+      showErrorAlert('Failed to fetch user articles');
+      throw new Error('Failed to fetch user articles');
     }
   }
 
@@ -99,9 +100,9 @@ class ArticlesStore {
       });
 
       return response.article;
-    } catch (error) {
-      console.error('Failed to create article:', error);
-      throw error;
+    } catch {
+      showErrorAlert('Failed to create article');
+      throw new Error('Failed to create article');
     }
   }
 
@@ -122,8 +123,8 @@ class ArticlesStore {
           currentlyFavorited
         );
       });
-    } catch (error) {
-      console.error('Failed to toggle favorite status:', error);
+    } catch {
+      showErrorAlert('Failed to update article');
     }
   }
 
@@ -149,8 +150,8 @@ class ArticlesStore {
         }
         this.homeArticlesCount = response.articlesCount;
       });
-    } catch (error) {
-      console.error('Failed to fetch home articles:', error);
+    } catch {
+      showErrorAlert('Failed to load articles');
     } finally {
       runInAction(() => {
         this.homeIsLoading = false;
@@ -185,8 +186,8 @@ class ArticlesStore {
         }
         this.favoritesArticlesCount = response.articlesCount;
       });
-    } catch (error) {
-      console.error('Failed to fetch favorite articles:', error);
+    } catch {
+      showErrorAlert('Failed to load favorite articles');
     } finally {
       runInAction(() => {
         this.favoritesIsLoading = false;
