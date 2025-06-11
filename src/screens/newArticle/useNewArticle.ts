@@ -61,11 +61,10 @@ export const useNewArticle = () => {
     const trimmedDescription = description.trim();
     const trimmedBody = body.trim();
 
-    const isValid = (
+    const isValid =
       trimmedTitle.length > 0 &&
       trimmedDescription.length > 0 &&
-      trimmedBody.length > 0
-    );
+      trimmedBody.length > 0;
 
     return isValid;
   }, [title, description, body]);

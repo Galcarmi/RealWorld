@@ -58,7 +58,7 @@ const useEditProfile = () => {
 
     const isUsernameValid = trimmedUsername.length > 0;
     const isEmailValid = trimmedEmail.length > 0;
-    
+
     const isPasswordValid = trimmedPassword.length === 0;
 
     return isUsernameValid && isEmailValid && isPasswordValid;

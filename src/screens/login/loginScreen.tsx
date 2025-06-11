@@ -12,8 +12,14 @@ import { emailValidation } from '../../utils';
 import useAuth from './useAuth';
 
 export const LoginScreen: NavioScreen = observer(() => {
-  const { onEmailChange, onPasswordChange, onNavigateToSignUp, onLogin, isLoading, isLoginFormValid } =
-    useAuth();
+  const {
+    onEmailChange,
+    onPasswordChange,
+    onNavigateToSignUp,
+    onLogin,
+    isLoading,
+    isLoginFormValid,
+  } = useAuth();
 
   return (
     <SafeAreaView style={componentStyles.homeScreenSafeArea}>
@@ -49,8 +55,8 @@ export const LoginScreen: NavioScreen = observer(() => {
           onPress={onLogin}
           fullWidth
           backgroundColor={
-            isLoginFormValid && !isLoading 
-              ? themeColors.primaryColor 
+            isLoginFormValid && !isLoading
+              ? themeColors.primaryColor
               : themeColors.greyColor
           }
           disabled={!isLoginFormValid || isLoading}

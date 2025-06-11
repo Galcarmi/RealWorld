@@ -15,7 +15,6 @@ import { useEditProfile } from './useEditProfile';
 export const EditProfileScreen: NavioScreen = observer(() => {
   const {
     profileFormValues,
-    isLoading,
     canUpdate,
     onImageChange,
     onNameChange,
@@ -81,9 +80,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               onPress={onUpdateProfile}
               fullWidth
               backgroundColor={
-                canUpdate 
-                  ? themeColors.primaryColor 
-                  : themeColors.greyColor
+                canUpdate ? themeColors.primaryColor : themeColors.greyColor
               }
               disabled={!canUpdate}
             />

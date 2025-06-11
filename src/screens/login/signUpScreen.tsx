@@ -62,8 +62,8 @@ export const Main: NavioScreen = observer(() => {
           onPress={onSignUp}
           fullWidth
           backgroundColor={
-            isSignUpFormValid && !isLoading 
-              ? themeColors.primaryColor 
+            isSignUpFormValid && !isLoading
+              ? themeColors.primaryColor
               : themeColors.greyColor
           }
           disabled={!isSignUpFormValid || isLoading}
