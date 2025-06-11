@@ -3,6 +3,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { View, Text } from 'react-native-ui-lib';
 
+import { NavigationInstance } from '../navigation/types';
 import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 
@@ -12,16 +13,19 @@ interface ScreenHeaderProps {
   title?: string;
   showBackButton?: boolean;
   onBackPress?: () => void;
+  navigation?: NavigationInstance;
 }
 
 export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   title,
   showBackButton = false,
   onBackPress,
+  navigation,
 }) => {
   const { insets, handleBackPress, shouldShowBackButton } = useScreenHeader({
     showBackButton,
     onBackPress,
+    navigation,
   });
 
   return (

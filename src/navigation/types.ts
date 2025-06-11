@@ -8,3 +8,8 @@ export type RootStackParamList = {
   AuthorProfile: { username: string };
   NewArticle: undefined;
 };
+
+export interface NavigationInstance {
+  canGoBack: () => boolean;
+  goBack: () => void;
+}
