@@ -4,6 +4,7 @@ interface NavigationServiceType {
   setRoot: (rootType: 'stacks' | 'tabs' | 'drawers', rootName: string) => void;
   navigateToMainTabs: () => void;
   navigateToAuthTabs: () => void;
+  navigateToNewArticle: () => void;
 }
 
 class NavigationService implements NavigationServiceType {
@@ -29,6 +30,12 @@ class NavigationService implements NavigationServiceType {
 
   public navigateToLoginScreen() {
     this.setRoot('stacks', 'SignInStack');
+  }
+
+  public navigateToNewArticle() {
+    if (this._navioInstance) {
+      this._navioInstance.push('NewArticle');
+    }
   }
 }
 

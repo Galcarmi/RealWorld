@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { navigationService } from '../../services/navigationService';
 import { Article } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
 import { userStore } from '../../store/userStore';
@@ -29,7 +30,7 @@ export const useProfile = () => {
   }, [currentUser?.username]);
 
   const onCreateNewArticle = useCallback(() => {
-    console.log('Navigate to create article');
+    navigationService.navigateToNewArticle();
   }, []);
 
   const onEditProfile = useCallback(() => {

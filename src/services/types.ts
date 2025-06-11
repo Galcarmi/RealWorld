@@ -57,6 +57,13 @@ export type SingleArticleResponse = {
   article: Article;
 };
 
+export type CreateArticleRequest = {
+  title: string;
+  description: string;
+  body: string;
+  tagList?: string[];
+};
+
 export interface IArticleService {
   getArticles(params?: {
     tag?: string;
@@ -72,6 +79,7 @@ export interface IArticleService {
   getArticle(slug: string): Promise<SingleArticleResponse>;
   favoriteArticle(slug: string): Promise<SingleArticleResponse>;
   unfavoriteArticle(slug: string): Promise<SingleArticleResponse>;
+  createArticle(article: CreateArticleRequest): Promise<SingleArticleResponse>;
 }
 
 export type ApiErrorResponse = AxiosError & {

@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { FeedType } from '../constants/feedTypes';
 import { ArticleService } from '../services';
-import { Article } from '../services/types';
+import { Article, CreateArticleRequest } from '../services/types';
 
 import { authStore } from './authStore';
 import { userStore } from './userStore';
@@ -82,6 +82,25 @@ class ArticlesStore {
       return response;
     } catch (error) {
       console.error('Failed to fetch user articles:', error);
+      throw error;
+    }
+  }
+
+  public async createArticle(articleData: CreateArticleRequest) {
+    try {
+      const response = await this.articleService.createArticle(articleData);
+
+      runInAction(() => {
+        // Add the new article to the beginning of home articles if it exists
+        if (this.homeArticles.length > 0) {
+          this.homeArticles.unshift(response.article);
+          this.homeArticlesCount += 1;
+        }
+      });
+
+      return response.article;
+    } catch (error) {
+      console.error('Failed to create article:', error);
       throw error;
     }
   }

@@ -53,6 +53,37 @@ export const componentStyles = StyleSheet.create({
     width: '50%',
   },
 
+  // NewArticleHeader styles
+  newArticleHeaderTitle: {
+    fontWeight: '600',
+  },
+  newArticleHeaderSpacer: {
+    width: 70,
+  },
+
+  // NewArticleForm styles
+  newArticleFormScrollView: {
+    flex: 1,
+  },
+  newArticleFormContentContainer: {
+    flexGrow: 1,
+    padding: 20,
+  },
+  newArticleFormTitleInput: {
+    marginBottom: 24,
+  },
+  newArticleFormDescriptionInput: {
+    marginBottom: 24,
+  },
+  newArticleFormBodyInput: {
+    marginBottom: 40,
+    flex: 1,
+  },
+  newArticleFormPublishButton: {
+    marginTop: 'auto',
+    marginBottom: 20,
+  },
+
   // ProfileHeader styles
   profileHeaderContainer: {
     backgroundColor: themeColors.primaryColor,

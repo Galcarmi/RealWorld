@@ -5,6 +5,7 @@ import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
 import { HomeScreen } from '../screens/homeScreen/homeScreen';
 import { LoginScreen as SignInScreen } from '../screens/login/loginScreen';
 import { Main as SignUpScreen } from '../screens/login/signUpScreen';
+import { NewArticleScreen } from '../screens/newArticle/newArticleScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigationService';
 import { themeColors } from '../theme/colors';
@@ -16,12 +17,13 @@ const navio = Navio.build({
     Home: HomeScreen,
     Favorites: FavoritesScreen,
     Profile: ProfileScreen,
+    NewArticle: NewArticleScreen,
   },
   stacks: {
     AuthStack: ['Login', 'SignIn'],
     HomeStack: ['Home'],
     FavoritesStack: ['Favorites'],
-    ProfileStack: ['Profile'],
+    ProfileStack: ['Profile', 'NewArticle'],
     SignInStack: ['SignIn'],
     RegisterStack: ['Login'],
   },

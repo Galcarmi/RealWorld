@@ -4,6 +4,7 @@ import {
   IArticleService,
   ArticlesResponse,
   SingleArticleResponse,
+  CreateArticleRequest,
 } from '../types';
 
 class ArticleService extends BaseService implements IArticleService {
@@ -49,6 +50,15 @@ class ArticleService extends BaseService implements IArticleService {
     return this._api
       .delete<SingleArticleResponse>(`/articles/${slug}/favorite`)
       .then(this._responseBody);
+  }
+
+  public createArticle(
+    article: CreateArticleRequest
+  ): Promise<SingleArticleResponse> {
+    return this._api
+      .post<SingleArticleResponse>('/articles', { article })
+      .then(this._responseBody)
+      .catch(this._logError);
   }
 }
 

@@ -7,6 +7,7 @@ import { lengthValidation } from '../utils';
 
 interface InputFieldProps {
   placeholder: string;
+  value?: string;
   maxLength?: number;
   minLength?: number;
   validationMessage: string[];
@@ -18,6 +19,7 @@ interface InputFieldProps {
 
 const InputField: React.FC<InputFieldProps> = ({
   placeholder,
+  value,
   maxLength = 30,
   minLength = 6,
   validationMessage,
@@ -31,6 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({
       containerStyle={containerStyle}
       floatingPlaceholderStyle={componentStyles.inputFieldFloatingPlaceholder}
       placeholder={placeholder}
+      value={value}
       floatingPlaceholder
       onChangeText={onChangeText}
       enableErrors
