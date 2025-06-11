@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Home: undefined;
   Favorites: undefined;
   Profile: undefined;
+  EditProfile: undefined;
   AuthorProfile: { username: string };
   NewArticle: undefined;
 };

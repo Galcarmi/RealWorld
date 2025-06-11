@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Navio } from 'rn-navio';
 
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';
+import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
 import { HomeScreen } from '../screens/homeScreen/homeScreen';
 import { LoginScreen as SignInScreen } from '../screens/login/loginScreen';
@@ -18,6 +19,7 @@ const navio = Navio.build({
     Home: HomeScreen,
     Favorites: FavoritesScreen,
     Profile: ProfileScreen,
+    EditProfile: EditProfileScreen,
     AuthorProfile: AuthorProfileScreen,
     NewArticle: NewArticleScreen,
   },
@@ -25,7 +27,7 @@ const navio = Navio.build({
     AuthStack: ['Login', 'SignIn'],
     HomeStack: ['Home', 'AuthorProfile'],
     FavoritesStack: ['Favorites', 'AuthorProfile'],
-    ProfileStack: ['Profile', 'NewArticle', 'AuthorProfile'],
+    ProfileStack: ['Profile', 'EditProfile', 'NewArticle', 'AuthorProfile'],
     SignInStack: ['SignIn'],
     RegisterStack: ['Login'],
   },

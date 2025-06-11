@@ -34,7 +34,7 @@ export const useProfile = () => {
   }, []);
 
   const onEditProfile = useCallback(() => {
-    console.log('Navigate to edit profile');
+    navigationService.navigateToEditProfile();
   }, []);
 
   const onArticlePress = useCallback((article: Article) => {
