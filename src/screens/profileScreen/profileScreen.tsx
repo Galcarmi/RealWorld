@@ -44,13 +44,13 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     <SafeAreaView style={componentStyles.homeScreenSafeArea}>
       <View
         style={componentStyles.profileScreenHeaderSection}
-        paddingH-20
         backgroundColor={themeColors.secondaryColor}
+        paddingH-20
       >
         <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
       </View>
 
-      <View style={componentStyles.profileScreenArticlesSection} paddingH-20>
+      <View style={componentStyles.profileScreenArticlesSection}>
         <NewArticleButton onPress={onCreateNewArticle} />
 
         <ArticlesList
