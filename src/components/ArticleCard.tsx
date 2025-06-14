@@ -28,6 +28,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       backgroundColor={themeColors.bgColor}
       enableShadow={true}
       elevation={3}
+      testID={`article-card-${article.slug}`}
     >
       <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <AuthorHeader

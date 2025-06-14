@@ -23,9 +23,9 @@ export const Main: NavioScreen = observer(() => {
   } = useAuth();
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+    <SafeAreaView style={componentStyles.homeScreenSafeArea} testID='register-screen'>
       <View center style={styles.width100Percent} marginB-40 marginT-40>
-        <Text title primaryColor marginB-70>
+        <Text title primaryColor marginB-70 testID='signup-screen-title'>
           Sign Up
         </Text>
         <InputField
@@ -33,6 +33,7 @@ export const Main: NavioScreen = observer(() => {
           validationMessage={['Username is required', 'Username is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onNameChange}
+          testID='signup-username-input'
         />
         <InputField
           placeholder={'Email'}
@@ -40,6 +41,7 @@ export const Main: NavioScreen = observer(() => {
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
+          testID='signup-email-input'
         />
         <InputField
           placeholder={'Password'}
@@ -47,6 +49,7 @@ export const Main: NavioScreen = observer(() => {
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
           secureTextEntry={true}
+          testID='signup-password-input'
         />
       </View>
       <View
@@ -67,6 +70,7 @@ export const Main: NavioScreen = observer(() => {
               : themeColors.greyColor
           }
           disabled={!isSignUpFormValid || isLoading}
+          testID='signup-submit-button'
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or
@@ -77,6 +81,7 @@ export const Main: NavioScreen = observer(() => {
           link
           labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
+          testID='signup-signin-button'
         />
       </View>
     </SafeAreaView>

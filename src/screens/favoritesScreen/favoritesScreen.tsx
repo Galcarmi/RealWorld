@@ -21,7 +21,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
   } = useFavoriteArticles();
 
   return (
-    <View style={componentStyles.homeScreenSafeArea}>
+    <View style={componentStyles.homeScreenSafeArea} testID='favorites-screen'>
       <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>
