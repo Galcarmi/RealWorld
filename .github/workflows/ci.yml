@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   code-quality:
@@ -68,6 +70,8 @@ jobs:
     name: Visual Tests
     runs-on: ubuntu-latest
     needs: code-quality
+    # Skip visual tests on draft PRs to save CI resources
+    if: github.event.pull_request.draft == false || github.event_name != 'pull_request'
     
     steps:
       - name: Checkout code
