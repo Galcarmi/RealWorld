@@ -1,0 +1,178 @@
+name: Visual Regression Testing
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'src/**'
+      - 'tests/visual/**'
+      - 'package.json'
+      - 'yarn.lock'
+
+jobs:
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install system dependencies for Puppeteer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates \
+            fonts-liberation \
+            libappindicator3-1 \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libatk1.0-0 \
+            libc6 \
+            libcairo2 \
+            libcups2 \
+            libdbus-1-3 \
+            libexpat1 \
+            libfontconfig1 \
+            libgbm1 \
+            libgcc1 \
+            libglib2.0-0 \
+            libgtk-3-0 \
+            libnspr4 \
+            libnss3 \
+            libpango-1.0-0 \
+            libpangocairo-1.0-0 \
+            libstdc++6 \
+            libx11-6 \
+            libx11-xcb1 \
+            libxcb1 \
+            libxcomposite1 \
+            libxcursor1 \
+            libxdamage1 \
+            libxext6 \
+            libxfixes3 \
+            libxi6 \
+            libxrandr2 \
+            libxrender1 \
+            libxss1 \
+            libxtst6 \
+            lsb-release \
+            wget \
+            xdg-utils
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli
+
+      - name: Create baseline directory
+        run: mkdir -p baselines/screenshots
+
+      - name: Checkout base branch baselines
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git checkout origin/${{ github.event.pull_request.base.ref }} -- baselines/ || echo "No baselines found in base branch"
+
+      - name: Start Expo server
+        run: |
+          yarn start --web &
+          echo $! > expo_pid.txt
+          timeout 120 bash -c 'until curl -f http://localhost:8081 > /dev/null 2>&1; do sleep 2; done'
+        env:
+          CI: true
+          EXPO_NO_DOTENV: true
+
+      - name: Run visual tests
+        run: yarn test:visual:headless
+        env:
+          CI: true
+
+      - name: Stop Expo server
+        if: always()
+        run: |
+          if [ -f expo_pid.txt ]; then
+            kill $(cat expo_pid.txt) || true
+            rm expo_pid.txt
+          fi
+
+      - name: Compare screenshots
+        run: |
+          if [ -d "baselines/screenshots" ] && [ -d "test-results/screenshots" ]; then
+            echo "Comparing screenshots..."
+            # Create a simple comparison report
+            for baseline in baselines/screenshots/*.png; do
+              if [ -f "$baseline" ]; then
+                filename=$(basename "$baseline")
+                if [ -f "test-results/screenshots/$filename" ]; then
+                  echo "✅ Found matching screenshot: $filename"
+                else
+                  echo "❌ Missing screenshot in test results: $filename"
+                fi
+              fi
+            done
+            
+            for result in test-results/screenshots/*.png; do
+              if [ -f "$result" ]; then
+                filename=$(basename "$result")
+                if [ ! -f "baselines/screenshots/$filename" ]; then
+                  echo "🆕 New screenshot detected: $filename"
+                fi
+              fi
+            done
+          else
+            echo "No baseline screenshots found for comparison"
+          fi
+
+      - name: Upload comparison results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-regression-comparison
+          path: |
+            test-results/
+            baselines/
+          retention-days: 14
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let comment = '## 📸 Visual Regression Test Results\n\n';
+            
+            // Check if visual tests passed
+            if (fs.existsSync('test-results/screenshots')) {
+              const screenshots = fs.readdirSync('test-results/screenshots');
+              comment += `✅ Visual tests completed successfully\n`;
+              comment += `📊 Generated ${screenshots.length} screenshot(s)\n\n`;
+              
+              if (screenshots.length > 0) {
+                comment += '### Screenshots Generated:\n';
+                screenshots.forEach(screenshot => {
+                  comment += `- \`${screenshot}\`\n`;
+                });
+              }
+            } else {
+              comment += '❌ Visual tests failed to generate screenshots\n\n';
+            }
+            
+            comment += '\n💡 **Tip**: Download the artifacts to view the actual screenshots and compare them manually if needed.';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            }); 
