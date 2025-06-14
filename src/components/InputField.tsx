@@ -15,6 +15,7 @@ interface InputFieldProps {
   validation?: (value?: string) => boolean;
   containerStyle?: StyleProp<ViewStyle>;
   secureTextEntry?: boolean;
+  testID?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -27,6 +28,7 @@ const InputField: React.FC<InputFieldProps> = ({
   validation,
   containerStyle,
   secureTextEntry = false,
+  testID,
 }) => {
   return (
     <TextField
@@ -45,6 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
       validationMessage={validationMessage}
       maxLength={maxLength}
       preset='underline'
+      testID={testID}
     />
   );
 };

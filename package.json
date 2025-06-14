@@ -10,6 +10,8 @@
     "test": "jest --watchAll=false",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --watchAll=false",
+    "test:visual": "jest tests/visual --testTimeout=60000",
+    "test:visual:headless": "HEADLESS=true jest tests/visual --testTimeout=60000",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
@@ -19,6 +21,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
     "@react-navigation/bottom-tabs": "~6.4.0",
     "@react-navigation/drawer": "~6.5.8",
     "@react-navigation/native": "~6.0.13",
@@ -33,12 +36,14 @@
     "mobx": "~6.13.7",
     "mobx-react": "~9.2.0",
     "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-native": "0.79.2",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "~5.4.1",
     "react-native-screens": "~4.11.1",
     "react-native-ui-lib": "~7.43.0",
+    "react-native-web": "^0.20.0",
     "rn-navio": "~0.1.0",
     "validator": "~13.15.15"
   },
@@ -50,6 +55,7 @@
     "@testing-library/react-native": "~13.2.0",
     "@types/jest": "~29.5.14",
     "@types/lodash": "~4.17.17",
+    "@types/puppeteer": "~7.0.4",
     "@types/react": "~19.0.10",
     "@types/validator": "~13.15.1",
     "@typescript-eslint/eslint-plugin": "~8.33.1",
@@ -66,6 +72,7 @@
     "jest": "~30.0.0",
     "metro-react-native-babel-preset": "~0.77.0",
     "prettier": "~3.5.3",
+    "puppeteer": "~24.10.1",
     "react-test-renderer": "19.0.0",
     "typescript": "~5.8.3"
   },

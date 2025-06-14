@@ -33,7 +33,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   }
 
   return (
-    <View style={componentStyles.homeScreenSafeArea}>
+    <View style={componentStyles.homeScreenSafeArea} testID="profile-screen">
       <ScreenHeader title='Profile' />
 
       <View
