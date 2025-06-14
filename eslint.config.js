@@ -30,6 +30,8 @@ module.exports = [
   {
     files: [
       '*.config.js',
+      'jest.config.js',
+      'jest.config.*.js',
       '.prettierrc.js',
       'babel.config.js',
       'metro.config.js',
@@ -61,6 +63,8 @@ module.exports = [
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: [
       '*.config.js',
+      'jest.config.js',
+      'jest.config.*.js',
       '.prettierrc.js',
       'babel.config.js',
       'metro.config.js',
@@ -185,6 +189,8 @@ module.exports = [
     files: ['**/*.{ts,tsx}'],
     ignores: [
       '*.config.js',
+      'jest.config.js',
+      'jest.config.*.js',
       '.prettierrc.js',
       'babel.config.js',
       'metro.config.js',
@@ -199,6 +205,8 @@ module.exports = [
     files: ['**/*.{js,jsx}'],
     ignores: [
       '*.config.js',
+      'jest.config.js',
+      'jest.config.*.js',
       '.prettierrc.js',
       'babel.config.js',
       'metro.config.js',
