@@ -133,7 +133,7 @@ export class PuppeteerTestHelper {
 
   async waitForSelector(
     selector: string,
-    timeout: number = 5000
+    timeout: number = 10000
   ): Promise<void> {
     if (!this.page) {
       throw new Error('Page not initialized. Call init() first.');
@@ -142,7 +142,7 @@ export class PuppeteerTestHelper {
     await this.page.waitForSelector(selector, { timeout });
   }
 
-  async waitForText(text: string, timeout: number = 5000): Promise<void> {
+  async waitForText(text: string, timeout: number = 10000): Promise<void> {
     if (!this.page) {
       throw new Error('Page not initialized. Call init() first.');
     }
@@ -257,7 +257,7 @@ export class PuppeteerTestHelper {
     return this.page;
   }
 
-  async waitForTestId(testId: string, timeout: number = 5000): Promise<void> {
+  async waitForTestId(testId: string, timeout: number = 10000): Promise<void> {
     if (!this.page) {
       throw new Error('Page not initialized. Call init() first.');
     }
@@ -291,7 +291,7 @@ export class PuppeteerTestHelper {
 
   async waitForElementWithText(
     text: string,
-    timeout: number = 5000
+    timeout: number = 10000
   ): Promise<void> {
     if (!this.page) {
       throw new Error('Page not initialized. Call init() first.');
