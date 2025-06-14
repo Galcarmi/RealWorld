@@ -1,8 +1,10 @@
 import {
-  PuppeteerTestHelper,
   MockApiResponse,
+  PuppeteerTestHelper,
   VisualTestConfig,
 } from '../config/puppeteerConfig';
+
+import { ensureTestDirectories } from './testSetup';
 
 interface VisualTestSuiteConfig {
   mockApis?: MockApiResponse[];
@@ -109,6 +111,7 @@ export function createVisualTestSuite(
     const suite = new VisualTestSuite(config);
 
     beforeAll(async () => {
+      ensureTestDirectories();
       await suite.setupTest();
     });
 

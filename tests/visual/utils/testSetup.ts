@@ -1,28 +1,22 @@
-import { existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
-export async function ensureDirectoriesExist(): Promise<void> {
-  const directories = [
-    'test-results',
-    'test-results/screenshots',
-    'baselines',
-    'baselines/screenshots',
-  ];
+const TEST_DIRECTORIES = ['tests/visual/screenshots', 'tests/visual/baselines'];
 
-  for (const dir of directories) {
-    if (!existsSync(dir)) {
-      await mkdir(dir, { recursive: true });
+export const ensureTestDirectories = () => {
+  TEST_DIRECTORIES.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-  }
-}
+  });
+};
 
 export function getScreenshotPath(
-  name: string,
-  type: 'test' | 'baseline' = 'test'
+  testName: string,
+  type: 'baseline' | 'current' = 'current'
 ): string {
-  const baseDir = type === 'test' ? 'test-results' : 'baselines';
-  return path.join(baseDir, 'screenshots', `${name}.png`);
+  const subDir = type === 'baseline' ? 'baselines' : 'screenshots';
+  return path.join('tests', 'visual', subDir, `${testName}.png`);
 }
 
 export async function waitForServer(

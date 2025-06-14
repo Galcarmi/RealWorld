@@ -75,12 +75,12 @@ jobs:
         run: npm install -g @expo/cli
 
       - name: Create baseline directory
-        run: mkdir -p baselines/screenshots
+        run: mkdir -p tests/visual/baselines
 
       - name: Checkout base branch baselines
         run: |
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          git checkout origin/${{ github.event.pull_request.base.ref }} -- baselines/ || echo "No baselines found in base branch"
+          git checkout origin/${{ github.event.pull_request.base.ref }} -- tests/visual/baselines/ || echo "No baselines found in base branch"
 
       - name: Start Expo server
         run: |
@@ -106,41 +106,17 @@ jobs:
 
       - name: Compare screenshots
         run: |
-          if [ -d "baselines/screenshots" ] && [ -d "test-results/screenshots" ]; then
-            echo "Comparing screenshots..."
-            # Create a simple comparison report
-            for baseline in baselines/screenshots/*.png; do
-              if [ -f "$baseline" ]; then
-                filename=$(basename "$baseline")
-                if [ -f "test-results/screenshots/$filename" ]; then
-                  echo "✅ Found matching screenshot: $filename"
-                else
-                  echo "❌ Missing screenshot in test results: $filename"
-                fi
-              fi
-            done
-            
-            for result in test-results/screenshots/*.png; do
-              if [ -f "$result" ]; then
-                filename=$(basename "$result")
-                if [ ! -f "baselines/screenshots/$filename" ]; then
-                  echo "🆕 New screenshot detected: $filename"
-                fi
-              fi
-            done
-          else
-            echo "No baseline screenshots found for comparison"
-          fi
+          npx pixelmatch tests/visual/baselines/login-baseline.png tests/visual/screenshots/login-baseline.png tests/visual/screenshots/login-diff.png 0.1 || true
 
-      - name: Upload comparison results
+      - name: Upload test artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: visual-regression-comparison
+          name: visual-regression-results
           path: |
-            test-results/
-            baselines/
-          retention-days: 14
+            tests/visual/screenshots/
+            tests/visual/baselines/
+          retention-days: 30
 
       - name: Comment PR with results
         uses: actions/github-script@v7
@@ -153,8 +129,8 @@ jobs:
             let comment = '## 📸 Visual Regression Test Results\n\n';
             
             // Check if visual tests passed
-            if (fs.existsSync('test-results/screenshots')) {
-              const screenshots = fs.readdirSync('test-results/screenshots');
+            if (fs.existsSync('tests/visual/screenshots')) {
+              const screenshots = fs.readdirSync('tests/visual/screenshots');
               comment += `✅ Visual tests completed successfully\n`;
               comment += `📊 Generated ${screenshots.length} screenshot(s)\n\n`;
               

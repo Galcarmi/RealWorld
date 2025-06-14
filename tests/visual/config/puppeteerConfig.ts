@@ -122,7 +122,7 @@ export class PuppeteerTestHelper {
       throw new Error('Page not initialized. Call init() first.');
     }
 
-    const screenshotPath = `test-results/screenshots/${name}.png` as const;
+    const screenshotPath = `tests/visual/screenshots/${name}.png` as const;
     await this.page.screenshot({
       path: screenshotPath,
       fullPage: true,

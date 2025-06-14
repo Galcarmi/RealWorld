@@ -156,8 +156,8 @@ jobs:
         with:
           name: visual-test-results
           path: |
-            test-results/
-            baselines/
+            tests/visual/screenshots/
+            tests/visual/baselines/
           retention-days: 30
 
       - name: Upload visual test screenshots
@@ -165,5 +165,5 @@ jobs:
         if: failure()
         with:
           name: visual-test-screenshots
-          path: test-results/screenshots/
+          path: tests/visual/screenshots/
           retention-days: 7 
