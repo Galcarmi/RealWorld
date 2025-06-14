@@ -37,14 +37,20 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
 
     if (!authorProfile) {
       return (
-        <View style={componentStyles.homeScreenSafeArea} testID='author-profile-screen'>
+        <View
+          style={componentStyles.homeScreenSafeArea}
+          testID='author-profile-screen'
+        >
           <ScreenHeader showBackButton={true} />
         </View>
       );
     }
 
     return (
-      <View style={componentStyles.homeScreenSafeArea} testID='author-profile-screen'>
+      <View
+        style={componentStyles.homeScreenSafeArea}
+        testID='author-profile-screen'
+      >
         <ScreenHeader showBackButton={true} />
 
         <View

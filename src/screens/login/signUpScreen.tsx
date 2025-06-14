@@ -23,7 +23,10 @@ export const Main: NavioScreen = observer(() => {
   } = useAuth();
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea} testID='register-screen'>
+    <SafeAreaView
+      style={componentStyles.homeScreenSafeArea}
+      testID='register-screen'
+    >
       <View center style={styles.width100Percent} marginB-40 marginT-40>
         <Text title primaryColor marginB-70 testID='signup-screen-title'>
           Sign Up

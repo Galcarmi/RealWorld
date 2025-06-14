@@ -1,5 +1,9 @@
 import { mockApiResponses } from '../utils/mockData';
-import { createVisualTestSuite, commonTestActions, VisualTestSuite } from '../utils/testHelpers';
+import {
+  createVisualTestSuite,
+  commonTestActions,
+  VisualTestSuite,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Home Screen - Visual Regression Test',
@@ -26,7 +30,7 @@ createVisualTestSuite(
   suite => {
     it('should create baseline snapshot for home screen with articles', async () => {
       const testHelper = suite.getTestHelper();
-      
+
       await commonTestActions.navigateAndWaitForBody(testHelper);
       await testHelper.waitForTestId('home-screen', 10000);
       await commonTestActions.waitForArticlesToLoad(testHelper);
@@ -60,4 +64,4 @@ createVisualTestSuite(
       }
     });
   }
-); 
+);

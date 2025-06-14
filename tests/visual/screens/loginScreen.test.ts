@@ -8,7 +8,11 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(testHelper, 'login-tab-icon', 'login-screen');
+      await commonTestActions.clickTabAndWaitForScreen(
+        testHelper,
+        'login-tab-icon',
+        'login-screen'
+      );
 
       // Wait for key elements to be visible
       await testHelper.waitForTestId('login-screen-title', 5000);
@@ -24,7 +28,11 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(testHelper, 'login-tab-icon', 'login-screen');
+      await commonTestActions.clickTabAndWaitForScreen(
+        testHelper,
+        'login-tab-icon',
+        'login-screen'
+      );
 
       // Fill in some test data to show form state
       await testHelper.typeInTestId('login-email-input', 'test@example.com');
@@ -33,4 +41,4 @@ createVisualTestSuite(
       await testHelper.takeScreenshot('login-screen-with-form-data');
     });
   }
-); 
+);

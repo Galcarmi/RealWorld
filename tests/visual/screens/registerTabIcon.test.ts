@@ -8,7 +8,11 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(testHelper, 'register-tab-icon', 'register-screen');
+      await commonTestActions.clickTabAndWaitForScreen(
+        testHelper,
+        'register-tab-icon',
+        'register-screen'
+      );
 
       await testHelper.takeScreenshot('register-tab-baseline');
     });

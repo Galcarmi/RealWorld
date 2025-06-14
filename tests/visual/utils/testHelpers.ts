@@ -1,4 +1,8 @@
-import { PuppeteerTestHelper, MockApiResponse, VisualTestConfig } from '../config/puppeteerConfig';
+import {
+  PuppeteerTestHelper,
+  MockApiResponse,
+  VisualTestConfig,
+} from '../config/puppeteerConfig';
 
 interface VisualTestSuiteConfig {
   mockApis?: MockApiResponse[];
@@ -25,11 +29,14 @@ export class VisualTestSuite {
       mockApis: this.config.mockApis || [],
     };
 
-    const finalConfig: VisualTestConfig = { ...defaultConfig, ...this.config.customConfig };
+    const finalConfig: VisualTestConfig = {
+      ...defaultConfig,
+      ...this.config.customConfig,
+    };
 
     this.testHelper = new PuppeteerTestHelper(finalConfig);
     await this.testHelper.init();
-    
+
     return this.testHelper;
   }
 
@@ -50,18 +57,21 @@ export class VisualTestSuite {
 
 // Common test utilities
 export const commonTestActions = {
-  async navigateAndWaitForBody(testHelper: PuppeteerTestHelper, path: string = '/'): Promise<void> {
+  async navigateAndWaitForBody(
+    testHelper: PuppeteerTestHelper,
+    path: string = '/'
+  ): Promise<void> {
     await testHelper.navigateTo(path);
-    
+
     const page = testHelper.getPage();
     if (!page) throw new Error('Page not available');
-    
+
     await page.waitForSelector('body', { timeout: 15000 });
   },
 
   async clickTabAndWaitForScreen(
-    testHelper: PuppeteerTestHelper, 
-    tabTestId: string, 
+    testHelper: PuppeteerTestHelper,
+    tabTestId: string,
     screenTestId: string
   ): Promise<void> {
     const page = testHelper.getPage();
@@ -82,7 +92,9 @@ export const commonTestActions = {
     const page = testHelper.getPage();
     if (!page) throw new Error('Page not available');
 
-    await page.waitForSelector('[data-testid*="article-card"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid*="article-card"]', {
+      timeout: 10000,
+    });
     await new Promise(resolve => setTimeout(resolve, 2000));
   },
 };
@@ -106,4 +118,4 @@ export function createVisualTestSuite(
 
     testFn(suite);
   });
-} 
+}
