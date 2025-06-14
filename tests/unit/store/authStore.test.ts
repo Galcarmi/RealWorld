@@ -1,12 +1,12 @@
 import { when } from 'mobx';
 
-import { authStore } from '../../src/store/authStore';
-import { userStore } from '../../src/store/userStore';
+import { authStore } from '../../../src/store/authStore';
+import { userStore } from '../../../src/store/userStore';
 
 // Mock the dependencies
-jest.mock('../../src/services');
-jest.mock('../../src/store/userStore');
-jest.mock('../../src/services/navigationService');
+jest.mock('../../../src/services');
+jest.mock('../../../src/store/userStore');
+jest.mock('../../../src/services/navigationService');
 
 describe('AuthStore', () => {
   let mockAuthService: {

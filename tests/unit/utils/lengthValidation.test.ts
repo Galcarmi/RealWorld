@@ -1,4 +1,4 @@
-import { lengthValidation } from '../../src/utils';
+import { lengthValidation } from '../../../src/utils';
 
 describe('lengthValidation', () => {
   describe('with default parameters (6-30 characters)', () => {

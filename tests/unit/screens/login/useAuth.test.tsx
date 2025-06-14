@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { Keyboard } from 'react-native';
 
-import useAuth from '../../../src/screens/login/useAuth';
-import { navigationService } from '../../../src/services/navigationService';
-import { authStore } from '../../../src/store/authStore';
+import useAuth from '../../../../src/screens/login/useAuth';
+import { navigationService } from '../../../../src/services/navigationService';
+import { authStore } from '../../../../src/store/authStore';
 
 // Mock dependencies
 jest.mock('react-native', () => ({
@@ -12,9 +12,9 @@ jest.mock('react-native', () => ({
   },
 }));
 
-jest.mock('../../../src/store/authStore');
-jest.mock('../../../src/services/navigationService');
-jest.mock('../../../src/utils');
+jest.mock('../../../../src/store/authStore');
+jest.mock('../../../../src/services/navigationService');
+jest.mock('../../../../src/utils');
 
 const mockKeyboard = Keyboard as jest.Mocked<typeof Keyboard>;
 

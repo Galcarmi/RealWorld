@@ -7,7 +7,7 @@ module.exports = {
     'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-ui-lib|rn-navio|expo-.*|@expo/.*|@testing-library/react-native)/)',
   ],
   testMatch: [
-    '**/__tests__/**/*.(ts|tsx|js|jsx)',
+    '**/tests/unit/**/*.(ts|tsx|js|jsx)',
     '**/*.(test|spec).(ts|tsx|js|jsx)',
   ],
   moduleNameMapper: {

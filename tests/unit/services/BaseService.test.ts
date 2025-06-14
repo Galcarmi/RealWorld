@@ -4,8 +4,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { BaseService } from '../../src/services/BaseService';
-import { IAuthStore, IUserStore } from '../../src/store/types';
+import { BaseService } from '../../../src/services/BaseService';
+import { IAuthStore, IUserStore } from '../../../src/store/types';
 
 // Mock dependencies
 jest.mock('axios');
