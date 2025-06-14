@@ -20,8 +20,9 @@ export const mockArticles = [
   {
     slug: 'how-to-build-webapps-that-scale',
     title: 'How to Build Web Apps That Scale',
-    description: 'Building scalable web applications requires careful planning and architecture decisions.',
-    body: 'In this comprehensive guide, we\'ll explore the key principles and best practices for building web applications that can handle growth and scale effectively...',
+    description:
+      'Building scalable web applications requires careful planning and architecture decisions.',
+    body: "In this comprehensive guide, we'll explore the key principles and best practices for building web applications that can handle growth and scale effectively...",
     tagList: ['webapps', 'scaling', 'architecture', 'performance'],
     createdAt: '2024-01-15T10:00:00.000Z',
     updatedAt: '2024-01-15T10:00:00.000Z',
@@ -37,8 +38,9 @@ export const mockArticles = [
   {
     slug: 'mobile-first-design-principles',
     title: 'Mobile-First Design Principles',
-    description: 'Essential principles for designing mobile-first applications that provide excellent user experience.',
-    body: 'Mobile-first design is not just about responsive layouts. It\'s about understanding user behavior on mobile devices and designing accordingly...',
+    description:
+      'Essential principles for designing mobile-first applications that provide excellent user experience.',
+    body: "Mobile-first design is not just about responsive layouts. It's about understanding user behavior on mobile devices and designing accordingly...",
     tagList: ['mobile', 'design', 'ux', 'responsive'],
     createdAt: '2024-01-14T15:30:00.000Z',
     updatedAt: '2024-01-14T15:30:00.000Z',
@@ -54,7 +56,8 @@ export const mockArticles = [
   {
     slug: 'react-native-performance-tips',
     title: 'React Native Performance Optimization Tips',
-    description: 'Learn how to optimize your React Native app for better performance and user experience.',
+    description:
+      'Learn how to optimize your React Native app for better performance and user experience.',
     body: 'Performance optimization in React Native requires understanding both JavaScript and native platform specifics...',
     tagList: ['react-native', 'performance', 'optimization', 'mobile'],
     createdAt: '2024-01-13T09:15:00.000Z',
@@ -128,40 +131,40 @@ export const mockApiResponses = {
   login: {
     user: mockCurrentUser,
   },
-  
+
   register: {
     user: mockCurrentUser,
   },
-  
+
   currentUser: {
     user: mockCurrentUser,
   },
-  
+
   // Articles
   articles: {
     articles: mockArticles,
     articlesCount: mockArticles.length,
   },
-  
+
   article: {
     article: mockArticles[0],
   },
-  
+
   // Comments
   comments: {
     comments: mockComments,
   },
-  
+
   // Profile
   profile: {
     profile: mockProfile,
   },
-  
+
   // Tags
   tags: {
     tags: mockTags,
   },
-  
+
   // Error responses
   validationError: {
     errors: {
@@ -169,16 +172,16 @@ export const mockApiResponses = {
       password: ['is required'],
     },
   },
-  
+
   unauthorized: {
     errors: {
       message: 'Unauthorized',
     },
   },
-  
+
   notFound: {
     errors: {
       message: 'Resource not found',
     },
   },
-}; 
+};

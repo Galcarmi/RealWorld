@@ -35,7 +35,7 @@ export const HomeScreen: React.FC<{}> = observer(() => {
     ) : null;
 
   return (
-    <View style={componentStyles.homeScreenSafeArea} testID="home-screen">
+    <View style={componentStyles.homeScreenSafeArea} testID='home-screen'>
       <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>

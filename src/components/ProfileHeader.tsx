@@ -19,7 +19,11 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   return (
     <View paddingB-30 paddingT-20>
       <View row centerV right marginB-20>
-        <TouchableOpacity onPress={onEditProfile} padding-8 testID="edit-profile-button">
+        <TouchableOpacity
+          onPress={onEditProfile}
+          padding-8
+          testID='edit-profile-button'
+        >
           <Ionicons
             name='create-outline'
             size={24}

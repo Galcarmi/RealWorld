@@ -4,11 +4,14 @@ describe('Register Tab Icon - Baseline Snapshot', () => {
   let testHelper: PuppeteerTestHelper;
 
   beforeAll(async () => {
+    const isHeadless = process.env.HEADLESS === 'true';
+    const slowMo = isHeadless ? 0 : 500;
+
     testHelper = new PuppeteerTestHelper({
-      headless: process.env.HEADLESS === 'true',
+      headless: isHeadless,
       viewport: { width: 390, height: 844 },
       baseUrl: 'http://localhost:8081',
-      slowMo: process.env.HEADLESS === 'true' ? 0 : 500,
+      slowMo,
       devtools: false,
       mobileMode: true,
       deviceName: 'iPhone 12',
@@ -22,7 +25,7 @@ describe('Register Tab Icon - Baseline Snapshot', () => {
 
   it('should create baseline snapshot for register tab', async () => {
     await testHelper.navigateTo('/');
-    
+
     const page = testHelper.getPage();
     if (!page) throw new Error('Page not available');
 
@@ -30,7 +33,7 @@ describe('Register Tab Icon - Baseline Snapshot', () => {
 
     const registerTabSelector = '[data-testid="register-tab-icon"]';
     await page.waitForSelector(registerTabSelector, { timeout: 10000 });
-    
+
     const registerTab = await page.$(registerTabSelector);
     if (registerTab) {
       await registerTab.click();
@@ -38,4 +41,4 @@ describe('Register Tab Icon - Baseline Snapshot', () => {
 
     await testHelper.takeScreenshot('register-tab-baseline');
   });
-}); 
+});

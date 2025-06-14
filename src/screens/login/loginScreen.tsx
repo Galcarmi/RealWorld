@@ -22,9 +22,12 @@ export const LoginScreen: NavioScreen = observer(() => {
   } = useAuth();
 
   return (
-    <SafeAreaView style={componentStyles.homeScreenSafeArea} testID="login-screen">
+    <SafeAreaView
+      style={componentStyles.homeScreenSafeArea}
+      testID='login-screen'
+    >
       <View center style={styles.width100Percent} marginB-40 marginT-40>
-        <Text title primaryColor marginB-70 testID="login-screen-title">
+        <Text title primaryColor marginB-70 testID='login-screen-title'>
           Sign In
         </Text>
         <InputField
@@ -33,7 +36,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
-          testID="login-email-input"
+          testID='login-email-input'
         />
         <InputField
           placeholder={'Password'}
@@ -41,7 +44,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
           secureTextEntry={true}
-          testID="login-password-input"
+          testID='login-password-input'
         />
       </View>
       <View
@@ -62,7 +65,7 @@ export const LoginScreen: NavioScreen = observer(() => {
               : themeColors.greyColor
           }
           disabled={!isLoginFormValid || isLoading}
-          testID="login-submit-button"
+          testID='login-submit-button'
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or
@@ -73,7 +76,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           link
           labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
-          testID="login-signup-button"
+          testID='login-signup-button'
         />
       </View>
     </SafeAreaView>

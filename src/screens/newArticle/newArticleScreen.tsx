@@ -27,7 +27,10 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
     } = useNewArticle();
 
     return (
-      <View style={componentStyles.homeScreenSafeArea} testID="new-article-screen">
+      <View
+        style={componentStyles.homeScreenSafeArea}
+        testID='new-article-screen'
+      >
         <ScreenHeader
           title='New Article'
           showBackButton={true}

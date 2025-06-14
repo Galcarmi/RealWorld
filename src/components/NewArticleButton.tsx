@@ -26,7 +26,7 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
         )}
         iconOnRight={false}
         style={componentStyles.newArticleButton}
-        testID="new-article-button"
+        testID='new-article-button'
       />
     </View>
   );

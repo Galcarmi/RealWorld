@@ -238,4 +238,48 @@ module.exports = [
       'no-console': 'off', // Allow console in tests
     },
   },
+
+  // Visual test configuration for Puppeteer tests
+  {
+    files: ['tests/visual/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        // Jest globals
+        jest: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        test: 'readonly',
+
+        // Node.js globals
+        process: 'readonly',
+        console: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        global: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        Buffer: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+
+        // Browser globals (for Puppeteer page context)
+        document: 'readonly',
+        window: 'readonly',
+        navigator: 'readonly',
+        location: 'readonly',
+        HTMLElement: 'readonly',
+        fetch: 'readonly',
+      },
+    },
+    rules: {
+      'no-console': 'off',
+    },
+  },
 ];
