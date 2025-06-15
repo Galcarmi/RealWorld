@@ -56,13 +56,17 @@ export class VisualComparator {
     if (!fs.existsSync(baselinePath)) {
       // Only create baseline automatically if UPDATE_BASELINES is true
       if (process.env.UPDATE_BASELINES === 'true') {
-        return this.createNewBaseline(screenshotName, currentPath, baselinePath);
+        return this.createNewBaseline(
+          screenshotName,
+          currentPath,
+          baselinePath
+        );
       } else {
         // Fail the test and tell user to create baseline
         throw new Error(
           `Baseline not found for "${screenshotName}"!\n` +
-          `Expected baseline at: ${baselinePath}\n` +
-          `To create baseline: yarn test:visual:update-baselines -- --testNamePattern="${screenshotName}"`
+            `Expected baseline at: ${baselinePath}\n` +
+            `To create baseline: yarn test:visual:update-baselines -- --testNamePattern="${screenshotName}"`
         );
       }
     }

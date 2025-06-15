@@ -1,8 +1,5 @@
 import { mockApiResponses } from '../utils/mockData';
-import {
-  createVisualTestSuite,
-  commonTestActions,
-} from '../utils/testHelpers';
+import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Home Screen - Visual Regression Test',
