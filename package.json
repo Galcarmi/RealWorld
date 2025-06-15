@@ -11,7 +11,7 @@
     "test:unit": "jest --config jest.config.js --watchAll=false",
     "test:visual": "jest --config jest.config.visual.js",
     "test:visual:headless": "HEADLESS=true jest --config jest.config.visual.js",
-    "test:visual:update-baselines": "UPDATE_BASELINES=true jest --config jest.config.visual.js",
+    "test:visual:update-baselines": "HEADLESS=true UPDATE_BASELINES=true jest --config jest.config.visual.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
