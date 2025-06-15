@@ -56,6 +56,7 @@ export class VisualComparator {
     if (!fs.existsSync(baselinePath)) {
       // Only create baseline automatically if UPDATE_BASELINES is true
       if (process.env.UPDATE_BASELINES === 'true') {
+        console.log(`\n📸 Creating new baseline: ${screenshotName}`);
         return this.createNewBaseline(
           screenshotName,
           currentPath,
@@ -94,6 +95,13 @@ export class VisualComparator {
     const diffPercentage = (pixelDifference / totalPixels) * 100;
     const passed = diffPercentage <= opts.maxDiffPercentage;
 
+    // Console log the comparison results
+    console.log(`\n📸 Visual Comparison: ${screenshotName}`);
+    console.log(`   Pixel Difference: ${pixelDifference}/${totalPixels} pixels`);
+    console.log(`   Difference: ${diffPercentage.toFixed(4)}%`);
+    console.log(`   Threshold: ${opts.threshold} | Max Allowed: ${opts.maxDiffPercentage}%`);
+    console.log(`   Result: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
+
     const diffImagePath = this.createDiffImageIfNeeded(
       pixelDifference,
       diffImg,
@@ -118,6 +126,7 @@ export class VisualComparator {
       throw new Error(`Current screenshot not found: ${currentPath}`);
     }
 
+    console.log(`\n📸 Updating baseline: ${screenshotName}`);
     fs.copyFileSync(currentPath, baselinePath);
   }
 

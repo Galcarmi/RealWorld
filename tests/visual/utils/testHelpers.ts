@@ -20,12 +20,6 @@ interface VisualRegressionResult {
   diffImagePath?: string;
 }
 
-const DEFAULT_VISUAL_OPTIONS: VisualComparisonOptions = {
-  threshold: 0.1,
-  maxDiffPercentage: 0.5,
-  createDiffImage: true,
-};
-
 export class VisualTestSuite {
   private testHelper: PuppeteerTestHelper | null = null;
   private visualComparator: VisualComparator;
@@ -76,7 +70,7 @@ export class VisualTestSuite {
       return;
     }
 
-    const comparisonOptions = { ...this.getVisualOptions(), ...options };
+    const comparisonOptions = { ...this.config.visualOptions, ...options };
     const result = await this.visualComparator.compareScreenshot(
       screenshotName,
       comparisonOptions
@@ -89,13 +83,6 @@ export class VisualTestSuite {
 
   async updateBaseline(screenshotName: string): Promise<void> {
     await this.visualComparator.updateBaseline(screenshotName);
-  }
-
-  private getVisualOptions(): VisualComparisonOptions {
-    return {
-      ...DEFAULT_VISUAL_OPTIONS,
-      ...this.config.visualOptions,
-    };
   }
 
   private createDefaultConfig(): VisualTestConfig {
