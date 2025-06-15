@@ -28,17 +28,17 @@ createVisualTestSuite(
     ],
   },
   suite => {
-    it('should create baseline snapshot for home screen with articles', async () => {
+    it('should match baseline for home screen with articles', async () => {
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
       await testHelper.waitForTestId('home-screen', 10000);
       await commonTestActions.waitForArticlesToLoad(testHelper);
-      await testHelper.takeScreenshot('home-screen-with-articles');
+
+      await suite.takeScreenshotAndCompare('home-screen-with-articles');
     });
 
-    it('should create snapshot of home screen during loading state', async () => {
-      // Create a separate test helper with longer delay for loading state
+    it('should match baseline for home screen loading state', async () => {
       const loadingSuite = new VisualTestSuite({
         mockApis: [
           {
@@ -47,9 +47,10 @@ createVisualTestSuite(
             status: 200,
             contentType: 'application/json',
             body: mockApiResponses.articles,
-            delay: 3000, // Longer delay to capture loading state
+            delay: 3000,
           },
         ],
+        // Default visual options are automatically applied by VisualTestSuite
       });
 
       const loadingTestHelper = await loadingSuite.setupTest();
@@ -57,7 +58,11 @@ createVisualTestSuite(
       try {
         await commonTestActions.navigateAndWaitForBody(loadingTestHelper);
         await loadingTestHelper.waitForTestId('home-screen', 10000);
-        await loadingTestHelper.takeScreenshot('home-screen-loading-state');
+
+        await loadingSuite.takeScreenshotAndCompare(
+          'home-screen-loading-state'
+        );
+
         await commonTestActions.waitForArticlesToLoad(loadingTestHelper);
       } finally {
         await loadingSuite.cleanupTest();

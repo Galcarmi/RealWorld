@@ -1,10 +1,10 @@
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(
-  'Register Tab Icon - Baseline Snapshot',
-  {}, // No mock APIs needed for register tab
+  'Register Tab Icon - Visual Regression Test',
+  {},
   suite => {
-    it('should create baseline snapshot for register tab', async () => {
+    it('should match baseline for register tab', async () => {
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
@@ -14,7 +14,7 @@ createVisualTestSuite(
         'register-screen'
       );
 
-      await testHelper.takeScreenshot('register-tab-baseline');
+      await suite.takeScreenshotAndCompare('register-tab-baseline');
     });
   }
 );

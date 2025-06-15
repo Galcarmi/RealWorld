@@ -1,15 +1,35 @@
 import fs from 'fs';
 import path from 'path';
 
-const TEST_DIRECTORIES = ['tests/visual/screenshots', 'tests/visual/baselines'];
+export function ensureTestDirectories(): void {
+  const directories = [
+    'tests/visual/screenshots',
+    'tests/visual/baselines',
+    'tests/visual/diffs',
+  ];
 
-export const ensureTestDirectories = () => {
-  TEST_DIRECTORIES.forEach(dir => {
+  directories.forEach(dir => {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
   });
-};
+}
+
+export function cleanupTestDirectories(): void {
+  const directories = ['tests/visual/screenshots', 'tests/visual/diffs'];
+
+  directories.forEach(dir => {
+    if (fs.existsSync(dir)) {
+      const files = fs.readdirSync(dir);
+      files.forEach(file => {
+        const filePath = path.join(dir, file);
+        if (fs.statSync(filePath).isFile()) {
+          fs.unlinkSync(filePath);
+        }
+      });
+    }
+  });
+}
 
 export function getScreenshotPath(
   testName: string,

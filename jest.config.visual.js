@@ -14,6 +14,7 @@ module.exports = {
       },
     ],
   },
+  transformIgnorePatterns: ['node_modules/(?!(pixelmatch|pngjs)/)'],
   testEnvironment: 'node',
   collectCoverageFrom: [
     'tests/visual/**/*.{ts,tsx,js,jsx}',

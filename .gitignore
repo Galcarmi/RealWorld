@@ -51,3 +51,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Visual testing
+tests/visual/screenshots/
+tests/visual/baselines/
+tests/visual/diffs/

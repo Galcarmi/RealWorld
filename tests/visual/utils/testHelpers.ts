@@ -5,32 +5,37 @@ import {
 } from '../config/puppeteerConfig';
 
 import { ensureTestDirectories } from './testSetup';
+import { VisualComparator, VisualComparisonOptions } from './visualComparison';
 
 interface VisualTestSuiteConfig {
   mockApis?: MockApiResponse[];
   customConfig?: Partial<VisualTestConfig>;
+  visualOptions?: Partial<VisualComparisonOptions>;
 }
+
+interface VisualRegressionResult {
+  diffPercentage: number;
+  pixelDifference: number;
+  totalPixels: number;
+  diffImagePath?: string;
+}
+
+const DEFAULT_VISUAL_OPTIONS: VisualComparisonOptions = {
+  threshold: 0.1,
+  maxDiffPercentage: 0.5,
+  createDiffImage: true,
+};
 
 export class VisualTestSuite {
   private testHelper: PuppeteerTestHelper | null = null;
+  private visualComparator: VisualComparator;
 
-  constructor(private config: VisualTestSuiteConfig = {}) {}
+  constructor(private config: VisualTestSuiteConfig = {}) {
+    this.visualComparator = new VisualComparator();
+  }
 
   async setupTest(): Promise<PuppeteerTestHelper> {
-    const isHeadless = process.env.HEADLESS === 'true';
-    const slowMo = isHeadless ? 0 : 500;
-
-    const defaultConfig: VisualTestConfig = {
-      headless: isHeadless,
-      viewport: { width: 390, height: 844 },
-      baseUrl: 'http://localhost:8081',
-      slowMo,
-      devtools: false,
-      mobileMode: true,
-      deviceName: 'iPhone 12',
-      mockApis: this.config.mockApis || [],
-    };
-
+    const defaultConfig = this.createDefaultConfig();
     const finalConfig: VisualTestConfig = {
       ...defaultConfig,
       ...this.config.customConfig,
@@ -55,9 +60,81 @@ export class VisualTestSuite {
     }
     return this.testHelper;
   }
+
+  async takeScreenshotAndCompare(
+    screenshotName: string,
+    options?: Partial<VisualComparisonOptions>
+  ): Promise<void> {
+    if (!this.testHelper) {
+      throw new Error('Test helper not initialized. Call setupTest() first.');
+    }
+
+    await this.testHelper.takeScreenshot(screenshotName);
+
+    if (process.env.UPDATE_BASELINES === 'true') {
+      this.handleBaselineUpdate(screenshotName);
+      return;
+    }
+
+    const comparisonOptions = { ...this.getVisualOptions(), ...options };
+    const result = await this.visualComparator.compareScreenshot(
+      screenshotName,
+      comparisonOptions
+    );
+
+    if (!result.passed) {
+      throw this.createVisualRegressionError(screenshotName, result);
+    }
+  }
+
+  async updateBaseline(screenshotName: string): Promise<void> {
+    await this.visualComparator.updateBaseline(screenshotName);
+  }
+
+  private getVisualOptions(): VisualComparisonOptions {
+    return {
+      ...DEFAULT_VISUAL_OPTIONS,
+      ...this.config.visualOptions,
+    };
+  }
+
+  private createDefaultConfig(): VisualTestConfig {
+    const isHeadless = process.env.HEADLESS === 'true';
+    const slowMo = isHeadless ? 0 : 500;
+
+    return {
+      headless: isHeadless,
+      viewport: { width: 390, height: 844 },
+      baseUrl: 'http://localhost:8081',
+      slowMo,
+      devtools: false,
+      mobileMode: true,
+      deviceName: 'iPhone 12',
+      mockApis: this.config.mockApis || [],
+    };
+  }
+
+  private handleBaselineUpdate(screenshotName: string): void {
+    this.visualComparator.updateBaseline(screenshotName);
+  }
+
+  private createVisualRegressionError(
+    screenshotName: string,
+    result: VisualRegressionResult
+  ): Error {
+    const errorMessage = [
+      `Visual regression detected for "${screenshotName}"!`,
+      `Difference: ${result.diffPercentage.toFixed(2)}% (${result.pixelDifference}/${result.totalPixels} pixels)`,
+      result.diffImagePath ? `Diff image: ${result.diffImagePath}` : '',
+      `To update baseline: yarn test:visual:update-baselines -- --testNamePattern="${screenshotName}"`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    return new Error(errorMessage);
+  }
 }
 
-// Common test utilities
 export const commonTestActions = {
   async navigateAndWaitForBody(
     testHelper: PuppeteerTestHelper,
@@ -101,7 +178,6 @@ export const commonTestActions = {
   },
 };
 
-// Helper function to create test suite with common setup/teardown
 export function createVisualTestSuite(
   suiteName: string,
   config: VisualTestSuiteConfig,
