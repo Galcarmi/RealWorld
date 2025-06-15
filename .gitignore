@@ -54,5 +54,4 @@ yarn-error.*
 
 # Visual testing
 tests/visual/screenshots/
-tests/visual/baselines/
 tests/visual/diffs/

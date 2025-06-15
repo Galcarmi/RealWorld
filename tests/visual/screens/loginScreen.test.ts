@@ -1,7 +1,7 @@
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite('Login Screen - Visual Regression Test', {}, suite => {
-  it('should match baseline for login screen', async () => {
+  it('should match baseline for login screen empty form', async () => {
     const testHelper = suite.getTestHelper();
 
     await commonTestActions.navigateAndWaitForBody(testHelper);
@@ -17,10 +17,10 @@ createVisualTestSuite('Login Screen - Visual Regression Test', {}, suite => {
     await testHelper.waitForTestId('login-submit-button', 5000);
     await testHelper.waitForTestId('login-signup-button', 5000);
 
-    await suite.takeScreenshotAndCompare('login-screen-baseline');
+    await suite.takeScreenshotAndCompare('login-screen-empty-form');
   });
 
-  it('should match baseline for login screen with form data', async () => {
+  it('should match baseline for login screen with filled form', async () => {
     const testHelper = suite.getTestHelper();
 
     await commonTestActions.navigateAndWaitForBody(testHelper);

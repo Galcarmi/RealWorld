@@ -21,8 +21,8 @@ export interface VisualComparisonOptions {
 }
 
 const DEFAULT_OPTIONS: VisualComparisonOptions = {
-  threshold: 0.1,
-  maxDiffPercentage: 0.5, // Allow 0.5% difference
+  threshold: 0.05,
+  maxDiffPercentage: 0.1,
   createDiffImage: true,
 };
 
@@ -54,7 +54,17 @@ export class VisualComparator {
     }
 
     if (!fs.existsSync(baselinePath)) {
-      return this.createNewBaseline(screenshotName, currentPath, baselinePath);
+      // Only create baseline automatically if UPDATE_BASELINES is true
+      if (process.env.UPDATE_BASELINES === 'true') {
+        return this.createNewBaseline(screenshotName, currentPath, baselinePath);
+      } else {
+        // Fail the test and tell user to create baseline
+        throw new Error(
+          `Baseline not found for "${screenshotName}"!\n` +
+          `Expected baseline at: ${baselinePath}\n` +
+          `To create baseline: yarn test:visual:update-baselines -- --testNamePattern="${screenshotName}"`
+        );
+      }
     }
 
     const baselineImg = PNG.sync.read(fs.readFileSync(baselinePath));
