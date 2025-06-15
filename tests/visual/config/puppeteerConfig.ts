@@ -64,6 +64,27 @@ export class PuppeteerTestHelper {
         '--disable-web-security',
         '--force-device-scale-factor=1',
         '--disable-features=VizDisplayCompositor',
+        // Font rendering consistency
+        '--disable-font-subpixel-positioning',
+        '--disable-lcd-text',
+        '--force-color-profile=srgb',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        // Hardware acceleration consistency
+        '--disable-gpu',
+        '--disable-gpu-sandbox',
+        '--disable-software-rasterizer',
+        '--disable-background-networking',
+        // Text rendering consistency
+        '--font-render-hinting=none',
+        '--disable-font-subpixel-positioning',
+        // Additional consistency flags
+        '--disable-extensions',
+        '--disable-plugins',
+        '--disable-default-apps',
+        '--no-default-browser-check',
+        '--disable-translate',
       ],
     };
 
@@ -79,6 +100,29 @@ export class PuppeteerTestHelper {
       width: this.config.viewport.width,
       height: this.config.viewport.height,
       deviceScaleFactor: 1,
+    });
+
+    // Set consistent user agent across platforms
+    await this.page.setUserAgent(
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    );
+
+    // Force consistent fonts
+    await this.page.evaluateOnNewDocument(() => {
+      const style = document.createElement('style');
+      style.textContent = `
+        * {
+          -webkit-font-smoothing: none !important;
+          -moz-osx-font-smoothing: unset !important;
+          text-rendering: geometricPrecision !important;
+          font-feature-settings: "kern" 0 !important;
+        }
+        body, html {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif !important;
+          font-synthesis: none !important;
+        }
+      `;
+      document.head.appendChild(style);
     });
   }
 
