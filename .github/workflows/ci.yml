@@ -158,6 +158,14 @@ jobs:
           path: tests/visual/diffs/
           retention-days: 30
 
+      - name: Upload visual test screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-test-screenshots
+          path: tests/visual/screenshots/
+          retention-days: 14
+
       - name: Upload visual test logs
         uses: actions/upload-artifact@v4
         if: failure()
