@@ -10,6 +10,7 @@
     "test": "yarn test:unit && yarn test:visual:headless",
     "test:unit": "jest --config jest.config.js --watchAll=false",
     "test:visual": "jest --config jest.config.visual.js",
+    "test:visual:update-baselines": "HEADLESS=true UPDATE_BASELINES=true jest --config jest.config.visual.js",
     "test:visual:docker": "docker compose -f docker-compose.visual-tests.yml run --rm visual-tests",
     "test:visual:docker:update-baselines": "docker compose -f docker-compose.visual-tests.yml run --rm visual-tests-update-baselines",
     "test:visual:docker:build": "docker build -f Dockerfile.visual-tests -t visual-tests .",

@@ -65,27 +65,6 @@ export class PuppeteerTestHelper {
         '--disable-web-security',
         '--force-device-scale-factor=1',
         '--disable-features=VizDisplayCompositor',
-        // Font rendering consistency
-        '--disable-font-subpixel-positioning',
-        '--disable-lcd-text',
-        '--force-color-profile=srgb',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding',
-        // Hardware acceleration consistency
-        '--disable-gpu',
-        '--disable-gpu-sandbox',
-        '--disable-software-rasterizer',
-        '--disable-background-networking',
-        // Text rendering consistency
-        '--font-render-hinting=none',
-        '--disable-font-subpixel-positioning',
-        // Additional consistency flags
-        '--disable-extensions',
-        '--disable-plugins',
-        '--disable-default-apps',
-        '--no-default-browser-check',
-        '--disable-translate',
       ],
     };
 

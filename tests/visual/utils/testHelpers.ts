@@ -101,8 +101,8 @@ export class VisualTestSuite {
       baseUrl: 'http://localhost:8081',
       slowMo,
       devtools: false,
-      mobileMode: false,
-      deviceName: undefined,
+      mobileMode: true,
+      deviceName: 'iPhone 12',
       mockApis: this.config.mockApis || [],
     };
   }
