@@ -2,7 +2,6 @@ import puppeteer, {
   LaunchOptions,
   Page,
   Browser,
-  KnownDevices,
   HTTPRequest,
   HTTPResponse,
 } from 'puppeteer';
@@ -33,14 +32,14 @@ export interface VisualTestConfig {
 export const defaultConfig: VisualTestConfig = {
   headless: process.env.HEADLESS === 'true',
   viewport: {
-    width: 375,
-    height: 667,
+    width: 390,
+    height: 844,
   },
   baseUrl: 'http://localhost:8081',
   slowMo: process.env.HEADLESS === 'true' ? 0 : 100,
   devtools: false,
-  mobileMode: true,
-  deviceName: 'iPhone 12',
+  mobileMode: false,
+  deviceName: undefined,
   mockApis: [],
 };
 
@@ -63,9 +62,8 @@ export class PuppeteerTestHelper {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-web-security',
-        ...(this.config.mobileMode
-          ? ['--enable-touch-events', '--force-device-scale-factor=2']
-          : []),
+        '--force-device-scale-factor=1',
+        '--disable-features=VizDisplayCompositor',
       ],
     };
 
@@ -76,18 +74,12 @@ export class PuppeteerTestHelper {
       await this.setupApiMocking();
     }
 
-    if (this.config.mobileMode && this.config.deviceName) {
-      const deviceName = this.config.deviceName as keyof typeof KnownDevices;
-      if (KnownDevices[deviceName]) {
-        await this.page.emulate(KnownDevices[deviceName]);
-      } else {
-        await this.setupMobileEmulation();
-      }
-    } else if (this.config.mobileMode) {
-      await this.setupMobileEmulation();
-    } else {
-      await this.page.setViewport(this.config.viewport);
-    }
+    // Always use consistent viewport settings
+    await this.page.setViewport({
+      width: this.config.viewport.width,
+      height: this.config.viewport.height,
+      deviceScaleFactor: 1,
+    });
   }
 
   async addApiMock(mockConfig: MockApiResponse): Promise<void> {
@@ -415,21 +407,5 @@ export class PuppeteerTestHelper {
         await request.continue();
       }
     });
-  }
-
-  private async setupMobileEmulation(): Promise<void> {
-    if (!this.page) return;
-
-    await this.page.setViewport({
-      width: this.config.viewport.width,
-      height: this.config.viewport.height,
-      isMobile: true,
-      hasTouch: true,
-      deviceScaleFactor: 2,
-    });
-
-    await this.page.setUserAgent(
-      'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1'
-    );
   }
 }

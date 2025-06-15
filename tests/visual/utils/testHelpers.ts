@@ -63,6 +63,8 @@ export class VisualTestSuite {
       throw new Error('Test helper not initialized. Call setupTest() first.');
     }
 
+    await this.sleep(2000);
+
     await this.testHelper.takeScreenshot(screenshotName);
 
     if (process.env.UPDATE_BASELINES === 'true') {
@@ -85,6 +87,10 @@ export class VisualTestSuite {
     await this.visualComparator.updateBaseline(screenshotName);
   }
 
+  private async sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   private createDefaultConfig(): VisualTestConfig {
     const isHeadless = process.env.HEADLESS === 'true';
     const slowMo = isHeadless ? 0 : 500;
@@ -95,8 +101,8 @@ export class VisualTestSuite {
       baseUrl: 'http://localhost:8081',
       slowMo,
       devtools: false,
-      mobileMode: true,
-      deviceName: 'iPhone 12',
+      mobileMode: false,
+      deviceName: undefined,
       mockApis: this.config.mockApis || [],
     };
   }
