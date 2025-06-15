@@ -22,7 +22,7 @@ export interface VisualComparisonOptions {
 
 const DEFAULT_OPTIONS: VisualComparisonOptions = {
   threshold: 0.05,
-  maxDiffPercentage: 0.1,
+  maxDiffPercentage: 0.01,
   createDiffImage: true,
 };
 

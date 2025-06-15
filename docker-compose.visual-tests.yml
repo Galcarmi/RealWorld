@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  visual-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-tests
+    volumes:
+      # Mount entire project directory for live development
+      - .:/app
+      # Mount local node_modules so local package installations are reflected
+      - ./node_modules:/app/node_modules
+    environment:
+      - HEADLESS=true
+      - CI=true
+      - TZ=UTC
+    ports:
+      - "8081:8081"
+    command: >
+      bash -c "
+        echo '🔧 Installing dependencies with correct Yarn version...' &&
+        yarn install &&
+        echo '🚀 Starting Expo dev server in background...' &&
+        CI=1 npx expo start --web --port 8081 &
+        echo '⏳ Waiting for server to be ready...' &&
+        timeout 120 bash -c 'until curl -f http://localhost:8081 > /dev/null 2>&1; do sleep 2; done' &&
+        echo '🧪 Running visual tests...' &&
+        yarn test:visual
+      "
+
+  visual-tests-update-baselines:
+    build:
+      context: .
+      dockerfile: Dockerfile.visual-tests
+    volumes:
+      # Mount entire project directory for live development
+      - .:/app
+      # Mount local node_modules so local package installations are reflected
+      - ./node_modules:/app/node_modules
+    environment:
+      - HEADLESS=true
+      - UPDATE_BASELINES=true
+      - CI=true
+      - TZ=UTC
+    ports:
+      - "8081:8081"
+    command: >
+      bash -c "
+        echo '🔧 Installing dependencies with correct Yarn version...' &&
+        yarn install &&
+        echo '🚀 Starting Expo dev server in background...' &&
+        CI=1 npx expo start --web --port 8081 &
+        echo '⏳ Waiting for server to be ready...' &&
+        timeout 120 bash -c 'until curl -f http://localhost:8081 > /dev/null 2>&1; do sleep 2; done' &&
+        echo '📸 Updating visual test baselines...' &&
+        yarn test:visual:update-baselines
+      " 

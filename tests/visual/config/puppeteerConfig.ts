@@ -57,6 +57,7 @@ export class PuppeteerTestHelper {
       headless: this.config.headless,
       slowMo: this.config.slowMo,
       devtools: this.config.devtools,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
