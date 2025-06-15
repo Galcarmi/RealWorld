@@ -39,6 +39,7 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
           paddingH-20
           paddingV-8
           onPress={onFollowToggle}
+          testID={`${profile.following ? 'unfollow' : 'follow'}-button`}
         />
       </View>
     </View>

@@ -45,6 +45,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
           validationMessage={['Title is required']}
           onChangeText={onTitleChange}
           containerStyle={componentStyles.newArticleFormTitleInput}
+          testID='article-title-input'
         />
 
         <InputField
@@ -55,6 +56,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
           validationMessage={['Description is required']}
           onChangeText={onDescriptionChange}
           containerStyle={componentStyles.newArticleFormDescriptionInput}
+          testID='article-description-input'
         />
 
         <InputField
@@ -65,6 +67,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
           validationMessage={['Article text is required']}
           onChangeText={onBodyChange}
           containerStyle={componentStyles.newArticleFormBodyInput}
+          testID='article-body-input'
         />
 
         <Button
@@ -78,6 +81,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
           disabled={!canPublish || isLoading}
           onPress={onPublishArticle}
           style={componentStyles.newArticleFormPublishButton}
+          testID='publish-article-button'
         />
       </View>
     </ScrollView>

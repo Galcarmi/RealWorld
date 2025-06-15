@@ -50,7 +50,10 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           {formatDate(createdAt)}
         </Text>
       </View>
-      <TouchableOpacity onPress={onFavorite}>
+      <TouchableOpacity
+        onPress={onFavorite}
+        testID={`favorite-button-${author.username}`}
+      >
         <View row centerV>
           <Ionicons
             name={favorited ? 'heart' : 'heart-outline'}

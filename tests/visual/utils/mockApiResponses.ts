@@ -1,0 +1,363 @@
+import { MockApiResponse } from '../config/puppeteerConfig';
+
+export const authMocks = {
+  login: {
+    url: /\/api\/users\/login$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: 'Test bio',
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  register: {
+    url: /\/api\/users$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: null,
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  getCurrentUser: {
+    url: /\/api\/user$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: 'Test bio',
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  updateUser: {
+    url: /\/api\/user$/,
+    method: 'PUT',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'updated@example.com',
+        username: 'updateduser',
+        bio: 'Updated bio',
+        image: 'https://example.com/avatar.jpg',
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+} as const;
+
+export const articleMocks = {
+  getArticles: {
+    url: /\/api\/articles\?/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [
+        {
+          slug: 'test-article-1',
+          title: 'Test Article 1',
+          description: 'This is a test article description',
+          body: 'Test article body content',
+          tagList: ['test', 'demo'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 5,
+          author: {
+            username: 'authoruser',
+            bio: 'Author bio',
+            image: null,
+            following: false,
+          },
+        },
+        {
+          slug: 'test-article-2',
+          title: 'Test Article 2',
+          description: 'Another test article',
+          body: 'Another test article body',
+          tagList: ['test', 'example'],
+          createdAt: '2024-01-02T00:00:00.000Z',
+          updatedAt: '2024-01-02T00:00:00.000Z',
+          favorited: true,
+          favoritesCount: 8,
+          author: {
+            username: 'anotheruser',
+            bio: 'Another user bio',
+            image: null,
+            following: true,
+          },
+        },
+      ],
+      articlesCount: 2,
+    },
+  },
+  getFavoriteArticles: {
+    url: /\/api\/articles\?favorited=/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [
+        {
+          slug: 'test-article-2',
+          title: 'Test Article 2',
+          description: 'Another test article',
+          body: 'Another test article body',
+          tagList: ['test', 'example'],
+          createdAt: '2024-01-02T00:00:00.000Z',
+          updatedAt: '2024-01-02T00:00:00.000Z',
+          favorited: true,
+          favoritesCount: 8,
+          author: {
+            username: 'anotheruser',
+            bio: 'Another user bio',
+            image: null,
+            following: true,
+          },
+        },
+      ],
+      articlesCount: 1,
+    },
+  },
+  getUserArticles: {
+    url: /\/api\/articles\?author=testuser/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [
+        {
+          slug: 'my-article-1',
+          title: 'My First Article',
+          description: 'This is my first article',
+          body: 'Article content here',
+          tagList: ['personal', 'first'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 2,
+          author: {
+            username: 'testuser',
+            bio: 'Test bio',
+            image: null,
+            following: false,
+          },
+        },
+      ],
+      articlesCount: 1,
+    },
+  },
+  getUserArticlesEmpty: {
+    url: /\/api\/articles\?author=testuser/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [],
+      articlesCount: 0,
+    },
+  },
+  getAuthorArticles: {
+    url: /\/api\/articles\?author=authoruser/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [
+        {
+          slug: 'author-article-1',
+          title: 'Author Article 1',
+          description: 'Article by the author',
+          body: 'Author article content',
+          tagList: ['author', 'content'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 3,
+          author: {
+            username: 'authoruser',
+            bio: 'Author bio',
+            image: null,
+            following: false,
+          },
+        },
+      ],
+      articlesCount: 1,
+    },
+  },
+  createArticle: {
+    url: /\/api\/articles$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      article: {
+        slug: 'new-test-article',
+        title: 'New Test Article',
+        description: 'This is a new test article',
+        body: 'Article body content here',
+        tagList: ['new', 'test'],
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
+        favorited: false,
+        favoritesCount: 0,
+        author: {
+          username: 'testuser',
+          bio: 'Test bio',
+          image: null,
+          following: false,
+        },
+      },
+    },
+  },
+  favoriteArticle1: {
+    url: /\/api\/articles\/test-article-1\/favorite$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      article: {
+        slug: 'test-article-1',
+        title: 'Test Article 1',
+        description: 'This is a test article description',
+        body: 'Test article body content',
+        tagList: ['test', 'demo'],
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
+        favorited: true,
+        favoritesCount: 6,
+        author: {
+          username: 'authoruser',
+          bio: 'Author bio',
+          image: null,
+          following: false,
+        },
+      },
+    },
+  },
+  unfavoriteArticle2: {
+    url: /\/api\/articles\/test-article-2\/favorite$/,
+    method: 'DELETE',
+    status: 200,
+    body: {
+      article: {
+        slug: 'test-article-2',
+        title: 'Test Article 2',
+        description: 'Another test article',
+        body: 'Another test article body',
+        tagList: ['test', 'example'],
+        createdAt: '2024-01-02T00:00:00.000Z',
+        updatedAt: '2024-01-02T00:00:00.000Z',
+        favorited: false,
+        favoritesCount: 7,
+        author: {
+          username: 'anotheruser',
+          bio: 'Another user bio',
+          image: null,
+          following: true,
+        },
+      },
+    },
+  },
+} as const;
+
+export const profileMocks = {
+  getAuthorProfile: {
+    url: /\/api\/profiles\/authoruser$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      profile: {
+        username: 'authoruser',
+        bio: 'Author bio',
+        image: null,
+        following: false,
+      },
+    },
+  },
+  followAuthor: {
+    url: /\/api\/profiles\/authoruser\/follow$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      profile: {
+        username: 'authoruser',
+        bio: 'Author bio',
+        image: null,
+        following: true,
+      },
+    },
+  },
+} as const;
+
+export const mockCollections = {
+  auth: [authMocks.login, authMocks.getCurrentUser] as MockApiResponse[],
+
+  authWithRegistration: [authMocks.register] as MockApiResponse[],
+
+  basicApp: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    articleMocks.getUserArticlesEmpty,
+  ] as MockApiResponse[],
+
+  authorProfile: [
+    authMocks.login,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
+    profileMocks.followAuthor,
+  ] as MockApiResponse[],
+
+  favorites: [
+    authMocks.login,
+    articleMocks.getArticles,
+    articleMocks.getFavoriteArticles,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+  ] as MockApiResponse[],
+
+  userProfile: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getUserArticles,
+  ] as MockApiResponse[],
+
+  editProfile: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    authMocks.updateUser,
+    articleMocks.getUserArticlesEmpty,
+  ] as MockApiResponse[],
+
+  newArticle: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.createArticle,
+    articleMocks.getUserArticlesEmpty,
+  ] as MockApiResponse[],
+
+  completeIntegration: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+    articleMocks.getUserArticlesEmpty,
+    articleMocks.createArticle,
+  ] as MockApiResponse[],
+} as const;

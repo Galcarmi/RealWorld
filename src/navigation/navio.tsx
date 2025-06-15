@@ -39,7 +39,12 @@ const navio = Navio.build({
           options: () => ({
             title: 'Home',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name='home' size={size} color={color} />
+              <Ionicons
+                name='home'
+                size={size}
+                color={color}
+                testID='home-main-tab-icon'
+              />
             ),
           }),
         },
@@ -48,7 +53,12 @@ const navio = Navio.build({
           options: () => ({
             title: 'Favorites',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name='heart' size={size} color={color} />
+              <Ionicons
+                name='heart'
+                size={size}
+                color={color}
+                testID='favorites-main-tab-icon'
+              />
             ),
           }),
         },
@@ -57,7 +67,12 @@ const navio = Navio.build({
           options: () => ({
             title: 'Profile',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name='person' size={size} color={color} />
+              <Ionicons
+                name='person'
+                size={size}
+                color={color}
+                testID='profile-main-tab-icon'
+              />
             ),
           }),
         },
