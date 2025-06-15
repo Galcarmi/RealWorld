@@ -150,20 +150,19 @@ jobs:
             rm expo_pid.txt
           fi
 
-      - name: Upload visual test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: visual-test-results
-          path: |
-            tests/visual/screenshots/
-            tests/visual/baselines/
-          retention-days: 30
-
-      - name: Upload visual test screenshots
+      - name: Upload visual diff images
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: visual-test-screenshots
-          path: tests/visual/screenshots/
+          name: visual-test-diffs
+          path: tests/visual/diffs/
+          retention-days: 30
+
+      - name: Upload visual test logs
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-test-logs
+          path: |
+            tests/visual/screenshots/
           retention-days: 7 
