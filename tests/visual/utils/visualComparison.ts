@@ -97,9 +97,13 @@ export class VisualComparator {
 
     // Console log the comparison results
     console.log(`\n📸 Visual Comparison: ${screenshotName}`);
-    console.log(`   Pixel Difference: ${pixelDifference}/${totalPixels} pixels`);
+    console.log(
+      `   Pixel Difference: ${pixelDifference}/${totalPixels} pixels`
+    );
     console.log(`   Difference: ${diffPercentage.toFixed(4)}%`);
-    console.log(`   Threshold: ${opts.threshold} | Max Allowed: ${opts.maxDiffPercentage}%`);
+    console.log(
+      `   Threshold: ${opts.threshold} | Max Allowed: ${opts.maxDiffPercentage}%`
+    );
     console.log(`   Result: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
 
     const diffImagePath = this.createDiffImageIfNeeded(
