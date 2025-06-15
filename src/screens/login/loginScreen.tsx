@@ -39,7 +39,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           testID='login-email-input'
         />
         <InputField
-          placeholder={'Password'}
+          placeholder={'Passwordasdsd'}
           validationMessage={['Password is required', 'Password is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
