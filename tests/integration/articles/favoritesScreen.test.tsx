@@ -3,9 +3,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
 
@@ -43,7 +43,9 @@ describe('Favorites Screen Integration Tests', () => {
     it('should initialize favorite articles on mount', async () => {
       renderFavoritesScreen();
 
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(1);
+      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
+        1
+      );
     });
 
     it('should render screen with proper test ID', () => {
@@ -94,8 +96,11 @@ describe('Favorites Screen Integration Tests', () => {
 
   describe('Article Interactions', () => {
     it('should handle article press and navigate to author profile', async () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToAuthorProfile');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToAuthorProfile'
+      );
+
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
@@ -143,7 +148,8 @@ describe('Favorites Screen Integration Tests', () => {
 
       // Find the FlatList inside ArticlesList and trigger refresh
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'refresh');
         }
@@ -158,7 +164,8 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'endReached');
         }
@@ -227,14 +234,19 @@ describe('Favorites Screen Integration Tests', () => {
 
       renderFavoritesScreen();
 
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(1);
+      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
+        1
+      );
     });
   });
 
   describe('Multiple Article Interactions', () => {
     it('should handle multiple article presses correctly', async () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToAuthorProfile');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToAuthorProfile'
+      );
+
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
@@ -261,7 +273,9 @@ describe('Favorites Screen Integration Tests', () => {
         fireEvent.press(getByTestId('favorite-button-testuser2'));
       });
 
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledTimes(2);
+      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledTimes(
+        2
+      );
       expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenNthCalledWith(
         1,
         'test-article-1',
@@ -294,7 +308,9 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId('favorites-screen')).toBeTruthy();
-      expect(mockArticlesStore.favoriteArticles.length).toBe(mockArticles.length);
+      expect(mockArticlesStore.favoriteArticles.length).toBe(
+        mockArticles.length
+      );
     });
   });
 
@@ -316,7 +332,8 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'refresh');
           fireEvent(articlesList, 'refresh');
@@ -358,4 +375,4 @@ describe('Favorites Screen Integration Tests', () => {
       expect(getByTestId('favorites-screen')).toBeTruthy();
     });
   });
-}); 
+});

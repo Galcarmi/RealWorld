@@ -3,10 +3,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
-import { mockUser, mockUserMinimal, mockArticles } from '../../mocks/data';
+import { mockUser, mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
 
 const mockArticlesStore = getMockArticlesStore();
@@ -49,7 +49,10 @@ describe('Profile Screen Integration Tests', () => {
   describe('Authentication Requirements', () => {
     it('should redirect to login screen when user is not authenticated', () => {
       userStore.forgetUser();
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToLoginScreen');
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToLoginScreen'
+      );
 
       renderProfileScreen();
 
@@ -59,7 +62,7 @@ describe('Profile Screen Integration Tests', () => {
     it('should render profile screen when user is authenticated', async () => {
       // Ensure user is set before rendering
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -71,7 +74,7 @@ describe('Profile Screen Integration Tests', () => {
   describe('User Information Display', () => {
     it('should display user profile information correctly', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByText } = renderProfileScreen();
 
       await waitFor(() => {
@@ -91,7 +94,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should display profile header section', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -104,8 +107,11 @@ describe('Profile Screen Integration Tests', () => {
   describe('Navigation Actions', () => {
     it('should navigate to edit profile when edit button is pressed', async () => {
       userStore.setUser(mockUser);
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToEditProfile');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToEditProfile'
+      );
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -118,8 +124,11 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should navigate to new article screen when new article button is pressed', async () => {
       userStore.setUser(mockUser);
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToNewArticle');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToNewArticle'
+      );
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -134,7 +143,7 @@ describe('Profile Screen Integration Tests', () => {
   describe('User Articles Management', () => {
     it('should display articles list section', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -145,17 +154,21 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should show empty message when user has no articles', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByText } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByText("No articles yet. Tap 'New Article' to create your first post")).toBeTruthy();
+        expect(
+          getByText(
+            "No articles yet. Tap 'New Article' to create your first post"
+          )
+        ).toBeTruthy();
       });
     });
 
     it('should handle article refresh through articles store', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       // Find the articles list and trigger refresh
@@ -170,7 +183,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should integrate with articles store for user articles', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -185,7 +198,7 @@ describe('Profile Screen Integration Tests', () => {
   describe('Screen Layout and Structure', () => {
     it('should render all required UI sections', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -197,7 +210,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should have proper screen header with title', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -208,7 +221,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should separate profile info and articles sections', async () => {
       userStore.setUser(mockUser);
-      
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -284,14 +297,20 @@ describe('Profile Screen Integration Tests', () => {
       renderProfileScreen();
 
       await waitFor(() => {
-        expect(getUserArticlesSpy).toHaveBeenCalledWith(mockUser.username, expect.any(Number), expect.any(Number));
+        expect(getUserArticlesSpy).toHaveBeenCalledWith(
+          mockUser.username,
+          expect.any(Number),
+          expect.any(Number)
+        );
       });
     });
 
     it('should handle store errors gracefully', async () => {
       userStore.setUser(mockUser);
       // Mock store error
-      jest.spyOn(articlesStore, 'getUserArticles').mockRejectedValue(new Error('Network error'));
+      jest
+        .spyOn(articlesStore, 'getUserArticles')
+        .mockRejectedValue(new Error('Network error'));
 
       const { getByTestId } = renderProfileScreen();
 
@@ -306,9 +325,15 @@ describe('Profile Screen Integration Tests', () => {
   describe('Multiple Action Sequences', () => {
     it('should handle multiple navigation actions', async () => {
       userStore.setUser(mockUser);
-      const editProfileSpy = jest.spyOn(navigationService, 'navigateToEditProfile');
-      const newArticleSpy = jest.spyOn(navigationService, 'navigateToNewArticle');
-      
+      const editProfileSpy = jest.spyOn(
+        navigationService,
+        'navigateToEditProfile'
+      );
+      const newArticleSpy = jest.spyOn(
+        navigationService,
+        'navigateToNewArticle'
+      );
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -325,8 +350,11 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should handle rapid button presses without issues', async () => {
       userStore.setUser(mockUser);
-      const editProfileSpy = jest.spyOn(navigationService, 'navigateToEditProfile');
-      
+      const editProfileSpy = jest.spyOn(
+        navigationService,
+        'navigateToEditProfile'
+      );
+
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -344,7 +372,7 @@ describe('Profile Screen Integration Tests', () => {
   describe('Edge Cases', () => {
     it('should handle component unmount gracefully', () => {
       userStore.setUser(mockUser);
-      
+
       const { unmount } = renderProfileScreen();
 
       expect(() => unmount()).not.toThrow();

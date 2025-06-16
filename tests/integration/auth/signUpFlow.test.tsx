@@ -1,11 +1,11 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { Main as SignUpScreen } from '../../../src/screens/login/signUpScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
 import { resetAllStoreMocks, getMockAuthStore } from '../../mocks/stores';
 
 const mockAuthStore = getMockAuthStore();
@@ -166,7 +166,7 @@ describe('Sign Up Flow Integration Tests', () => {
       expect(getByTestId('signup-submit-button')).toBeDisabled(); // Still missing password
 
       fireEvent.changeText(passwordInput, 'password123');
-      
+
       // Form should now have all fields filled
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
@@ -176,7 +176,6 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('SignUp Submission', () => {
     it('should trigger register action when submit is attempted', () => {
-      const registerSpy = jest.spyOn(authStore, 'register');
       const { getByTestId } = renderSignUpScreen();
 
       const usernameInput = getByTestId('signup-username-input');
@@ -205,7 +204,6 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should handle registration process integration', () => {
-      const registerSpy = jest.spyOn(authStore, 'register');
       const { getByTestId } = renderSignUpScreen();
 
       const usernameInput = getByTestId('signup-username-input');
@@ -227,8 +225,11 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Navigation Actions', () => {
     it('should navigate to login screen when sign in button is pressed', () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToLoginScreen');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToLoginScreen'
+      );
+
       const { getByTestId } = renderSignUpScreen();
 
       const signInButton = getByTestId('signup-signin-button');
@@ -256,12 +257,12 @@ describe('Sign Up Flow Integration Tests', () => {
       const submitButton = getByTestId('signup-submit-button');
 
       expect(submitButton).toBeDisabled();
-      
+
       // Inputs should still be usable but form should be disabled
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
-      
+
       expect(submitButton).toBeDisabled();
     });
 
@@ -286,17 +287,38 @@ describe('Sign Up Flow Integration Tests', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle registration errors gracefully', () => {
-      mockAuthStore.errors = {
-        username: ['Username is already taken'],
-        email: ['Email is already in use'],
-        password: ['Password is too weak'],
-      };
-
+    it('should handle registration errors gracefully', async () => {
       const { getByTestId } = renderSignUpScreen();
 
+      const usernameInput = getByTestId('signup-username-input');
+      const emailInput = getByTestId('signup-email-input');
+      const passwordInput = getByTestId('signup-password-input');
+      const signUpButton = getByTestId('signup-submit-button');
+
+      fireEvent.changeText(usernameInput, 'erroruser');
+      fireEvent.changeText(emailInput, 'error@example.com');
+      fireEvent.changeText(passwordInput, 'password123');
+      fireEvent.press(signUpButton);
+
+      // Should handle error gracefully without crashing
       expect(getByTestId('register-screen')).toBeTruthy();
-      // Error messages should be handled by InputField components
+    });
+
+    it('should handle network errors gracefully', async () => {
+      const { getByTestId } = renderSignUpScreen();
+
+      const usernameInput = getByTestId('signup-username-input');
+      const emailInput = getByTestId('signup-email-input');
+      const passwordInput = getByTestId('signup-password-input');
+      const signUpButton = getByTestId('signup-submit-button');
+
+      fireEvent.changeText(usernameInput, 'networkuser');
+      fireEvent.changeText(emailInput, 'network@example.com');
+      fireEvent.changeText(passwordInput, 'password123');
+      fireEvent.press(signUpButton);
+
+      // Should handle network error gracefully without crashing
+      expect(getByTestId('register-screen')).toBeTruthy();
     });
 
     it('should clear errors when user starts typing', () => {
@@ -381,7 +403,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const { getByTestId } = renderSignUpScreen();
 
       const usernameInput = getByTestId('signup-username-input');
-      
+
       fireEvent.changeText(usernameInput, 'ab'); // Too short
       expect(getByTestId('signup-submit-button')).toBeDisabled();
 
@@ -393,7 +415,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const { getByTestId } = renderSignUpScreen();
 
       const usernameInput = getByTestId('signup-username-input');
-      
+
       fireEvent.changeText(usernameInput, 'a'); // 1 char - too short
       fireEvent.changeText(usernameInput, 'ab'); // 2 chars - too short
       fireEvent.changeText(usernameInput, 'abc'); // 3 chars - valid
@@ -408,7 +430,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const { getByTestId } = renderSignUpScreen();
 
       const passwordInput = getByTestId('signup-password-input');
-      
+
       fireEvent.changeText(passwordInput, '12345'); // Too short
       expect(getByTestId('signup-submit-button')).toBeDisabled();
 
@@ -420,7 +442,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const { getByTestId } = renderSignUpScreen();
 
       const passwordInput = getByTestId('signup-password-input');
-      
+
       fireEvent.changeText(passwordInput, '123456'); // Weak but valid length
       fireEvent.changeText(passwordInput, 'password123'); // Strong
       fireEvent.changeText(passwordInput, 'P@ssw0rd!'); // Very strong
@@ -451,12 +473,15 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should handle navigation button presses correctly', () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToLoginScreen');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToLoginScreen'
+      );
+
       const { getByTestId } = renderSignUpScreen();
 
       const signInButton = getByTestId('signup-signin-button');
-      
+
       fireEvent.press(signInButton);
       fireEvent.press(signInButton);
 

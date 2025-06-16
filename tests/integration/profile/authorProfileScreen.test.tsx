@@ -1,16 +1,13 @@
+import { RouteProp } from '@react-navigation/native';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RouteProp } from '@react-navigation/native';
 
 import '../../mocks';
-import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
-import { articlesStore } from '../../../src/store/articlesStore';
-import { userStore } from '../../../src/store/userStore';
-import { mockArticles, mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
 import { RootStackParamList } from '../../../src/navigation/types';
-
-const mockArticlesStore = getMockArticlesStore();
+import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
+import { userStore } from '../../../src/store/userStore';
+import { mockUserMinimal, mockArticles } from '../../mocks/data';
+import { resetAllStoreMocks } from '../../mocks/stores';
 
 // Mock the navigation route
 const mockRoute: RouteProp<RootStackParamList, 'AuthorProfile'> = {
@@ -26,7 +23,12 @@ jest.mock('@react-navigation/native', () => ({
 
 // Mock the useAuthorProfile hook
 let mockUseAuthorProfile = {
-  authorProfile: { username: 'testauthor', bio: 'Test bio', image: '', following: false } as any,
+  authorProfile: {
+    username: 'testauthor',
+    bio: 'Test bio',
+    image: '',
+    following: false,
+  } as any,
   authorArticles: mockArticles,
   isLoading: false,
   onFollowToggle: jest.fn(),
@@ -57,7 +59,12 @@ describe('Author Profile Screen Integration Tests', () => {
 
     // Reset mock hook values
     mockUseAuthorProfile = {
-      authorProfile: { username: 'testauthor', bio: 'Test bio', image: '', following: false } as any,
+      authorProfile: {
+        username: 'testauthor',
+        bio: 'Test bio',
+        image: '',
+        following: false,
+      } as any,
       authorArticles: mockArticles,
       isLoading: false,
       onFollowToggle: jest.fn(),
@@ -96,7 +103,12 @@ describe('Author Profile Screen Integration Tests', () => {
 
   describe('Author Profile Display', () => {
     it('should display author profile information when available', async () => {
-      mockUseAuthorProfile.authorProfile = { username: 'testauthor', bio: 'Test bio', image: '', following: false };
+      mockUseAuthorProfile.authorProfile = {
+        username: 'testauthor',
+        bio: 'Test bio',
+        image: '',
+        following: false,
+      };
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -191,13 +203,16 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'refresh');
         }
       });
 
-      expect(mockUseAuthorProfile.refreshAuthorArticles).toHaveBeenCalledTimes(1);
+      expect(mockUseAuthorProfile.refreshAuthorArticles).toHaveBeenCalledTimes(
+        1
+      );
     });
   });
 
@@ -287,7 +302,12 @@ describe('Author Profile Screen Integration Tests', () => {
 
   describe('Follow/Unfollow Integration', () => {
     it('should handle follow button interaction', async () => {
-      mockUseAuthorProfile.authorProfile = { username: 'testauthor', bio: 'Test bio', image: '', following: false };
+      mockUseAuthorProfile.authorProfile = {
+        username: 'testauthor',
+        bio: 'Test bio',
+        image: '',
+        following: false,
+      };
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -365,13 +385,25 @@ describe('Author Profile Screen Integration Tests', () => {
 
       // Rapid route parameter changes
       (mockRoute.params as any) = { username: 'author1' };
-      rerender(<SafeAreaProvider><AuthorProfileScreen /></SafeAreaProvider>);
+      rerender(
+        <SafeAreaProvider>
+          <AuthorProfileScreen />
+        </SafeAreaProvider>
+      );
 
       (mockRoute.params as any) = { username: 'author2' };
-      rerender(<SafeAreaProvider><AuthorProfileScreen /></SafeAreaProvider>);
+      rerender(
+        <SafeAreaProvider>
+          <AuthorProfileScreen />
+        </SafeAreaProvider>
+      );
 
       (mockRoute.params as any) = { username: 'author3' };
-      rerender(<SafeAreaProvider><AuthorProfileScreen /></SafeAreaProvider>);
+      rerender(
+        <SafeAreaProvider>
+          <AuthorProfileScreen />
+        </SafeAreaProvider>
+      );
 
       await waitFor(() => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
@@ -394,4 +426,4 @@ describe('Author Profile Screen Integration Tests', () => {
       });
     });
   });
-}); 
+});

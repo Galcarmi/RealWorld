@@ -1,11 +1,11 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { LoginScreen } from '../../../src/screens/login/loginScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
 import { resetAllStoreMocks, getMockAuthStore } from '../../mocks/stores';
 
 const mockAuthStore = getMockAuthStore();
@@ -161,7 +161,7 @@ describe('Login Flow Integration Tests', () => {
       expect(getByTestId('login-submit-button')).toBeDisabled(); // Still missing password
 
       fireEvent.changeText(passwordInput, 'password123');
-      
+
       // Form should now have both fields filled
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -170,7 +170,6 @@ describe('Login Flow Integration Tests', () => {
 
   describe('Login Submission', () => {
     it('should trigger login action when submit is attempted', () => {
-      const loginSpy = jest.spyOn(authStore, 'login');
       const { getByTestId } = renderLoginScreen();
 
       const emailInput = getByTestId('login-email-input');
@@ -197,7 +196,6 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should handle login process integration', () => {
-      const loginSpy = jest.spyOn(authStore, 'login');
       const { getByTestId } = renderLoginScreen();
 
       const emailInput = getByTestId('login-email-input');
@@ -216,8 +214,11 @@ describe('Login Flow Integration Tests', () => {
 
   describe('Navigation Actions', () => {
     it('should navigate to sign up screen when sign up button is pressed', () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToSignUpScreen');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToSignUpScreen'
+      );
+
       const { getByTestId } = renderLoginScreen();
 
       const signUpButton = getByTestId('login-signup-button');
@@ -244,11 +245,11 @@ describe('Login Flow Integration Tests', () => {
       const submitButton = getByTestId('login-submit-button');
 
       expect(submitButton).toBeDisabled();
-      
+
       // Inputs should still be usable but form should be disabled
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
-      
+
       expect(submitButton).toBeDisabled();
     });
 
@@ -295,6 +296,36 @@ describe('Login Flow Integration Tests', () => {
 
       // Store method should be called
       expect(setEmailSpy).toHaveBeenCalledWith('newemail@example.com');
+    });
+
+    it('should handle login errors gracefully', async () => {
+      const { getByTestId } = renderLoginScreen();
+
+      const emailInput = getByTestId('login-email-input');
+      const passwordInput = getByTestId('login-password-input');
+      const submitButton = getByTestId('login-submit-button');
+
+      fireEvent.changeText(emailInput, 'error@example.com');
+      fireEvent.changeText(passwordInput, 'password123');
+      fireEvent.press(submitButton);
+
+      // Should handle error gracefully without crashing
+      expect(getByTestId('login-screen')).toBeTruthy();
+    });
+
+    it('should handle network errors gracefully', async () => {
+      const { getByTestId } = renderLoginScreen();
+
+      const emailInput = getByTestId('login-email-input');
+      const passwordInput = getByTestId('login-password-input');
+      const submitButton = getByTestId('login-submit-button');
+
+      fireEvent.changeText(emailInput, 'network@example.com');
+      fireEvent.changeText(passwordInput, 'password123');
+      fireEvent.press(submitButton);
+
+      // Should handle network error gracefully without crashing
+      expect(getByTestId('login-screen')).toBeTruthy();
     });
   });
 
@@ -371,12 +402,15 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should handle navigation button presses correctly', () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToSignUpScreen');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToSignUpScreen'
+      );
+
       const { getByTestId } = renderLoginScreen();
 
       const signUpButton = getByTestId('login-signup-button');
-      
+
       fireEvent.press(signUpButton);
       fireEvent.press(signUpButton);
 

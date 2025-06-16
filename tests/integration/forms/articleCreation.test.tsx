@@ -5,11 +5,8 @@ import '../../mocks';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
 import { mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
-
-const mockArticlesStore = getMockArticlesStore();
+import { resetAllStoreMocks } from '../../mocks/stores';
 
 const renderNewArticleScreen = () => {
   return render(
@@ -275,7 +272,9 @@ describe('Article Creation Integration Tests', () => {
   describe('Error Handling', () => {
     it('should handle article creation errors gracefully', async () => {
       // Mock createArticle to throw an error
-      jest.spyOn(articlesStore, 'createArticle').mockRejectedValue(new Error('Creation failed'));
+      jest
+        .spyOn(articlesStore, 'createArticle')
+        .mockRejectedValue(new Error('Creation failed'));
 
       const { getByTestId } = renderNewArticleScreen();
 

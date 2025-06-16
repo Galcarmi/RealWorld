@@ -4,9 +4,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
 
@@ -91,7 +91,9 @@ describe('Home Screen Integration Tests', () => {
       const { getByText } = renderHomeScreen();
 
       await waitFor(() => {
-        expect(getByText('Follow some users to see their articles here')).toBeTruthy();
+        expect(
+          getByText('Follow some users to see their articles here')
+        ).toBeTruthy();
       });
     });
   });
@@ -149,8 +151,11 @@ describe('Home Screen Integration Tests', () => {
 
   describe('Article Interactions', () => {
     it('should handle article press and navigate to author profile', async () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToAuthorProfile');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToAuthorProfile'
+      );
+
       const { getByTestId } = renderHomeScreen();
 
       await waitFor(() => {
@@ -198,7 +203,8 @@ describe('Home Screen Integration Tests', () => {
 
       // Find the FlatList inside ArticlesList and trigger refresh
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'refresh');
         }
@@ -213,7 +219,8 @@ describe('Home Screen Integration Tests', () => {
       const { getByTestId } = renderHomeScreen();
 
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent?.parent;
+        const articlesList = getByTestId('article-card-test-article-1').parent
+          ?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'endReached');
         }
@@ -284,8 +291,11 @@ describe('Home Screen Integration Tests', () => {
 
   describe('Multiple Article Interactions', () => {
     it('should handle multiple article presses correctly', async () => {
-      const navigationSpy = jest.spyOn(navigationService, 'navigateToAuthorProfile');
-      
+      const navigationSpy = jest.spyOn(
+        navigationService,
+        'navigateToAuthorProfile'
+      );
+
       const { getByTestId } = renderHomeScreen();
 
       await waitFor(() => {
@@ -312,7 +322,9 @@ describe('Home Screen Integration Tests', () => {
         fireEvent.press(getByTestId('favorite-button-testuser2'));
       });
 
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledTimes(2);
+      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledTimes(
+        2
+      );
       expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenNthCalledWith(
         1,
         'test-article-1',

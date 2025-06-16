@@ -1,26 +1,37 @@
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Keyboard } from 'react-native';
 
 import '../../mocks';
 import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileScreen';
+import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
-import { navigationService } from '../../../src/services/navigationService';
+import { showErrorModals } from '../../../src/utils';
 import { mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks } from '../../mocks/stores';
-import { showErrorModals } from '../../../src/utils';
 
-// Mock navigation
-const mockGoBack = jest.fn();
+// Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ goBack: mockGoBack }),
+  useNavigation: () => ({
+    goBack: jest.fn(),
+    navigate: jest.fn(),
+  }),
 }));
 
-// Mock showErrorModals
+// Mock navigation
+jest.mock('../../../src/services/navigationService', () => ({
+  navigationService: {
+    setRoot: jest.fn(),
+    navigate: jest.fn(),
+    goBack: jest.fn(),
+  },
+}));
+
+// Mock utils
 jest.mock('../../../src/utils', () => ({
-  ...jest.requireActual('../../../src/utils'),
   showErrorModals: jest.fn(),
+  lengthValidation: jest.fn(() => jest.fn(() => true)),
+  emailValidation: jest.fn(() => true),
 }));
 
 // Mock AuthService
@@ -182,7 +193,7 @@ describe('Edit Profile Screen Integration Tests', () => {
 
     it('should update user store with new user data after successful update', async () => {
       const setUserSpy = jest.spyOn(userStore, 'setUser');
-      
+
       const { getByTestId } = renderEditProfileScreen();
 
       await waitFor(() => {
@@ -295,7 +306,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       });
 
       // After form submission, check that navigation is available
-      expect(mockGoBack).toBeDefined();
+      expect(navigationService.goBack).toBeDefined();
     });
   });
 
@@ -421,7 +432,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       await waitFor(() => {
         const usernameInput = getByTestId('edit-profile-username-input');
         fireEvent.changeText(usernameInput, '');
-        
+
         const emailInput = getByTestId('edit-profile-email-input');
         fireEvent.changeText(emailInput, '');
       });
@@ -430,4 +441,4 @@ describe('Edit Profile Screen Integration Tests', () => {
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
   });
-}); 
+});
