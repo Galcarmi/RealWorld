@@ -221,7 +221,9 @@ module.exports = [
     files: [
       '**/__tests__/**/*.{js,jsx,ts,tsx}',
       '**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'tests/**/*.{js,jsx,ts,tsx}',
       'jest.setup.js',
+      'jest.cleanup.js',
     ],
     languageOptions: {
       globals: {
@@ -239,6 +241,10 @@ module.exports = [
         require: 'readonly',
         module: 'readonly',
         global: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
     rules: {

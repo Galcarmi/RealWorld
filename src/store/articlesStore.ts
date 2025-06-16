@@ -6,9 +6,10 @@ import { Article, CreateArticleRequest } from '../services/types';
 import { showErrorAlert } from '../utils';
 
 import { authStore } from './authStore';
+import { IArticlesStore } from './types';
 import { userStore } from './userStore';
 
-class ArticlesStore {
+class ArticlesStore implements IArticlesStore {
   public homeArticles: Article[] = [];
   public homeIsLoading = false;
   public homeArticlesCount = 0;

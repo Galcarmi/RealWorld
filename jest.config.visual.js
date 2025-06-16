@@ -1,7 +1,6 @@
 module.exports = {
   displayName: 'Visual Tests',
   testMatch: ['**/tests/visual/**/*.(test|spec).(ts|tsx|js|jsx)'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/'],
   testTimeout: 120000,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -16,10 +15,4 @@ module.exports = {
   },
   transformIgnorePatterns: ['node_modules/(?!(pixelmatch|pngjs)/)'],
   testEnvironment: 'node',
-  collectCoverageFrom: [
-    'tests/visual/**/*.{ts,tsx,js,jsx}',
-    '!tests/visual/**/*.d.ts',
-  ],
-  coverageDirectory: 'coverage/visual',
-  coverageReporters: ['text', 'lcov', 'html'],
 };

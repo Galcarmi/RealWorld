@@ -1,4 +1,9 @@
-import { ResponseErrors } from '../services/types';
+import { FeedType } from '../constants/feedTypes';
+import {
+  ResponseErrors,
+  Article,
+  CreateArticleRequest,
+} from '../services/types';
 
 export type User = {
   id: string;
@@ -38,4 +43,34 @@ export interface IUserStore {
   setUser(user: User): void;
   getToken(): string | null;
   isAuthenticated(): boolean;
+}
+
+export interface IArticlesStore {
+  homeArticles: Article[];
+  homeIsLoading: boolean;
+  homeArticlesCount: number;
+  homeCurrentOffset: number;
+  feedType: FeedType;
+  favoriteArticles: Article[];
+  favoritesIsLoading: boolean;
+  favoritesArticlesCount: number;
+  favoritesCurrentOffset: number;
+  loadHomeArticlesInitially(): Promise<void>;
+  loadMoreHomeArticles(): Promise<void>;
+  refreshHomeArticles(): Promise<void>;
+  switchToGlobalFeed(): Promise<void>;
+  switchToUserFeed(): Promise<void>;
+  loadFavoriteArticlesInitially(): Promise<void>;
+  loadMoreFavoriteArticles(): Promise<void>;
+  refreshFavoriteArticles(): Promise<void>;
+  getUserArticles(
+    username: string,
+    limit?: number,
+    offset?: number
+  ): Promise<{ articles: Article[] }>;
+  createArticle(articleData: CreateArticleRequest): Promise<Article>;
+  toggleArticleFavoriteStatus(
+    slug: string,
+    currentlyFavorited: boolean
+  ): Promise<void>;
 }
