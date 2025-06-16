@@ -8,93 +8,112 @@ const mockAuthStore = mockDeep<IAuthStore>();
 const mockUserStore = mockDeep<IUserStore>();
 const mockArticlesStore = mockDeep<IArticlesStore>();
 
-// Set up default values for observables
-mockAuthStore.isLoading = false;
-mockAuthStore.errors = undefined;
-mockAuthStore.username = '';
-mockAuthStore.email = '';
-mockAuthStore.password = '';
-
-mockUserStore.user = null;
-mockUserStore.token = null;
-
-mockArticlesStore.homeArticles = [];
-mockArticlesStore.homeIsLoading = false;
-mockArticlesStore.homeArticlesCount = 0;
-mockArticlesStore.homeCurrentOffset = 0;
-mockArticlesStore.feedType = FeedType.GLOBAL;
-mockArticlesStore.favoriteArticles = [];
-mockArticlesStore.favoritesIsLoading = false;
-mockArticlesStore.favoritesArticlesCount = 0;
-mockArticlesStore.favoritesCurrentOffset = 0;
-
-// Set up default implementations for getters
-Object.defineProperty(mockAuthStore, 'authValues', {
-  get: () => ({
-    email: mockAuthStore.email,
-    username: mockAuthStore.username,
-    password: mockAuthStore.password,
-  }),
-  configurable: true,
-});
-
-Object.defineProperty(mockAuthStore, 'isLoginFormValid', {
-  get: () =>
-    mockAuthStore.email.length > 0 && mockAuthStore.password.length > 0,
-  configurable: true,
-});
-
-Object.defineProperty(mockAuthStore, 'isSignUpFormValid', {
-  get: () =>
-    mockAuthStore.username.length >= 3 &&
-    mockAuthStore.email.length > 0 &&
-    mockAuthStore.password.length >= 6,
-  configurable: true,
-});
-
-// Set up default mock implementations for common methods
-mockAuthStore.clear.mockImplementation(() => {
+// Function to set up auth store properties and implementations
+const setupAuthStoreMocks = () => {
+  // Set up default values for observables
+  mockAuthStore.isLoading = false;
+  mockAuthStore.errors = undefined;
   mockAuthStore.username = '';
   mockAuthStore.email = '';
   mockAuthStore.password = '';
-  mockAuthStore.errors = undefined;
-  mockAuthStore.isLoading = false;
-});
 
-mockAuthStore.setUsername.mockImplementation((value: string) => {
-  mockAuthStore.username = value;
-});
+  // Set up default implementations for getters
+  Object.defineProperty(mockAuthStore, 'authValues', {
+    get: () => ({
+      email: mockAuthStore.email,
+      username: mockAuthStore.username,
+      password: mockAuthStore.password,
+    }),
+    configurable: true,
+  });
 
-mockAuthStore.setEmail.mockImplementation((value: string) => {
-  mockAuthStore.email = value;
-});
+  Object.defineProperty(mockAuthStore, 'isLoginFormValid', {
+    get: () => {
+      const email = mockAuthStore.email || '';
+      const password = mockAuthStore.password || '';
+      return email.length > 0 && password.length > 0;
+    },
+    configurable: true,
+  });
 
-mockAuthStore.setPassword.mockImplementation((value: string) => {
-  mockAuthStore.password = value;
-});
+  Object.defineProperty(mockAuthStore, 'isSignUpFormValid', {
+    get: () => {
+      const username = mockAuthStore.username || '';
+      const email = mockAuthStore.email || '';
+      const password = mockAuthStore.password || '';
+      return username.length >= 3 && email.length > 0 && password.length >= 6;
+    },
+    configurable: true,
+  });
 
-mockAuthStore.login.mockImplementation(() => {
-  mockAuthStore.isLoading = true;
-});
+  // Set up default mock implementations for common methods
+  mockAuthStore.clear.mockImplementation(() => {
+    mockAuthStore.username = '';
+    mockAuthStore.email = '';
+    mockAuthStore.password = '';
+    mockAuthStore.errors = undefined;
+    mockAuthStore.isLoading = false;
+  });
 
-mockAuthStore.register.mockImplementation(() => {
-  mockAuthStore.isLoading = true;
-});
+  mockAuthStore.setUsername.mockImplementation((value: string) => {
+    mockAuthStore.username = value;
+  });
 
-mockUserStore.forgetUser.mockImplementation(() => {
+  mockAuthStore.setEmail.mockImplementation((value: string) => {
+    mockAuthStore.email = value;
+  });
+
+  mockAuthStore.setPassword.mockImplementation((value: string) => {
+    mockAuthStore.password = value;
+  });
+
+  mockAuthStore.login.mockImplementation(() => {
+    mockAuthStore.isLoading = true;
+  });
+
+  mockAuthStore.register.mockImplementation(() => {
+    mockAuthStore.isLoading = true;
+  });
+};
+
+// Function to set up user store properties and implementations
+const setupUserStoreMocks = () => {
   mockUserStore.user = null;
   mockUserStore.token = null;
-});
 
-mockUserStore.setUser.mockImplementation((user: any) => {
-  mockUserStore.user = user;
-  mockUserStore.token = user?.token || null;
-});
+  mockUserStore.forgetUser.mockImplementation(() => {
+    mockUserStore.user = null;
+    mockUserStore.token = null;
+  });
 
-mockUserStore.getToken.mockImplementation(() => mockUserStore.token);
-mockUserStore.isAuthenticated.mockImplementation(() => !!mockUserStore.user);
+  mockUserStore.setUser.mockImplementation((user: any) => {
+    mockUserStore.user = user;
+    mockUserStore.token = user?.token || null;
+  });
 
-mockArticlesStore.getUserArticles.mockResolvedValue({ articles: [] });
+  mockUserStore.getToken.mockImplementation(() => mockUserStore.token);
+  mockUserStore.isAuthenticated.mockImplementation(() => !!mockUserStore.user);
+};
+
+// Function to set up articles store properties and implementations
+const setupArticlesStoreMocks = () => {
+  mockArticlesStore.homeArticles = [];
+  mockArticlesStore.homeIsLoading = false;
+  mockArticlesStore.homeArticlesCount = 0;
+  mockArticlesStore.homeCurrentOffset = 0;
+  mockArticlesStore.feedType = FeedType.GLOBAL;
+  mockArticlesStore.favoriteArticles = [];
+  mockArticlesStore.favoritesIsLoading = false;
+  mockArticlesStore.favoritesArticlesCount = 0;
+  mockArticlesStore.favoritesCurrentOffset = 0;
+
+  mockArticlesStore.getUserArticles.mockResolvedValue({ articles: [] });
+};
+
+// Initialize all mocks
+setupAuthStoreMocks();
+setupUserStoreMocks();
+setupArticlesStoreMocks();
 
 // Jest module mocks
 jest.mock('../../src/store/authStore', () => ({
@@ -121,17 +140,8 @@ export const resetAllStoreMocks = (): void => {
   mockReset(mockUserStore);
   mockReset(mockArticlesStore);
 
-  // Re-apply default values after reset
-  mockAuthStore.isLoading = false;
-  mockAuthStore.errors = undefined;
-  mockAuthStore.username = '';
-  mockAuthStore.email = '';
-  mockAuthStore.password = '';
-
-  mockUserStore.user = null;
-  mockUserStore.token = null;
-
-  mockArticlesStore.homeArticles = [];
-  mockArticlesStore.homeIsLoading = false;
-  mockArticlesStore.homeArticlesCount = 0;
+  // Re-apply all mock setups after reset
+  setupAuthStoreMocks();
+  setupUserStoreMocks();
+  setupArticlesStoreMocks();
 };

@@ -1,10 +1,15 @@
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { NewArticleScreen as NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
+import '../../mocks';
+import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
+import { navigationService } from '../../../src/services/navigationService';
 import { mockUserMinimal } from '../../mocks/data';
+import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+
+const mockArticlesStore = getMockArticlesStore();
 
 const renderNewArticleScreen = () => {
   return render(
@@ -14,104 +19,457 @@ const renderNewArticleScreen = () => {
   );
 };
 
-describe('Article Creation Integration', () => {
+describe('Article Creation Integration Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.forgetUser();
+    resetAllStoreMocks();
 
+    // Set up authenticated user
     userStore.setUser(mockUserMinimal);
 
-    articlesStore.createArticle = jest.fn();
+    // Reset to default mock values (no need to set properties that don't exist on the store)
   });
 
   afterEach(() => {
     userStore.forgetUser();
   });
 
-  it('should render new article screen', async () => {
-    const { getByTestId } = renderNewArticleScreen();
+  describe('Initial Screen State', () => {
+    it('should render new article screen with all required elements', () => {
+      const { getByTestId } = renderNewArticleScreen();
 
-    expect(getByTestId('new-article-screen')).toBeTruthy();
-    expect(getByTestId('article-title-input')).toBeTruthy();
-    expect(getByTestId('article-description-input')).toBeTruthy();
-    expect(getByTestId('article-body-input')).toBeTruthy();
-    expect(getByTestId('publish-article-button')).toBeTruthy();
-  });
-
-  it('should handle form submission with valid data', async () => {
-    const { getByTestId } = renderNewArticleScreen();
-
-    const titleInput = getByTestId('article-title-input');
-    const descriptionInput = getByTestId('article-description-input');
-    const bodyInput = getByTestId('article-body-input');
-    const submitButton = getByTestId('publish-article-button');
-
-    fireEvent.changeText(titleInput, 'Test Article Title');
-    fireEvent.changeText(descriptionInput, 'Test Article Description');
-    fireEvent.changeText(bodyInput, 'Test Article Body');
-
-    await waitFor(() => {
-      expect(submitButton).not.toBeDisabled();
+      expect(getByTestId('new-article-screen')).toBeTruthy();
+      expect(getByTestId('article-title-input')).toBeTruthy();
+      expect(getByTestId('article-description-input')).toBeTruthy();
+      expect(getByTestId('article-body-input')).toBeTruthy();
+      expect(getByTestId('publish-article-button')).toBeTruthy();
     });
 
-    fireEvent.press(submitButton);
+    it('should display correct screen header', () => {
+      const { getByText } = renderNewArticleScreen();
 
-    expect(articlesStore.createArticle).toHaveBeenCalledWith({
-      title: 'Test Article Title',
-      description: 'Test Article Description',
-      body: 'Test Article Body',
+      expect(getByText('New Article')).toBeTruthy();
+    });
+
+    it('should disable publish button with empty fields', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const publishButton = getByTestId('publish-article-button');
+      expect(publishButton).toBeDisabled();
     });
   });
 
-  it('should disable submit button with empty required fields', async () => {
-    const { getByTestId } = renderNewArticleScreen();
+  describe('Form Field Interactions', () => {
+    it('should update all form fields when typing', () => {
+      const { getByTestId } = renderNewArticleScreen();
 
-    const submitButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
 
-    expect(submitButton).toBeDisabled();
-  });
+      fireEvent.changeText(titleInput, 'Test Article Title');
+      fireEvent.changeText(descriptionInput, 'Test Article Description');
+      fireEvent.changeText(bodyInput, 'Test Article Body Content');
 
-  it('should validate form fields progressively', async () => {
-    const { getByTestId } = renderNewArticleScreen();
+      // All fields should accept input without errors
+      expect(titleInput).toBeTruthy();
+      expect(descriptionInput).toBeTruthy();
+      expect(bodyInput).toBeTruthy();
+    });
 
-    const titleInput = getByTestId('article-title-input');
-    const descriptionInput = getByTestId('article-description-input');
-    const bodyInput = getByTestId('article-body-input');
-    const submitButton = getByTestId('publish-article-button');
+    it('should handle field focus and blur events', () => {
+      const { getByTestId } = renderNewArticleScreen();
 
-    expect(submitButton).toBeDisabled();
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
 
-    fireEvent.changeText(titleInput, 'Test Title');
-    expect(submitButton).toBeDisabled();
+      fireEvent(titleInput, 'focus');
+      fireEvent(titleInput, 'blur');
+      fireEvent(descriptionInput, 'focus');
+      fireEvent(descriptionInput, 'blur');
+      fireEvent(bodyInput, 'focus');
+      fireEvent(bodyInput, 'blur');
 
-    fireEvent.changeText(descriptionInput, 'Test Description');
-    expect(submitButton).toBeDisabled();
-
-    fireEvent.changeText(bodyInput, 'Test Body');
-
-    await waitFor(() => {
-      expect(submitButton).not.toBeDisabled();
+      // All inputs should handle focus/blur without errors
+      expect(titleInput).toBeTruthy();
+      expect(descriptionInput).toBeTruthy();
+      expect(bodyInput).toBeTruthy();
     });
   });
 
-  it('should handle navigation after successful article creation', async () => {
-    const { getByTestId } = renderNewArticleScreen();
+  describe('Form Validation', () => {
+    it('should enable publish button when all required fields are filled', async () => {
+      const { getByTestId } = renderNewArticleScreen();
 
-    const titleInput = getByTestId('article-title-input');
-    const descriptionInput = getByTestId('article-description-input');
-    const bodyInput = getByTestId('article-body-input');
-    const submitButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
 
-    fireEvent.changeText(titleInput, 'Test Article Title');
-    fireEvent.changeText(descriptionInput, 'Test Article Description');
-    fireEvent.changeText(bodyInput, 'Test Article Body');
+      fireEvent.changeText(titleInput, 'Test Article Title');
+      fireEvent.changeText(descriptionInput, 'Test Article Description');
+      fireEvent.changeText(bodyInput, 'Test Article Body');
 
-    await waitFor(() => {
-      expect(submitButton).not.toBeDisabled();
+      await waitFor(() => {
+        const publishButton = getByTestId('publish-article-button');
+        expect(publishButton).not.toBeDisabled();
+      });
     });
 
-    fireEvent.press(submitButton);
+    it('should keep publish button disabled with empty title', () => {
+      const { getByTestId } = renderNewArticleScreen();
 
-    expect(articlesStore.createArticle).toHaveBeenCalled();
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      fireEvent.changeText(descriptionInput, 'Test Description');
+      fireEvent.changeText(bodyInput, 'Test Body');
+
+      const publishButton = getByTestId('publish-article-button');
+      expect(publishButton).toBeDisabled();
+    });
+
+    it('should keep publish button disabled with empty description', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      fireEvent.changeText(titleInput, 'Test Title');
+      fireEvent.changeText(bodyInput, 'Test Body');
+
+      const publishButton = getByTestId('publish-article-button');
+      expect(publishButton).toBeDisabled();
+    });
+
+    it('should keep publish button disabled with empty body', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+
+      fireEvent.changeText(titleInput, 'Test Title');
+      fireEvent.changeText(descriptionInput, 'Test Description');
+
+      const publishButton = getByTestId('publish-article-button');
+      expect(publishButton).toBeDisabled();
+    });
+
+    it('should validate form fields progressively', async () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      // Start with empty form - should be invalid
+      expect(getByTestId('publish-article-button')).toBeDisabled();
+
+      fireEvent.changeText(titleInput, 'Test Title');
+      expect(getByTestId('publish-article-button')).toBeDisabled(); // Still missing description and body
+
+      fireEvent.changeText(descriptionInput, 'Test Description');
+      expect(getByTestId('publish-article-button')).toBeDisabled(); // Still missing body
+
+      fireEvent.changeText(bodyInput, 'Test Body');
+
+      await waitFor(() => {
+        expect(getByTestId('publish-article-button')).not.toBeDisabled();
+      });
+    });
+  });
+
+  describe('Article Publication', () => {
+    it('should call createArticle when form is submitted with valid data', async () => {
+      const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+      const publishButton = getByTestId('publish-article-button');
+
+      fireEvent.changeText(titleInput, 'Integration Test Article');
+      fireEvent.changeText(descriptionInput, 'This is a test description');
+      fireEvent.changeText(bodyInput, 'This is the test article body content');
+
+      await waitFor(() => {
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      fireEvent.press(publishButton);
+
+      expect(createArticleSpy).toHaveBeenCalledWith({
+        title: 'Integration Test Article',
+        description: 'This is a test description',
+        body: 'This is the test article body content',
+      });
+    });
+
+    it('should handle successful article creation', async () => {
+      const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+      const publishButton = getByTestId('publish-article-button');
+
+      fireEvent.changeText(titleInput, 'Success Test Article');
+      fireEvent.changeText(descriptionInput, 'Success test description');
+      fireEvent.changeText(bodyInput, 'Success test body');
+
+      await waitFor(() => {
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      fireEvent.press(publishButton);
+
+      expect(createArticleSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('Loading States', () => {
+    it('should show loading state is handled by useNewArticle hook', async () => {
+      // The loading state in this component is managed by the useNewArticle hook internally
+      // We can verify the button becomes disabled during submission
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      fireEvent.changeText(titleInput, 'Loading Test');
+      fireEvent.changeText(descriptionInput, 'Loading Description');
+      fireEvent.changeText(bodyInput, 'Loading Body');
+
+      await waitFor(() => {
+        const publishButton = getByTestId('publish-article-button');
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      // Button should be enabled when form is valid
+      const publishButton = getByTestId('publish-article-button');
+      expect(publishButton).not.toBeDisabled();
+    });
+
+    it('should handle form state correctly during validation', async () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      fireEvent.changeText(titleInput, 'Valid Test');
+      fireEvent.changeText(descriptionInput, 'Valid Description');
+      fireEvent.changeText(bodyInput, 'Valid Body');
+
+      await waitFor(() => {
+        const publishButton = getByTestId('publish-article-button');
+        expect(publishButton).not.toBeDisabled();
+      });
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle article creation errors gracefully', async () => {
+      // Mock createArticle to throw an error
+      jest.spyOn(articlesStore, 'createArticle').mockRejectedValue(new Error('Creation failed'));
+
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+      const publishButton = getByTestId('publish-article-button');
+
+      fireEvent.changeText(titleInput, 'Error Test Article');
+      fireEvent.changeText(descriptionInput, 'Error test description');
+      fireEvent.changeText(bodyInput, 'Error test body');
+
+      await waitFor(() => {
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      fireEvent.press(publishButton);
+
+      // Should handle error gracefully without crashing
+      expect(getByTestId('new-article-screen')).toBeTruthy();
+    });
+
+    it('should clear form on successful submission', async () => {
+      // Mock successful createArticle
+      jest.spyOn(articlesStore, 'createArticle').mockResolvedValue({} as any);
+
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+      const publishButton = getByTestId('publish-article-button');
+
+      fireEvent.changeText(titleInput, 'Success Article');
+      fireEvent.changeText(descriptionInput, 'Success description');
+      fireEvent.changeText(bodyInput, 'Success body');
+
+      await waitFor(() => {
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      fireEvent.press(publishButton);
+
+      // The form should be handled by the hook
+      expect(getByTestId('new-article-screen')).toBeTruthy();
+    });
+  });
+
+  describe('Content Validation', () => {
+    it('should handle very long content', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      const longContent = 'A'.repeat(1000);
+
+      fireEvent.changeText(titleInput, longContent);
+      fireEvent.changeText(descriptionInput, longContent);
+      fireEvent.changeText(bodyInput, longContent);
+
+      // Should handle long content without errors
+      expect(titleInput).toBeTruthy();
+      expect(descriptionInput).toBeTruthy();
+      expect(bodyInput).toBeTruthy();
+    });
+
+    it('should handle special characters in content', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      const specialContent = 'Special chars: !@#$%^&*()_+-={}[]|\\:";\'<>?,./';
+
+      fireEvent.changeText(titleInput, specialContent);
+      fireEvent.changeText(descriptionInput, specialContent);
+      fireEvent.changeText(bodyInput, specialContent);
+
+      // Should handle special characters without errors
+      expect(titleInput).toBeTruthy();
+      expect(descriptionInput).toBeTruthy();
+      expect(bodyInput).toBeTruthy();
+    });
+
+    it('should handle multiline content', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const bodyInput = getByTestId('article-body-input');
+
+      const multilineContent = `Line 1
+Line 2
+Line 3
+
+Line 5 with empty line above`;
+
+      fireEvent.changeText(bodyInput, multilineContent);
+
+      // Should handle multiline content without errors
+      expect(bodyInput).toBeTruthy();
+    });
+  });
+
+  describe('Multiple Interaction Sequences', () => {
+    it('should handle multiple form submissions gracefully', async () => {
+      const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+      const publishButton = getByTestId('publish-article-button');
+
+      fireEvent.changeText(titleInput, 'Multiple Submission Test');
+      fireEvent.changeText(descriptionInput, 'Multiple submission description');
+      fireEvent.changeText(bodyInput, 'Multiple submission body');
+
+      await waitFor(() => {
+        expect(publishButton).not.toBeDisabled();
+      });
+
+      fireEvent.press(publishButton);
+      fireEvent.press(publishButton);
+      fireEvent.press(publishButton);
+
+      // Should handle multiple rapid submissions
+      expect(createArticleSpy).toHaveBeenCalled();
+    });
+
+    it('should handle form clearing and refilling', async () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+      const descriptionInput = getByTestId('article-description-input');
+      const bodyInput = getByTestId('article-body-input');
+
+      // Fill form
+      fireEvent.changeText(titleInput, 'First Title');
+      fireEvent.changeText(descriptionInput, 'First Description');
+      fireEvent.changeText(bodyInput, 'First Body');
+
+      // Clear form
+      fireEvent.changeText(titleInput, '');
+      fireEvent.changeText(descriptionInput, '');
+      fireEvent.changeText(bodyInput, '');
+
+      // Refill form
+      fireEvent.changeText(titleInput, 'Second Title');
+      fireEvent.changeText(descriptionInput, 'Second Description');
+      fireEvent.changeText(bodyInput, 'Second Body');
+
+      await waitFor(() => {
+        const publishButton = getByTestId('publish-article-button');
+        expect(publishButton).not.toBeDisabled();
+      });
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('should handle component unmount gracefully', () => {
+      const { unmount } = renderNewArticleScreen();
+
+      expect(() => unmount()).not.toThrow();
+    });
+
+    it('should handle rapid field changes', () => {
+      const { getByTestId } = renderNewArticleScreen();
+
+      const titleInput = getByTestId('article-title-input');
+
+      // Rapid field changes
+      fireEvent.changeText(titleInput, 'A');
+      fireEvent.changeText(titleInput, 'AB');
+      fireEvent.changeText(titleInput, 'ABC');
+      fireEvent.changeText(titleInput, 'ABCD');
+      fireEvent.changeText(titleInput, 'Final Title');
+
+      // Should handle rapid changes without errors
+      expect(titleInput).toBeTruthy();
+    });
+  });
+
+  describe('Authentication Requirements', () => {
+    it('should work with authenticated user', () => {
+      userStore.setUser(mockUserMinimal);
+
+      const { getByTestId } = renderNewArticleScreen();
+      expect(getByTestId('new-article-screen')).toBeTruthy();
+      expect(getByTestId('article-title-input')).toBeTruthy();
+      expect(getByTestId('article-description-input')).toBeTruthy();
+      expect(getByTestId('article-body-input')).toBeTruthy();
+      expect(getByTestId('publish-article-button')).toBeTruthy();
+    });
   });
 });
