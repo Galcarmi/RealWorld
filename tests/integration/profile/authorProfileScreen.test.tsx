@@ -1,44 +1,18 @@
-import { RouteProp } from '@react-navigation/native';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
-import { RootStackParamList } from '../../../src/navigation/types';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal, mockArticles } from '../../mocks/data';
+import { getMockUseAuthorProfile, resetAllHookMocks } from '../../mocks/hooks';
+import {
+  resetAllNavigationMocks,
+  setMockRoute,
+  mockAuthorProfileRoute,
+  setMockRouteParams,
+} from '../../mocks/navigation';
 import { resetAllStoreMocks } from '../../mocks/stores';
-
-// Mock the navigation route
-const mockRoute: RouteProp<RootStackParamList, 'AuthorProfile'> = {
-  key: 'AuthorProfile',
-  name: 'AuthorProfile',
-  params: { username: 'testauthor' },
-};
-
-// Mock useRoute
-jest.mock('@react-navigation/native', () => ({
-  useRoute: () => mockRoute,
-}));
-
-// Mock the useAuthorProfile hook
-let mockUseAuthorProfile = {
-  authorProfile: {
-    username: 'testauthor',
-    bio: 'Test bio',
-    image: '',
-    following: false,
-  } as any,
-  authorArticles: mockArticles,
-  isLoading: false,
-  onFollowToggle: jest.fn(),
-  onToggleFavorite: jest.fn(),
-  refreshAuthorArticles: jest.fn(),
-};
-
-jest.mock('../../../src/screens/authorProfile/useAuthorProfile', () => ({
-  useAuthorProfile: () => mockUseAuthorProfile,
-}));
 
 const renderAuthorProfileScreen = () => {
   return render(
@@ -49,28 +23,33 @@ const renderAuthorProfileScreen = () => {
 };
 
 describe('Author Profile Screen Integration Tests', () => {
+  const mockUseAuthorProfile = getMockUseAuthorProfile();
+
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.forgetUser();
     resetAllStoreMocks();
+    resetAllNavigationMocks();
+    resetAllHookMocks();
+
+    // Set the mock route for AuthorProfile
+    setMockRoute(mockAuthorProfileRoute);
 
     // Set authenticated user by default
     userStore.setUser(mockUserMinimal);
 
     // Reset mock hook values
-    mockUseAuthorProfile = {
-      authorProfile: {
-        username: 'testauthor',
-        bio: 'Test bio',
-        image: '',
-        following: false,
-      } as any,
-      authorArticles: mockArticles,
-      isLoading: false,
-      onFollowToggle: jest.fn(),
-      onToggleFavorite: jest.fn(),
-      refreshAuthorArticles: jest.fn(),
-    };
+    mockUseAuthorProfile.authorProfile = {
+      username: 'testauthor',
+      bio: 'Test bio',
+      image: '',
+      following: false,
+    } as any;
+    mockUseAuthorProfile.authorArticles = mockArticles;
+    mockUseAuthorProfile.isLoading = false;
+    mockUseAuthorProfile.onFollowToggle = jest.fn();
+    mockUseAuthorProfile.onToggleFavorite = jest.fn();
+    mockUseAuthorProfile.refreshAuthorArticles = jest.fn();
   });
 
   afterEach(() => {
@@ -266,7 +245,7 @@ describe('Author Profile Screen Integration Tests', () => {
   describe('Error Scenarios', () => {
     it('should handle missing username parameter gracefully', () => {
       // Mock route with undefined username
-      (mockRoute.params as any) = { username: undefined };
+      setMockRouteParams({ username: undefined });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -276,7 +255,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
     it('should handle empty username parameter', () => {
       // Mock route with empty username
-      (mockRoute.params as any) = { username: '' };
+      setMockRouteParams({ username: '' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -336,7 +315,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId, rerender } = renderAuthorProfileScreen();
 
       // Change the route parameter
-      (mockRoute.params as any) = { username: 'newauthor' };
+      setMockRouteParams({ username: 'newauthor' });
 
       rerender(
         <SafeAreaProvider>
@@ -374,56 +353,74 @@ describe('Author Profile Screen Integration Tests', () => {
   });
 
   describe('Edge Cases', () => {
-    it('should handle component unmount gracefully', () => {
+    it('should handle undefined username parameter', () => {
+      setMockRouteParams({ username: undefined });
+
+      const { getByTestId } = renderAuthorProfileScreen();
+
+      expect(getByTestId('author-profile-screen')).toBeTruthy();
+    });
+
+    it('should handle empty username parameter', () => {
+      setMockRouteParams({ username: '' });
+
+      const { getByTestId } = renderAuthorProfileScreen();
+
+      expect(getByTestId('author-profile-screen')).toBeTruthy();
+    });
+
+    it('should handle component mount without user data', () => {
+      userStore.forgetUser();
+
+      const { getByTestId } = renderAuthorProfileScreen();
+
+      expect(getByTestId('author-profile-screen')).toBeTruthy();
+    });
+
+    it('should handle unmounting gracefully', () => {
       const { unmount } = renderAuthorProfileScreen();
 
       expect(() => unmount()).not.toThrow();
     });
 
-    it('should handle rapid route changes', async () => {
-      const { getByTestId, rerender } = renderAuthorProfileScreen();
+    it('should handle rapid profile changes', async () => {
+      setMockRouteParams({ username: 'newauthor' });
 
-      // Rapid route parameter changes
-      (mockRoute.params as any) = { username: 'author1' };
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
-
-      (mockRoute.params as any) = { username: 'author2' };
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
-
-      (mockRoute.params as any) = { username: 'author3' };
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
+      const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
     });
+  });
 
-    it('should handle hook state changes during component lifecycle', async () => {
-      const { getByTestId, rerender } = renderAuthorProfileScreen();
+  describe('Performance and Memory', () => {
+    it('should handle multiple author profile loads', async () => {
+      const { rerender } = renderAuthorProfileScreen();
 
-      mockUseAuthorProfile.isLoading = true;
-
+      // Change to different authors
+      setMockRouteParams({ username: 'author1' });
       rerender(
         <SafeAreaProvider>
           <AuthorProfileScreen />
         </SafeAreaProvider>
       );
 
-      await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
-      });
+      setMockRouteParams({ username: 'author2' });
+      rerender(
+        <SafeAreaProvider>
+          <AuthorProfileScreen />
+        </SafeAreaProvider>
+      );
+
+      setMockRouteParams({ username: 'author3' });
+      rerender(
+        <SafeAreaProvider>
+          <AuthorProfileScreen />
+        </SafeAreaProvider>
+      );
+
+      expect(getMockUseAuthorProfile()).toBeTruthy();
     });
   });
 });

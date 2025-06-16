@@ -6,42 +6,13 @@ import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileS
 import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
-import { showErrorModals } from '../../../src/utils';
 import { mockUserMinimal } from '../../mocks/data';
+import { getMockAuthService, resetAllServiceMocks } from '../../mocks/services';
 import { resetAllStoreMocks } from '../../mocks/stores';
-
-// Mock React Navigation
-jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({
-    goBack: jest.fn(),
-    navigate: jest.fn(),
-  }),
-}));
-
-// Mock navigation
-jest.mock('../../../src/services/navigationService', () => ({
-  navigationService: {
-    setRoot: jest.fn(),
-    navigate: jest.fn(),
-    goBack: jest.fn(),
-  },
-}));
-
-// Mock utils
-jest.mock('../../../src/utils', () => ({
-  showErrorModals: jest.fn(),
-  lengthValidation: jest.fn(() => jest.fn(() => true)),
-  emailValidation: jest.fn(() => true),
-}));
-
-// Mock AuthService
-const mockAuthService = {
-  put: jest.fn(),
-};
-
-jest.mock('../../../src/services/auth/AuthService', () => ({
-  AuthService: jest.fn().mockImplementation(() => mockAuthService),
-}));
+import {
+  getMockShowErrorModals,
+  resetAllUtilityMocks,
+} from '../../mocks/utilities';
 
 const renderEditProfileScreen = () => {
   return render(
@@ -52,10 +23,15 @@ const renderEditProfileScreen = () => {
 };
 
 describe('Edit Profile Screen Integration Tests', () => {
+  const mockAuthService = getMockAuthService();
+  const mockShowErrorModals = getMockShowErrorModals();
+
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.forgetUser();
     resetAllStoreMocks();
+    resetAllServiceMocks();
+    resetAllUtilityMocks();
 
     // Set authenticated user with profile data
     userStore.setUser({
@@ -230,7 +206,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       });
 
       await waitFor(() => {
-        expect(showErrorModals).toHaveBeenCalledWith({
+        expect(mockShowErrorModals).toHaveBeenCalledWith({
           general: ['Failed to update profile'],
         });
       });
@@ -264,7 +240,7 @@ describe('Edit Profile Screen Integration Tests', () => {
 
       // The error handling currently falls back to generic error
       await waitFor(() => {
-        expect(showErrorModals).toHaveBeenCalled();
+        expect(mockShowErrorModals).toHaveBeenCalled();
       });
     });
   });

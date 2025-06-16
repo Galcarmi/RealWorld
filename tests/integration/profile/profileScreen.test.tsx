@@ -7,20 +7,14 @@ import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUser, mockUserMinimal } from '../../mocks/data';
+import {
+  getMockNavigationService,
+  resetAllServiceMocks,
+} from '../../mocks/services';
 import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
 
 const mockArticlesStore = getMockArticlesStore();
-
-// Mock the navigationService
-jest.mock('../../../src/services/navigationService', () => ({
-  navigationService: {
-    navigateToLoginScreen: jest.fn(),
-    navigateToEditProfile: jest.fn(),
-    navigateToNewArticle: jest.fn(),
-    navigateToMainTabs: jest.fn(),
-    goBack: jest.fn(),
-  },
-}));
+const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
   return render(
@@ -35,6 +29,7 @@ describe('Profile Screen Integration Tests', () => {
     jest.clearAllMocks();
     userStore.forgetUser();
     resetAllStoreMocks();
+    resetAllServiceMocks();
 
     // Set up authenticated user by default
     userStore.setUser(mockUser);
@@ -49,14 +44,12 @@ describe('Profile Screen Integration Tests', () => {
   describe('Authentication Requirements', () => {
     it('should redirect to login screen when user is not authenticated', () => {
       userStore.forgetUser();
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToLoginScreen'
-      );
 
       renderProfileScreen();
 
-      expect(navigationSpy).toHaveBeenCalledTimes(1);
+      expect(mockNavigationService.navigateToLoginScreen).toHaveBeenCalledTimes(
+        1
+      );
     });
 
     it('should render profile screen when user is authenticated', async () => {
@@ -107,10 +100,6 @@ describe('Profile Screen Integration Tests', () => {
   describe('Navigation Actions', () => {
     it('should navigate to edit profile when edit button is pressed', async () => {
       userStore.setUser(mockUser);
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToEditProfile'
-      );
 
       const { getByTestId } = renderProfileScreen();
 
@@ -119,15 +108,13 @@ describe('Profile Screen Integration Tests', () => {
         fireEvent.press(editButton);
       });
 
-      expect(navigationSpy).toHaveBeenCalledTimes(1);
+      expect(mockNavigationService.navigateToEditProfile).toHaveBeenCalledTimes(
+        1
+      );
     });
 
     it('should navigate to new article screen when new article button is pressed', async () => {
       userStore.setUser(mockUser);
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToNewArticle'
-      );
 
       const { getByTestId } = renderProfileScreen();
 
@@ -136,7 +123,9 @@ describe('Profile Screen Integration Tests', () => {
         fireEvent.press(newArticleButton);
       });
 
-      expect(navigationSpy).toHaveBeenCalledTimes(1);
+      expect(mockNavigationService.navigateToNewArticle).toHaveBeenCalledTimes(
+        1
+      );
     });
   });
 
