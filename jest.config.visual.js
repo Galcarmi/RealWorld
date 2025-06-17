@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'Visual Tests',
-  testMatch: ['**/tests/visual/**/*.(test|spec).(ts|tsx|js|jsx)'],
+  testMatch: ['<rootDir>/tests/visual/**/*.(test|spec).(ts|tsx|js|jsx)'],
   testTimeout: 120000,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
