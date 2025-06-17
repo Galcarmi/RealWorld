@@ -1,20 +1,9 @@
 import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
-
-async function performLogin(testHelper: any) {
-  await commonTestActions.navigateAndWaitForBody(testHelper);
-  await commonTestActions.clickTabAndWaitForScreen(
-    testHelper,
-    'login-tab-icon',
-    'login-screen'
-  );
-
-  await testHelper.typeInTestId('login-email-input', 'test@example.com');
-  await testHelper.typeInTestId('login-password-input', 'password123');
-  await testHelper.clickByTestId('login-submit-button');
-
-  await testHelper.waitForTestId('home-screen', 10000);
-}
+import {
+  createVisualTestSuite,
+  commonTestActions,
+  performLogin,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Complete User Flow Integration Tests',

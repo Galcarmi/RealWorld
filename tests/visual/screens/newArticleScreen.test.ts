@@ -1,6 +1,5 @@
 import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
-
+import { createVisualTestSuite, performLogin } from '../utils/testHelpers';
 createVisualTestSuite(
   'New Article Screen - Visual Regression Test',
   { mockApis: mockCollections.newArticle },
@@ -8,18 +7,7 @@ createVisualTestSuite(
     it('should show new article screen with empty form', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
 
       await testHelper.clickByTestId('profile-main-tab-icon');
       await testHelper.waitForTestId('profile-screen', 10000);
@@ -50,18 +38,7 @@ createVisualTestSuite(
     it('should show new article screen with filled form data', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
 
       await testHelper.clickByTestId('profile-main-tab-icon');
       await testHelper.waitForTestId('profile-screen', 10000);

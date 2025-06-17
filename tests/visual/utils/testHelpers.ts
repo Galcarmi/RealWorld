@@ -191,3 +191,18 @@ export function createVisualTestSuite(
     testFn(suite);
   });
 }
+
+export async function performLogin(testHelper: any) {
+  await commonTestActions.navigateAndWaitForBody(testHelper);
+  await commonTestActions.clickTabAndWaitForScreen(
+    testHelper,
+    'login-tab-icon',
+    'login-screen'
+  );
+
+  await testHelper.typeInTestId('login-email-input', 'test@example.com');
+  await testHelper.typeInTestId('login-password-input', 'password123');
+  await testHelper.clickByTestId('login-submit-button');
+
+  await testHelper.waitForTestId('home-screen', 10000);
+}
