@@ -5,7 +5,7 @@ createVisualTestSuite('Login Screen - Visual Regression Test', {}, suite => {
     const testHelper = suite.getTestHelper();
 
     await commonTestActions.navigateAndWaitForBody(testHelper);
-    await commonTestActions.clickTabAndWaitForScreen(
+    await commonTestActions.clickAndNavigateToScreen(
       testHelper,
       'login-tab-icon',
       'login-screen'
@@ -24,7 +24,7 @@ createVisualTestSuite('Login Screen - Visual Regression Test', {}, suite => {
     const testHelper = suite.getTestHelper();
 
     await commonTestActions.navigateAndWaitForBody(testHelper);
-    await commonTestActions.clickTabAndWaitForScreen(
+    await commonTestActions.clickAndNavigateToScreen(
       testHelper,
       'login-tab-icon',
       'login-screen'

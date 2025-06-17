@@ -15,8 +15,11 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare('author-profile-screen-initial');
     });
@@ -27,8 +30,11 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
       await testHelper.waitForTestId('follow-button', 5000);
 
       await testHelper.clickByTestId('follow-button');

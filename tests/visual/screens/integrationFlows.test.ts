@@ -3,6 +3,7 @@ import {
   createVisualTestSuite,
   commonTestActions,
   performLogin,
+  navigateToProfile,
 } from '../utils/testHelpers';
 
 createVisualTestSuite(
@@ -15,8 +16,11 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-author-profile'
@@ -54,8 +58,7 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
       await suite.takeScreenshotAndCompare('flow-login-user-profile');
     });
@@ -65,11 +68,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
-      await testHelper.clickByTestId('edit-profile-button');
-      await testHelper.waitForTestId('edit-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'edit-profile-button',
+        'edit-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-user-profile-edit-profile'
@@ -81,11 +86,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
-      await testHelper.clickByTestId('new-article-button');
-      await testHelper.waitForTestId('new-article-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'new-article-button',
+        'new-article-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-user-profile-new-article'

@@ -15,9 +15,12 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorites-main-tab-icon');
-      await testHelper.waitForTestId('favorites-screen', 10000);
-      await testHelper.waitForTestId('article-card-favorited-article', 5000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'favorites-main-tab-icon',
+        'favorites-screen'
+      );
+      await testHelper.waitForTestId('article-card-test-article-2', 5000);
 
       await suite.takeScreenshotAndCompare(
         'favorites-screen-with-favorited-articles'

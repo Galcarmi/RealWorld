@@ -1,5 +1,10 @@
 import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, performLogin } from '../utils/testHelpers';
+import {
+  createVisualTestSuite,
+  performLogin,
+  navigateToProfile,
+  commonTestActions,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Profile Screen - Visual Regression Test',
@@ -10,8 +15,8 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
+
       await testHelper.waitForTestId('edit-profile-button', 5000);
       await testHelper.waitForTestId('new-article-button', 5000);
 
@@ -23,11 +28,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
-      await testHelper.clickByTestId('new-article-button');
+      await navigateToProfile(testHelper);
 
-      await testHelper.waitForTestId('new-article-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'new-article-button',
+        'new-article-screen'
+      );
 
       await suite.takeScreenshotAndCompare('new-article-screen-from-profile');
     });

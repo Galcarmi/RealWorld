@@ -33,6 +33,8 @@ export class VisualTestSuite {
     const finalConfig: VisualTestConfig = {
       ...defaultConfig,
       ...this.config.customConfig,
+      // Ensure we start with only the mocks specified for this test
+      mockApis: this.config.mockApis || [],
     };
 
     this.testHelper = new PuppeteerTestHelper(finalConfig);
@@ -63,7 +65,49 @@ export class VisualTestSuite {
       throw new Error('Test helper not initialized. Call setupTest() first.');
     }
 
+    // Wait for any animations/transitions to complete
     await this.sleep(2000);
+
+    // Disable animations to ensure consistent screenshots
+    const page = this.testHelper.getPage();
+    if (page) {
+      await page.addStyleTag({
+        content: `
+          *, *::before, *::after {
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+          }
+        `,
+      });
+
+      // Additional wait after disabling animations
+      await this.sleep(500);
+
+      // DEBUG: Capture app state before screenshot
+      if (process.env.DEBUG_VISUAL_TESTS === 'true') {
+        const debugInfo = await page.evaluate(() => {
+          return {
+            url: window.location.href,
+            loadingElements: document.querySelectorAll(
+              '[data-testid*="loading"]'
+            ).length,
+            errorElements: document.querySelectorAll('[data-testid*="error"]')
+              .length,
+            validationMessages: document.querySelectorAll(
+              '[data-testid*="validation"]'
+            ).length,
+            emptyStates: document.querySelectorAll('[data-testid*="empty"]')
+              .length,
+            visibleElements: document.querySelectorAll(
+              '[data-testid]:not([style*="display: none"])'
+            ).length,
+          };
+        });
+        console.log(`🔍 Debug info for ${screenshotName}:`, debugInfo);
+      }
+    }
 
     await this.testHelper.takeScreenshot(screenshotName);
 
@@ -141,23 +185,51 @@ export const commonTestActions = {
     await page.waitForSelector('body', { timeout: 15000 });
   },
 
-  async clickTabAndWaitForScreen(
+  async clickAndNavigateToScreen(
     testHelper: PuppeteerTestHelper,
-    tabTestId: string,
-    screenTestId: string
+    buttonTestId: string,
+    screenTestId: string,
+    maxRetries: number = 3
   ): Promise<void> {
     const page = testHelper.getPage();
     if (!page) throw new Error('Page not available');
 
-    const tabSelector = `[data-testid="${tabTestId}"]`;
-    await page.waitForSelector(tabSelector, { timeout: 10000 });
+    let lastError: Error | null = null;
 
-    const tab = await page.$(tabSelector);
-    if (tab) {
-      await tab.click();
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(
+          `🔄 Attempt ${attempt}/${maxRetries}: Clicking ${buttonTestId} and waiting for ${screenTestId}`
+        );
+
+        // Wait for button to be available
+        await testHelper.waitForTestId(buttonTestId, 5000);
+
+        // Click the button
+        await testHelper.clickByTestId(buttonTestId);
+
+        // Wait for target screen to appear
+        await testHelper.waitForTestId(screenTestId, 8000);
+
+        console.log(
+          `✅ Successfully navigated to ${screenTestId} on attempt ${attempt}`
+        );
+        return; // Success!
+      } catch (error) {
+        lastError = error as Error;
+        console.log(`❌ Attempt ${attempt} failed: ${lastError.message}`);
+
+        if (attempt < maxRetries) {
+          console.log(`⏳ Waiting 500ms before retry...`);
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
     }
 
-    await testHelper.waitForTestId(screenTestId, 10000);
+    // If we get here, all attempts failed
+    throw new Error(
+      `Failed to navigate from ${buttonTestId} to ${screenTestId} after ${maxRetries} attempts. Last error: ${lastError?.message}`
+    );
   },
 
   async waitForArticlesToLoad(testHelper: PuppeteerTestHelper): Promise<void> {
@@ -179,12 +251,12 @@ export function createVisualTestSuite(
   describe(suiteName, () => {
     const suite = new VisualTestSuite(config);
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       ensureTestDirectories();
       await suite.setupTest();
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
       await suite.cleanupTest();
     });
 
@@ -194,15 +266,32 @@ export function createVisualTestSuite(
 
 export async function performLogin(testHelper: any) {
   await commonTestActions.navigateAndWaitForBody(testHelper);
-  await commonTestActions.clickTabAndWaitForScreen(
+  await commonTestActions.clickAndNavigateToScreen(
     testHelper,
     'login-tab-icon',
     'login-screen'
   );
 
+  // Wait for all form elements to be available before interacting
+  await testHelper.waitForTestId('login-email-input', 5000);
+  await testHelper.waitForTestId('login-password-input', 5000);
+  await testHelper.waitForTestId('login-submit-button', 5000);
+
   await testHelper.typeInTestId('login-email-input', 'test@example.com');
   await testHelper.typeInTestId('login-password-input', 'password123');
-  await testHelper.clickByTestId('login-submit-button');
 
-  await testHelper.waitForTestId('home-screen', 10000);
+  await commonTestActions.clickAndNavigateToScreen(
+    testHelper,
+    'login-submit-button',
+    'home-screen'
+  );
+}
+
+// Helper function to navigate to profile screen with retry logic
+export async function navigateToProfile(testHelper: any) {
+  await commonTestActions.clickAndNavigateToScreen(
+    testHelper,
+    'profile-main-tab-icon',
+    'profile-screen'
+  );
 }

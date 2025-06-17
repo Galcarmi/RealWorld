@@ -315,6 +315,7 @@ export const mockCollections = {
 
   authorProfile: [
     authMocks.login,
+    authMocks.getCurrentUser,
     articleMocks.getArticles,
     profileMocks.getAuthorProfile,
     articleMocks.getAuthorArticles,
@@ -323,6 +324,7 @@ export const mockCollections = {
 
   favorites: [
     authMocks.login,
+    authMocks.getCurrentUser,
     articleMocks.getArticles,
     articleMocks.getFavoriteArticles,
     articleMocks.favoriteArticle1,
@@ -347,6 +349,9 @@ export const mockCollections = {
     authMocks.getCurrentUser,
     articleMocks.createArticle,
     articleMocks.getUserArticlesEmpty,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
   ] as MockApiResponse[],
 
   completeIntegration: [

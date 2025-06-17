@@ -8,7 +8,7 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
+      await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
         'register-screen'

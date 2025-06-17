@@ -1,5 +1,10 @@
 import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, performLogin } from '../utils/testHelpers';
+import {
+  createVisualTestSuite,
+  performLogin,
+  navigateToProfile,
+  commonTestActions,
+} from '../utils/testHelpers';
 createVisualTestSuite(
   'New Article Screen - Visual Regression Test',
   { mockApis: mockCollections.newArticle },
@@ -9,11 +14,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
-      await testHelper.clickByTestId('new-article-button');
+      await navigateToProfile(testHelper);
 
-      await testHelper.waitForTestId('new-article-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'new-article-button',
+        'new-article-screen'
+      );
 
       const page2 = testHelper.getPage();
       if (!page2) throw new Error('Page not available');
@@ -40,11 +47,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
-      await testHelper.clickByTestId('new-article-button');
+      await navigateToProfile(testHelper);
 
-      await testHelper.waitForTestId('new-article-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'new-article-button',
+        'new-article-screen'
+      );
 
       const page2 = testHelper.getPage();
       if (!page2) throw new Error('Page not available');
