@@ -1,5 +1,6 @@
-import { render, fireEvent } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { render, fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
 import { Main as SignUpScreen } from '../../../src/screens/login/signUpScreen';

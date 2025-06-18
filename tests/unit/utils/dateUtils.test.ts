@@ -1,5 +1,6 @@
-import { formatDate } from '../../../src/utils';
 import { validationTestData } from '../../utils/testHelpers';
+
+import { formatDate } from '../../../src/utils';
 
 describe('formatDate', () => {
   it('should format a valid date string correctly', () => {

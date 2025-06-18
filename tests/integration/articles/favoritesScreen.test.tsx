@@ -1,5 +1,6 @@
-import { render, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { render, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';

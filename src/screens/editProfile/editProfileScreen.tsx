@@ -1,14 +1,17 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Text, View } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
+
+import { themeColors } from '../../theme/colors';
+
+import { componentStyles } from '../../styles/componentStyles';
+import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { componentStyles } from '../../styles/componentStyles';
-import { styles } from '../../styles/globalStyles';
-import { themeColors } from '../../theme/colors';
 
 import { useEditProfile } from './useEditProfile';
 

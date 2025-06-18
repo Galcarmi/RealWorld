@@ -95,7 +95,7 @@ module.exports = [
       'prettier/prettier': 'error',
 
       '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-empty-function': 'warn',
@@ -139,15 +139,56 @@ module.exports = [
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
+          groups: ['external', ['internal'], ['parent', 'sibling'], ['index']],
           'newlines-between': 'always',
+          pathGroups: [
+            {
+              pattern: '{react,react-*,@react-*}',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: '{react-native,react-native-*,@react-native-*}',
+              group: 'external',
+              position: 'after',
+            },
+            {
+              pattern: '{expo-*,@expo/*}',
+              group: 'external',
+              position: 'after',
+            },
+            {
+              pattern: '{rn-navio,mobx-*,lodash}',
+              group: 'external',
+              position: 'after',
+            },
+            {
+              pattern: '../../store/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '../../services/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '../../{utils,constants,theme}/**',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: '../../{styles,navigation}/**',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: './*',
+              group: 'sibling',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
           alphabetize: {
             order: 'asc',
             caseInsensitive: true,

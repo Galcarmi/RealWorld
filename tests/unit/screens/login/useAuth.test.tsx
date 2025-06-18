@@ -1,5 +1,6 @@
-import { renderHook, act } from '@testing-library/react-native';
 import { Keyboard } from 'react-native';
+
+import { renderHook, act } from '@testing-library/react-native';
 
 import useAuth from '../../../../src/screens/login/useAuth';
 import { navigationService } from '../../../../src/services/navigationService';

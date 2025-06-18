@@ -1,5 +1,6 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';

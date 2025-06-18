@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-
 import sharp from 'sharp';
 
 import { TestLogger } from './TestLogger';
+
+import fs from 'fs';
+import path from 'path';
 
 const pixelmatch = require('pixelmatch').default || require('pixelmatch');
 

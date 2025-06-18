@@ -1,13 +1,17 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Keyboard } from 'react-native';
 
-import { RootStackParamList } from '../../navigation/types';
-import { AuthService } from '../../services';
-import { ResponseErrors } from '../../services/types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+
 import { authStore } from '../../store/authStore';
 import { User } from '../../store/types';
 import { userStore } from '../../store/userStore';
+
+import { ResponseErrors } from '../../services/types';
+
+import { RootStackParamList } from '../../navigation/types';
+
+import { AuthService } from '../../services';
 import { showErrorModals } from '../../utils';
 
 type NavigationProps = NavigationProp<RootStackParamList>;

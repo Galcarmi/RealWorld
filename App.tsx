@@ -1,6 +1,8 @@
-import * as SplashScreen from 'expo-splash-screen';
-import { observer } from 'mobx-react';
 import { useEffect } from 'react';
+
+import * as SplashScreen from 'expo-splash-screen';
+
+import { observer } from 'mobx-react';
 
 import { navio } from './src/navigation/navio';
 import { userStore } from './src/store/userStore';

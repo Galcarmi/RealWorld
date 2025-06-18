@@ -1,8 +1,9 @@
-import { emailValidation } from '../../../src/utils';
 import {
   validationTestData,
   expectValidationResults,
 } from '../../utils/testHelpers';
+
+import { emailValidation } from '../../../src/utils';
 
 describe('emailValidation', () => {
   it('should return true for valid email addresses', () => {

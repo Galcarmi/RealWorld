@@ -1,5 +1,6 @@
-import { RouteProp } from '@react-navigation/native';
 import React from 'react';
+
+import { RouteProp } from '@react-navigation/native';
 
 import { RootStackParamList } from '../src/navigation/types';
 import { Article, Profile, ResponseErrors } from '../src/services/types';

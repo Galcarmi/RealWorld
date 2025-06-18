@@ -1,7 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { View, Text, Avatar } from 'react-native-ui-lib';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import { User } from '../store/types';
 import { themeColors } from '../theme/colors';

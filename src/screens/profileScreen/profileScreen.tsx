@@ -1,15 +1,18 @@
-import { noop } from 'lodash';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native-ui-lib';
+
+import { noop } from 'lodash';
+import { observer } from 'mobx-react-lite';
+
+import { themeColors } from '../../theme/colors';
+
+import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
 import { ProfileHeader } from '../../components/ProfileHeader';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { navigationService } from '../../services';
-import { componentStyles } from '../../styles/componentStyles';
-import { themeColors } from '../../theme/colors';
 
 import { useProfile } from './useProfile';
 

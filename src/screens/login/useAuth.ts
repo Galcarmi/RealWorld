@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
-import { navigationService } from '../../services';
 import { authStore } from '../../store/authStore';
+
+import { navigationService } from '../../services';
 import { showErrorModals } from '../../utils';
 
 import { useStore } from './useStore';

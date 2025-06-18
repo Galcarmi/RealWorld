@@ -1,4 +1,5 @@
 import { IAuthStore, IUserStore, User } from '../../store/types';
+
 import { BaseService } from '../BaseService';
 import {
   ApiErrorResponse,

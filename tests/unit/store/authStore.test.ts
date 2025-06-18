@@ -1,16 +1,17 @@
 import { MockProxy } from 'jest-mock-extended';
 import { when } from 'mobx';
 
-import { IAuthService } from '../../../src/services/types';
-import { authStore } from '../../../src/store/authStore';
-import { userStore } from '../../../src/store/userStore';
-import { createMockAuthService } from '../../mocks/services';
 import {
   createMockLoginResponse,
   createMockAuthError,
   expectStoreFormValidation,
   expectStoreCleared,
 } from '../../utils/testHelpers';
+
+import { IAuthService } from '../../../src/services/types';
+import { authStore } from '../../../src/store/authStore';
+import { userStore } from '../../../src/store/userStore';
+import { createMockAuthService } from '../../mocks/services';
 
 jest.mock('../../../src/services');
 jest.mock('../../../src/store/userStore');
