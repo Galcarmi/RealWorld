@@ -46,9 +46,6 @@ describe('Author Profile Screen Integration Tests', () => {
     } as Profile;
     mockUseAuthorProfile.authorArticles = mockArticles;
     mockUseAuthorProfile.isLoading = false;
-    mockUseAuthorProfile.onFollowToggle.mockResolvedValue();
-    mockUseAuthorProfile.onToggleFavorite.mockResolvedValue();
-    mockUseAuthorProfile.refreshAuthorArticles.mockResolvedValue();
   });
 
   afterEach(() => {
