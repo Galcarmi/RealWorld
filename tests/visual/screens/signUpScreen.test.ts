@@ -1,4 +1,4 @@
-import { mockCollections } from '../utils/mockApiResponses';
+import { mockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(

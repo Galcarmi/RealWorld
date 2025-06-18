@@ -1,3 +1,7 @@
+import { MockApiResponse } from '../visual/config/puppeteerConfig';
+
+// SINGLE SOURCE OF TRUTH FOR ALL MOCK DATA
+
 // Mock user data
 export const mockUser = {
   id: '123',
@@ -37,39 +41,39 @@ export const mockArticle = {
   },
 };
 
-// Mock article data
+// SHARED MOCK ARTICLES - Single source of truth
 export const mockArticles = [
   {
     slug: 'test-article-1',
     title: 'Test Article 1',
-    description: 'Description 1',
-    body: 'Body 1',
-    tagList: ['tag1'],
+    description: 'This is a test article description',
+    body: 'Test article body content',
+    tagList: ['test', 'demo'],
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
     favorited: false,
-    favoritesCount: 0,
+    favoritesCount: 5,
     author: {
-      username: 'testuser1',
-      bio: 'Test bio',
-      image: 'test-image.jpg',
+      username: 'authoruser',
+      bio: 'Author bio',
+      image: null,
       following: false,
     },
   },
   {
     slug: 'test-article-2',
     title: 'Test Article 2',
-    description: 'Description 2',
-    body: 'Body 2',
-    tagList: ['tag2'],
+    description: 'Another test article',
+    body: 'Another test article body',
+    tagList: ['test', 'example'],
     createdAt: '2024-01-02T00:00:00.000Z',
     updatedAt: '2024-01-02T00:00:00.000Z',
     favorited: true,
-    favoritesCount: 5,
+    favoritesCount: 8,
     author: {
-      username: 'testuser2',
-      bio: 'Test bio 2',
-      image: 'test-image2.jpg',
+      username: 'anotheruser',
+      bio: 'Another user bio',
+      image: null,
       following: true,
     },
   },
@@ -102,25 +106,141 @@ export interface VisualTestMockConfig {
   delay: number;
 }
 
-// Home Screen Visual Test Mocks - using consistent test data
-export const homeScreenVisualMocks: VisualTestMockConfig[] = [
-  {
-    url: /node-express-conduit\.appspot\.com\/api\/articles(\?.*)?$/,
+// ALL MOCK API RESPONSES - CONSOLIDATED FROM ALL FILES
+export const authMocks = {
+  login: {
+    url: /node-express-conduit\.appspot\.com\/api\/users\/login$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: 'Test bio',
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  register: {
+    url: /node-express-conduit\.appspot\.com\/api\/users$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: null,
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  getCurrentUser: {
+    url: /node-express-conduit\.appspot\.com\/api\/user$/,
     method: 'GET',
     status: 200,
-    contentType: 'application/json',
+    body: {
+      user: {
+        id: 1,
+        email: 'test@example.com',
+        username: 'testuser',
+        bio: 'Test bio',
+        image: null,
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+  updateUser: {
+    url: /node-express-conduit\.appspot\.com\/api\/user$/,
+    method: 'PUT',
+    status: 200,
+    body: {
+      user: {
+        id: 1,
+        email: 'updated@example.com',
+        username: 'updateduser',
+        bio: 'Updated bio',
+        image: 'https://example.com/avatar.jpg',
+        token: 'mock-jwt-token',
+      },
+    },
+  },
+} as const;
+
+export const articleMocks = {
+  getArticles: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: mockArticles,
+      articlesCount: mockArticles.length,
+    },
+  },
+  getFavoriteArticles: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?favorited=/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [mockArticles[1]], // Only the favorited one
+      articlesCount: 1,
+    },
+  },
+  getUserArticles: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=testuser/,
+    method: 'GET',
+    status: 200,
     body: {
       articles: [
         {
-          slug: 'test-article-1',
-          title: 'Test Article 1',
-          description: 'This is a test article description',
-          body: 'Test article body content',
-          tagList: ['test', 'demo'],
+          slug: 'my-article-1',
+          title: 'My First Article',
+          description: 'This is my first article',
+          body: 'Article content here',
+          tagList: ['personal', 'first'],
           createdAt: '2024-01-01T00:00:00.000Z',
           updatedAt: '2024-01-01T00:00:00.000Z',
           favorited: false,
-          favoritesCount: 5,
+          favoritesCount: 2,
+          author: {
+            username: 'testuser',
+            bio: 'Test bio',
+            image: null,
+            following: false,
+          },
+        },
+      ],
+      articlesCount: 1,
+    },
+  },
+  getUserArticlesEmpty: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=testuser/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [],
+      articlesCount: 0,
+    },
+  },
+  getAuthorArticles: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=authoruser/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [
+        {
+          slug: 'author-article-1',
+          title: 'Author Article 1',
+          description: 'Article by the author',
+          body: 'Author article content',
+          tagList: ['author', 'content'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 3,
           author: {
             username: 'authoruser',
             bio: 'Author bio',
@@ -128,25 +248,99 @@ export const homeScreenVisualMocks: VisualTestMockConfig[] = [
             following: false,
           },
         },
-        {
-          slug: 'test-article-2',
-          title: 'Test Article 2',
-          description: 'Another test article',
-          body: 'Another test article body',
-          tagList: ['test', 'example'],
-          createdAt: '2024-01-02T00:00:00.000Z',
-          updatedAt: '2024-01-02T00:00:00.000Z',
-          favorited: true,
-          favoritesCount: 8,
-          author: {
-            username: 'anotheruser',
-            bio: 'Another user bio',
-            image: null,
-            following: true,
-          },
-        },
       ],
-      articlesCount: 2,
+      articlesCount: 1,
+    },
+  },
+  createArticle: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      article: {
+        slug: 'new-test-article',
+        title: 'New Test Article',
+        description: 'This is a new test article',
+        body: 'Article body content here',
+        tagList: ['new', 'test'],
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
+        favorited: false,
+        favoritesCount: 0,
+        author: {
+          username: 'testuser',
+          bio: 'Test bio',
+          image: null,
+          following: false,
+        },
+      },
+    },
+  },
+  favoriteArticle1: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/test-article-1\/favorite$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      article: {
+        ...mockArticles[0],
+        favorited: true,
+        favoritesCount: 6,
+      },
+    },
+  },
+  unfavoriteArticle2: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/test-article-2\/favorite$/,
+    method: 'DELETE',
+    status: 200,
+    body: {
+      article: {
+        ...mockArticles[1],
+        favorited: false,
+        favoritesCount: 7,
+      },
+    },
+  },
+} as const;
+
+export const profileMocks = {
+  getAuthorProfile: {
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      profile: {
+        username: 'authoruser',
+        bio: 'Author bio',
+        image: null,
+        following: false,
+      },
+    },
+  },
+  followAuthor: {
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser\/follow$/,
+    method: 'POST',
+    status: 200,
+    body: {
+      profile: {
+        username: 'authoruser',
+        bio: 'Author bio',
+        image: null,
+        following: true,
+      },
+    },
+  },
+} as const;
+
+// Home Screen Visual Test Mocks - using shared test data
+export const homeScreenVisualMocks: VisualTestMockConfig[] = [
+  {
+    url: /node-express-conduit\.appspot\.com\/api\/articles(\?.*)?$/,
+    method: 'GET',
+    status: 200,
+    contentType: 'application/json',
+    body: {
+      articles: mockArticles,
+      articlesCount: mockArticles.length,
     },
     delay: 500,
   },
@@ -156,47 +350,88 @@ export const homeScreenVisualMocks: VisualTestMockConfig[] = [
     status: 200,
     contentType: 'application/json',
     body: {
-      articles: [
-        {
-          slug: 'test-article-1',
-          title: 'Test Article 1',
-          description: 'This is a test article description',
-          body: 'Test article body content',
-          tagList: ['test', 'demo'],
-          createdAt: '2024-01-01T00:00:00.000Z',
-          updatedAt: '2024-01-01T00:00:00.000Z',
-          favorited: false,
-          favoritesCount: 5,
-          author: {
-            username: 'authoruser',
-            bio: 'Author bio',
-            image: null,
-            following: false,
-          },
-        },
-        {
-          slug: 'test-article-2',
-          title: 'Test Article 2',
-          description: 'Another test article',
-          body: 'Another test article body',
-          tagList: ['test', 'example'],
-          createdAt: '2024-01-02T00:00:00.000Z',
-          updatedAt: '2024-01-02T00:00:00.000Z',
-          favorited: true,
-          favoritesCount: 8,
-          author: {
-            username: 'anotheruser',
-            bio: 'Another user bio',
-            image: null,
-            following: true,
-          },
-        },
-      ],
-      articlesCount: 2,
+      articles: mockArticles,
+      articlesCount: mockArticles.length,
     },
     delay: 500,
   },
 ];
+
+// MOCK COLLECTIONS - All in one place
+export const mockCollections = {
+  auth: [authMocks.login, authMocks.getCurrentUser] as MockApiResponse[],
+  authWithRegistration: [authMocks.register] as MockApiResponse[],
+  basicApp: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    articleMocks.getUserArticlesEmpty,
+  ] as MockApiResponse[],
+  authorProfile: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
+    profileMocks.followAuthor,
+  ] as MockApiResponse[],
+  favorites: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    articleMocks.getFavoriteArticles,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+  ] as MockApiResponse[],
+  userProfile: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    articleMocks.getUserArticles,
+  ] as MockApiResponse[],
+  editProfile: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    authMocks.updateUser,
+    articleMocks.getUserArticlesEmpty,
+  ] as MockApiResponse[],
+  newArticle: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.createArticle,
+    articleMocks.getUserArticlesEmpty,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
+  ] as MockApiResponse[],
+  completeIntegration: [
+    authMocks.login,
+    authMocks.getCurrentUser,
+    articleMocks.getArticles,
+    profileMocks.getAuthorProfile,
+    articleMocks.getAuthorArticles,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+    articleMocks.getUserArticlesEmpty,
+    articleMocks.createArticle,
+  ] as MockApiResponse[],
+  allMocks: [
+    authMocks.login,
+    authMocks.register,
+    authMocks.getCurrentUser,
+    authMocks.updateUser,
+    articleMocks.getArticles,
+    articleMocks.getFavoriteArticles,
+    articleMocks.getUserArticles,
+    articleMocks.getUserArticlesEmpty,
+    articleMocks.getAuthorArticles,
+    articleMocks.createArticle,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+    profileMocks.getAuthorProfile,
+    profileMocks.followAuthor,
+  ] as MockApiResponse[],
+} as const;
 
 // Visual Test Mock Collections
 export const visualTestMockCollections = {

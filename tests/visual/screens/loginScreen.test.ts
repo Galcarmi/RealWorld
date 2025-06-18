@@ -2,8 +2,8 @@ import { visualTestMockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(
-  'Login Screen - Visual Regression Test', 
-  { mockApis: visualTestMockCollections.emptyMocks }, 
+  'Login Screen - Visual Regression Test',
+  { mockApis: visualTestMockCollections.emptyMocks },
   suite => {
     it('should match baseline for login screen empty form', async () => {
       const testHelper = suite.getTestHelper();
