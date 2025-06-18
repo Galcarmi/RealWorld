@@ -1,5 +1,6 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileScreen';
@@ -7,12 +8,12 @@ import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal } from '../../mocks/data';
-import { getMockAuthService, resetAllServiceMocks } from '../../mocks/services';
-import { resetAllStoreMocks } from '../../mocks/stores';
 import {
-  getMockShowErrorModals,
-  resetAllUtilityMocks,
-} from '../../mocks/utilities';
+  createMockAuthService,
+  resetAllServiceMocks,
+} from '../../mocks/services';
+import { resetAllStoreMocks } from '../../mocks/stores';
+import { mockUtilities, resetUtilityMocks } from '../../mocks/utilities';
 
 const renderEditProfileScreen = () => {
   return render(
@@ -23,15 +24,14 @@ const renderEditProfileScreen = () => {
 };
 
 describe('Edit Profile Screen Integration Tests', () => {
-  const mockAuthService = getMockAuthService();
-  const mockShowErrorModals = getMockShowErrorModals();
+  const mockAuthService = createMockAuthService();
 
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.forgetUser();
     resetAllStoreMocks();
     resetAllServiceMocks();
-    resetAllUtilityMocks();
+    resetUtilityMocks();
 
     userStore.setUser({
       ...mockUserMinimal,
@@ -39,7 +39,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       image: 'https://example.com/avatar.jpg',
     });
 
-    mockAuthService.put.mockResolvedValue({
+    mockAuthService.updateUser.mockResolvedValue({
       user: {
         ...mockUserMinimal,
         bio: 'Updated bio',
@@ -188,7 +188,7 @@ describe('Edit Profile Screen Integration Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle generic errors gracefully', async () => {
-      mockAuthService.put.mockRejectedValue(new Error('Network error'));
+      mockAuthService.updateUser.mockRejectedValue(new Error('Network error'));
 
       const { getByTestId } = renderEditProfileScreen();
 
@@ -203,7 +203,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       });
 
       await waitFor(() => {
-        expect(mockShowErrorModals).toHaveBeenCalledWith({
+        expect(mockUtilities.showErrorModals).toHaveBeenCalledWith({
           general: ['Failed to update profile'],
         });
       });
@@ -221,7 +221,7 @@ describe('Edit Profile Screen Integration Tests', () => {
         },
       };
 
-      mockAuthService.put.mockRejectedValue(apiError);
+      mockAuthService.updateUser.mockRejectedValue(apiError);
 
       const { getByTestId } = renderEditProfileScreen();
 
@@ -236,7 +236,7 @@ describe('Edit Profile Screen Integration Tests', () => {
       });
 
       await waitFor(() => {
-        expect(mockShowErrorModals).toHaveBeenCalled();
+        expect(mockUtilities.showErrorModals).toHaveBeenCalled();
       });
     });
   });
@@ -362,7 +362,7 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      expect(mockAuthService.put).toBeDefined();
+      expect(mockAuthService.updateUser).toBeDefined();
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
 

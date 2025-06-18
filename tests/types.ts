@@ -1,32 +1,21 @@
-import { RouteProp } from '@react-navigation/native';
 import React from 'react';
-import { ReactTestInstance } from 'react-test-renderer';
+
+import { RouteProp } from '@react-navigation/native';
 
 import { RootStackParamList } from '../src/navigation/types';
-import { ResponseErrors } from '../src/services/types';
+import { Article, Profile, ResponseErrors } from '../src/services/types';
 import { IAuthStore, IUserStore, User } from '../src/store/types';
-
-export interface TestDataConfig {
-  validEmails: string[];
-  invalidEmails: string[];
-  validDates: string[];
-  invalidDates: string[];
-  mockUser: User;
-  mockAuthValues: MockAuthValues;
-}
-
-export interface MockAuthValues {
-  email: string;
-  username: string;
-  password: string;
-}
 
 export interface MockAuthStore
   extends Omit<
     IAuthStore,
     'authValues' | 'isLoginFormValid' | 'isSignUpFormValid'
   > {
-  authValues: MockAuthValues;
+  authValues: {
+    email: string;
+    username: string;
+    password: string;
+  };
   isLoginFormValid: boolean;
   isSignUpFormValid: boolean;
 }
@@ -36,33 +25,10 @@ export interface MockUserStore extends IUserStore {
   token: string | null;
 }
 
-export interface MockStoreSetup {
-  authStore: MockAuthStore;
-  userStore: MockUserStore;
-}
-
-export interface AuthStorePropertyMockValues {
-  isLoginFormValid?: boolean;
-  isSignUpFormValid?: boolean;
-  authValues?: MockAuthValues;
-}
-
 export interface FormValidationTestValues {
   username?: string;
   email?: string;
   password?: string;
-}
-
-export interface MockLoginResponseOverrides extends Partial<User> {}
-
-export interface MockAuthErrorData {
-  errors: ResponseErrors;
-}
-
-export interface MockAuthError {
-  response: {
-    data: MockAuthErrorData;
-  };
 }
 
 export interface MockNavigationFunctions {
@@ -70,68 +36,60 @@ export interface MockNavigationFunctions {
   navigate: jest.Mock;
 }
 
-export interface MockRouteConfig {
-  key: string;
-  name: keyof RootStackParamList;
-  params?: RootStackParamList[keyof RootStackParamList];
-}
-
 export type MockRoute = RouteProp<RootStackParamList, keyof RootStackParamList>;
 
-export interface TestingLibraryQueries {
-  getByTestId: (testId: string) => ReactTestInstance;
-  queryByTestId: (testId: string) => ReactTestInstance | null;
-  findByTestId: (testId: string) => Promise<ReactTestInstance>;
-}
+export type TestingLibraryQueries = {
+  getByTestId: (testId: string) => any;
+  findByTestId: (testId: string) => Promise<any>;
+  queryByTestId: (testId: string) => any;
+  getAllByTestId: (testId: string) => any[];
+  queryAllByTestId: (testId: string) => any[];
+  findAllByTestId: (testId: string) => Promise<any[]>;
+  getByText: (text: string) => any;
+  findByText: (text: string) => Promise<any>;
+  queryByText: (text: string) => any;
+};
+
+export type UseAuthorProfileReturn = {
+  authorProfile: Profile | null;
+  authorArticles: Article[];
+  isLoading: boolean;
+  onFollowToggle: () => Promise<void>;
+  onToggleFavorite: (slug: string, favorited: boolean) => Promise<void>;
+  refreshAuthorArticles: () => Promise<void>;
+};
 
 export interface RenderResult extends TestingLibraryQueries {
   rerender: (component: React.ReactElement) => void;
   unmount: () => void;
 }
 
-export interface MockAuthService {
-  login: jest.Mock;
-  register: jest.Mock;
-  get: jest.Mock;
-  put: jest.Mock;
-}
-
-export interface MockAxiosInstance {
-  interceptors: {
-    request: { use: jest.Mock; eject: jest.Mock; clear: jest.Mock };
-    response: { use: jest.Mock; eject: jest.Mock; clear: jest.Mock };
-  };
-  defaults: { headers: { common: Record<string, string> } };
-  get: jest.Mock;
-  post: jest.Mock;
-  put: jest.Mock;
-  delete: jest.Mock;
-  create: jest.Mock;
-  getUri: jest.Mock;
-  request: jest.Mock;
-  head: jest.Mock;
-  options: jest.Mock;
-  patch: jest.Mock;
-  postForm: jest.Mock;
-  putForm: jest.Mock;
-  patchForm: jest.Mock;
-}
-
 export type ValidationFunction = (input: string) => boolean;
 
-export interface ValidationTestConfig {
-  validInputs: string[];
-  invalidInputs: string[];
-  expectedValid?: boolean;
-  expectedInvalid?: boolean;
+export interface MockAuthError {
+  response: {
+    data: {
+      errors: ResponseErrors;
+    };
+  };
 }
 
-export interface FormFieldInteractionResult {
-  field: ReactTestInstance;
-  setValue: string;
-  expectedAction: jest.Mock;
-}
-
-export type TestSetupFunction = () => void;
-export type AsyncTestAction = () => Promise<void>;
-export type LoadingCheckFunction = () => boolean;
+export type UtilitiesModule = {
+  showErrorModals: (errors: ResponseErrors) => void;
+  lengthValidation: (
+    minLength: number,
+    maxLength: number
+  ) => (value?: string) => boolean;
+  emailValidation: (value?: string) => boolean;
+  showErrorAlert: (title?: string, message?: string) => void;
+  showInfoAlert: (title: string, message?: string) => void;
+  showConfirmAlert: (
+    title: string,
+    message?: string,
+    onConfirm?: () => void,
+    onCancel?: () => void
+  ) => void;
+  getInitials: (name: string, count: number) => string;
+  getUserInitial: (username: string) => string;
+  formatDate: (dateString: string) => string;
+};

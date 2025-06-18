@@ -1,6 +1,7 @@
-import { observer } from 'mobx-react';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react';
 
 import { FeedType } from '../constants/feedTypes';
 import { componentStyles } from '../styles/componentStyles';

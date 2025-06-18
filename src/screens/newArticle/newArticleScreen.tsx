@@ -1,11 +1,13 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
+
+import { componentStyles } from '../../styles/componentStyles';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { componentStyles } from '../../styles/componentStyles';
 
 import { useNewArticle } from './useNewArticle';
 

@@ -1,8 +1,10 @@
 import { useCallback, useEffect } from 'react';
 
-import { navigationService } from '../../services/navigationService';
-import { articlesStore } from '../../store';
 import { userStore } from '../../store/userStore';
+
+import { navigationService } from '../../services/navigationService';
+
+import { articlesStore } from '../../store';
 
 const useFavoriteArticles = () => {
   const handleLoadMoreArticles = useCallback(() => {

@@ -67,11 +67,11 @@ const setupAuthStoreMocks = () => {
     mockAuthStore.password = value;
   });
 
-  mockAuthStore.login.mockImplementation(() => {
+  mockAuthStore.login.mockImplementation(async () => {
     mockAuthStore.isLoading = true;
   });
 
-  mockAuthStore.register.mockImplementation(() => {
+  mockAuthStore.register.mockImplementation(async () => {
     mockAuthStore.isLoading = true;
   });
 };
@@ -105,7 +105,10 @@ const setupArticlesStoreMocks = () => {
   mockArticlesStore.favoritesArticlesCount = 0;
   mockArticlesStore.favoritesCurrentOffset = 0;
 
-  mockArticlesStore.getUserArticles.mockResolvedValue({ articles: [] });
+  mockArticlesStore.getUserArticles.mockResolvedValue({
+    articles: [],
+    articlesCount: 0,
+  });
 };
 
 setupAuthStoreMocks();

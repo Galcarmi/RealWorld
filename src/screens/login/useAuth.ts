@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
-import { navigationService } from '../../services';
 import { authStore } from '../../store/authStore';
+
+import { navigationService } from '../../services';
 import { showErrorModals } from '../../utils';
 
 import { useStore } from './useStore';
@@ -10,7 +11,7 @@ import { useStore } from './useStore';
 const useAuth = () => {
   const { isLoading, user, errors } = useStore();
 
-  const onNameChange = useCallback((value: string) => {
+  const onUsernameChange = useCallback((value: string) => {
     authStore.setUsername(value);
   }, []);
 
@@ -24,12 +25,12 @@ const useAuth = () => {
 
   const onSignUp = useCallback(async () => {
     Keyboard.dismiss();
-    authStore.register();
+    await authStore.register();
   }, []);
 
   const onLogin = useCallback(async () => {
     Keyboard.dismiss();
-    authStore.login();
+    await authStore.login();
   }, []);
 
   const onNavigateToLogin = useCallback(() => {
@@ -56,7 +57,7 @@ const useAuth = () => {
     username: authStore.username,
     isLoginFormValid: authStore.isLoginFormValid,
     isSignUpFormValid: authStore.isSignUpFormValid,
-    onNameChange,
+    onUsernameChange,
     onEmailChange,
     onPasswordChange,
     onLogin,

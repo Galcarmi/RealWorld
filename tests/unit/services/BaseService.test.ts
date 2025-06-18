@@ -3,10 +3,10 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import { mockDeep, MockProxy } from 'jest-mock-extended';
 
 import { BaseService } from '../../../src/services/BaseService';
 import { IAuthStore, IUserStore } from '../../../src/store/types';
-import { setupMockAxiosInstance } from '../../utils/testHelpers';
 
 jest.mock('axios');
 
@@ -19,45 +19,19 @@ class TestService extends BaseService {
 }
 
 describe('BaseService', () => {
-  let authStore: jest.Mocked<IAuthStore>;
-  let userStore: jest.Mocked<IUserStore>;
+  let authStore: MockProxy<IAuthStore>;
+  let userStore: MockProxy<IUserStore>;
   let testService: TestService;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    authStore = {
-      isLoading: false,
-      errors: undefined,
-      username: '',
-      email: '',
-      password: '',
-      authValues: { email: '', username: '', password: '' },
-      isLoginFormValid: false,
-      isSignUpFormValid: false,
-      clear: jest.fn(),
-      setUsername: jest.fn(),
-      setEmail: jest.fn(),
-      setPassword: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-      logout: jest.fn(),
-    };
+    authStore = mockDeep<IAuthStore>();
+    userStore = mockDeep<IUserStore>();
 
-    userStore = {
-      user: null,
-      token: null,
-      forgetUser: jest.fn(),
-      setUser: jest.fn(),
-      getToken: jest.fn(),
-      isAuthenticated: jest.fn(),
-    };
+    const mockAxiosInstance = mockDeep<AxiosInstance>();
 
-    const mockAxiosInstance = setupMockAxiosInstance();
-
-    mockedAxios.create.mockReturnValue(
-      mockAxiosInstance as unknown as AxiosInstance
-    );
+    mockedAxios.create.mockReturnValue(mockAxiosInstance);
 
     testService = new TestService(authStore, userStore);
   });

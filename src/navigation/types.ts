@@ -1,5 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { ComponentProps } from 'react';
+
+import { Ionicons } from '@expo/vector-icons';
 
 export type RootStackParamList = {
   Login: undefined;

@@ -1,16 +1,20 @@
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { noop } from 'lodash';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native-ui-lib';
+
+import { useRoute, RouteProp } from '@react-navigation/native';
+
+import { noop } from 'lodash';
+import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
+
+import { themeColors } from '../../theme/colors';
+
+import { RootStackParamList } from '../../navigation/types';
+import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { AuthorProfileHeader } from '../../components/AuthorProfileHeader';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { RootStackParamList } from '../../navigation/types';
-import { componentStyles } from '../../styles/componentStyles';
-import { themeColors } from '../../theme/colors';
 
 import { useAuthorProfile } from './useAuthorProfile';
 

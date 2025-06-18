@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { navigationService } from '../../services/navigationService';
-import { Article } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
 import { userStore } from '../../store/userStore';
+
+import { navigationService } from '../../services/navigationService';
+import { Article } from '../../services/types';
+
 import { showErrorAlert } from '../../utils';
 
 export const useProfile = () => {

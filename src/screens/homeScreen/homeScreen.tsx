@@ -1,18 +1,21 @@
-import { observer } from 'mobx-react';
-import React from 'react';
 import { View } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react';
+import { NavioScreen } from 'rn-navio';
+
+import { FeedType } from '../../constants/feedTypes';
+import { themeColors } from '../../theme/colors';
+
+import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { FeedType } from '../../constants/feedTypes';
 import { userStore } from '../../store';
-import { componentStyles } from '../../styles/componentStyles';
-import { themeColors } from '../../theme/colors';
 
 import useArticles from './useArticles';
 
-export const HomeScreen: React.FC<{}> = observer(() => {
+export const HomeScreen: NavioScreen = observer(() => {
   const {
     articles,
     isLoading,

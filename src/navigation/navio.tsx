@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+
 import { Navio } from 'rn-navio';
 
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';

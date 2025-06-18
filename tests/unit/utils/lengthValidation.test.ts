@@ -1,5 +1,4 @@
 import { lengthValidation } from '../../../src/utils';
-import { createLengthValidator } from '../../utils/testHelpers';
 
 describe('lengthValidation', () => {
   describe('with default parameters (6-30 characters)', () => {
@@ -28,7 +27,7 @@ describe('lengthValidation', () => {
 
   describe('with custom parameters', () => {
     it('should validate minimum length correctly', () => {
-      const validate = createLengthValidator(3, 10);
+      const validate = lengthValidation(3, 10);
 
       expect(validate('ab')).toBe(false);
       expect(validate('abc')).toBe(true);
@@ -37,7 +36,7 @@ describe('lengthValidation', () => {
     });
 
     it('should validate maximum length correctly', () => {
-      const validate = createLengthValidator(1, 5);
+      const validate = lengthValidation(1, 5);
 
       expect(validate('a')).toBe(true);
       expect(validate('abcde')).toBe(true);
@@ -45,7 +44,7 @@ describe('lengthValidation', () => {
     });
 
     it('should handle edge case where min equals max', () => {
-      const validate = createLengthValidator(5, 5);
+      const validate = lengthValidation(5, 5);
 
       expect(validate('1234')).toBe(false);
       expect(validate('12345')).toBe(true);
@@ -55,7 +54,7 @@ describe('lengthValidation', () => {
 
   describe('edge cases', () => {
     it('should handle zero minimum length', () => {
-      const validate = createLengthValidator(0, 5);
+      const validate = lengthValidation(0, 5);
 
       expect(validate('')).toBe(true);
       expect(validate('12345')).toBe(true);
@@ -63,7 +62,7 @@ describe('lengthValidation', () => {
     });
 
     it('should handle whitespace correctly', () => {
-      const validate = createLengthValidator(3, 10);
+      const validate = lengthValidation(3, 10);
 
       expect(validate('   ')).toBe(true);
       expect(validate('  a  ')).toBe(true);

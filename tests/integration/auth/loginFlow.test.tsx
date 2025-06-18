@@ -1,18 +1,20 @@
-import { fireEvent } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { fireEvent } from '@testing-library/react-native';
+
 import '../../mocks';
-import { LoginScreen } from '../../../src/screens/login/loginScreen';
-import { navigationService } from '../../../src/services/navigationService';
-import { authStore } from '../../../src/store/authStore';
-import { userStore } from '../../../src/store/userStore';
-import { getMockAuthStore } from '../../mocks/stores';
 import {
   renderLoginScreen,
   setupIntegrationTestEnvironment,
   expectFormFieldExists,
   simulateFieldInput,
 } from '../../utils/testHelpers';
+
+import { LoginScreen } from '../../../src/screens/login/loginScreen';
+import { navigationService } from '../../../src/services/navigationService';
+import { authStore } from '../../../src/store/authStore';
+import { userStore } from '../../../src/store/userStore';
+import { getMockAuthStore } from '../../mocks/stores';
 
 const mockAuthStore = getMockAuthStore();
 

@@ -1,5 +1,6 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
@@ -45,9 +46,6 @@ describe('Author Profile Screen Integration Tests', () => {
     } as Profile;
     mockUseAuthorProfile.authorArticles = mockArticles;
     mockUseAuthorProfile.isLoading = false;
-    mockUseAuthorProfile.onFollowToggle = jest.fn();
-    mockUseAuthorProfile.onToggleFavorite = jest.fn();
-    mockUseAuthorProfile.refreshAuthorArticles = jest.fn();
   });
 
   afterEach(() => {

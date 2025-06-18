@@ -1,4 +1,4 @@
-import { Page, Browser } from 'puppeteer';
+import { Page, Browser, HTTPResponse } from 'puppeteer';
 
 export interface VisualTestHelper {
   browser: Browser | null;
@@ -10,7 +10,10 @@ export interface VisualTestHelper {
   takeScreenshot(name: string): Promise<string>;
   waitForSelector(selector: string, timeout?: number): Promise<void>;
   waitForText(text: string, timeout?: number): Promise<void>;
-  waitForApiCall(urlPattern: string | RegExp, timeout?: number): Promise<any>;
+  waitForApiCall(
+    urlPattern: string | RegExp,
+    timeout?: number
+  ): Promise<HTTPResponse>;
   click(selector: string): Promise<void>;
   tap(selector: string): Promise<void>;
   type(selector: string, text: string): Promise<void>;

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ProfileService } from '../../services';
-import { Article, Profile } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
 import { authStore } from '../../store/authStore';
 import { userStore } from '../../store/userStore';
+
+import { Article, Profile } from '../../services/types';
+
+import { ProfileService } from '../../services';
 import { Logger } from '../../utils';
 
 export const useAuthorProfile = (username: string) => {

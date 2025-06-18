@@ -1,18 +1,24 @@
+import {
+  validationTestData,
+  expectValidationResults,
+} from '../../utils/testHelpers';
+
 import { emailValidation } from '../../../src/utils';
-import { testData, expectValidationResults } from '../../utils/testHelpers';
 
 describe('emailValidation', () => {
   it('should return true for valid email addresses', () => {
-    expectValidationResults(emailValidation, testData.validEmails, [], true);
+    expectValidationResults(
+      emailValidation,
+      validationTestData.validEmails,
+      []
+    );
   });
 
   it('should return false for invalid email addresses', () => {
     expectValidationResults(
       emailValidation,
       [],
-      testData.invalidEmails,
-      true,
-      false
+      validationTestData.invalidEmails
     );
   });
 

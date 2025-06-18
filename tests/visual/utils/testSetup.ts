@@ -1,7 +1,7 @@
+import { TestLogger } from './TestLogger';
+
 import fs from 'fs';
 import path from 'path';
-
-import { TestLogger } from './TestLogger';
 
 export function ensureTestDirectories(): void {
   const directories = [

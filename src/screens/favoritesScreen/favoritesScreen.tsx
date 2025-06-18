@@ -1,12 +1,15 @@
-import { observer } from 'mobx-react';
 import React from 'react';
 import { View } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
+
+import { themeColors } from '../../theme/colors';
+
+import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { componentStyles } from '../../styles/componentStyles';
-import { themeColors } from '../../theme/colors';
 
 import { useFavoriteArticles } from './useFavoriteArticles';
 

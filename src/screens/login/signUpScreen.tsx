@@ -1,19 +1,22 @@
-import { observer } from 'mobx-react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text, View } from 'react-native-ui-lib';
+
+import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
-import { InputField } from '../../components/InputField';
+import { themeColors } from '../../theme/colors';
+
 import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
-import { themeColors } from '../../theme/colors';
+
+import { InputField } from '../../components/InputField';
 import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
 
 export const Main: NavioScreen = observer(() => {
   const {
-    onNameChange,
+    onUsernameChange,
     onEmailChange,
     onPasswordChange,
     onSignUp,
@@ -39,7 +42,7 @@ export const Main: NavioScreen = observer(() => {
           value={username}
           validationMessage={['Username is required', 'Username is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
-          onChangeText={onNameChange}
+          onChangeText={onUsernameChange}
           testID='signup-username-input'
         />
         <InputField
