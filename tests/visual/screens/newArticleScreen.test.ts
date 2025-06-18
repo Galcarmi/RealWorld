@@ -1,6 +1,10 @@
-import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
-
+import { mockCollections } from '../../mocks/data';
+import {
+  createVisualTestSuite,
+  performLogin,
+  navigateToProfile,
+  commonTestActions,
+} from '../utils/testHelpers';
 createVisualTestSuite(
   'New Article Screen - Visual Regression Test',
   { mockApis: mockCollections.newArticle },
@@ -8,24 +12,15 @@ createVisualTestSuite(
     it('should show new article screen with empty form', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
+      await performLogin(testHelper);
+
+      await navigateToProfile(testHelper);
+
+      await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'login-tab-icon',
-        'login-screen'
+        'new-article-button',
+        'new-article-screen'
       );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
-
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
-      await testHelper.clickByTestId('new-article-button');
-
-      await testHelper.waitForTestId('new-article-screen', 10000);
 
       const page2 = testHelper.getPage();
       if (!page2) throw new Error('Page not available');
@@ -50,24 +45,15 @@ createVisualTestSuite(
     it('should show new article screen with filled form data', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
+      await performLogin(testHelper);
+
+      await navigateToProfile(testHelper);
+
+      await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'login-tab-icon',
-        'login-screen'
+        'new-article-button',
+        'new-article-screen'
       );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
-
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
-      await testHelper.clickByTestId('new-article-button');
-
-      await testHelper.waitForTestId('new-article-screen', 10000);
 
       const page2 = testHelper.getPage();
       if (!page2) throw new Error('Page not available');

@@ -55,3 +55,7 @@ yarn-error.*
 # Visual testing
 tests/visual/screenshots/
 tests/visual/diffs/
+
+# Core dump files
+core
+core.*

@@ -49,6 +49,7 @@
     "react-native-ui-lib": "~7.43.0",
     "react-native-web": "^0.20.0",
     "rn-navio": "~0.1.0",
+    "sharp": "^0.34.2",
     "validator": "~13.15.15"
   },
   "devDependencies": {

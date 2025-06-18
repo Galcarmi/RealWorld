@@ -1,4 +1,4 @@
-import { mockCollections } from '../utils/mockApiResponses';
+import { mockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(
@@ -9,7 +9,7 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
+      await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
         'register-screen'
@@ -29,7 +29,7 @@ createVisualTestSuite(
       const testHelper = suite.getTestHelper();
 
       await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
+      await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
         'register-screen'

@@ -74,18 +74,10 @@ NativeModules.StatusBarManager = {
   HEIGHT: 20,
 };
 
-// Mock react-native-safe-area-context
+// Mock react-native-safe-area-context (uses variant with React.createElement)
 jest.mock('react-native-safe-area-context', () => {
-  const React = require('react');
-  const ReactNative = require('react-native');
-  const insets = { top: 0, right: 0, bottom: 0, left: 0 };
-  return {
-    SafeAreaProvider: ({ children }) =>
-      React.createElement(ReactNative.View, {}, children),
-    SafeAreaView: ({ children, ...props }) =>
-      React.createElement(ReactNative.View, props, children),
-    useSafeAreaInsets: () => insets,
-  };
+  const { createSafeAreaMock } = require('./setupUtils');
+  return createSafeAreaMock(true);
 });
 
 // Mock Expo vector icons to prevent font loading issues
@@ -114,7 +106,7 @@ jest.mock('rn-navio', () => ({
 }));
 
 // Mock AuthService
-jest.mock('./src/services/auth/AuthService', () => ({
+jest.mock('../../src/services/auth/AuthService', () => ({
   AuthService: jest.fn().mockImplementation(() => ({
     login: jest.fn(() =>
       Promise.resolve({
@@ -130,7 +122,7 @@ jest.mock('./src/services/auth/AuthService', () => ({
 }));
 
 // Mock utils with all the actual exported functions
-jest.mock('./src/utils', () => ({
+jest.mock('../../src/utils', () => ({
   showErrorAlert: jest.fn(),
   showInfoAlert: jest.fn(),
   showConfirmAlert: jest.fn(),

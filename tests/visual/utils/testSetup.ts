@@ -36,7 +36,7 @@ export function getScreenshotPath(
   type: 'baseline' | 'current' = 'current'
 ): string {
   const subDir = type === 'baseline' ? 'baselines' : 'screenshots';
-  return path.join('tests', 'visual', subDir, `${testName}.png`);
+  return path.join('tests', 'visual', subDir, `${testName}.jpeg`);
 }
 
 export async function waitForServer(

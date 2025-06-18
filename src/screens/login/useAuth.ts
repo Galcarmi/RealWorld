@@ -51,6 +51,9 @@ const useAuth = () => {
   return {
     user,
     isLoading,
+    email: authStore.email,
+    password: authStore.password,
+    username: authStore.username,
     isLoginFormValid: authStore.isLoginFormValid,
     isSignUpFormValid: authStore.isSignUpFormValid,
     onNameChange,

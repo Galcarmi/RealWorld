@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { PNG } from 'pngjs';
+import sharp from 'sharp';
 
 // Use require for pixelmatch to avoid ES module issues in Jest
 const pixelmatch = require('pixelmatch').default || require('pixelmatch');
@@ -45,9 +45,9 @@ export class VisualComparator {
   ): Promise<VisualComparisonResult> {
     const opts = { ...DEFAULT_OPTIONS, ...options };
 
-    const baselinePath = path.join(this.baselineDir, `${screenshotName}.png`);
-    const currentPath = path.join(this.currentDir, `${screenshotName}.png`);
-    const diffPath = path.join(this.diffDir, `${screenshotName}-diff.png`);
+    const baselinePath = path.join(this.baselineDir, `${screenshotName}.jpeg`);
+    const currentPath = path.join(this.currentDir, `${screenshotName}.jpeg`);
+    const diffPath = path.join(this.diffDir, `${screenshotName}-diff.jpeg`);
 
     if (!fs.existsSync(currentPath)) {
       throw new Error(`Current screenshot not found: ${currentPath}`);
@@ -72,23 +72,34 @@ export class VisualComparator {
       }
     }
 
-    const baselineImg = PNG.sync.read(fs.readFileSync(baselinePath));
-    const currentImg = PNG.sync.read(fs.readFileSync(currentPath));
+    // Use Sharp to read JPEG images and convert to consistent RGBA format for pixelmatch
+    const baselineImg = await sharp(baselinePath)
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
 
-    this.validateImageDimensions(baselineImg, currentImg, screenshotName);
+    const currentImg = await sharp(currentPath)
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
 
-    const totalPixels = baselineImg.width * baselineImg.height;
-    const diffImg = new PNG({
-      width: baselineImg.width,
-      height: baselineImg.height,
-    });
+    this.validateImageDimensions(
+      baselineImg.info,
+      currentImg.info,
+      screenshotName
+    );
+
+    const totalPixels = baselineImg.info.width * baselineImg.info.height;
+
+    // Create a buffer for the diff image with same dimensions (RGBA = 4 channels)
+    const diffImg = Buffer.alloc(totalPixels * 4);
 
     const pixelDifference = pixelmatch(
       baselineImg.data,
       currentImg.data,
-      diffImg.data,
-      baselineImg.width,
-      baselineImg.height,
+      diffImg,
+      baselineImg.info.width,
+      baselineImg.info.height,
       { threshold: opts.threshold }
     );
 
@@ -106,10 +117,11 @@ export class VisualComparator {
     );
     console.log(`   Result: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
 
-    const diffImagePath = this.createDiffImageIfNeeded(
+    const diffImagePath = await this.createDiffImageIfNeeded(
       pixelDifference,
       diffImg,
       diffPath,
+      baselineImg.info,
       opts.createDiffImage
     );
 
@@ -123,8 +135,8 @@ export class VisualComparator {
   }
 
   async updateBaseline(screenshotName: string): Promise<void> {
-    const currentPath = path.join(this.currentDir, `${screenshotName}.png`);
-    const baselinePath = path.join(this.baselineDir, `${screenshotName}.png`);
+    const currentPath = path.join(this.currentDir, `${screenshotName}.jpeg`);
+    const baselinePath = path.join(this.baselineDir, `${screenshotName}.jpeg`);
 
     if (!fs.existsSync(currentPath)) {
       throw new Error(`Current screenshot not found: ${currentPath}`);
@@ -135,15 +147,15 @@ export class VisualComparator {
   }
 
   getBaselinePath(screenshotName: string): string {
-    return path.join(this.baselineDir, `${screenshotName}.png`);
+    return path.join(this.baselineDir, `${screenshotName}.jpeg`);
   }
 
   getCurrentPath(screenshotName: string): string {
-    return path.join(this.currentDir, `${screenshotName}.png`);
+    return path.join(this.currentDir, `${screenshotName}.jpeg`);
   }
 
   getDiffPath(screenshotName: string): string {
-    return path.join(this.diffDir, `${screenshotName}-diff.png`);
+    return path.join(this.diffDir, `${screenshotName}-diff.jpeg`);
   }
 
   private ensureDiffDirectoryExists(): void {
@@ -167,30 +179,42 @@ export class VisualComparator {
   }
 
   private validateImageDimensions(
-    baselineImg: PNG,
-    currentImg: PNG,
+    baselineInfo: { width: number; height: number },
+    currentInfo: { width: number; height: number },
     screenshotName: string
   ): void {
     if (
-      baselineImg.width !== currentImg.width ||
-      baselineImg.height !== currentImg.height
+      baselineInfo.width !== currentInfo.width ||
+      baselineInfo.height !== currentInfo.height
     ) {
       throw new Error(
         `Image dimensions don't match for ${screenshotName}. ` +
-          `Baseline: ${baselineImg.width}x${baselineImg.height}, ` +
-          `Current: ${currentImg.width}x${currentImg.height}`
+          `Baseline: ${baselineInfo.width}x${baselineInfo.height}, ` +
+          `Current: ${currentInfo.width}x${currentInfo.height}`
       );
     }
   }
 
-  private createDiffImageIfNeeded(
+  private async createDiffImageIfNeeded(
     pixelDifference: number,
-    diffImg: PNG,
+    diffBuffer: Buffer,
     diffPath: string,
+    imageInfo: { width: number; height: number; channels: number },
     createDiffImage: boolean
-  ): string | undefined {
+  ): Promise<string | undefined> {
     if (pixelDifference > 0 && createDiffImage) {
-      fs.writeFileSync(diffPath, PNG.sync.write(diffImg));
+      // Create diff image using Sharp with the original image dimensions
+      // pixelmatch always outputs RGBA format (4 channels)
+      await sharp(diffBuffer, {
+        raw: {
+          width: imageInfo.width,
+          height: imageInfo.height,
+          channels: 4 as const, // pixelmatch always outputs RGBA
+        },
+      })
+        .jpeg()
+        .toFile(diffPath);
+
       return diffPath;
     }
     return undefined;

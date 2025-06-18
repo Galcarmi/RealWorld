@@ -57,14 +57,11 @@ export class PuppeteerTestHelper {
       headless: this.config.headless,
       slowMo: this.config.slowMo,
       devtools: this.config.devtools,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
         '--disable-web-security',
-        '--force-device-scale-factor=1',
-        '--disable-features=VizDisplayCompositor',
       ],
     };
 
@@ -79,7 +76,7 @@ export class PuppeteerTestHelper {
     await this.page.setViewport({
       width: this.config.viewport.width,
       height: this.config.viewport.height,
-      deviceScaleFactor: 1,
+      deviceScaleFactor: 2,
     });
 
     // Set consistent user agent across platforms
@@ -138,10 +135,12 @@ export class PuppeteerTestHelper {
       throw new Error('Page not initialized. Call init() first.');
     }
 
-    const screenshotPath = `tests/visual/screenshots/${name}.png` as const;
+    const screenshotPath = `tests/visual/screenshots/${name}.jpeg` as const;
     await this.page.screenshot({
       path: screenshotPath,
       fullPage: true,
+      type: 'jpeg',
+      omitBackground: false,
     });
 
     return screenshotPath;
@@ -411,6 +410,7 @@ export class PuppeteerTestHelper {
             ? url.includes(mock.url)
             : mock.url.test(url);
         const methodMatches = !mock.method || method === mock.method;
+
         return urlMatches && methodMatches;
       });
 

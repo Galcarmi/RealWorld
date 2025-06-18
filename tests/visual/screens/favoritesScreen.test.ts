@@ -1,5 +1,9 @@
-import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
+import { mockCollections } from '../../mocks/data';
+import {
+  createVisualTestSuite,
+  commonTestActions,
+  performLogin,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Favorites Screen - Visual Regression Test',
@@ -8,44 +12,28 @@ createVisualTestSuite(
     it('should show favorites screen with favorited articles', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
-
-      await testHelper.clickByTestId('favorites-main-tab-icon');
-      await testHelper.waitForTestId('favorites-screen', 10000);
+      await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await suite.takeScreenshotAndCompare('favorites-screen-with-articles');
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'favorites-main-tab-icon',
+        'favorites-screen'
+      );
+      await testHelper.waitForTestId('article-card-test-article-2', 5000);
+
+      await suite.takeScreenshotAndCompare(
+        'favorites-screen-with-favorited-articles'
+      );
     });
 
     it('should favorite an unfavorited article from home screen', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-authoruser');
+      await testHelper.clickByTestId('favorite-button-testuser1');
 
       await suite.takeScreenshotAndCompare('home-screen-article-favorited');
     });
@@ -53,21 +41,10 @@ createVisualTestSuite(
     it('should unfavorite a favorited article from home screen', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-anotheruser');
+      await testHelper.clickByTestId('favorite-button-testuser2');
 
       await suite.takeScreenshotAndCompare('home-screen-article-unfavorited');
     });

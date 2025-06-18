@@ -1,5 +1,9 @@
-import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
+import { mockCollections } from '../../mocks/data';
+import {
+  createVisualTestSuite,
+  commonTestActions,
+  performLogin,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Author Profile Screen - Visual Regression Test',
@@ -8,22 +12,14 @@ createVisualTestSuite(
     it('should navigate to author profile from article and take screenshot', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare('author-profile-screen-initial');
     });
@@ -31,22 +27,14 @@ createVisualTestSuite(
     it('should show follow button and toggle to unfollow', async () => {
       const testHelper = suite.getTestHelper();
 
-      await commonTestActions.navigateAndWaitForBody(testHelper);
-      await commonTestActions.clickTabAndWaitForScreen(
-        testHelper,
-        'login-tab-icon',
-        'login-screen'
-      );
-
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
-      await testHelper.clickByTestId('login-submit-button');
-
-      await testHelper.waitForTestId('home-screen', 10000);
+      await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
       await testHelper.waitForTestId('follow-button', 5000);
 
       await testHelper.clickByTestId('follow-button');

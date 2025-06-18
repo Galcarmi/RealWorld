@@ -1,20 +1,10 @@
-import { mockCollections } from '../utils/mockApiResponses';
-import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
-
-async function performLogin(testHelper: any) {
-  await commonTestActions.navigateAndWaitForBody(testHelper);
-  await commonTestActions.clickTabAndWaitForScreen(
-    testHelper,
-    'login-tab-icon',
-    'login-screen'
-  );
-
-  await testHelper.typeInTestId('login-email-input', 'test@example.com');
-  await testHelper.typeInTestId('login-password-input', 'password123');
-  await testHelper.clickByTestId('login-submit-button');
-
-  await testHelper.waitForTestId('home-screen', 10000);
-}
+import { mockCollections } from '../../mocks/data';
+import {
+  createVisualTestSuite,
+  commonTestActions,
+  performLogin,
+  navigateToProfile,
+} from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Complete User Flow Integration Tests',
@@ -26,8 +16,11 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('article-card-test-article-1');
-      await testHelper.waitForTestId('author-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'article-card-test-article-1',
+        'author-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-author-profile'
@@ -40,7 +33,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-authoruser');
+      await testHelper.clickByTestId('favorite-button-testuser1');
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-favorite-unfavorited'
@@ -53,7 +46,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-anotheruser');
+      await testHelper.clickByTestId('favorite-button-testuser2');
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-unfavorite-favorited'
@@ -65,8 +58,7 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
       await suite.takeScreenshotAndCompare('flow-login-user-profile');
     });
@@ -76,11 +68,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
-      await testHelper.clickByTestId('edit-profile-button');
-      await testHelper.waitForTestId('edit-profile-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'edit-profile-button',
+        'edit-profile-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-user-profile-edit-profile'
@@ -92,11 +86,13 @@ createVisualTestSuite(
 
       await performLogin(testHelper);
 
-      await testHelper.clickByTestId('profile-main-tab-icon');
-      await testHelper.waitForTestId('profile-screen', 10000);
+      await navigateToProfile(testHelper);
 
-      await testHelper.clickByTestId('new-article-button');
-      await testHelper.waitForTestId('new-article-screen', 10000);
+      await commonTestActions.clickAndNavigateToScreen(
+        testHelper,
+        'new-article-button',
+        'new-article-screen'
+      );
 
       await suite.takeScreenshotAndCompare(
         'flow-login-user-profile-new-article'
