@@ -19,6 +19,8 @@ export const LoginScreen: NavioScreen = observer(() => {
     onLogin,
     isLoading,
     isLoginFormValid,
+    email,
+    password,
   } = useAuth();
 
   return (
@@ -32,6 +34,7 @@ export const LoginScreen: NavioScreen = observer(() => {
         </Text>
         <InputField
           placeholder={'Email'}
+          value={email}
           validationMessage={['Email is required', 'Not a valid email']}
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
@@ -40,6 +43,7 @@ export const LoginScreen: NavioScreen = observer(() => {
         />
         <InputField
           placeholder={'Password'}
+          value={password}
           validationMessage={['Password is required', 'Password is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}

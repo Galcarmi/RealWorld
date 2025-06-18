@@ -8,7 +8,7 @@ import {
 
 createVisualTestSuite(
   'Profile Screen - Visual Regression Test',
-  { mockApis: mockCollections.userProfile },
+  { mockApis: mockCollections.allMocks },
   suite => {
     it('should show user profile screen after login', async () => {
       const testHelper = suite.getTestHelper();

@@ -2,7 +2,7 @@ import { MockApiResponse } from '../config/puppeteerConfig';
 
 export const authMocks = {
   login: {
-    url: /\/api\/users\/login$/,
+    url: /node-express-conduit\.appspot\.com\/api\/users\/login$/,
     method: 'POST',
     status: 200,
     body: {
@@ -17,7 +17,7 @@ export const authMocks = {
     },
   },
   register: {
-    url: /\/api\/users$/,
+    url: /node-express-conduit\.appspot\.com\/api\/users$/,
     method: 'POST',
     status: 200,
     body: {
@@ -32,7 +32,7 @@ export const authMocks = {
     },
   },
   getCurrentUser: {
-    url: /\/api\/user$/,
+    url: /node-express-conduit\.appspot\.com\/api\/user$/,
     method: 'GET',
     status: 200,
     body: {
@@ -47,7 +47,7 @@ export const authMocks = {
     },
   },
   updateUser: {
-    url: /\/api\/user$/,
+    url: /node-express-conduit\.appspot\.com\/api\/user$/,
     method: 'PUT',
     status: 200,
     body: {
@@ -65,7 +65,7 @@ export const authMocks = {
 
 export const articleMocks = {
   getArticles: {
-    url: /\/api\/articles\?/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?/,
     method: 'GET',
     status: 200,
     body: {
@@ -109,7 +109,7 @@ export const articleMocks = {
     },
   },
   getFavoriteArticles: {
-    url: /\/api\/articles\?favorited=/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?favorited=/,
     method: 'GET',
     status: 200,
     body: {
@@ -136,7 +136,7 @@ export const articleMocks = {
     },
   },
   getUserArticles: {
-    url: /\/api\/articles\?author=testuser/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=testuser/,
     method: 'GET',
     status: 200,
     body: {
@@ -163,7 +163,7 @@ export const articleMocks = {
     },
   },
   getUserArticlesEmpty: {
-    url: /\/api\/articles\?author=testuser/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=testuser/,
     method: 'GET',
     status: 200,
     body: {
@@ -172,7 +172,7 @@ export const articleMocks = {
     },
   },
   getAuthorArticles: {
-    url: /\/api\/articles\?author=authoruser/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=authoruser/,
     method: 'GET',
     status: 200,
     body: {
@@ -199,7 +199,7 @@ export const articleMocks = {
     },
   },
   createArticle: {
-    url: /\/api\/articles$/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles$/,
     method: 'POST',
     status: 200,
     body: {
@@ -223,7 +223,7 @@ export const articleMocks = {
     },
   },
   favoriteArticle1: {
-    url: /\/api\/articles\/test-article-1\/favorite$/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/test-article-1\/favorite$/,
     method: 'POST',
     status: 200,
     body: {
@@ -247,7 +247,7 @@ export const articleMocks = {
     },
   },
   unfavoriteArticle2: {
-    url: /\/api\/articles\/test-article-2\/favorite$/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/test-article-2\/favorite$/,
     method: 'DELETE',
     status: 200,
     body: {
@@ -274,7 +274,7 @@ export const articleMocks = {
 
 export const profileMocks = {
   getAuthorProfile: {
-    url: /\/api\/profiles\/authoruser$/,
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser$/,
     method: 'GET',
     status: 200,
     body: {
@@ -287,7 +287,7 @@ export const profileMocks = {
     },
   },
   followAuthor: {
-    url: /\/api\/profiles\/authoruser\/follow$/,
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser\/follow$/,
     method: 'POST',
     status: 200,
     body: {
@@ -334,6 +334,7 @@ export const mockCollections = {
   userProfile: [
     authMocks.login,
     authMocks.getCurrentUser,
+    articleMocks.getArticles,
     articleMocks.getUserArticles,
   ] as MockApiResponse[],
 
@@ -364,5 +365,22 @@ export const mockCollections = {
     articleMocks.unfavoriteArticle2,
     articleMocks.getUserArticlesEmpty,
     articleMocks.createArticle,
+  ] as MockApiResponse[],
+
+  allMocks: [
+    authMocks.login,
+    authMocks.register,
+    authMocks.getCurrentUser,
+    authMocks.updateUser,
+    articleMocks.getArticles,
+    articleMocks.getFavoriteArticles,
+    articleMocks.getUserArticles,
+    articleMocks.getUserArticlesEmpty,
+    articleMocks.getAuthorArticles,
+    articleMocks.createArticle,
+    articleMocks.favoriteArticle1,
+    articleMocks.unfavoriteArticle2,
+    profileMocks.getAuthorProfile,
+    profileMocks.followAuthor,
   ] as MockApiResponse[],
 } as const;
