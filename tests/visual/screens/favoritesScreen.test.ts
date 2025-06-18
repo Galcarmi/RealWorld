@@ -33,7 +33,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-authoruser');
+      await testHelper.clickByTestId('favorite-button-testuser1');
 
       await suite.takeScreenshotAndCompare('home-screen-article-favorited');
     });
@@ -44,7 +44,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-anotheruser');
+      await testHelper.clickByTestId('favorite-button-testuser2');
 
       await suite.takeScreenshotAndCompare('home-screen-article-unfavorited');
     });

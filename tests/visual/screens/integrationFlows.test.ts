@@ -33,7 +33,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-authoruser');
+      await testHelper.clickByTestId('favorite-button-testuser1');
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-favorite-unfavorited'
@@ -46,7 +46,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-anotheruser');
+      await testHelper.clickByTestId('favorite-button-testuser2');
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-unfavorite-favorited'

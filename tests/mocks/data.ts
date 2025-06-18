@@ -226,7 +226,7 @@ export const articleMocks = {
     },
   },
   getAuthorArticles: {
-    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=authoruser/,
+    url: /node-express-conduit\.appspot\.com\/api\/articles\?author=testuser1/,
     method: 'GET',
     status: 200,
     body: {
@@ -242,7 +242,7 @@ export const articleMocks = {
           favorited: false,
           favoritesCount: 3,
           author: {
-            username: 'authoruser',
+            username: 'testuser1',
             bio: 'Author bio',
             image: null,
             following: false,
@@ -304,12 +304,12 @@ export const articleMocks = {
 
 export const profileMocks = {
   getAuthorProfile: {
-    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser$/,
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/testuser1$/,
     method: 'GET',
     status: 200,
     body: {
       profile: {
-        username: 'authoruser',
+        username: 'testuser1',
         bio: 'Author bio',
         image: null,
         following: false,
@@ -317,12 +317,12 @@ export const profileMocks = {
     },
   },
   followAuthor: {
-    url: /node-express-conduit\.appspot\.com\/api\/profiles\/authoruser\/follow$/,
+    url: /node-express-conduit\.appspot\.com\/api\/profiles\/testuser1\/follow$/,
     method: 'POST',
     status: 200,
     body: {
       profile: {
-        username: 'authoruser',
+        username: 'testuser1',
         bio: 'Author bio',
         image: null,
         following: true,
