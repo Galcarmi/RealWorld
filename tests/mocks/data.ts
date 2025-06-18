@@ -54,7 +54,7 @@ export const mockArticles = [
     favorited: false,
     favoritesCount: 5,
     author: {
-      username: 'authoruser',
+      username: 'testuser1',
       bio: 'Author bio',
       image: null,
       following: false,
@@ -71,7 +71,7 @@ export const mockArticles = [
     favorited: true,
     favoritesCount: 8,
     author: {
-      username: 'anotheruser',
+      username: 'testuser2',
       bio: 'Another user bio',
       image: null,
       following: true,

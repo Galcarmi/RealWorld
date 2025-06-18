@@ -4,11 +4,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
-import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import {
+  testArticleCardPress,
+  testFavoriteButtonPress,
+  testMultipleArticlePresses,
+  testMultipleFavoriteToggles,
+  testPullToRefresh,
+  testLoadMore,
+} from '../utils/articleTestUtils';
 
 const mockArticlesStore = getMockArticlesStore();
 
@@ -151,46 +158,25 @@ describe('Home Screen Integration Tests', () => {
 
   describe('Article Interactions', () => {
     it('should handle article press and navigate to author profile', async () => {
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToAuthorProfile'
-      );
-
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        const articleCard = getByTestId('article-card-test-article-1');
-        fireEvent.press(articleCard);
-      });
-
-      expect(navigationSpy).toHaveBeenCalledWith('testuser1');
+      const renderResult = renderHomeScreen();
+      await testArticleCardPress(renderResult, 'testuser1');
     });
 
     it('should handle favorite button press on unfavorited article', async () => {
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        // The favorite button test ID is based on the author username
-        const favoriteButton = getByTestId('favorite-button-testuser1');
-        fireEvent.press(favoriteButton);
-      });
-
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledWith(
+      const renderResult = renderHomeScreen();
+      await testFavoriteButtonPress(
+        renderResult,
+        'testuser1',
         'test-article-1',
         false
       );
     });
 
     it('should handle favorite button press on favorited article', async () => {
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        // The favorite button test ID is based on the author username
-        const favoriteButton = getByTestId('favorite-button-testuser2');
-        fireEvent.press(favoriteButton);
-      });
-
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledWith(
+      const renderResult = renderHomeScreen();
+      await testFavoriteButtonPress(
+        renderResult,
+        'testuser2',
         'test-article-2',
         true
       );
@@ -199,34 +185,17 @@ describe('Home Screen Integration Tests', () => {
 
   describe('Pull to Refresh', () => {
     it('should refresh articles when pull to refresh is triggered', async () => {
-      const { getByTestId } = renderHomeScreen();
-
-      // Find the FlatList inside ArticlesList and trigger refresh
-      await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent
-          ?.parent;
-        if (articlesList) {
-          fireEvent(articlesList, 'refresh');
-        }
-      });
-
-      expect(articlesStore.refreshHomeArticles).toHaveBeenCalledTimes(1);
+      const refreshSpy = jest.spyOn(articlesStore, 'refreshHomeArticles');
+      const renderResult = renderHomeScreen();
+      await testPullToRefresh(renderResult, refreshSpy);
     });
   });
 
   describe('Load More Articles', () => {
     it('should load more articles when reaching end of list', async () => {
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent
-          ?.parent;
-        if (articlesList) {
-          fireEvent(articlesList, 'endReached');
-        }
-      });
-
-      expect(articlesStore.loadMoreHomeArticles).toHaveBeenCalledTimes(1);
+      const loadMoreSpy = jest.spyOn(articlesStore, 'loadMoreHomeArticles');
+      const renderResult = renderHomeScreen();
+      await testLoadMore(renderResult, loadMoreSpy);
     });
   });
 
@@ -270,71 +239,29 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Error Scenarios', () => {
-    it('should handle empty articles list gracefully', () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
-
-      const { getByText } = renderHomeScreen();
-
-      expect(getByText('No articles available')).toBeTruthy();
-    });
-
-    it('should still call loadHomeArticlesInitially even if articles store is empty', () => {
-      mockArticlesStore.homeArticles = [];
-
-      renderHomeScreen();
-
-      expect(articlesStore.loadHomeArticlesInitially).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('Multiple Article Interactions', () => {
     it('should handle multiple article presses correctly', async () => {
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToAuthorProfile'
-      );
-
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId('article-card-test-article-1'));
-      });
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId('article-card-test-article-2'));
-      });
-
-      expect(navigationSpy).toHaveBeenCalledTimes(2);
-      expect(navigationSpy).toHaveBeenNthCalledWith(1, 'testuser1');
-      expect(navigationSpy).toHaveBeenNthCalledWith(2, 'testuser2');
+      const renderResult = renderHomeScreen();
+      await testMultipleArticlePresses(renderResult, [
+        'testuser1',
+        'testuser2',
+      ]);
     });
 
     it('should handle multiple favorite toggles correctly', async () => {
-      const { getByTestId } = renderHomeScreen();
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId('favorite-button-testuser1'));
-      });
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId('favorite-button-testuser2'));
-      });
-
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenCalledTimes(
-        2
-      );
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenNthCalledWith(
-        1,
-        'test-article-1',
-        false
-      );
-      expect(articlesStore.toggleArticleFavoriteStatus).toHaveBeenNthCalledWith(
-        2,
-        'test-article-2',
-        true
-      );
+      const renderResult = renderHomeScreen();
+      await testMultipleFavoriteToggles(renderResult, [
+        {
+          username: 'testuser1',
+          articleSlug: 'test-article-1',
+          currentFavoritedStatus: false,
+        },
+        {
+          username: 'testuser2',
+          articleSlug: 'test-article-2',
+          currentFavoritedStatus: true,
+        },
+      ]);
     });
   });
 
@@ -357,6 +284,25 @@ describe('Home Screen Integration Tests', () => {
 
       expect(articlesStore.switchToUserFeed).toHaveBeenCalledTimes(1);
       expect(articlesStore.switchToGlobalFeed).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Error Scenarios', () => {
+    it('should handle empty articles list gracefully', () => {
+      mockArticlesStore.homeArticles = [];
+      mockArticlesStore.homeIsLoading = false;
+
+      const { getByText } = renderHomeScreen();
+
+      expect(getByText('No articles available')).toBeTruthy();
+    });
+
+    it('should still call loadHomeArticlesInitially even if articles store is empty', () => {
+      mockArticlesStore.homeArticles = [];
+
+      renderHomeScreen();
+
+      expect(articlesStore.loadHomeArticlesInitially).toHaveBeenCalledTimes(1);
     });
   });
 });
