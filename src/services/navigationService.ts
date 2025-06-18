@@ -1,3 +1,4 @@
+import { NAVIGATION_ROOT_TYPES } from '../constants/app';
 import { NavioInstance } from '../navigation/navio';
 
 interface NavigationServiceType {
@@ -24,19 +25,19 @@ class NavigationService implements NavigationServiceType {
   }
 
   public navigateToMainTabs() {
-    this.setRoot('tabs', 'MainTabs');
+    this.setRoot(NAVIGATION_ROOT_TYPES.TABS, 'MainTabs');
   }
 
   public navigateToAuthTabs() {
-    this.setRoot('tabs', 'AuthTabs');
+    this.setRoot(NAVIGATION_ROOT_TYPES.TABS, 'AuthTabs');
   }
 
   public navigateToLoginScreen() {
-    this.setRoot('stacks', 'SignInStack');
+    this.setRoot(NAVIGATION_ROOT_TYPES.STACKS, 'SignInStack');
   }
 
   public navigateToSignUpScreen() {
-    this.setRoot('stacks', 'SignUpStack');
+    this.setRoot(NAVIGATION_ROOT_TYPES.STACKS, 'SignUpStack');
   }
 
   public navigateToNewArticle() {

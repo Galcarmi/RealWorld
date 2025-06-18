@@ -5,7 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { API } from '../constants';
+import { API, HTTP_STATUS, AUTH } from '../constants/app';
 import { IAuthStore, IUserStore } from '../store/types';
 import { Logger, showErrorAlert } from '../utils';
 
@@ -112,7 +112,7 @@ export abstract class BaseService {
         const token = this._userStore.user?.token;
 
         if (token) {
-          config.headers.authorization = `Token ${token}`;
+          config.headers[AUTH.HEADER_NAME] = `${AUTH.TOKEN_PREFIX}${token}`;
         }
 
         this._logRequestDetails(config);
@@ -128,7 +128,10 @@ export abstract class BaseService {
       (error: AxiosError): Promise<never> => {
         this._logErrorResponse(error);
 
-        if (error.response && error.response.status === 401) {
+        if (
+          error.response &&
+          error.response.status === HTTP_STATUS.UNAUTHORIZED
+        ) {
           this._handleUnauthorizedError();
         }
         return Promise.reject(error);

@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 
 import { FORM_LIMITS, TEST_IDS } from '../constants';
+import { DIMENSIONS } from '../constants/styles';
 import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 
@@ -79,7 +80,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       label='Publish'
       backgroundColor={determineButtonBackgroundColor()}
       color={themeColors.bgColor}
-      borderRadius={8}
+      borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
       paddingV-15
       disabled={!canPublish || isLoading}
       onPress={onPublishArticle}

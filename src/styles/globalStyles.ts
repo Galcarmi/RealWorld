@@ -1,17 +1,19 @@
 import { StyleSheet } from 'react-native';
 
+import { DIMENSIONS } from '../constants/styles';
+
 const styles = StyleSheet.create({
   width100Percent: {
-    width: '100%',
+    width: DIMENSIONS.WIDTH_FULL,
   },
   width80Percent: {
-    width: '80%',
+    width: DIMENSIONS.WIDTH_80_PERCENT,
   },
   height25Percent: {
-    height: '25%',
+    height: DIMENSIONS.HEIGHT_25_PERCENT,
   },
   height60px: {
-    height: 60,
+    height: DIMENSIONS.HEIGHT_60,
   },
 });
 
