@@ -16,6 +16,7 @@ import {
   PLACEHOLDERS,
   VALIDATION_MESSAGES,
   BUTTON_LABELS,
+  INPUT_SECURITY,
 } from '../../constants';
 import { emailValidation } from '../../utils';
 
@@ -68,7 +69,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           ]}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
-          secureTextEntry={true}
+          secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
           testID={TEST_IDS.LOGIN_PASSWORD_INPUT}
         />
       </View>

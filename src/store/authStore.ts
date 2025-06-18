@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { APP_VALIDATION } from '../constants';
+import { APP_VALIDATION, ERROR_MESSAGES } from '../constants';
 import { AuthService } from '../services';
 import { navigationService } from '../services/navigationService';
 import { ResponseErrors } from '../services/types';
@@ -114,7 +114,7 @@ class AuthStore implements IAuthStore {
     if (authError?.response?.data?.errors) {
       this.errors = authError.response.data.errors;
     } else {
-      this.errors = { general: ['Something went wrong'] };
+      this.errors = { general: [ERROR_MESSAGES.SOMETHING_WENT_WRONG] };
     }
   }
 }

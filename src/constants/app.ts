@@ -223,3 +223,87 @@ export const AUTH = {
   TOKEN_PREFIX: 'Token ',
   HEADER_NAME: 'authorization',
 } as const;
+
+// Alert Button Labels
+export const ALERT_BUTTONS = {
+  OK: 'OK',
+  CANCEL: 'Cancel',
+  YES: 'Yes',
+  NO: 'No',
+  CONFIRM: 'Confirm',
+} as const;
+
+// Alert Button Styles
+export const ALERT_BUTTON_STYLES = {
+  CANCEL: 'cancel',
+  DESTRUCTIVE: 'destructive',
+  DEFAULT: 'default',
+} as const;
+
+// Touch Interaction
+export const TOUCH_OPACITY = {
+  DEFAULT: 0.7,
+  LIGHT: 0.8,
+  HEAVY: 0.5,
+} as const;
+
+// Log Levels
+export const LOG_LEVELS = {
+  LOG: 'log',
+  ERROR: 'error',
+  WARN: 'warn',
+  INFO: 'info',
+  DEBUG: 'debug',
+} as const;
+
+// Log Emojis/Prefixes
+export const LOG_PREFIXES = {
+  ERROR: '🔴',
+  SUCCESS: '🟢',
+  REQUEST: '🔵',
+  WARNING: '⚠️',
+} as const;
+
+// Error Types
+export const ERROR_TYPES = {
+  NETWORK_ERROR: 'Network Error',
+  UNAUTHORIZED: 'Request failed with status code 401',
+  GENERIC: 'Error',
+} as const;
+
+// HTTP Headers
+export const HTTP_HEADERS = {
+  CONTENT_TYPE: 'content-type',
+  AUTHORIZATION: 'authorization',
+  ACCEPT: 'Accept',
+} as const;
+
+// Content Types
+export const CONTENT_TYPES = {
+  JSON: 'application/json',
+  FORM_DATA: 'multipart/form-data',
+  URL_ENCODED: 'application/x-www-form-urlencoded',
+} as const;
+
+// Input Security
+export const INPUT_SECURITY = {
+  SECURE_TEXT_ENTRY: true,
+  INSECURE_TEXT_ENTRY: false,
+} as const;
+
+// Auto Capitalize Options
+export const AUTO_CAPITALIZE = {
+  NONE: 'none',
+  SENTENCES: 'sentences',
+  WORDS: 'words',
+  CHARACTERS: 'characters',
+} as const;
+
+// Auto Complete Types
+export const AUTO_COMPLETE = {
+  OFF: 'off',
+  EMAIL: 'email',
+  PASSWORD: 'password',
+  USERNAME: 'username',
+  NAME: 'name',
+} as const;

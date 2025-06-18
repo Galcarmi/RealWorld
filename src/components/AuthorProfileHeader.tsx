@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Avatar, Button } from 'react-native-ui-lib';
 
-import { TEST_IDS } from '../constants';
+import { TEST_IDS, APP_UI } from '../constants';
 import { Profile } from '../services/types';
 import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
@@ -20,7 +20,7 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
       <View center>
         <Avatar
           source={{ uri: profile.image || undefined }}
-          size={100}
+          size={APP_UI.ICON_SIZES.AVATAR_LARGE}
           backgroundColor={themeColors.secondaryColor}
           label={getInitials(profile.username, 2)}
           labelColor={themeColors.bgColor}

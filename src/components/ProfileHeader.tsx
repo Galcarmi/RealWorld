@@ -4,7 +4,7 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { TEST_IDS } from '../constants';
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
 import { User } from '../store/types';
 import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
@@ -27,8 +27,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           testID={TEST_IDS.EDIT_PROFILE_BUTTON}
         >
           <Ionicons
-            name='create-outline'
-            size={24}
+            name={ICON_NAMES.CREATE_OUTLINE}
+            size={APP_UI.ICON_SIZES.LARGE}
             color={themeColors.primaryColor}
           />
         </TouchableOpacity>
@@ -36,10 +36,10 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
       <View center>
         <Avatar
-          source={{ uri: user.image || undefined }}
-          size={100}
+          source={{ uri: user?.image || undefined }}
+          size={APP_UI.ICON_SIZES.AVATAR_LARGE}
           backgroundColor={themeColors.secondaryColor}
-          label={getInitials(user.username, 2)}
+          label={getInitials(user?.username || '', 2)}
           labelColor={themeColors.bgColor}
           marginB-12
         />

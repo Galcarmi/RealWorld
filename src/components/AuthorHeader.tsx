@@ -4,7 +4,7 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { TEST_IDS } from '../constants';
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
 import { Profile } from '../services/types';
 import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
@@ -29,10 +29,11 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
     <View row centerV marginB-12>
       <Avatar
         source={{ uri: author.image || undefined }}
-        size={32}
+        size={APP_UI.ICON_SIZES.AVATAR_SMALL}
         backgroundColor={themeColors.placeholderColor}
-        label={getInitials(author.username, 1)}
+        label={getInitials(author.username, 2)}
         labelColor={themeColors.bgColor}
+        marginR-8
       />
       <View flex marginL-8>
         <View row centerV>
@@ -41,7 +42,7 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           </Text>
           {author.following && (
             <Ionicons
-              name='checkmark-circle'
+              name={ICON_NAMES.CHECKMARK_CIRCLE}
               size={16}
               color={themeColors.primaryColor}
               style={componentStyles.authorFollowingIcon}
@@ -58,8 +59,8 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
       >
         <View row centerV>
           <Ionicons
-            name={favorited ? 'heart' : 'heart-outline'}
-            size={20}
+            name={favorited ? ICON_NAMES.HEART : ICON_NAMES.HEART_OUTLINE}
+            size={APP_UI.ICON_SIZES.MEDIUM}
             color={
               favorited ? themeColors.errorColor : themeColors.placeholderColor
             }

@@ -5,7 +5,13 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { API, HTTP_STATUS, AUTH } from '../constants/app';
+import {
+  API,
+  HTTP_STATUS,
+  AUTH,
+  HTTP_HEADERS,
+  ERROR_TYPES,
+} from '../constants/app';
 import { IAuthStore, IUserStore } from '../store/types';
 import { Logger, showErrorAlert } from '../utils';
 
@@ -52,7 +58,7 @@ export abstract class BaseService {
   private _showErrorAlert(errorResponse: ApiErrorResponse): void {
     if (errorResponse?.response?.data?.errors) {
       showErrorAlert(
-        'Error',
+        ERROR_TYPES.GENERIC,
         JSON.stringify(errorResponse.response.data.errors.message)
       );
     } else {
@@ -68,7 +74,7 @@ export abstract class BaseService {
       fullURL: `${config.baseURL}${config.url}`,
       headers: {
         authorization: config.headers.authorization ? '[REDACTED]' : undefined,
-        'content-type': config.headers['content-type'],
+        [HTTP_HEADERS.CONTENT_TYPE]: config.headers[HTTP_HEADERS.CONTENT_TYPE],
       },
       params: config.params,
       data: config.data,

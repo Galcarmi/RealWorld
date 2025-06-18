@@ -2,7 +2,7 @@ import React from 'react';
 import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
-import { TEST_IDS, DIMENSIONS } from '../constants';
+import { TEST_IDS, DIMENSIONS, TOUCH_OPACITY } from '../constants';
 import { Article } from '../services/types';
 import { themeColors } from '../theme/colors';
 
@@ -31,7 +31,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       elevation={DIMENSIONS.ELEVATION_LOW}
       testID={TEST_IDS.ARTICLE_CARD(article.slug)}
     >
-      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onPress} activeOpacity={TOUCH_OPACITY.DEFAULT}>
         <AuthorHeader
           author={article.author}
           createdAt={article.createdAt}

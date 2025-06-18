@@ -4,6 +4,7 @@ import { View, Text } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { TOUCH_OPACITY, APP_UI, ICON_NAMES } from '../constants';
 import { NavigationInstance } from '../navigation/types';
 import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
@@ -45,11 +46,14 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         style={componentStyles.screenHeader}
       >
         {shouldShowBackButton ? (
-          <TouchableOpacity onPress={handleBackPress} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={handleBackPress}
+            activeOpacity={TOUCH_OPACITY.DEFAULT}
+          >
             <View row centerV>
               <Ionicons
-                name='chevron-back'
-                size={24}
+                name={ICON_NAMES.CHEVRON_BACK}
+                size={APP_UI.ICON_SIZES.LARGE}
                 color={themeColors.bgColor}
               />
               <Text text70 color={themeColors.bgColor} marginL-4>

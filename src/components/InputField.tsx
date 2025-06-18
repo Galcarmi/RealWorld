@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
-import { FORM_LIMITS } from '../constants';
+import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
 import { componentStyles } from '../styles/componentStyles';
 import { lengthValidation } from '../utils';
 
@@ -36,7 +36,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   containerStyle,
   secureTextEntry = false,
   testID,
-  keyboardType = 'default',
+  keyboardType = KEYBOARD_TYPES.DEFAULT,
 }) => {
   return (
     <TextField

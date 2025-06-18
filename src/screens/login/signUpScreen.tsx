@@ -10,7 +10,14 @@ import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
-import { TEST_IDS } from '../../constants';
+import {
+  TEST_IDS,
+  VALIDATION_MESSAGES,
+  BUTTON_LABELS,
+  PLACEHOLDERS,
+  SCREEN_TITLES,
+  INPUT_SECURITY,
+} from '../../constants';
 import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
@@ -41,32 +48,41 @@ export const Main: NavioScreen = observer(() => {
           marginB-70
           testID={TEST_IDS.SIGNUP_SCREEN_TITLE}
         >
-          Sign Up
+          {SCREEN_TITLES.SIGN_UP}
         </Text>
         <InputField
-          placeholder={'Username'}
+          placeholder={PLACEHOLDERS.USERNAME}
           value={username}
-          validationMessage={['Username is required', 'Username is too short']}
+          validationMessage={[
+            VALIDATION_MESSAGES.USERNAME_REQUIRED,
+            VALIDATION_MESSAGES.USERNAME_TOO_SHORT,
+          ]}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onUsernameChange}
           testID={TEST_IDS.SIGNUP_USERNAME_INPUT}
         />
         <InputField
-          placeholder={'Email'}
+          placeholder={PLACEHOLDERS.EMAIL}
           value={email}
-          validationMessage={['Email is required', 'Not a valid email']}
+          validationMessage={[
+            VALIDATION_MESSAGES.EMAIL_REQUIRED,
+            VALIDATION_MESSAGES.EMAIL_INVALID,
+          ]}
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
           testID={TEST_IDS.SIGNUP_EMAIL_INPUT}
         />
         <InputField
-          placeholder={'Password'}
+          placeholder={PLACEHOLDERS.PASSWORD}
           value={password}
-          validationMessage={['Password is required', 'Password is too short']}
+          validationMessage={[
+            VALIDATION_MESSAGES.PASSWORD_REQUIRED,
+            VALIDATION_MESSAGES.PASSWORD_TOO_SHORT,
+          ]}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
-          secureTextEntry={true}
+          secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
           testID={TEST_IDS.SIGNUP_PASSWORD_INPUT}
         />
       </View>
@@ -79,7 +95,7 @@ export const Main: NavioScreen = observer(() => {
         marginL-40
       >
         <Button
-          label={'Sign Up'}
+          label={BUTTON_LABELS.SIGN_UP}
           onPress={onSignUp}
           fullWidth
           backgroundColor={
@@ -91,10 +107,10 @@ export const Main: NavioScreen = observer(() => {
           testID={TEST_IDS.SIGNUP_SUBMIT_BUTTON}
         />
         <Text center color={themeColors.greyColor} marginT-small>
-          Or
+          {BUTTON_LABELS.OR}
         </Text>
         <Button
-          label={'Sign In'}
+          label={BUTTON_LABELS.SIGN_IN}
           onPress={onNavigateToLogin}
           link
           labelStyle={componentStyles.authButtonLabel}
