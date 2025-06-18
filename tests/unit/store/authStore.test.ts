@@ -2,31 +2,28 @@ import { when } from 'mobx';
 
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
+import { createMockAuthService } from '../../mocks/services';
 import {
-  setupMockAuthService,
   createMockLoginResponse,
   createMockAuthError,
-  setupFormValidationTest,
+  expectStoreFormValidation,
   expectStoreCleared,
 } from '../../utils/testHelpers';
+import { MockProxy } from 'jest-mock-extended';
+import { IAuthService } from '../../../src/services/types';
 
 jest.mock('../../../src/services');
 jest.mock('../../../src/store/userStore');
 jest.mock('../../../src/services/navigationService');
 
 describe('AuthStore', () => {
-  let mockAuthService: {
-    login: jest.Mock;
-    register: jest.Mock;
-    get: jest.Mock;
-    put: jest.Mock;
-  };
+  let mockAuthService: MockProxy<IAuthService>;
 
   beforeEach(() => {
     jest.clearAllMocks();
     authStore.clear();
 
-    mockAuthService = setupMockAuthService();
+    mockAuthService = createMockAuthService();
 
     Object.defineProperty(authStore, '_authService', {
       value: mockAuthService,
@@ -79,7 +76,7 @@ describe('AuthStore', () => {
   describe('form validation', () => {
     describe('isLoginFormValid', () => {
       it('should return false for empty fields', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'login',
           { email: '', password: '' },
@@ -88,7 +85,7 @@ describe('AuthStore', () => {
       });
 
       it('should return false for invalid email', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'login',
           { email: 'invalid-email', password: 'password123' },
@@ -97,7 +94,7 @@ describe('AuthStore', () => {
       });
 
       it('should return false for empty password', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'login',
           { email: 'test@example.com', password: '' },
@@ -106,7 +103,7 @@ describe('AuthStore', () => {
       });
 
       it('should return true for valid email and password', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'login',
           { email: 'test@example.com', password: 'password123' },
@@ -117,7 +114,7 @@ describe('AuthStore', () => {
 
     describe('isSignUpFormValid', () => {
       it('should return false for incomplete form', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'signup',
           { username: '', email: '', password: '' },
@@ -126,7 +123,7 @@ describe('AuthStore', () => {
       });
 
       it('should return false for short username', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'signup',
           {
@@ -139,7 +136,7 @@ describe('AuthStore', () => {
       });
 
       it('should return false for short password', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'signup',
           {
@@ -152,7 +149,7 @@ describe('AuthStore', () => {
       });
 
       it('should return true for valid signup form', () => {
-        setupFormValidationTest(
+        expectStoreFormValidation(
           authStore,
           'signup',
           {

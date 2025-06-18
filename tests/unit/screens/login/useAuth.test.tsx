@@ -4,10 +4,7 @@ import { Keyboard } from 'react-native';
 import useAuth from '../../../../src/screens/login/useAuth';
 import { navigationService } from '../../../../src/services/navigationService';
 import { authStore } from '../../../../src/store/authStore';
-import {
-  setupAuthStorePropertyMocks,
-  testData,
-} from '../../../utils/testHelpers';
+import { mockUser } from '../../../mocks/data';
 
 jest.mock('react-native', () => ({
   Keyboard: {
@@ -21,6 +18,12 @@ jest.mock('../../../../src/utils');
 
 const mockKeyboard = Keyboard as jest.Mocked<typeof Keyboard>;
 
+const mockAuthValues = {
+  email: mockUser.email,
+  username: mockUser.username,
+  password: 'password123',
+};
+
 describe('useAuth Hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -32,10 +35,22 @@ describe('useAuth Hook', () => {
     authStore.register = jest.fn();
     authStore.clear = jest.fn();
 
-    setupAuthStorePropertyMocks(authStore, {
-      isLoginFormValid: true,
-      isSignUpFormValid: true,
-      authValues: testData.mockAuthValues,
+    Object.defineProperty(authStore, 'isLoginFormValid', {
+      value: true,
+      writable: true,
+      configurable: true,
+    });
+
+    Object.defineProperty(authStore, 'isSignUpFormValid', {
+      value: true,
+      writable: true,
+      configurable: true,
+    });
+
+    Object.defineProperty(authStore, 'authValues', {
+      value: mockAuthValues,
+      writable: true,
+      configurable: true,
     });
   });
 
@@ -129,6 +144,6 @@ describe('useAuth Hook', () => {
   it('should provide user data from auth values', () => {
     const { result } = renderHook(() => useAuth());
 
-    expect(result.current.user).toEqual(testData.mockAuthValues);
+    expect(result.current.user).toEqual(mockAuthValues);
   });
 });

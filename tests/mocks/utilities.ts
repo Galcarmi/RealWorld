@@ -14,17 +14,7 @@ export const mockUtilities = {
 
 jest.mock('../../src/utils', () => mockUtilities);
 
-export const getMockShowErrorModals = () => mockUtilities.showErrorModals;
-export const getMockLengthValidation = () => mockUtilities.lengthValidation;
-export const getMockEmailValidation = () => mockUtilities.emailValidation;
-export const getMockShowErrorAlert = () => mockUtilities.showErrorAlert;
-export const getMockShowInfoAlert = () => mockUtilities.showInfoAlert;
-export const getMockShowConfirmAlert = () => mockUtilities.showConfirmAlert;
-export const getMockGetInitials = () => mockUtilities.getInitials;
-export const getMockGetUserInitial = () => mockUtilities.getUserInitial;
-export const getMockFormatDate = () => mockUtilities.formatDate;
-
-export const resetAllUtilityMocks = (): void => {
+export const resetUtilityMocks = (): void => {
   jest.clearAllMocks();
   mockUtilities.lengthValidation.mockImplementation(() => jest.fn(() => true));
   mockUtilities.emailValidation.mockImplementation(() => true);

@@ -1,20 +1,16 @@
+import { render } from '@testing-library/react-native';
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { mockUser } from '../mocks/data';
 import {
-  MockAuthStore,
-  AuthStorePropertyMockValues,
-  MockLoginResponseOverrides,
-  MockAuthError,
-  MockAuthErrorData,
-  TestingLibraryQueries,
-  FormValidationTestValues,
-  MockStoreSetup,
-  MockAuthService,
-  MockAxiosInstance,
   ValidationFunction,
+  TestingLibraryQueries,
+  MockAuthStore,
+  FormValidationTestValues,
 } from '../types';
 
-export const testData = {
+export const validationTestData = {
   validEmails: [
     'test@example.com',
     'user.name@domain.co.uk',
@@ -39,166 +35,49 @@ export const testData = {
     '2024-12-25T00:00:00.000Z',
   ],
   invalidDates: ['invalid-date', ''],
-  mockUser: {
-    id: '1',
-    email: 'test@example.com',
-    token: 'token123',
-    username: 'testuser',
-  },
-  mockAuthValues: {
-    email: 'test@example.com',
-    username: 'testuser',
-    password: 'password123',
-  },
-};
-
-export const setupMockAuthService = (): MockAuthService => {
-  return {
-    login: jest.fn(),
-    register: jest.fn(),
-    get: jest.fn(),
-    put: jest.fn(),
-  };
-};
-
-export const setupMockAxiosInstance = (): MockAxiosInstance => {
-  return {
-    interceptors: {
-      request: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
-      response: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
-    },
-    defaults: { headers: { common: {} } },
-    get: jest.fn(),
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn(),
-    create: jest.fn(),
-    getUri: jest.fn(),
-    request: jest.fn(),
-    head: jest.fn(),
-    options: jest.fn(),
-    patch: jest.fn(),
-    postForm: jest.fn(),
-    putForm: jest.fn(),
-    patchForm: jest.fn(),
-  };
 };
 
 export const expectValidationResults = (
   validationFn: ValidationFunction,
   validInputs: string[],
-  invalidInputs: string[],
-  expectedValid: boolean = true,
-  expectedInvalid: boolean = false
+  invalidInputs: string[]
 ) => {
   validInputs.forEach(input => {
-    expect(validationFn(input)).toBe(expectedValid);
+    expect(validationFn(input)).toBe(true);
   });
 
   invalidInputs.forEach(input => {
-    expect(validationFn(input)).toBe(expectedInvalid);
+    expect(validationFn(input)).toBe(false);
   });
 };
 
-export const expectStringResult = (result: string) => {
-  expect(typeof result).toBe('string');
-  expect(result.length).toBeGreaterThan(0);
-};
-
-export const setupAuthStorePropertyMocks = (
-  authStore: MockAuthStore,
-  values: AuthStorePropertyMockValues = {}
-) => {
-  Object.defineProperty(authStore, 'isLoginFormValid', {
-    value: values.isLoginFormValid || true,
-    writable: true,
-    configurable: true,
-  });
-
-  Object.defineProperty(authStore, 'isSignUpFormValid', {
-    value: values.isSignUpFormValid || true,
-    writable: true,
-    configurable: true,
-  });
-
-  Object.defineProperty(authStore, 'authValues', {
-    value: values.authValues || testData.mockAuthValues,
-    writable: true,
-    configurable: true,
-  });
-};
-
-export const expectFormFieldInteraction = (
-  getByTestId: TestingLibraryQueries['getByTestId'],
-  fieldTestId: string,
-  setValue: string,
-  expectedAction: jest.Mock
-) => {
-  const field = getByTestId(fieldTestId);
-  expect(field).toBeTruthy();
-  return { field, setValue, expectedAction };
-};
-
-export const createMockStoreSetup = (): MockStoreSetup => {
-  return {
-    authStore: {
-      isLoading: false,
-      errors: undefined,
-      username: '',
-      email: '',
-      password: '',
-      authValues: { email: '', username: '', password: '' },
-      isLoginFormValid: false,
-      isSignUpFormValid: false,
-      clear: jest.fn(),
-      setUsername: jest.fn(),
-      setEmail: jest.fn(),
-      setPassword: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-      logout: jest.fn(),
-    },
-    userStore: {
-      user: null,
-      token: null,
-      forgetUser: jest.fn(),
-      setUser: jest.fn(),
-      getToken: jest.fn(),
-      isAuthenticated: jest.fn(),
-    },
-  };
-};
-
-export const expectFormValidation = (
-  formValidFn: () => boolean,
-  expected: boolean,
-  setupFn?: () => void
-) => {
-  if (setupFn) setupFn();
-  expect(formValidFn()).toBe(expected);
-};
-
-export const expectAsyncStoreAction = async (
-  actionFn: () => Promise<void>,
-  loadingCheck: () => boolean,
-  expectation: jest.Mock
-) => {
-  actionFn();
-  expect(loadingCheck()).toBe(true);
-  expect(expectation).toHaveBeenCalled();
-};
-
-export const renderWithSafeArea = (Component: React.ComponentType) => {
-  const { SafeAreaProvider } = require('react-native-safe-area-context');
-  const { render } = require('@testing-library/react-native');
-  const React = require('react');
-
+export const renderWithProviders = (Component: React.ComponentType) => {
   return render(
     React.createElement(SafeAreaProvider, {}, React.createElement(Component))
   );
 };
 
-export const setupFormValidationTest = (
+export const expectFormFieldExists = (
+  getByTestId: TestingLibraryQueries['getByTestId'],
+  testIds: string[]
+) => {
+  testIds.forEach(testId => {
+    expect(getByTestId(testId)).toBeTruthy();
+  });
+};
+
+export const simulateFieldInput = (
+  getByTestId: TestingLibraryQueries['getByTestId'],
+  fieldTestId: string,
+  value: string
+) => {
+  const { fireEvent } = require('@testing-library/react-native');
+  const field = getByTestId(fieldTestId);
+  fireEvent.changeText(field, value);
+  return field;
+};
+
+export const expectStoreFormValidation = (
   store: MockAuthStore,
   field: 'login' | 'signup',
   values: FormValidationTestValues,
@@ -220,103 +99,25 @@ export const expectStoreCleared = (store: MockAuthStore) => {
   expect(store.errors).toBeUndefined();
 };
 
-export const expectStoreSetterAction = (
-  store: MockAuthStore,
-  setterFn: keyof Pick<
-    MockAuthStore,
-    'setUsername' | 'setEmail' | 'setPassword'
-  >,
-  value: string,
-  propertyName: keyof Pick<MockAuthStore, 'username' | 'email' | 'password'>
-) => {
-  const setterFunction = store[setterFn] as jest.Mock;
-  setterFunction(value);
-  expect(store[propertyName]).toBe(value);
-};
+export const createMockLoginResponse = (overrides = {}) => ({
+  user: {
+    ...mockUser,
+    ...overrides,
+  },
+});
 
-export const createMockLoginResponse = (
-  overrides: MockLoginResponseOverrides = {}
-) => {
-  return {
-    user: {
-      ...testData.mockUser,
-      ...overrides,
-    },
-  };
-};
-
-export const createMockAuthError = (
-  errors: MockAuthErrorData['errors']
-): MockAuthError => {
-  return {
-    response: {
-      data: { errors },
-    },
-  };
-};
-
-export const testLengthValidation = (
-  minLength: number,
-  maxLength: number,
-  validInputs: string[],
-  invalidInputs: string[]
-) => {
-  const validate = require('../../src/utils').lengthValidation(
-    minLength,
-    maxLength
-  );
-
-  validInputs.forEach(input => {
-    expect(validate(input)).toBe(true);
-  });
-
-  invalidInputs.forEach(input => {
-    expect(validate(input)).toBe(false);
-  });
-};
-
-export const createLengthValidator = (minLength: number, maxLength: number) => {
-  return require('../../src/utils').lengthValidation(minLength, maxLength);
-};
-
-export const renderLoginScreen = () => {
-  const { render } = require('@testing-library/react-native');
-  const { SafeAreaProvider } = require('react-native-safe-area-context');
-  const React = require('react');
-  const { LoginScreen } = require('../../src/screens/login/loginScreen');
-
-  return render(
-    React.createElement(SafeAreaProvider, {}, React.createElement(LoginScreen))
-  );
-};
+export const createMockAuthError = (errors: Record<string, string[]>) => ({
+  response: {
+    data: { errors },
+  },
+});
 
 export const setupIntegrationTestEnvironment = () => {
-  const { authStore } = require('../../src/store/authStore');
-  const { userStore } = require('../../src/store/userStore');
   const { resetAllStoreMocks } = require('../mocks/stores');
-
-  jest.clearAllMocks();
-  authStore.clear();
-  userStore.forgetUser();
   resetAllStoreMocks();
 };
 
-export const expectFormFieldExists = (
-  getByTestId: TestingLibraryQueries['getByTestId'],
-  testIds: string[]
-) => {
-  testIds.forEach(testId => {
-    expect(getByTestId(testId)).toBeTruthy();
-  });
-};
-
-export const simulateFieldInput = (
-  getByTestId: TestingLibraryQueries['getByTestId'],
-  fieldTestId: string,
-  value: string
-) => {
-  const { fireEvent } = require('@testing-library/react-native');
-  const field = getByTestId(fieldTestId);
-  fireEvent.changeText(field, value);
-  return field;
+export const renderLoginScreen = () => {
+  const { LoginScreen } = require('../../src/screens/login/loginScreen');
+  return renderWithProviders(LoginScreen);
 };

@@ -6,7 +6,6 @@ import axios, {
 
 import { BaseService } from '../../../src/services/BaseService';
 import { IAuthStore, IUserStore } from '../../../src/store/types';
-import { setupMockAxiosInstance } from '../../utils/testHelpers';
 
 jest.mock('axios');
 
@@ -17,6 +16,27 @@ class TestService extends BaseService {
     return this._responseBody(res);
   }
 }
+
+const createMockAxiosInstance = () => ({
+  interceptors: {
+    request: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
+    response: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
+  },
+  defaults: { headers: { common: {} } },
+  get: jest.fn(),
+  post: jest.fn(),
+  put: jest.fn(),
+  delete: jest.fn(),
+  create: jest.fn(),
+  getUri: jest.fn(),
+  request: jest.fn(),
+  head: jest.fn(),
+  options: jest.fn(),
+  patch: jest.fn(),
+  postForm: jest.fn(),
+  putForm: jest.fn(),
+  patchForm: jest.fn(),
+});
 
 describe('BaseService', () => {
   let authStore: jest.Mocked<IAuthStore>;
@@ -53,7 +73,7 @@ describe('BaseService', () => {
       isAuthenticated: jest.fn(),
     };
 
-    const mockAxiosInstance = setupMockAxiosInstance();
+    const mockAxiosInstance = createMockAxiosInstance();
 
     mockedAxios.create.mockReturnValue(
       mockAxiosInstance as unknown as AxiosInstance

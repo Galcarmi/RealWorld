@@ -1,6 +1,8 @@
 import { mockDeep, mockReset, MockProxy } from 'jest-mock-extended';
 
 import { NavioInstance } from '../../src/navigation/navio';
+import { AuthService } from '../../src/services/auth/AuthService';
+import { BaseService } from '../../src/services/BaseService';
 import { IAuthService, IArticleService } from '../../src/services/types';
 
 interface INavigationService {
@@ -39,8 +41,38 @@ export const getMockAuthService = (): MockProxy<IAuthService> =>
 export const getMockArticleService = (): MockProxy<IArticleService> =>
   mockArticleService;
 
+export const createMockAuthService = (): MockProxy<AuthService> => {
+  return mockDeep<AuthService>();
+};
+
+export const createMockBaseService = (): MockProxy<BaseService> => {
+  return mockDeep<BaseService>();
+};
+
 export const resetAllServiceMocks = (): void => {
   mockReset(mockNavigationService);
   mockReset(mockAuthService);
   mockReset(mockArticleService);
 };
+
+export const setupMockAxiosResponse = <T>(data: T, status = 200) => ({
+  data,
+  status,
+  statusText: 'OK',
+  headers: {},
+  config: {},
+});
+
+export const setupMockAxiosError = (
+  errors: Record<string, string[]>,
+  status = 400
+) => ({
+  response: {
+    data: { errors },
+    status,
+    statusText: 'Bad Request',
+    headers: {},
+    config: {},
+  },
+  isAxiosError: true,
+});
