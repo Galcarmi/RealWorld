@@ -131,7 +131,7 @@ const useEditProfile = () => {
         updateData.password = profileFormValues.password;
       }
 
-      const response = await authService.put(updateData as User);
+      const response = await authService.updateUser(updateData as User);
 
       userStore.setUser(response.user);
 
