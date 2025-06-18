@@ -410,7 +410,7 @@ export class PuppeteerTestHelper {
             ? url.includes(mock.url)
             : mock.url.test(url);
         const methodMatches = !mock.method || method === mock.method;
-        
+
         return urlMatches && methodMatches;
       });
 
