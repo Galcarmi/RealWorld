@@ -31,7 +31,6 @@ describe('Profile Screen Integration Tests', () => {
     resetAllStoreMocks();
     resetAllServiceMocks();
 
-    // Set up authenticated user by default
     userStore.setUser(mockUser);
     mockArticlesStore.homeArticles = [];
     mockArticlesStore.homeIsLoading = false;
@@ -53,7 +52,6 @@ describe('Profile Screen Integration Tests', () => {
     });
 
     it('should render profile screen when user is authenticated', async () => {
-      // Ensure user is set before rendering
       userStore.setUser(mockUser);
 
       const { getByTestId } = renderProfileScreen();
@@ -93,7 +91,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-      // Profile header should be rendered within the screen
     });
   });
 
@@ -138,7 +135,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-      // Articles list should be rendered
     });
 
     it('should show empty message when user has no articles', async () => {
@@ -160,13 +156,11 @@ describe('Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderProfileScreen();
 
-      // Find the articles list and trigger refresh
       await waitFor(() => {
         const profileScreen = getByTestId('profile-screen');
         expect(profileScreen).toBeTruthy();
       });
 
-      // The refresh should be handled by the useProfile hook
       expect(articlesStore.getUserArticles).toHaveBeenCalled();
     });
 
@@ -179,7 +173,6 @@ describe('Profile Screen Integration Tests', () => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
 
-      // Verify that articles store methods are called
       expect(articlesStore.getUserArticles).toHaveBeenCalled();
     });
   });
@@ -205,7 +198,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-      // Header should contain "Profile" title
     });
 
     it('should separate profile info and articles sections', async () => {
@@ -216,7 +208,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-      // Should have distinct header and articles sections
     });
   });
 
@@ -230,7 +221,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-      // Loading indicator should be shown in articles section
     });
 
     it('should hide loading state when articles are loaded', async () => {
@@ -243,7 +233,6 @@ describe('Profile Screen Integration Tests', () => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
 
-      // Loading should be complete
       expect(mockArticlesStore.homeIsLoading).toBe(false);
     });
   });
@@ -253,7 +242,7 @@ describe('Profile Screen Integration Tests', () => {
       userStore.setUser({
         ...mockUser,
         bio: 'Complete user bio',
-        image: 'https://example.com/avatar.jpg',
+        image: 'https://example.com/user-image.jpg',
       });
 
       const { getByText } = renderProfileScreen();
@@ -296,7 +285,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should handle store errors gracefully', async () => {
       userStore.setUser(mockUser);
-      // Mock store error
+
       jest
         .spyOn(articlesStore, 'getUserArticles')
         .mockRejectedValue(new Error('Network error'));
@@ -306,8 +295,6 @@ describe('Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('profile-screen')).toBeTruthy();
       });
-
-      // Screen should still render despite error
     });
   });
 
@@ -353,7 +340,6 @@ describe('Profile Screen Integration Tests', () => {
         fireEvent.press(editButton);
       });
 
-      // Should only navigate once (or handle multiple presses gracefully)
       expect(editProfileSpy).toHaveBeenCalled();
     });
   });

@@ -5,7 +5,6 @@ import sharp from 'sharp';
 
 import { TestLogger } from './TestLogger';
 
-// Use require for pixelmatch to avoid ES module issues in Jest
 const pixelmatch = require('pixelmatch').default || require('pixelmatch');
 
 export interface VisualComparisonResult {
@@ -17,8 +16,8 @@ export interface VisualComparisonResult {
 }
 
 export interface VisualComparisonOptions {
-  threshold: number; // 0-1, where 0 is identical and 1 is completely different
-  maxDiffPercentage: number; // Maximum allowed difference percentage (0-100)
+  threshold: number;
+  maxDiffPercentage: number;
   createDiffImage: boolean;
 }
 
@@ -56,7 +55,6 @@ export class VisualComparator {
     }
 
     if (!fs.existsSync(baselinePath)) {
-      // Only create baseline automatically if UPDATE_BASELINES is true
       if (process.env.UPDATE_BASELINES === 'true') {
         TestLogger.log(`\n📸 Creating new baseline: ${screenshotName}`);
         return this.createNewBaseline(
@@ -65,7 +63,6 @@ export class VisualComparator {
           baselinePath
         );
       } else {
-        // Fail the test and tell user to create baseline
         throw new Error(
           `Baseline not found for "${screenshotName}"!\n` +
             `Expected baseline at: ${baselinePath}\n` +
@@ -74,7 +71,6 @@ export class VisualComparator {
       }
     }
 
-    // Use Sharp to read JPEG images and convert to consistent RGBA format for pixelmatch
     const baselineImg = await sharp(baselinePath)
       .ensureAlpha()
       .raw()
@@ -93,7 +89,6 @@ export class VisualComparator {
 
     const totalPixels = baselineImg.info.width * baselineImg.info.height;
 
-    // Create a buffer for the diff image with same dimensions (RGBA = 4 channels)
     const diffImg = Buffer.alloc(totalPixels * 4);
 
     const pixelDifference = pixelmatch(
@@ -108,7 +103,6 @@ export class VisualComparator {
     const diffPercentage = (pixelDifference / totalPixels) * 100;
     const passed = diffPercentage <= opts.maxDiffPercentage;
 
-    // Console log the comparison results
     TestLogger.log(`\n📸 Visual Comparison: ${screenshotName}`);
     TestLogger.log(
       `   Pixel Difference: ${pixelDifference}/${totalPixels} pixels`
@@ -205,13 +199,11 @@ export class VisualComparator {
     createDiffImage: boolean
   ): Promise<string | undefined> {
     if (pixelDifference > 0 && createDiffImage) {
-      // Create diff image using Sharp with the original image dimensions
-      // pixelmatch always outputs RGBA format (4 channels)
       await sharp(diffBuffer, {
         raw: {
           width: imageInfo.width,
           height: imageInfo.height,
-          channels: 4 as const, // pixelmatch always outputs RGBA
+          channels: 4 as const,
         },
       })
         .jpeg()

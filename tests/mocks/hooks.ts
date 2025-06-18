@@ -1,6 +1,5 @@
 import { mockArticles } from './data';
 
-// Mock useAuthorProfile hook data
 const mockUseAuthorProfileData = {
   authorProfile: {
     username: 'testauthor',
@@ -15,19 +14,15 @@ const mockUseAuthorProfileData = {
   refreshAuthorArticles: jest.fn(),
 };
 
-// Jest module mock for useAuthorProfile
 jest.mock('../../src/screens/authorProfile/useAuthorProfile', () => ({
   useAuthorProfile: () => mockUseAuthorProfileData,
 }));
 
-// Export for use in tests
 export const getMockUseAuthorProfile = () => mockUseAuthorProfileData;
 
-// Helper to reset all hook mocks
 export const resetAllHookMocks = (): void => {
   jest.clearAllMocks();
 
-  // Reset to default values
   mockUseAuthorProfileData.authorProfile = {
     username: 'testauthor',
     bio: 'Test bio',

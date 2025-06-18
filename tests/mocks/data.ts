@@ -1,18 +1,14 @@
 import { MockApiResponse } from '../visual/config/puppeteerConfig';
 
-// SINGLE SOURCE OF TRUTH FOR ALL MOCK DATA
-
-// Mock user data
 export const mockUser = {
   id: '123',
   email: 'test@example.com',
   username: 'testuser',
   bio: 'Test bio for user',
-  image: 'https://example.com/image.jpg',
+  image: 'https://example.com/avatar.jpg',
   token: 'test-token',
 };
 
-// Mock user variations
 export const mockUserMinimal = {
   id: '123',
   email: 'test@example.com',
@@ -22,7 +18,6 @@ export const mockUserMinimal = {
   token: 'test-token',
 };
 
-// Mock single article
 export const mockArticle = {
   slug: 'test-article-slug',
   title: 'Test Article Title',
@@ -41,7 +36,6 @@ export const mockArticle = {
   },
 };
 
-// SHARED MOCK ARTICLES - Single source of truth
 export const mockArticles = [
   {
     slug: 'test-article-1',
@@ -79,13 +73,11 @@ export const mockArticles = [
   },
 ];
 
-// Mock API responses
 export const mockApiResponse = {
   user: mockUser,
   message: 'Success',
 };
 
-// Mock API errors
 export const mockApiError = {
   status: 400,
   data: {
@@ -96,7 +88,6 @@ export const mockApiError = {
   },
 };
 
-// Visual Test Mock API Configurations
 export interface VisualTestMockConfig {
   url: RegExp;
   method: string;
@@ -106,7 +97,6 @@ export interface VisualTestMockConfig {
   delay: number;
 }
 
-// ALL MOCK API RESPONSES - CONSOLIDATED FROM ALL FILES
 export const authMocks = {
   login: {
     url: /node-express-conduit\.appspot\.com\/api\/users\/login$/,
@@ -185,7 +175,7 @@ export const articleMocks = {
     method: 'GET',
     status: 200,
     body: {
-      articles: [mockArticles[1]], // Only the favorited one
+      articles: [mockArticles[1]],
       articlesCount: 1,
     },
   },
@@ -331,7 +321,6 @@ export const profileMocks = {
   },
 } as const;
 
-// Home Screen Visual Test Mocks - using shared test data
 export const homeScreenVisualMocks: VisualTestMockConfig[] = [
   {
     url: /node-express-conduit\.appspot\.com\/api\/articles(\?.*)?$/,
@@ -357,7 +346,6 @@ export const homeScreenVisualMocks: VisualTestMockConfig[] = [
   },
 ];
 
-// MOCK COLLECTIONS - All in one place
 export const mockCollections = {
   auth: [authMocks.login, authMocks.getCurrentUser] as MockApiResponse[],
   authWithRegistration: [authMocks.register] as MockApiResponse[],
@@ -433,7 +421,6 @@ export const mockCollections = {
   ] as MockApiResponse[],
 } as const;
 
-// Visual Test Mock Collections
 export const visualTestMockCollections = {
   homeScreen: homeScreenVisualMocks,
   emptyMocks: [] as VisualTestMockConfig[],

@@ -33,19 +33,17 @@ describe('Edit Profile Screen Integration Tests', () => {
     resetAllServiceMocks();
     resetAllUtilityMocks();
 
-    // Set authenticated user with profile data
     userStore.setUser({
       ...mockUserMinimal,
       bio: 'My bio',
-      image: 'http://example.com/image.jpg',
+      image: 'https://example.com/avatar.jpg',
     });
 
-    // Reset mock auth service
     mockAuthService.put.mockResolvedValue({
       user: {
         ...mockUserMinimal,
         bio: 'Updated bio',
-        image: 'http://example.com/new-image.jpg',
+        image: 'https://example.com/updated-avatar.jpg',
       },
     });
   });
@@ -65,7 +63,6 @@ describe('Edit Profile Screen Integration Tests', () => {
       const { getByTestId } = renderEditProfileScreen();
 
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
-      // Screen header with back button should be rendered
     });
 
     it('should pre-populate form fields with user data', async () => {
@@ -80,7 +77,7 @@ describe('Edit Profile Screen Integration Tests', () => {
         expect(usernameInput.props.value).toBe(mockUserMinimal.username);
         expect(emailInput.props.value).toBe(mockUserMinimal.email);
         expect(bioInput.props.value).toBe('My bio');
-        expect(imageInput.props.value).toBe('http://example.com/image.jpg');
+        expect(imageInput.props.value).toBe('https://example.com/avatar.jpg');
       });
     });
 
@@ -98,9 +95,11 @@ describe('Edit Profile Screen Integration Tests', () => {
 
       await waitFor(() => {
         const imageInput = getByTestId('edit-profile-image-input');
-        fireEvent.changeText(imageInput, 'http://newimage.com/profile.jpg');
+        fireEvent.changeText(imageInput, 'https://example.com/new-avatar.jpg');
 
-        expect(imageInput.props.value).toBe('http://newimage.com/profile.jpg');
+        expect(imageInput.props.value).toBe(
+          'https://example.com/new-avatar.jpg'
+        );
       });
     });
 
@@ -163,7 +162,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      // Verify the form can be submitted
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
 
@@ -182,7 +180,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      // Wait for async operations to complete
       await waitFor(() => {
         expect(setUserSpy).toHaveBeenCalled();
       });
@@ -238,7 +235,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      // The error handling currently falls back to generic error
       await waitFor(() => {
         expect(mockShowErrorModals).toHaveBeenCalled();
       });
@@ -281,7 +277,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      // After form submission, check that navigation is available
       expect(navigationService.goBack).toBeDefined();
     });
   });
@@ -367,7 +362,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.press(updateButton);
       });
 
-      // Verify that auth service is available and form submission is handled
       expect(mockAuthService.put).toBeDefined();
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
@@ -375,7 +369,6 @@ describe('Edit Profile Screen Integration Tests', () => {
     it('should integrate with user store for state management', () => {
       const { getByTestId } = renderEditProfileScreen();
 
-      // Should render with user store data
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
       expect(userStore.user).toBeTruthy();
     });
@@ -385,26 +378,22 @@ describe('Edit Profile Screen Integration Tests', () => {
     it('should handle form submission flow', async () => {
       const { getByTestId } = renderEditProfileScreen();
 
-      // Make changes to form
       await waitFor(() => {
         const bioInput = getByTestId('edit-profile-bio-input');
         fireEvent.changeText(bioInput, 'New bio content');
       });
 
-      // Submit form
       await waitFor(() => {
         const updateButton = getByTestId('edit-profile-update-button');
         fireEvent.press(updateButton);
       });
 
-      // Verify submission handled
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
 
     it('should handle form field validation', async () => {
       const { getByTestId } = renderEditProfileScreen();
 
-      // Test field validation by clearing required fields
       await waitFor(() => {
         const usernameInput = getByTestId('edit-profile-username-input');
         fireEvent.changeText(usernameInput, '');
@@ -413,7 +402,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         fireEvent.changeText(emailInput, '');
       });
 
-      // Form should still render properly
       expect(getByTestId('edit-profile-screen')).toBeTruthy();
     });
   });

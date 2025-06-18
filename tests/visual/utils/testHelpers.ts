@@ -34,7 +34,7 @@ export class VisualTestSuite {
     const finalConfig: VisualTestConfig = {
       ...defaultConfig,
       ...this.config.customConfig,
-      // Ensure we start with only the mocks specified for this test
+
       mockApis: this.config.mockApis || [],
     };
 
@@ -66,10 +66,8 @@ export class VisualTestSuite {
       throw new Error('Test helper not initialized. Call setupTest() first.');
     }
 
-    // Wait for any animations/transitions to complete
     await this.sleep(2000);
 
-    // Disable animations to ensure consistent screenshots
     const page = this.testHelper.getPage();
     if (page) {
       await page.addStyleTag({
@@ -83,10 +81,8 @@ export class VisualTestSuite {
         `,
       });
 
-      // Additional wait after disabling animations
       await this.sleep(500);
 
-      // DEBUG: Capture app state before screenshot
       if (process.env.DEBUG_VISUAL_TESTS === 'true') {
         const debugInfo = await page.evaluate(() => {
           return {
@@ -203,19 +199,16 @@ export const commonTestActions = {
           `🔄 Attempt ${attempt}/${maxRetries}: Clicking ${buttonTestId} and waiting for ${screenTestId}`
         );
 
-        // Wait for button to be available
         await testHelper.waitForTestId(buttonTestId, 5000);
 
-        // Click the button
         await testHelper.clickByTestId(buttonTestId);
 
-        // Wait for target screen to appear
         await testHelper.waitForTestId(screenTestId, 8000);
 
         TestLogger.log(
           `✅ Successfully navigated to ${screenTestId} on attempt ${attempt}`
         );
-        return; // Success!
+        return;
       } catch (error) {
         lastError = error as Error;
         TestLogger.log(`❌ Attempt ${attempt} failed: ${lastError.message}`);
@@ -227,7 +220,6 @@ export const commonTestActions = {
       }
     }
 
-    // If we get here, all attempts failed
     throw new Error(
       `Failed to navigate from ${buttonTestId} to ${screenTestId} after ${maxRetries} attempts. Last error: ${lastError?.message}`
     );
@@ -273,7 +265,6 @@ export async function performLogin(testHelper: any) {
     'login-screen'
   );
 
-  // Wait for all form elements to be available before interacting
   await testHelper.waitForTestId('login-email-input', 5000);
   await testHelper.waitForTestId('login-password-input', 5000);
   await testHelper.waitForTestId('login-submit-button', 5000);
@@ -288,7 +279,6 @@ export async function performLogin(testHelper: any) {
   );
 }
 
-// Helper function to navigate to profile screen with retry logic
 export async function navigateToProfile(testHelper: any) {
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,

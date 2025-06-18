@@ -32,10 +32,8 @@ describe('Favorites Screen Integration Tests', () => {
     userStore.forgetUser();
     resetAllStoreMocks();
 
-    // Set authenticated user by default
     userStore.setUser(mockUserMinimal);
 
-    // Set default mock values for favorites
     mockArticlesStore.favoriteArticles = mockArticles;
     mockArticlesStore.favoritesIsLoading = false;
     mockArticlesStore.favoritesArticlesCount = mockArticles.length;
@@ -65,7 +63,6 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId('favorites-screen')).toBeTruthy();
-      // Screen header should be rendered within the screen
     });
   });
 
@@ -86,7 +83,6 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId('favorites-screen')).toBeTruthy();
-      // ArticlesList will show loading indicator when isLoading=true and articles=[]
     });
 
     it('should show empty message when no favorite articles available', async () => {
@@ -151,7 +147,6 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      // Should render screen without errors even when no user
       expect(getByTestId('favorites-screen')).toBeTruthy();
     });
 
@@ -175,7 +170,6 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId('favorites-screen')).toBeTruthy();
-      // Loading indicator should be shown
     });
 
     it('should hide loading indicator when favorites are loaded', () => {
@@ -243,7 +237,6 @@ describe('Favorites Screen Integration Tests', () => {
         expect(getByTestId('favorites-screen')).toBeTruthy();
       });
 
-      // Verify that favorites store methods are called
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
     });
 
@@ -273,7 +266,6 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId('favorites-screen')).toBeTruthy();
-      // Should render without errors even when no user
     });
 
     it('should handle store state changes during component lifecycle', async () => {

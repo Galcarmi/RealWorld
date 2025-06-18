@@ -2,8 +2,15 @@ import { when } from 'mobx';
 
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
+import {
+  setupMockAuthService,
+  createMockLoginResponse,
+  createMockAuthError,
+  setupFormValidationTest,
+  expectStoreCleared,
+  expectStoreSetterAction,
+} from '../../utils/testHelpers';
 
-// Mock the dependencies
 jest.mock('../../../src/services');
 jest.mock('../../../src/store/userStore');
 jest.mock('../../../src/services/navigationService');
@@ -17,18 +24,10 @@ describe('AuthStore', () => {
   };
 
   beforeEach(() => {
-    // Clear all mocks
     jest.clearAllMocks();
 
-    // Mock the AuthService with all required methods
-    mockAuthService = {
-      login: jest.fn(),
-      register: jest.fn(),
-      get: jest.fn(),
-      put: jest.fn(),
-    };
+    mockAuthService = setupMockAuthService();
 
-    // Replace the internal service with our mock using object property assignment
     Object.defineProperty(authStore, '_authService', {
       value: mockAuthService,
       writable: true,
@@ -48,18 +47,25 @@ describe('AuthStore', () => {
 
   describe('setters', () => {
     it('should set username correctly', () => {
-      authStore.setUsername('testuser');
-      expect(authStore.username).toBe('testuser');
+      expectStoreSetterAction(authStore, 'setUsername', 'testuser', 'username');
     });
 
     it('should set email correctly', () => {
-      authStore.setEmail('test@example.com');
-      expect(authStore.email).toBe('test@example.com');
+      expectStoreSetterAction(
+        authStore,
+        'setEmail',
+        'test@example.com',
+        'email'
+      );
     });
 
     it('should set password correctly', () => {
-      authStore.setPassword('password123');
-      expect(authStore.password).toBe('password123');
+      expectStoreSetterAction(
+        authStore,
+        'setPassword',
+        'password123',
+        'password'
+      );
     });
   });
 
@@ -80,57 +86,89 @@ describe('AuthStore', () => {
   describe('form validation', () => {
     describe('isLoginFormValid', () => {
       it('should return false for empty fields', () => {
-        authStore.setEmail('');
-        authStore.setPassword('');
-        expect(authStore.isLoginFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'login',
+          { email: '', password: '' },
+          false
+        );
       });
 
       it('should return false for invalid email', () => {
-        authStore.setEmail('invalid-email');
-        authStore.setPassword('password123');
-        expect(authStore.isLoginFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'login',
+          { email: 'invalid-email', password: 'password123' },
+          false
+        );
       });
 
       it('should return false for empty password', () => {
-        authStore.setEmail('test@example.com');
-        authStore.setPassword('');
-        expect(authStore.isLoginFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'login',
+          { email: 'test@example.com', password: '' },
+          false
+        );
       });
 
       it('should return true for valid email and password', () => {
-        authStore.setEmail('test@example.com');
-        authStore.setPassword('password123');
-        expect(authStore.isLoginFormValid).toBe(true);
+        setupFormValidationTest(
+          authStore,
+          'login',
+          { email: 'test@example.com', password: 'password123' },
+          true
+        );
       });
     });
 
     describe('isSignUpFormValid', () => {
       it('should return false for incomplete form', () => {
-        authStore.setUsername('');
-        authStore.setEmail('');
-        authStore.setPassword('');
-        expect(authStore.isSignUpFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'signup',
+          { username: '', email: '', password: '' },
+          false
+        );
       });
 
       it('should return false for short username', () => {
-        authStore.setUsername('ab');
-        authStore.setEmail('test@example.com');
-        authStore.setPassword('password123');
-        expect(authStore.isSignUpFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'signup',
+          {
+            username: 'ab',
+            email: 'test@example.com',
+            password: 'password123',
+          },
+          false
+        );
       });
 
       it('should return false for short password', () => {
-        authStore.setUsername('testuser');
-        authStore.setEmail('test@example.com');
-        authStore.setPassword('12345');
-        expect(authStore.isSignUpFormValid).toBe(false);
+        setupFormValidationTest(
+          authStore,
+          'signup',
+          {
+            username: 'testuser',
+            email: 'test@example.com',
+            password: '12345',
+          },
+          false
+        );
       });
 
       it('should return true for valid signup form', () => {
-        authStore.setUsername('testuser');
-        authStore.setEmail('test@example.com');
-        authStore.setPassword('password123');
-        expect(authStore.isSignUpFormValid).toBe(true);
+        setupFormValidationTest(
+          authStore,
+          'signup',
+          {
+            username: 'testuser',
+            email: 'test@example.com',
+            password: 'password123',
+          },
+          true
+        );
       });
     });
   });
@@ -144,10 +182,7 @@ describe('AuthStore', () => {
 
       authStore.clear();
 
-      expect(authStore.username).toBe('');
-      expect(authStore.email).toBe('');
-      expect(authStore.password).toBe('');
-      expect(authStore.errors).toBeUndefined();
+      expectStoreCleared(authStore);
     });
   });
 
@@ -158,14 +193,7 @@ describe('AuthStore', () => {
     });
 
     it('should set loading state and call auth service', () => {
-      const mockResponse = {
-        user: {
-          id: '1',
-          email: 'test@example.com',
-          token: 'token123',
-          username: 'testuser',
-        },
-      };
+      const mockResponse = createMockLoginResponse();
       mockAuthService.login.mockResolvedValue(mockResponse);
 
       authStore.login();
@@ -179,19 +207,11 @@ describe('AuthStore', () => {
     });
 
     it('should handle successful login', async () => {
-      const mockResponse = {
-        user: {
-          id: '1',
-          email: 'test@example.com',
-          token: 'token123',
-          username: 'testuser',
-        },
-      };
+      const mockResponse = createMockLoginResponse();
       mockAuthService.login.mockResolvedValue(mockResponse);
 
       authStore.login();
 
-      // Wait for the async operation to complete
       await when(() => !authStore.isLoading);
 
       expect(userStore.setUser).toHaveBeenCalledWith(mockResponse.user);
@@ -201,18 +221,11 @@ describe('AuthStore', () => {
     });
 
     it('should handle login error', async () => {
-      const mockError = {
-        response: {
-          data: {
-            errors: { email: ['Invalid email'] },
-          },
-        },
-      };
+      const mockError = createMockAuthError({ email: ['Invalid email'] });
       mockAuthService.login.mockRejectedValue(mockError);
 
       authStore.login();
 
-      // Wait for the async operation to complete
       await when(() => !authStore.isLoading);
 
       expect(authStore.errors).toEqual({ email: ['Invalid email'] });
