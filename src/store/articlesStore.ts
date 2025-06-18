@@ -1,9 +1,13 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
+import { PAGINATION } from '../constants';
 import { FeedType } from '../constants/feedTypes';
 import { ArticleService } from '../services';
-import { Article, CreateArticleRequest } from '../services/types';
-import { showErrorAlert } from '../utils';
+import {
+  Article,
+  CreateArticleRequest,
+  ResponseErrors,
+} from '../services/types';
 
 import { authStore } from './authStore';
 import { IArticlesStore } from './types';
@@ -14,80 +18,104 @@ class ArticlesStore implements IArticlesStore {
   public homeIsLoading = false;
   public homeArticlesCount = 0;
   public homeCurrentOffset = 0;
+  public homeErrors?: ResponseErrors = undefined;
   public feedType: FeedType = FeedType.GLOBAL;
 
   public favoriteArticles: Article[] = [];
   public favoritesIsLoading = false;
   public favoritesArticlesCount = 0;
   public favoritesCurrentOffset = 0;
+  public favoritesErrors?: ResponseErrors = undefined;
 
-  private articleService: ArticleService;
+  private _articleService: ArticleService;
 
   constructor() {
     makeAutoObservable(this);
-    this.articleService = new ArticleService(authStore, userStore);
+    this._articleService = new ArticleService(authStore, userStore);
+  }
+
+  public get canLoadMoreHomeArticles(): boolean {
+    return (
+      !this.homeIsLoading && this.homeArticles.length < this.homeArticlesCount
+    );
+  }
+
+  public get canLoadMoreFavoriteArticles(): boolean {
+    return (
+      !this.favoritesIsLoading &&
+      this.favoriteArticles.length < this.favoritesArticlesCount
+    );
   }
 
   public async loadHomeArticlesInitially() {
-    await this.fetchHomeArticles(0, true);
+    await this._fetchHomeArticles(0, true);
   }
 
   public async loadMoreHomeArticles() {
-    if (this.canLoadMoreHomeArticles()) {
-      await this.fetchHomeArticles(this.homeCurrentOffset + 10, false);
+    if (this.canLoadMoreHomeArticles) {
+      await this._fetchHomeArticles(
+        this.homeCurrentOffset + PAGINATION.DEFAULT_LIMIT,
+        false
+      );
     }
   }
 
   public async refreshHomeArticles() {
-    await this.fetchHomeArticles(0, true);
+    await this._fetchHomeArticles(0, true);
   }
 
   public async switchToGlobalFeed() {
-    this.setFeedTypeAndReset(FeedType.GLOBAL);
-    await this.fetchHomeArticles(0, true);
+    this._setFeedTypeAndReset(FeedType.GLOBAL);
+    await this._fetchHomeArticles(0, true);
   }
 
   public async switchToUserFeed() {
-    this.setFeedTypeAndReset(FeedType.FEED);
-    await this.fetchHomeArticles(0, true);
+    this._setFeedTypeAndReset(FeedType.FEED);
+    await this._fetchHomeArticles(0, true);
   }
 
   public async loadFavoriteArticlesInitially() {
-    await this.fetchFavoriteArticles(0, true);
+    await this._fetchFavoriteArticles(0, true);
   }
 
   public async loadMoreFavoriteArticles() {
-    if (this.canLoadMoreFavoriteArticles()) {
-      await this.fetchFavoriteArticles(this.favoritesCurrentOffset + 10, false);
+    if (this.canLoadMoreFavoriteArticles) {
+      await this._fetchFavoriteArticles(
+        this.favoritesCurrentOffset + PAGINATION.DEFAULT_LIMIT,
+        false
+      );
     }
   }
 
   public async refreshFavoriteArticles() {
-    await this.fetchFavoriteArticles(0, true);
+    await this._fetchFavoriteArticles(0, true);
   }
 
-  public async getUserArticles(username: string, limit = 10, offset = 0) {
+  public async getUserArticles(
+    username: string,
+    limit = PAGINATION.DEFAULT_LIMIT,
+    offset = 0
+  ) {
     try {
-      const response = await this.articleService.getArticles({
+      return await this._articleService.getArticles({
         author: username,
         limit,
         offset,
       });
-      return response;
-    } catch {
-      showErrorAlert('Failed to fetch user articles');
-      throw new Error('Failed to fetch user articles');
+    } catch (error) {
+      this._handleError(error, 'Failed to fetch user articles');
+      throw error;
     }
   }
 
   public async createArticle(articleData: CreateArticleRequest) {
     try {
-      const response = await this.articleService.createArticle(articleData);
-      this.addNewArticleToHomeList(response.article);
+      const response = await this._articleService.createArticle(articleData);
+      this._addNewArticleToHomeList(response.article);
       return response.article;
-    } catch {
-      showErrorAlert('Failed to create article');
-      throw new Error('Failed to create article');
+    } catch (error) {
+      this._handleError(error, 'Failed to create article');
+      throw error;
     }
   }
 
@@ -96,39 +124,35 @@ class ArticlesStore implements IArticlesStore {
     currentlyFavorited: boolean
   ) {
     try {
-      const response = await this.performFavoriteAction(
+      const response = await this._performFavoriteAction(
         slug,
         currentlyFavorited
       );
-      this.updateArticleAfterFavoriteToggle(
+      this._updateArticleAfterFavoriteToggle(
         slug,
         response.article,
         currentlyFavorited
       );
-    } catch {
-      showErrorAlert('Failed to update article');
+    } catch (error) {
+      this._handleError(error, 'Failed to update article');
     }
   }
 
-  private canLoadMoreHomeArticles(): boolean {
-    return (
-      !this.homeIsLoading && this.homeArticles.length < this.homeArticlesCount
-    );
+  public clearHomeErrors() {
+    this.homeErrors = undefined;
   }
 
-  private canLoadMoreFavoriteArticles(): boolean {
-    return (
-      !this.favoritesIsLoading &&
-      this.favoriteArticles.length < this.favoritesArticlesCount
-    );
+  public clearFavoritesErrors() {
+    this.favoritesErrors = undefined;
   }
 
-  private setFeedTypeAndReset(feedType: FeedType): void {
+  private _setFeedTypeAndReset(feedType: FeedType): void {
     this.feedType = feedType;
     this.homeCurrentOffset = 0;
+    this.homeErrors = undefined;
   }
 
-  private addNewArticleToHomeList(article: Article): void {
+  private _addNewArticleToHomeList(article: Article): void {
     runInAction(() => {
       if (this.homeArticles.length > 0) {
         this.homeArticles.unshift(article);
@@ -137,33 +161,33 @@ class ArticlesStore implements IArticlesStore {
     });
   }
 
-  private async performFavoriteAction(
+  private async _performFavoriteAction(
     slug: string,
     currentlyFavorited: boolean
   ) {
     return currentlyFavorited
-      ? await this.articleService.unfavoriteArticle(slug)
-      : await this.articleService.favoriteArticle(slug);
+      ? await this._articleService.unfavoriteArticle(slug)
+      : await this._articleService.favoriteArticle(slug);
   }
 
-  private updateArticleAfterFavoriteToggle(
+  private _updateArticleAfterFavoriteToggle(
     slug: string,
     updatedArticle: Article,
     wasUnfavorited: boolean
   ): void {
     runInAction(() => {
-      this.updateArticleInHomeList(slug, updatedArticle);
-      this.updateArticleInFavoritesList(slug, updatedArticle, wasUnfavorited);
+      this._updateArticleInHomeList(slug, updatedArticle);
+      this._updateArticleInFavoritesList(slug, updatedArticle, wasUnfavorited);
     });
   }
 
-  private async getArticlesBasedOnFeedType(limit: number, offset: number) {
+  private async _getArticlesBasedOnFeedType(limit: number, offset: number) {
     return this.feedType === FeedType.GLOBAL
-      ? await this.articleService.getArticles({ limit, offset })
-      : await this.articleService.getFeedArticles({ limit, offset });
+      ? await this._articleService.getArticles({ limit, offset })
+      : await this._articleService.getFeedArticles({ limit, offset });
   }
 
-  private updateHomeArticlesState(
+  private _updateHomeArticlesState(
     response: { articles: Article[]; articlesCount: number },
     offset: number,
     resetList: boolean
@@ -172,7 +196,7 @@ class ArticlesStore implements IArticlesStore {
       this.homeArticles = response.articles;
       this.homeCurrentOffset = offset;
     } else {
-      this.homeArticles = this.mergeArticlesWithoutDuplicates(
+      this.homeArticles = this._mergeArticlesWithoutDuplicates(
         this.homeArticles,
         response.articles
       );
@@ -181,7 +205,7 @@ class ArticlesStore implements IArticlesStore {
     this.homeArticlesCount = response.articlesCount;
   }
 
-  private updateFavoriteArticlesState(
+  private _updateFavoriteArticlesState(
     response: { articles: Article[]; articlesCount: number },
     offset: number,
     resetList: boolean
@@ -190,7 +214,7 @@ class ArticlesStore implements IArticlesStore {
       this.favoriteArticles = response.articles;
       this.favoritesCurrentOffset = offset;
     } else {
-      this.favoriteArticles = this.mergeArticlesWithoutDuplicates(
+      this.favoriteArticles = this._mergeArticlesWithoutDuplicates(
         this.favoriteArticles,
         response.articles
       );
@@ -199,16 +223,20 @@ class ArticlesStore implements IArticlesStore {
     this.favoritesArticlesCount = response.articlesCount;
   }
 
-  private async fetchHomeArticles(offset: number, resetList: boolean) {
-    try {
-      this.homeIsLoading = true;
-      const response = await this.getArticlesBasedOnFeedType(10, offset);
+  private async _fetchHomeArticles(offset: number, resetList: boolean) {
+    this.homeIsLoading = true;
+    this.homeErrors = undefined;
 
+    try {
+      const response = await this._getArticlesBasedOnFeedType(
+        PAGINATION.DEFAULT_LIMIT,
+        offset
+      );
       runInAction(() => {
-        this.updateHomeArticlesState(response, offset, resetList);
+        this._updateHomeArticlesState(response, offset, resetList);
       });
-    } catch {
-      showErrorAlert('Failed to load articles');
+    } catch (error) {
+      this._handleError(error, 'Failed to load articles', 'home');
     } finally {
       runInAction(() => {
         this.homeIsLoading = false;
@@ -216,25 +244,26 @@ class ArticlesStore implements IArticlesStore {
     }
   }
 
-  private async fetchFavoriteArticles(offset: number, resetList: boolean) {
+  private async _fetchFavoriteArticles(offset: number, resetList: boolean) {
     if (!userStore.user?.username) {
       return;
     }
 
-    try {
-      this.favoritesIsLoading = true;
+    this.favoritesIsLoading = true;
+    this.favoritesErrors = undefined;
 
-      const response = await this.articleService.getArticles({
+    try {
+      const response = await this._articleService.getArticles({
         favorited: userStore.user.username,
-        limit: 10,
+        limit: PAGINATION.DEFAULT_LIMIT,
         offset,
       });
 
       runInAction(() => {
-        this.updateFavoriteArticlesState(response, offset, resetList);
+        this._updateFavoriteArticlesState(response, offset, resetList);
       });
-    } catch {
-      showErrorAlert('Failed to load favorite articles');
+    } catch (error) {
+      this._handleError(error, 'Failed to load favorite articles', 'favorites');
     } finally {
       runInAction(() => {
         this.favoritesIsLoading = false;
@@ -242,7 +271,7 @@ class ArticlesStore implements IArticlesStore {
     }
   }
 
-  private mergeArticlesWithoutDuplicates(
+  private _mergeArticlesWithoutDuplicates(
     existingArticles: Article[],
     newArticles: Article[]
   ): Article[] {
@@ -255,13 +284,13 @@ class ArticlesStore implements IArticlesStore {
     return [...existingArticles, ...uniqueNewArticles];
   }
 
-  private updateArticleInHomeList(slug: string, updatedArticle: Article) {
+  private _updateArticleInHomeList(slug: string, updatedArticle: Article) {
     this.homeArticles = this.homeArticles.map(article =>
       article.slug === slug ? updatedArticle : article
     );
   }
 
-  private updateArticleInFavoritesList(
+  private _updateArticleInFavoritesList(
     slug: string,
     updatedArticle: Article,
     wasUnfavorited: boolean
@@ -277,6 +306,25 @@ class ArticlesStore implements IArticlesStore {
       if (existingIndex >= 0) {
         this.favoriteArticles[existingIndex] = updatedArticle;
       }
+    }
+  }
+
+  private _handleError(
+    error: unknown,
+    defaultMessage: string,
+    context?: 'home' | 'favorites'
+  ) {
+    const apiError = error as {
+      response?: { data?: { errors?: ResponseErrors } };
+    };
+    const errorMessage = apiError?.response?.data?.errors || {
+      general: [defaultMessage],
+    };
+
+    if (context === 'home') {
+      this.homeErrors = errorMessage;
+    } else if (context === 'favorites') {
+      this.favoritesErrors = errorMessage;
     }
   }
 }

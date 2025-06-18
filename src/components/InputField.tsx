@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { TextField } from 'react-native-ui-lib';
+import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
 import { componentStyles } from '../styles/componentStyles';
 import { lengthValidation } from '../utils';
+
+type ValidationFunction = (value?: string) => boolean;
 
 interface InputFieldProps {
   placeholder: string;
@@ -12,13 +14,17 @@ interface InputFieldProps {
   minLength?: number;
   validationMessage: string[];
   onChangeText?: (text: string) => void;
-  validation?: (value?: string) => boolean;
+  validation?: ValidationFunction;
   containerStyle?: StyleProp<ViewStyle>;
   secureTextEntry?: boolean;
   testID?: string;
+  autoCapitalize?: TextFieldProps['autoCapitalize'];
+  keyboardType?: TextFieldProps['keyboardType'];
+  autoComplete?: TextFieldProps['autoComplete'];
+  editable?: boolean;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+export const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   value,
   maxLength = 30,
@@ -29,6 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
   containerStyle,
   secureTextEntry = false,
   testID,
+  keyboardType = 'default',
 }) => {
   return (
     <TextField
@@ -48,8 +55,7 @@ const InputField: React.FC<InputFieldProps> = ({
       maxLength={maxLength}
       preset='underline'
       testID={testID}
+      keyboardType={keyboardType}
     />
   );
 };
-
-export { InputField };

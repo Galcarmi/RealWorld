@@ -13,7 +13,7 @@ import useAuth from './useAuth';
 
 export const Main: NavioScreen = observer(() => {
   const {
-    onNameChange,
+    onUsernameChange,
     onEmailChange,
     onPasswordChange,
     onSignUp,
@@ -39,7 +39,7 @@ export const Main: NavioScreen = observer(() => {
           value={username}
           validationMessage={['Username is required', 'Username is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
-          onChangeText={onNameChange}
+          onChangeText={onUsernameChange}
           testID='signup-username-input'
         />
         <InputField

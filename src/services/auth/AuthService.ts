@@ -1,6 +1,7 @@
 import { IAuthStore, IUserStore, User } from '../../store/types';
 import { BaseService } from '../BaseService';
 import {
+  ApiErrorResponse,
   IAuthService,
   LoginUserRequest,
   RegisterUserRequest,
@@ -12,26 +13,42 @@ class AuthService extends BaseService implements IAuthService {
     super(authStore, userStore);
   }
 
-  public get(): Promise<UserResponse> {
-    return this._api.get<UserResponse>('/user').then(this._responseBody);
+  public async getCurrentUser(): Promise<UserResponse> {
+    try {
+      const response = await this._api.get<UserResponse>('/user');
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
   }
 
-  public login(user: LoginUserRequest): Promise<UserResponse> {
-    return this._api
-      .post<UserResponse>('/users/login', { user })
-      .then(this._responseBody);
+  public async login(user: LoginUserRequest): Promise<UserResponse> {
+    try {
+      const response = await this._api.post<UserResponse>('/users/login', {
+        user,
+      });
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
   }
 
-  public register(user: RegisterUserRequest): Promise<UserResponse> {
-    return this._api
-      .post<UserResponse>('/users', { user })
-      .then(this._responseBody);
+  public async register(user: RegisterUserRequest): Promise<UserResponse> {
+    try {
+      const response = await this._api.post<UserResponse>('/users', { user });
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
   }
 
-  public put(user: User): Promise<UserResponse> {
-    return this._api
-      .put<UserResponse>('/user', { user })
-      .then(this._responseBody);
+  public async updateUser(user: User): Promise<UserResponse> {
+    try {
+      const response = await this._api.put<UserResponse>('/user', { user });
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
   }
 }
 

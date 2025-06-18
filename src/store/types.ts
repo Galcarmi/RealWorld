@@ -3,6 +3,7 @@ import {
   ResponseErrors,
   Article,
   CreateArticleRequest,
+  ArticlesResponse,
 } from '../services/types';
 
 export type User = {
@@ -31,8 +32,8 @@ export interface IAuthStore {
   setUsername(username: string): void;
   setEmail(email: string): void;
   setPassword(password: string): void;
-  login(): void;
-  register(): void;
+  login(): Promise<void>;
+  register(): Promise<void>;
   logout(): void;
 }
 
@@ -50,11 +51,15 @@ export interface IArticlesStore {
   homeIsLoading: boolean;
   homeArticlesCount: number;
   homeCurrentOffset: number;
+  homeErrors?: ResponseErrors;
   feedType: FeedType;
   favoriteArticles: Article[];
   favoritesIsLoading: boolean;
   favoritesArticlesCount: number;
   favoritesCurrentOffset: number;
+  favoritesErrors?: ResponseErrors;
+  readonly canLoadMoreHomeArticles: boolean;
+  readonly canLoadMoreFavoriteArticles: boolean;
   loadHomeArticlesInitially(): Promise<void>;
   loadMoreHomeArticles(): Promise<void>;
   refreshHomeArticles(): Promise<void>;
@@ -67,10 +72,12 @@ export interface IArticlesStore {
     username: string,
     limit?: number,
     offset?: number
-  ): Promise<{ articles: Article[] }>;
+  ): Promise<ArticlesResponse>;
   createArticle(articleData: CreateArticleRequest): Promise<Article>;
   toggleArticleFavoriteStatus(
     slug: string,
     currentlyFavorited: boolean
   ): Promise<void>;
+  clearHomeErrors(): void;
+  clearFavoritesErrors(): void;
 }

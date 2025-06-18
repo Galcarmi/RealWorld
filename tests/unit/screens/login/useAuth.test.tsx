@@ -39,11 +39,11 @@ describe('useAuth Hook', () => {
     });
   });
 
-  it('should handle name change', () => {
+  it('should handle username change', () => {
     const { result } = renderHook(() => useAuth());
 
     act(() => {
-      result.current.onNameChange('newusername');
+      result.current.onUsernameChange('newusername');
     });
 
     expect(authStore.setUsername).toHaveBeenCalledWith('newusername');

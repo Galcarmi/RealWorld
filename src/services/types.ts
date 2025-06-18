@@ -23,10 +23,10 @@ export type UserResponse = {
 };
 
 export interface IAuthService {
-  get(): Promise<UserResponse>;
+  getCurrentUser(): Promise<UserResponse>;
   login(user: LoginUserRequest): Promise<UserResponse>;
   register(user: RegisterUserRequest): Promise<UserResponse>;
-  put(user: User): Promise<UserResponse>;
+  updateUser(user: User): Promise<UserResponse>;
 }
 
 export type Profile = {
