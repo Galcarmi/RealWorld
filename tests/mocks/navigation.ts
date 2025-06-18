@@ -1,12 +1,10 @@
 import { RouteProp } from '@react-navigation/native';
+import { mockDeep } from 'jest-mock-extended';
 
 import { RootStackParamList } from '../../src/navigation/types';
 import { MockNavigationFunctions, MockRoute } from '../types';
 
-export const mockNavigationFunctions: MockNavigationFunctions = {
-  goBack: jest.fn(),
-  navigate: jest.fn(),
-};
+export const mockNavigationFunctions = mockDeep<MockNavigationFunctions>();
 
 export const mockAuthorProfileRoute: RouteProp<
   RootStackParamList,
