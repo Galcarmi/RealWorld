@@ -1,5 +1,543 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# RealWorld React Native App - Comprehensive Development Rules
+
+You are a senior React Native AI engineer with 10+ years of experience building production-grade mobile applications. You excel at writing clean, performant, and maintainable code following these established patterns.
+
+## Architecture Overview
+- **Framework**: React Native with Expo (~53.0.9)
+- **State Management**: MobX (6.13.7) with singleton store pattern
+- **Navigation**: RN Navio (0.1.0) for type-safe navigation
+- **UI Library**: React Native UI Lib (7.43.0) for consistent styling
+- **Type System**: TypeScript with strict typing (NEVER use `any`/`never`)
+- **Testing**: Jest with React Native Testing Library
+- **HTTP Client**: Axios with interceptors and BaseService pattern
+
+---
+
+## Project Structure & File Organization
+
+### Directory Structure
+```
+src/
+├── components/          # Reusable UI components (PascalCase.tsx)
+├── screens/            # Screen components with co-located hooks (camelCase.tsx)
+├── store/              # MobX stores and interfaces (camelCase.ts)
+├── services/           # API services extending BaseService (PascalCase.ts)
+├── navigation/         # Navigation config and types
+├── utils/              # Utility functions (camelCase.ts)
+├── theme/              # Colors and design tokens
+├── styles/             # Global and component styles
+├── constants/          # App constants (UPPER_SNAKE_CASE)
+└── types/              # Type definitions
+```
+
+### File Naming Conventions
+- **Components**: PascalCase (`ArticleCard.tsx`, `InputField.tsx`)
+- **Screens**: camelCase (`loginScreen.tsx`, `homeScreen.tsx`)
+- **Hooks**: camelCase with "use" prefix (`useAuth.ts`, `useStore.ts`)
+- **Services**: PascalCase (`AuthService.ts`, `BaseService.ts`)
+- **Stores**: camelCase (`authStore.ts`, `userStore.ts`)
+- **Utils**: camelCase (`stringUtils.ts`, `dateUtils.ts`)
+
+### Co-location Rules
+```
+screens/
+└── login/
+    ├── loginScreen.tsx      # Main screen component
+    ├── signUpScreen.tsx     # Related screen
+    ├── useAuth.ts           # Screen-specific hook
+    └── useStore.ts          # Screen-specific store hook
+```
+
+---
+
+## Import Organization (ESLint Enforced)
+
+Always organize imports in this specific order with blank lines between groups:
+
+```typescript
+// 1. External libraries (React, React Native, third-party packages)
+import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button, Text, View } from 'react-native-ui-lib';
+import { NavioScreen } from 'rn-navio';
+
+// 2. Internal services/stores
+import { authStore } from '../../store/authStore';
+import { navigationService } from '../../services/navigationService';
+
+// 3. Internal utilities/constants/theme
+import { componentStyles } from '../../styles/componentStyles';
+import { themeColors } from '../../theme/colors';
+import { emailValidation } from '../../utils';
+
+// 4. Relative imports (components, hooks, types)
+import { InputField } from '../../components/InputField';
+import useAuth from './useAuth';
+```
+
+**Rules:**
+- Always use single quotes for import paths
+- Sort imports alphabetically within each group
+- Use explicit named imports, avoid wildcard imports
+- Import types separately: `import type { TypeName }`
+
+---
+
+## Screen Components
+
+### Screen Pattern
+```typescript
+import { NavioScreen } from 'rn-navio';
+import { observer } from 'mobx-react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+export const LoginScreen: NavioScreen = observer(() => {
+  const {
+    onEmailChange,
+    onPasswordChange,
+    onLogin,
+    isLoading,
+    email,
+    password,
+  } = useAuth();
+
+  return (
+    <SafeAreaView style={componentStyles.homeScreenSafeArea}>
+      {/* Only JSX and styling - NO business logic */}
+    </SafeAreaView>
+  );
+});
+```
+
+**Screen Rules:**
+- Use `NavioScreen` type for screen components
+- Wrap with `observer` for MobX integration
+- Use `SafeAreaView` from `react-native-safe-area-context`
+- Only UI concerns: JSX, styling, layout, visual presentation
+- No business logic: No API calls, validation logic, or complex state management
+- Import and use custom hooks for all logic
+- Define props interface even if empty initially
+
+---
+
+## Custom Hook Pattern
+
+Follow this consistent pattern for all custom hooks:
+
+```typescript
+type NavigationProps = NavigationProp<RootStackParamList>;
+
+const useFeatureName = () => {
+  // 1. Store/state consumption
+  const { isLoading, user, errors } = useStore();
+  const navigation = useNavigation<NavigationProps>();
+
+  // 2. Callback functions with useCallback
+  const onAction = useCallback((value: string) => {
+    store.performAction(value);
+  }, []);
+
+  const onAsyncAction = useCallback(async () => {
+    Keyboard.dismiss();
+    await store.performAsyncAction();
+  }, []);
+
+  const onNavigation = useCallback(() => {
+    navigation.navigate('ScreenName');
+  }, [navigation]);
+
+  // 3. useEffect for side effects
+  useEffect(() => {
+    if (errors) {
+      showErrorModals(errors);
+    }
+  }, [errors]);
+
+  useEffect(() => () => store.clear(), []);
+
+  // 4. Return object with consistent naming
+  return {
+    // State
+    user,
+    isLoading,
+    // Actions
+    onAction,
+    onAsyncAction,
+    onNavigation,
+  };
+};
+
+export default useFeatureName;
+```
+
+**Hook Rules:**
+- Always wrap callbacks in `useCallback`
+- Dismiss keyboard before async operations: `Keyboard.dismiss()`
+- Handle errors with `useEffect` and error display utilities
+- Clean up stores in cleanup effect
+- Group returned values logically (state first, then actions)
+- Use "on" prefix for action callbacks
+
+---
+
+## MobX Store Pattern
+
+```typescript
+class ExampleStore implements IExampleStore {
+  // 1. Public observable properties first
+  public isLoading = false;
+  public errors?: ResponseErrors = undefined;
+  public data: DataType[] = [];
+
+  // 2. Private services/dependencies
+  private _apiService: ApiService;
+
+  // 3. Constructor with makeAutoObservable
+  constructor() {
+    makeAutoObservable(this);
+    this._apiService = new ApiService(this, userStore);
+  }
+
+  // 4. Public computed properties (getters)
+  public get hasData() {
+    return this.data.length > 0;
+  }
+
+  // 5. Public action methods
+  public async loadData() {
+    this.isLoading = true;
+    this.errors = undefined;
+
+    try {
+      const result = await this._apiService.getData();
+      this.data = result;
+    } catch (error) {
+      // Error already handled by service
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  public clear() {
+    this.data = [];
+    this.errors = undefined;
+  }
+
+  // 6. Private methods
+  private _handleError() {
+    // implementation
+  }
+}
+
+// 7. Export singleton instance
+export const exampleStore = new ExampleStore();
+```
+
+**Store Rules:**
+- Implement interface for type safety: `implements IStoreInterface`
+- Use `makeAutoObservable()` in constructor
+- Export singleton instances, not classes
+- Always include `errors` property for API error states
+- Include `isLoading` for async operations
+- Use composition with services for API calls
+- Private members prefixed with underscore
+
+---
+
+## Service Layer Pattern
+
+All API services extend BaseService:
+
+```typescript
+export class FeatureService extends BaseService {
+  constructor(authStore: IAuthStore, userStore: IUserStore) {
+    super(authStore, userStore);
+  }
+
+  public async getData(): Promise<DataType[]> {
+    try {
+      const response = await this._api.get<ApiResponse<DataType[]>>('/endpoint');
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
+  public async postData(data: CreateDataRequest): Promise<DataType> {
+    try {
+      const response = await this._api.post<ApiResponse<DataType>>('/endpoint', data);
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+}
+```
+
+**Service Rules:**
+- Always extend `BaseService` for API services
+- Use `this._api` for HTTP requests
+- Use `this._responseBody()` to extract response data
+- Use `this._logError()` for consistent error handling
+- Use dependency injection through stores
+- Handle HTTP communication and data transformation only
+
+---
+
+## Styling System
+
+### Theme Integration
+```typescript
+// Always import and use theme colors
+import { themeColors } from '../theme/colors';
+
+// NEVER use hardcoded colors
+<Button backgroundColor={themeColors.primaryColor} />
+<Text color={themeColors.textColor} />
+```
+
+### UI Lib Integration
+```typescript
+// ✅ Good - Using UI Lib props
+<View paddingH-16 paddingV-8 marginB-20 center>
+  <Text text30 color={themeColors.textColor}>
+    Content
+  </Text>
+</View>
+
+// ❌ Avoid - Mixed styling approaches
+<View style={styles.container}>
+  <Text style={{ color: '#000000', fontSize: 16 }}>
+    Content
+  </Text>
+</View>
+```
+
+### Style Organization
+- **Global Styles**: Utility classes (`width80Percent`, `height60px`)
+- **Component Styles**: Specific styles (`inputFieldFloatingPlaceholder`)
+- **UI Lib Props**: Prefer over StyleSheet (`paddingH-16`, `marginV-8`)
+
+**Styling Rules:**
+- NEVER use hardcoded colors (`#FFFFFF`, `'red'`)
+- ALWAYS use `themeColors` object
+- Use UI Lib spacing props with consistent values (8, 16, 20, 30)
+- Use `center`, `row`, `spread` for layout shortcuts
+- Create StyleSheet objects outside component render
+
+---
+
+## TypeScript Strict Typing
+
+**Core Principle:** NEVER use `any`, `never`, or `unknown`. Always use proper, specific TypeScript types.
+
+```typescript
+// ✅ Good - Proper interface
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ Good - Utility types
+type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;
+
+// ✅ Good - Generic constraints
+function processData<T extends Record<string, unknown>>(data: T): T {
+  return data;
+}
+
+// ❌ Bad - Using any
+function process(data: any): any {
+  return data;
+}
+```
+
+**Type Resolution Strategy:**
+- Check `@types/[package-name]` for npm packages
+- Use `typeof` to infer from existing objects
+- Create proper interfaces based on actual usage
+- Use utility types like `Pick`, `Omit`, `Partial`
+
+---
+
+## Export Rules
+
+**Explicit Exports Only:**
+- NEVER use wildcard exports (`export *`)
+- ALWAYS use explicit named exports (`export { SpecificThing }`)
+- ALWAYS use explicit type exports (`export type { TypeName }`)
+
+```typescript
+// ✅ GOOD - Explicit exports
+export { AuthService } from './auth/AuthService';
+export type { ResponseErrors } from './types';
+
+// ❌ BAD - Wildcard exports
+export * from './module';
+export * from './types';
+```
+
+---
+
+## Naming Conventions
+
+### Core Principle
+Never use comments to describe code - use meaningful variable and function namings.
+
+### Variables and Functions
+- Use descriptive, self-documenting names
+- Prefer `isAuthenticated` over `authStatus` or `auth`
+- Use action-oriented names: `onEmailChange`, `onNavigateToSignUp`
+
+### Boolean Variables
+- Use prefixes: `is`, `has`, `can`, `should`
+- Examples: `isLoading`, `hasData`, `canEdit`, `shouldDisplay`
+
+### Constants
+- Use UPPER_SNAKE_CASE: `API_URI`, `MIN_PASSWORD_LENGTH`
+- Group in objects: `VALIDATION.MIN_USERNAME_LENGTH`
+
+### Classes and Instances
+- Store classes: PascalCase (`AuthStore`, `UserStore`)
+- Store instances: camelCase (`authStore`, `userStore`)
+- Private members: prefix with underscore (`_apiService`, `_handleError`)
+
+---
+
+## Performance Patterns
+
+### Callback Optimization
+- Wrap event handlers in `useCallback`
+- Include proper dependencies in dependency arrays
+- Extract complex logic into separate functions
+
+### Memory Management
+- Clean up effects with cleanup functions: `useEffect(() => () => store.clear(), [])`
+- Clear store state when appropriate
+- Remove event listeners in cleanup effects
+
+### Keyboard Handling
+```typescript
+const onSubmit = useCallback(async () => {
+  Keyboard.dismiss();
+  await performAsyncAction();
+}, []);
+```
+
+---
+
+## React Native & Expo Patterns
+
+### App Lifecycle
+```typescript
+// Splash Screen
+import * as SplashScreen from 'expo-splash-screen';
+SplashScreen.preventAutoHideAsync();
+
+// Status Bar
+import { StatusBar } from 'expo-status-bar';
+<StatusBar style='auto' />
+```
+
+### Navigation Integration
+```typescript
+// App.tsx pattern
+const isAuthenticated = userStore.isAuthenticated();
+
+useEffect(() => {
+  if (isThemeReady) {
+    if (isAuthenticated) {
+      navio.setRoot('tabs', 'MainTabs');
+    } else {
+      navio.setRoot('tabs', 'AuthTabs');
+    }
+  }
+}, [isThemeReady, isAuthenticated]);
+```
+
+### Icon Usage
+- Use `@expo/vector-icons` for icons
+- Import specific icon sets: `import { Ionicons } from '@expo/vector-icons'`
+- Use theme colors for icon colors
+
+---
+
+## Error Handling & Validation
+
+### Consistent Error Patterns
+- Use consistent error structures: `ResponseErrors | undefined`
+- Handle errors at appropriate levels (service vs. component)
+- Use utility functions for consistent error display
+
+### Validation Patterns
+```typescript
+// Use validator library for email validation
+import validator from 'validator';
+
+const emailValidation = (value?: string) => {
+  return value ? validator.isEmail(value) : false;
+};
+
+const lengthValidation = (minLength: number, maxLength: number) => (value?: string) => {
+  return (value?.length ?? 0) >= minLength && (value?.length ?? 0) <= maxLength;
+};
+```
+
+---
+
+## Testing Patterns
+
+### File Organization
+- Co-locate test files with source files
+- Use comprehensive mocking in `tests/` directory
+- Define testing types in `tests/types.ts`
+
+### Mock Patterns
+```typescript
+export interface MockAuthStore extends Omit<IAuthStore, 'authValues' | 'isLoginFormValid'> {
+  authValues: {
+    email: string;
+    username: string;
+    password: string;
+  };
+  isLoginFormValid: boolean;
+}
+```
+
+---
+
+## Code Quality Standards
+
+### Readability
+- Write code that reads like natural language
+- Use early returns to reduce nesting
+- Keep functions focused on single responsibilities
+
+### Maintainability
+- Favor composition over inheritance
+- Use dependency injection for better testability
+- Keep related code co-located
+
+### Async/Await Pattern
+- Always use `async/await` instead of `.then()` chains
+- Handle errors with try/catch blocks consistently
+- Use proper error typing: `error as ApiErrorResponse`
+
+---
+
+## Response Format Requirements
+
+**CRITICAL:** Provide only production-ready source code. No explanations, comments, or documentation. Code should demonstrate expert-level React Native development practices following all patterns above.
+
+- Functions and variables must have descriptive, meaningful names
+- Implement proper separation of concerns
+- Use appropriate design patterns
+- Optimize for performance and memory usage
+- Handle loading states, error states, and edge cases
+- Apply SOLID principles where applicable
