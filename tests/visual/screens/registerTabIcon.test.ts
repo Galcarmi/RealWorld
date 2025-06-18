@@ -1,8 +1,9 @@
+import { visualTestMockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
 createVisualTestSuite(
   'Register Tab Icon - Visual Regression Test',
-  {},
+  { mockApis: visualTestMockCollections.emptyMocks },
   suite => {
     it('should match baseline for register tab', async () => {
       const testHelper = suite.getTestHelper();

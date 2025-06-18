@@ -91,3 +91,115 @@ export const mockApiError = {
     },
   },
 };
+
+// Visual Test Mock API Configurations
+export interface VisualTestMockConfig {
+  url: RegExp;
+  method: string;
+  status: number;
+  contentType: string;
+  body: Record<string, any>;
+  delay: number;
+}
+
+// Home Screen Visual Test Mocks - using consistent test data
+export const homeScreenVisualMocks: VisualTestMockConfig[] = [
+  {
+    url: /node-express-conduit\.appspot\.com\/api\/articles(\?.*)?$/,
+    method: 'GET',
+    status: 200,
+    contentType: 'application/json',
+    body: {
+      articles: [
+        {
+          slug: 'test-article-1',
+          title: 'Test Article 1',
+          description: 'This is a test article description',
+          body: 'Test article body content',
+          tagList: ['test', 'demo'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 5,
+          author: {
+            username: 'authoruser',
+            bio: 'Author bio',
+            image: null,
+            following: false,
+          },
+        },
+        {
+          slug: 'test-article-2',
+          title: 'Test Article 2',
+          description: 'Another test article',
+          body: 'Another test article body',
+          tagList: ['test', 'example'],
+          createdAt: '2024-01-02T00:00:00.000Z',
+          updatedAt: '2024-01-02T00:00:00.000Z',
+          favorited: true,
+          favoritesCount: 8,
+          author: {
+            username: 'anotheruser',
+            bio: 'Another user bio',
+            image: null,
+            following: true,
+          },
+        },
+      ],
+      articlesCount: 2,
+    },
+    delay: 500,
+  },
+  {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/feed(\?.*)?$/,
+    method: 'GET',
+    status: 200,
+    contentType: 'application/json',
+    body: {
+      articles: [
+        {
+          slug: 'test-article-1',
+          title: 'Test Article 1',
+          description: 'This is a test article description',
+          body: 'Test article body content',
+          tagList: ['test', 'demo'],
+          createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
+          favorited: false,
+          favoritesCount: 5,
+          author: {
+            username: 'authoruser',
+            bio: 'Author bio',
+            image: null,
+            following: false,
+          },
+        },
+        {
+          slug: 'test-article-2',
+          title: 'Test Article 2',
+          description: 'Another test article',
+          body: 'Another test article body',
+          tagList: ['test', 'example'],
+          createdAt: '2024-01-02T00:00:00.000Z',
+          updatedAt: '2024-01-02T00:00:00.000Z',
+          favorited: true,
+          favoritesCount: 8,
+          author: {
+            username: 'anotheruser',
+            bio: 'Another user bio',
+            image: null,
+            following: true,
+          },
+        },
+      ],
+      articlesCount: 2,
+    },
+    delay: 500,
+  },
+];
+
+// Visual Test Mock Collections
+export const visualTestMockCollections = {
+  homeScreen: homeScreenVisualMocks,
+  emptyMocks: [] as VisualTestMockConfig[],
+} as const;
