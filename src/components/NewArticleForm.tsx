@@ -30,6 +30,63 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
   onBodyChange,
   onPublishArticle,
 }) => {
+  const createTitleInputField = () => (
+    <InputField
+      placeholder='Title'
+      value={title}
+      maxLength={100}
+      minLength={1}
+      validationMessage={['Title is required']}
+      onChangeText={onTitleChange}
+      containerStyle={componentStyles.newArticleFormTitleInput}
+      testID='article-title-input'
+    />
+  );
+
+  const createDescriptionInputField = () => (
+    <InputField
+      placeholder='Description'
+      value={description}
+      maxLength={200}
+      minLength={1}
+      validationMessage={['Description is required']}
+      onChangeText={onDescriptionChange}
+      containerStyle={componentStyles.newArticleFormDescriptionInput}
+      testID='article-description-input'
+    />
+  );
+
+  const createBodyInputField = () => (
+    <InputField
+      placeholder='Article text'
+      value={body}
+      maxLength={5000}
+      minLength={1}
+      validationMessage={['Article text is required']}
+      onChangeText={onBodyChange}
+      containerStyle={componentStyles.newArticleFormBodyInput}
+      testID='article-body-input'
+    />
+  );
+
+  const determineButtonBackgroundColor = () => {
+    return canPublish ? themeColors.primaryColor : themeColors.greyColor;
+  };
+
+  const createPublishButton = () => (
+    <Button
+      label='Publish'
+      backgroundColor={determineButtonBackgroundColor()}
+      color={themeColors.bgColor}
+      borderRadius={8}
+      paddingV-15
+      disabled={!canPublish || isLoading}
+      onPress={onPublishArticle}
+      style={componentStyles.newArticleFormPublishButton}
+      testID='publish-article-button'
+    />
+  );
+
   return (
     <ScrollView
       style={componentStyles.newArticleFormScrollView}
@@ -37,52 +94,10 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       keyboardShouldPersistTaps='handled'
     >
       <View flex>
-        <InputField
-          placeholder='Title'
-          value={title}
-          maxLength={100}
-          minLength={1}
-          validationMessage={['Title is required']}
-          onChangeText={onTitleChange}
-          containerStyle={componentStyles.newArticleFormTitleInput}
-          testID='article-title-input'
-        />
-
-        <InputField
-          placeholder='Description'
-          value={description}
-          maxLength={200}
-          minLength={1}
-          validationMessage={['Description is required']}
-          onChangeText={onDescriptionChange}
-          containerStyle={componentStyles.newArticleFormDescriptionInput}
-          testID='article-description-input'
-        />
-
-        <InputField
-          placeholder='Article text'
-          value={body}
-          maxLength={5000}
-          minLength={1}
-          validationMessage={['Article text is required']}
-          onChangeText={onBodyChange}
-          containerStyle={componentStyles.newArticleFormBodyInput}
-          testID='article-body-input'
-        />
-
-        <Button
-          label='Publish'
-          backgroundColor={
-            canPublish ? themeColors.primaryColor : themeColors.greyColor
-          }
-          color={themeColors.bgColor}
-          borderRadius={8}
-          paddingV-15
-          disabled={!canPublish || isLoading}
-          onPress={onPublishArticle}
-          style={componentStyles.newArticleFormPublishButton}
-          testID='publish-article-button'
-        />
+        {createTitleInputField()}
+        {createDescriptionInputField()}
+        {createBodyInputField()}
+        {createPublishButton()}
       </View>
     </ScrollView>
   );

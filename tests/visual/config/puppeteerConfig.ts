@@ -375,7 +375,8 @@ export class PuppeteerTestHelper {
 
       const isVisible = await element.isIntersectingViewport();
       return isVisible;
-    } catch {
+    } catch (error) {
+      console.error('Failed to check element visibility:', error);
       return false;
     }
   }

@@ -49,7 +49,8 @@ export async function waitForServer(
       if (response.ok) {
         return true;
       }
-    } catch {
+    } catch (error) {
+      console.error(`Server check attempt ${attempt} failed:`, error);
       // Server not ready yet, continue waiting
     }
 

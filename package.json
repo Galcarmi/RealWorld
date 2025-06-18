@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "yarn test:unit && yarn test:integration && yarn test:visual:headless",
+    "test": "yarn test:unit && yarn test:integration && yarn test:visual:docker",
     "test:unit": "jest --config jest.config.js --watchAll=false",
     "test:integration": "jest --config jest.config.integration.js --watchAll=false",
     "test:visual": "jest --config jest.config.visual.js",

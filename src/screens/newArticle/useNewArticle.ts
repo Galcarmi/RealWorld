@@ -24,8 +24,33 @@ export const useNewArticle = () => {
     setBody(text);
   }, []);
 
+  const validateArticleContent = useCallback(() => {
+    return title.trim() && description.trim() && body.trim();
+  }, [title, description, body]);
+
+  const createArticleData = useCallback((): CreateArticleRequest => {
+    return {
+      title: title.trim(),
+      description: description.trim(),
+      body: body.trim(),
+    };
+  }, [title, description, body]);
+
+  const resetArticleForm = useCallback(() => {
+    setTitle('');
+    setDescription('');
+    setBody('');
+  }, []);
+
+  const handleArticleCreation = useCallback(async () => {
+    const articleData = createArticleData();
+    await articlesStore.createArticle(articleData);
+    resetArticleForm();
+    navigationService.navigateToMainTabs();
+  }, [createArticleData, resetArticleForm]);
+
   const onPublishArticle = useCallback(async () => {
-    if (!title.trim() || !description.trim() || !body.trim()) {
+    if (!validateArticleContent()) {
       return;
     }
 
@@ -33,42 +58,33 @@ export const useNewArticle = () => {
     setIsLoading(true);
 
     try {
-      const articleData: CreateArticleRequest = {
-        title: title.trim(),
-        description: description.trim(),
-        body: body.trim(),
-      };
-
-      await articlesStore.createArticle(articleData);
-
-      setTitle('');
-      setDescription('');
-      setBody('');
-
-      navigationService.navigateToMainTabs();
+      await handleArticleCreation();
     } catch {
       showErrorAlert('Failed to create article');
     } finally {
       setIsLoading(false);
     }
-  }, [title, description, body]);
+  }, [validateArticleContent, handleArticleCreation]);
 
   const onGoBack = useCallback(() => {
     navigationService.navigateToMainTabs();
   }, []);
 
-  const canPublish = useMemo(() => {
+  const calculateCanPublish = useCallback(() => {
     const trimmedTitle = title.trim();
     const trimmedDescription = description.trim();
     const trimmedBody = body.trim();
 
-    const isValid =
+    return (
       trimmedTitle.length > 0 &&
       trimmedDescription.length > 0 &&
-      trimmedBody.length > 0;
-
-    return isValid;
+      trimmedBody.length > 0
+    );
   }, [title, description, body]);
+
+  const canPublish = useMemo(() => {
+    return calculateCanPublish();
+  }, [calculateCanPublish]);
 
   return {
     title,

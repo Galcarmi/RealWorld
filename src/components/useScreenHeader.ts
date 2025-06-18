@@ -17,19 +17,21 @@ export const useScreenHeader = ({
 }: UseScreenHeaderProps = {}) => {
   const insets = useSafeAreaInsets();
 
+  const attemptGoBack = useCallback(() => {
+    try {
+      navigationService.goBack();
+    } catch (error) {
+      console.warn('Navigation goBack failed:', error);
+    }
+  }, []);
+
   const handleBackPress = useCallback(() => {
     if (onBackPress) {
       onBackPress();
     } else {
-      try {
-        navigationService.goBack();
-      } catch (error) {
-        // If navigation fails, do nothing - we're likely at the root screen
-        // eslint-disable-next-line no-console
-        console.warn('Navigation goBack failed:', error);
-      }
+      attemptGoBack();
     }
-  }, [onBackPress]);
+  }, [onBackPress, attemptGoBack]);
 
   const shouldShowBackButton =
     showBackButton && (!!onBackPress || !!navigation);

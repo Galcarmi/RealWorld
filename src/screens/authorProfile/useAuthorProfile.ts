@@ -22,26 +22,30 @@ export const useAuthorProfile = (username: string) => {
     try {
       const response = await profileService.getProfile(username);
       setAuthorProfile(response.profile);
-    } catch {
-      // Error handled by service layer
+    } catch (error) {
+      console.error('Failed to fetch author profile:', error);
     }
   }, [username, profileService]);
 
-  const fetchAuthorArticles = useCallback(async () => {
+  const loadAuthorArticles = useCallback(async () => {
     if (!username) return;
 
     setIsLoading(true);
     try {
       const response = await articlesStore.getUserArticles(username, 10, 0);
       setAuthorArticles(response.articles);
-    } catch {
-      // Error handled by store layer
+    } catch (error) {
+      console.error('Failed to load author articles:', error);
     } finally {
       setIsLoading(false);
     }
   }, [username]);
 
-  const onFollowToggle = useCallback(async () => {
+  const fetchAuthorArticles = useCallback(async () => {
+    await loadAuthorArticles();
+  }, [loadAuthorArticles]);
+
+  const toggleUserFollowStatus = useCallback(async () => {
     if (!authorProfile) return;
 
     try {
@@ -50,12 +54,16 @@ export const useAuthorProfile = (username: string) => {
         : await profileService.followUser(username);
 
       setAuthorProfile(response.profile);
-    } catch {
-      // Error handled by service layer
+    } catch (error) {
+      console.error('Failed to toggle follow status:', error);
     }
   }, [authorProfile, username, profileService]);
 
-  const onToggleFavorite = useCallback(
+  const onFollowToggle = useCallback(async () => {
+    await toggleUserFollowStatus();
+  }, [toggleUserFollowStatus]);
+
+  const handleFavoriteToggle = useCallback(
     async (slug: string, favorited: boolean) => {
       await articlesStore.toggleArticleFavoriteStatus(slug, favorited);
       await fetchAuthorArticles();
@@ -63,14 +71,25 @@ export const useAuthorProfile = (username: string) => {
     [fetchAuthorArticles]
   );
 
+  const onToggleFavorite = useCallback(
+    async (slug: string, favorited: boolean) => {
+      await handleFavoriteToggle(slug, favorited);
+    },
+    [handleFavoriteToggle]
+  );
+
   const refreshAuthorArticles = useCallback(async () => {
     await fetchAuthorArticles();
   }, [fetchAuthorArticles]);
 
-  useEffect(() => {
+  const initializeAuthorData = useCallback(() => {
     fetchAuthorProfile();
     fetchAuthorArticles();
-  }, [username, fetchAuthorProfile, fetchAuthorArticles]);
+  }, [fetchAuthorProfile, fetchAuthorArticles]);
+
+  useEffect(() => {
+    initializeAuthorData();
+  }, [username, initializeAuthorData]);
 
   return {
     authorProfile,
