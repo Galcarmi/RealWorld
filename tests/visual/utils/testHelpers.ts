@@ -257,7 +257,9 @@ export function createVisualTestSuite(
   });
 }
 
-export async function performLogin(testHelper: any) {
+export async function performLogin(
+  testHelper: PuppeteerTestHelper
+): Promise<void> {
   await commonTestActions.navigateAndWaitForBody(testHelper);
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
@@ -279,7 +281,9 @@ export async function performLogin(testHelper: any) {
   );
 }
 
-export async function navigateToProfile(testHelper: any) {
+export async function navigateToProfile(
+  testHelper: PuppeteerTestHelper
+): Promise<void> {
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
     'profile-main-tab-icon',

@@ -1,12 +1,21 @@
+import { Profile, Article } from '../../src/services/types';
+
 import { mockArticles } from './data';
 
-const mockUseAuthorProfileData = {
+const mockUseAuthorProfileData: {
+  authorProfile: Profile | null;
+  authorArticles: Article[];
+  isLoading: boolean;
+  onFollowToggle: jest.Mock;
+  onToggleFavorite: jest.Mock;
+  refreshAuthorArticles: jest.Mock;
+} = {
   authorProfile: {
     username: 'testauthor',
     bio: 'Test bio',
     image: '',
     following: false,
-  } as any,
+  } as Profile,
   authorArticles: mockArticles,
   isLoading: false,
   onFollowToggle: jest.fn(),
@@ -28,7 +37,7 @@ export const resetAllHookMocks = (): void => {
     bio: 'Test bio',
     image: '',
     following: false,
-  } as any;
+  } as Profile;
   mockUseAuthorProfileData.authorArticles = mockArticles;
   mockUseAuthorProfileData.isLoading = false;
   mockUseAuthorProfileData.onFollowToggle = jest.fn();

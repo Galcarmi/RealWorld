@@ -1,7 +1,12 @@
 import { mockDeep, mockReset, MockProxy } from 'jest-mock-extended';
 
 import { FeedType } from '../../src/constants/feedTypes';
-import { IAuthStore, IUserStore, IArticlesStore } from '../../src/store/types';
+import {
+  IAuthStore,
+  IUserStore,
+  IArticlesStore,
+  User,
+} from '../../src/store/types';
 
 const mockAuthStore = mockDeep<IAuthStore>();
 const mockUserStore = mockDeep<IUserStore>();
@@ -80,7 +85,7 @@ const setupUserStoreMocks = () => {
     mockUserStore.token = null;
   });
 
-  mockUserStore.setUser.mockImplementation((user: any) => {
+  mockUserStore.setUser.mockImplementation((user: User) => {
     mockUserStore.user = user;
     mockUserStore.token = user?.token || null;
   });

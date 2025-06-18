@@ -1,5 +1,19 @@
 import React from 'react';
 
+import {
+  MockAuthStore,
+  AuthStorePropertyMockValues,
+  MockLoginResponseOverrides,
+  MockAuthError,
+  MockAuthErrorData,
+  TestingLibraryQueries,
+  FormValidationTestValues,
+  MockStoreSetup,
+  MockAuthService,
+  MockAxiosInstance,
+  ValidationFunction,
+} from '../types';
+
 export const testData = {
   validEmails: [
     'test@example.com',
@@ -38,7 +52,7 @@ export const testData = {
   },
 };
 
-export const setupMockAuthService = () => {
+export const setupMockAuthService = (): MockAuthService => {
   return {
     login: jest.fn(),
     register: jest.fn(),
@@ -47,7 +61,7 @@ export const setupMockAuthService = () => {
   };
 };
 
-export const setupMockAxiosInstance = () => {
+export const setupMockAxiosInstance = (): MockAxiosInstance => {
   return {
     interceptors: {
       request: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
@@ -71,7 +85,7 @@ export const setupMockAxiosInstance = () => {
 };
 
 export const expectValidationResults = (
-  validationFn: (input: string) => boolean,
+  validationFn: ValidationFunction,
   validInputs: string[],
   invalidInputs: string[],
   expectedValid: boolean = true,
@@ -92,8 +106,8 @@ export const expectStringResult = (result: string) => {
 };
 
 export const setupAuthStorePropertyMocks = (
-  authStore: any,
-  values: any = {}
+  authStore: MockAuthStore,
+  values: AuthStorePropertyMockValues = {}
 ) => {
   Object.defineProperty(authStore, 'isLoginFormValid', {
     value: values.isLoginFormValid || true,
@@ -115,7 +129,7 @@ export const setupAuthStorePropertyMocks = (
 };
 
 export const expectFormFieldInteraction = (
-  getByTestId: any,
+  getByTestId: TestingLibraryQueries['getByTestId'],
   fieldTestId: string,
   setValue: string,
   expectedAction: jest.Mock
@@ -125,7 +139,7 @@ export const expectFormFieldInteraction = (
   return { field, setValue, expectedAction };
 };
 
-export const createMockStoreSetup = () => {
+export const createMockStoreSetup = (): MockStoreSetup => {
   return {
     authStore: {
       isLoading: false,
@@ -185,9 +199,9 @@ export const renderWithSafeArea = (Component: React.ComponentType) => {
 };
 
 export const setupFormValidationTest = (
-  store: any,
+  store: MockAuthStore,
   field: 'login' | 'signup',
-  values: { username?: string; email?: string; password?: string },
+  values: FormValidationTestValues,
   expected: boolean
 ) => {
   if (values.username !== undefined) store.setUsername(values.username);
@@ -199,7 +213,7 @@ export const setupFormValidationTest = (
   expect(store[validationProperty]).toBe(expected);
 };
 
-export const expectStoreCleared = (store: any) => {
+export const expectStoreCleared = (store: MockAuthStore) => {
   expect(store.username).toBe('');
   expect(store.email).toBe('');
   expect(store.password).toBe('');
@@ -207,16 +221,22 @@ export const expectStoreCleared = (store: any) => {
 };
 
 export const expectStoreSetterAction = (
-  store: any,
-  setterFn: string,
+  store: MockAuthStore,
+  setterFn: keyof Pick<
+    MockAuthStore,
+    'setUsername' | 'setEmail' | 'setPassword'
+  >,
   value: string,
-  propertyName: string
+  propertyName: keyof Pick<MockAuthStore, 'username' | 'email' | 'password'>
 ) => {
-  store[setterFn](value);
+  const setterFunction = store[setterFn] as jest.Mock;
+  setterFunction(value);
   expect(store[propertyName]).toBe(value);
 };
 
-export const createMockLoginResponse = (overrides: any = {}) => {
+export const createMockLoginResponse = (
+  overrides: MockLoginResponseOverrides = {}
+) => {
   return {
     user: {
       ...testData.mockUser,
@@ -225,7 +245,9 @@ export const createMockLoginResponse = (overrides: any = {}) => {
   };
 };
 
-export const createMockAuthError = (errors: any) => {
+export const createMockAuthError = (
+  errors: MockAuthErrorData['errors']
+): MockAuthError => {
   return {
     response: {
       data: { errors },
@@ -279,14 +301,17 @@ export const setupIntegrationTestEnvironment = () => {
   resetAllStoreMocks();
 };
 
-export const expectFormFieldExists = (getByTestId: any, testIds: string[]) => {
+export const expectFormFieldExists = (
+  getByTestId: TestingLibraryQueries['getByTestId'],
+  testIds: string[]
+) => {
   testIds.forEach(testId => {
     expect(getByTestId(testId)).toBeTruthy();
   });
 };
 
 export const simulateFieldInput = (
-  getByTestId: any,
+  getByTestId: TestingLibraryQueries['getByTestId'],
   fieldTestId: string,
   value: string
 ) => {

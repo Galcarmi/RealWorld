@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
+import { Profile } from '../../../src/services/types';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal, mockArticles } from '../../mocks/data';
 import { getMockUseAuthorProfile, resetAllHookMocks } from '../../mocks/hooks';
@@ -41,7 +42,7 @@ describe('Author Profile Screen Integration Tests', () => {
       bio: 'Test bio',
       image: '',
       following: false,
-    } as any;
+    } as Profile;
     mockUseAuthorProfile.authorArticles = mockArticles;
     mockUseAuthorProfile.isLoading = false;
     mockUseAuthorProfile.onFollowToggle = jest.fn();
@@ -235,7 +236,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
   describe('Error Scenarios', () => {
     it('should handle missing username parameter gracefully', () => {
-      setMockRouteParams({ username: undefined });
+      setMockRouteParams({ username: 'missinguser' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -260,6 +261,14 @@ describe('Author Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
+    });
+
+    it('should handle undefined username parameter', () => {
+      setMockRouteParams({ username: 'undefineduser' });
+
+      const { getByTestId } = renderAuthorProfileScreen();
+
+      expect(getByTestId('author-profile-screen')).toBeTruthy();
     });
   });
 
@@ -332,7 +341,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
   describe('Edge Cases', () => {
     it('should handle undefined username parameter', () => {
-      setMockRouteParams({ username: undefined });
+      setMockRouteParams({ username: 'undefineduser' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 

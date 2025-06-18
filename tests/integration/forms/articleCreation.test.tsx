@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
+import { Article } from '../../../src/services/types';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal } from '../../mocks/data';
@@ -287,7 +288,25 @@ describe('Article Creation Integration Tests', () => {
     });
 
     it('should clear form on successful submission', async () => {
-      jest.spyOn(articlesStore, 'createArticle').mockResolvedValue({} as any);
+      const mockArticle: Article = {
+        slug: 'test-article',
+        title: 'Test Article',
+        description: 'Test Description',
+        body: 'Test Body',
+        tagList: ['test'],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        favorited: false,
+        favoritesCount: 0,
+        author: {
+          username: 'testuser',
+          bio: 'Test bio',
+          image: null,
+          following: false,
+        },
+      };
+
+      jest.spyOn(articlesStore, 'createArticle').mockResolvedValue(mockArticle);
 
       const { getByTestId } = renderNewArticleScreen();
 

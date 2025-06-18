@@ -12,18 +12,19 @@ import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigationService';
 import { themeColors } from '../theme/colors';
 
-const createTabIcon = (iconName: string, testId: string) => {
-  return ({ color, size }: { color: string; size: number }) => (
-    <Ionicons
-      name={iconName as any}
-      size={size}
-      color={color}
-      testID={testId}
-    />
+import { IoniconsName, TabIconProps } from './types';
+
+const createTabIcon = (iconName: IoniconsName, testId: string) => {
+  return ({ color, size }: TabIconProps) => (
+    <Ionicons name={iconName} size={size} color={color} testID={testId} />
   );
 };
 
-const createTabOptions = (title: string, iconName: string, testId: string) => {
+const createTabOptions = (
+  title: string,
+  iconName: IoniconsName,
+  testId: string
+) => {
   return () => ({
     title,
     tabBarIcon: createTabIcon(iconName, testId),

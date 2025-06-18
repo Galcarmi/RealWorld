@@ -8,7 +8,6 @@ import {
   createMockAuthError,
   setupFormValidationTest,
   expectStoreCleared,
-  expectStoreSetterAction,
 } from '../../utils/testHelpers';
 
 jest.mock('../../../src/services');
@@ -25,6 +24,7 @@ describe('AuthStore', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    authStore.clear();
 
     mockAuthService = setupMockAuthService();
 
@@ -47,25 +47,18 @@ describe('AuthStore', () => {
 
   describe('setters', () => {
     it('should set username correctly', () => {
-      expectStoreSetterAction(authStore, 'setUsername', 'testuser', 'username');
+      authStore.setUsername('testuser');
+      expect(authStore.username).toBe('testuser');
     });
 
     it('should set email correctly', () => {
-      expectStoreSetterAction(
-        authStore,
-        'setEmail',
-        'test@example.com',
-        'email'
-      );
+      authStore.setEmail('test@example.com');
+      expect(authStore.email).toBe('test@example.com');
     });
 
     it('should set password correctly', () => {
-      expectStoreSetterAction(
-        authStore,
-        'setPassword',
-        'password123',
-        'password'
-      );
+      authStore.setPassword('password123');
+      expect(authStore.password).toBe('password123');
     });
   });
 
