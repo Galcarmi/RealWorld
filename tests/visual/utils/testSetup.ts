@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { TestLogger } from './TestLogger';
+
 export function ensureTestDirectories(): void {
   const directories = [
     'tests/visual/screenshots',
@@ -50,11 +52,14 @@ export async function waitForServer(
         return true;
       }
     } catch (error) {
-      console.error(`Server check attempt ${attempt} failed:`, error);
-      // Server not ready yet, continue waiting
+      TestLogger.error(`Server check attempt ${attempt} failed:`, error);
+      if (attempt === maxAttempts) {
+        throw new Error(
+          `Server not available after ${maxAttempts} attempts. Last error: ${error}`
+        );
+      }
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   return false;

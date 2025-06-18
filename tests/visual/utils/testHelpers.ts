@@ -4,6 +4,7 @@ import {
   VisualTestConfig,
 } from '../config/puppeteerConfig';
 
+import { TestLogger } from './TestLogger';
 import { ensureTestDirectories } from './testSetup';
 import { VisualComparator, VisualComparisonOptions } from './visualComparison';
 
@@ -105,7 +106,7 @@ export class VisualTestSuite {
             ).length,
           };
         });
-        console.log(`🔍 Debug info for ${screenshotName}:`, debugInfo);
+        TestLogger.log(`🔍 Debug info for ${screenshotName}:`, debugInfo);
       }
     }
 
@@ -198,7 +199,7 @@ export const commonTestActions = {
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(
+        TestLogger.log(
           `🔄 Attempt ${attempt}/${maxRetries}: Clicking ${buttonTestId} and waiting for ${screenTestId}`
         );
 
@@ -211,16 +212,16 @@ export const commonTestActions = {
         // Wait for target screen to appear
         await testHelper.waitForTestId(screenTestId, 8000);
 
-        console.log(
+        TestLogger.log(
           `✅ Successfully navigated to ${screenTestId} on attempt ${attempt}`
         );
         return; // Success!
       } catch (error) {
         lastError = error as Error;
-        console.log(`❌ Attempt ${attempt} failed: ${lastError.message}`);
+        TestLogger.log(`❌ Attempt ${attempt} failed: ${lastError.message}`);
 
         if (attempt < maxRetries) {
-          console.log(`⏳ Waiting 500ms before retry...`);
+          TestLogger.log(`⏳ Waiting 500ms before retry...`);
           await new Promise(resolve => setTimeout(resolve, 500));
         }
       }

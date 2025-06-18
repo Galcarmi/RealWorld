@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NavigationInstance } from '../navigation/types';
 import { navigationService } from '../services/navigationService';
+import { Logger } from '../utils';
 
 interface UseScreenHeaderProps {
   showBackButton?: boolean;
@@ -21,7 +22,7 @@ export const useScreenHeader = ({
     try {
       navigationService.goBack();
     } catch (error) {
-      console.warn('Navigation goBack failed:', error);
+      Logger.warn('Navigation goBack failed:', error);
     }
   }, []);
 

@@ -3,6 +3,8 @@ import path from 'path';
 
 import sharp from 'sharp';
 
+import { TestLogger } from './TestLogger';
+
 // Use require for pixelmatch to avoid ES module issues in Jest
 const pixelmatch = require('pixelmatch').default || require('pixelmatch');
 
@@ -56,7 +58,7 @@ export class VisualComparator {
     if (!fs.existsSync(baselinePath)) {
       // Only create baseline automatically if UPDATE_BASELINES is true
       if (process.env.UPDATE_BASELINES === 'true') {
-        console.log(`\n📸 Creating new baseline: ${screenshotName}`);
+        TestLogger.log(`\n📸 Creating new baseline: ${screenshotName}`);
         return this.createNewBaseline(
           screenshotName,
           currentPath,
@@ -107,15 +109,15 @@ export class VisualComparator {
     const passed = diffPercentage <= opts.maxDiffPercentage;
 
     // Console log the comparison results
-    console.log(`\n📸 Visual Comparison: ${screenshotName}`);
-    console.log(
+    TestLogger.log(`\n📸 Visual Comparison: ${screenshotName}`);
+    TestLogger.log(
       `   Pixel Difference: ${pixelDifference}/${totalPixels} pixels`
     );
-    console.log(`   Difference: ${diffPercentage.toFixed(4)}%`);
-    console.log(
+    TestLogger.log(`   Difference: ${diffPercentage.toFixed(4)}%`);
+    TestLogger.log(
       `   Threshold: ${opts.threshold} | Max Allowed: ${opts.maxDiffPercentage}%`
     );
-    console.log(`   Result: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
+    TestLogger.log(`   Result: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
 
     const diffImagePath = await this.createDiffImageIfNeeded(
       pixelDifference,
@@ -142,7 +144,7 @@ export class VisualComparator {
       throw new Error(`Current screenshot not found: ${currentPath}`);
     }
 
-    console.log(`\n📸 Updating baseline: ${screenshotName}`);
+    TestLogger.log(`\n📸 Updating baseline: ${screenshotName}`);
     fs.copyFileSync(currentPath, baselinePath);
   }
 

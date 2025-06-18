@@ -7,7 +7,7 @@ import axios, {
 
 import { API_URI } from '../constants';
 import { IAuthStore, IUserStore } from '../store/types';
-import { showErrorAlert } from '../utils';
+import { Logger, showErrorAlert } from '../utils';
 
 import { navigationService } from './navigationService';
 import { ApiErrorResponse } from './types';
@@ -39,7 +39,7 @@ export abstract class BaseService {
   }
 
   private _logApiError(errorResponse: ApiErrorResponse): void {
-    console.log('🔴 API Error:', {
+    Logger.log('🔴 API Error:', {
       status: errorResponse?.response?.status,
       statusText: errorResponse?.response?.statusText,
       data: errorResponse?.response?.data,
@@ -61,7 +61,7 @@ export abstract class BaseService {
   }
 
   private _logRequestDetails(config: InternalAxiosRequestConfig): void {
-    console.log('🔵 API Request:', {
+    Logger.log('🔵 API Request:', {
       method: config.method?.toUpperCase(),
       url: config.url,
       baseURL: config.baseURL,
@@ -77,7 +77,7 @@ export abstract class BaseService {
   }
 
   private _logSuccessfulResponse(response: AxiosResponse): void {
-    console.log('🟢 API Response:', {
+    Logger.log('🟢 API Response:', {
       status: response.status,
       statusText: response.statusText,
       url: response.config.url,
@@ -88,7 +88,7 @@ export abstract class BaseService {
   }
 
   private _logErrorResponse(error: AxiosError): void {
-    console.log('🔴 API Error Response:', {
+    Logger.log('🔴 API Error Response:', {
       status: error.response?.status,
       statusText: error.response?.statusText,
       url: error.config?.url,
@@ -100,7 +100,7 @@ export abstract class BaseService {
   }
 
   private _handleUnauthorizedError(): void {
-    console.log('🔴 401 Unauthorized - Redirecting to login');
+    Logger.log('🔴 401 Unauthorized - Redirecting to login');
     this._userStore.forgetUser();
     navigationService.navigateToAuthTabs();
     navigationService.navigateToLoginScreen();

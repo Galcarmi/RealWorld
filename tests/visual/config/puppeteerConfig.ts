@@ -6,6 +6,8 @@ import puppeteer, {
   HTTPResponse,
 } from 'puppeteer';
 
+import { TestLogger } from '../utils/TestLogger';
+
 export interface MockApiResponse {
   url: string | RegExp;
   method?: string;
@@ -376,7 +378,7 @@ export class PuppeteerTestHelper {
       const isVisible = await element.isIntersectingViewport();
       return isVisible;
     } catch (error) {
-      console.error('Failed to check element visibility:', error);
+      TestLogger.error('Failed to check element visibility:', error);
       return false;
     }
   }

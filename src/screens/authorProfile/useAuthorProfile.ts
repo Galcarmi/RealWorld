@@ -5,6 +5,7 @@ import { Article, Profile } from '../../services/types';
 import { articlesStore } from '../../store/articlesStore';
 import { authStore } from '../../store/authStore';
 import { userStore } from '../../store/userStore';
+import { Logger } from '../../utils';
 
 export const useAuthorProfile = (username: string) => {
   const [authorProfile, setAuthorProfile] = useState<Profile | null>(null);
@@ -23,7 +24,7 @@ export const useAuthorProfile = (username: string) => {
       const response = await profileService.getProfile(username);
       setAuthorProfile(response.profile);
     } catch (error) {
-      console.error('Failed to fetch author profile:', error);
+      Logger.error('Failed to fetch author profile:', error);
     }
   }, [username, profileService]);
 
@@ -35,7 +36,7 @@ export const useAuthorProfile = (username: string) => {
       const response = await articlesStore.getUserArticles(username, 10, 0);
       setAuthorArticles(response.articles);
     } catch (error) {
-      console.error('Failed to load author articles:', error);
+      Logger.error('Failed to load author articles:', error);
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +56,7 @@ export const useAuthorProfile = (username: string) => {
 
       setAuthorProfile(response.profile);
     } catch (error) {
-      console.error('Failed to toggle follow status:', error);
+      Logger.error('Failed to toggle follow status:', error);
     }
   }, [authorProfile, username, profileService]);
 
