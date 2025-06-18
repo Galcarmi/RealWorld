@@ -101,7 +101,6 @@ export type ApiErrorResponse = AxiosError & {
   };
 };
 
-// Logger Types
 export type LogLevel = 'log' | 'error' | 'warn' | 'info' | 'debug';
 
 export type LogArgument = string | number | boolean | object | null | undefined;
@@ -114,7 +113,6 @@ export interface ILogger {
   debug(message: string, ...args: LogArgument[]): void;
 }
 
-// Navigation Service Types
 export interface INavigationService {
   setNavioInstance: (instance: NavigationInstance) => void;
   navigateToScreen: (
@@ -124,7 +122,6 @@ export interface INavigationService {
   goBack: () => void;
 }
 
-// API Response Types
 export interface ApiResponse<T> {
   data: T;
   status: number;
@@ -132,7 +129,6 @@ export interface ApiResponse<T> {
   headers: Record<string, string>;
 }
 
-// Generic Service Types
 export interface ServiceConfig {
   baseURL: string;
   timeout: number;

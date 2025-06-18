@@ -17,7 +17,6 @@ export interface NavigationInstance {
   goBack: () => void;
 }
 
-// Icon Types
 export type IoniconsName = ComponentProps<typeof Ionicons>['name'];
 
 export interface TabIconProps {
@@ -45,14 +44,12 @@ export interface TabBarOptions {
   };
 }
 
-// Route Types
 export type AuthorProfileRouteProp = {
   key: string;
   name: 'AuthorProfile';
   params: { username: string };
 };
 
-// Navigation Service Types
 export interface NavigationServiceType {
   setNavioInstance: (instance: NavigationInstance) => void;
   navigateToScreen: (

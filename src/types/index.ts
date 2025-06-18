@@ -1,4 +1,3 @@
-// Navigation Types
 export type {
   RootStackParamList,
   IoniconsName,
@@ -10,7 +9,6 @@ export type {
   NavigationInstance,
 } from '../navigation/types';
 
-// Service Types
 export type {
   ResponseErrors,
   BaseUserCredentials,
@@ -37,7 +35,6 @@ export type {
   INavigationService,
 } from '../services/types';
 
-// Store Types
 export type {
   User,
   IAuthStore,

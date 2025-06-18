@@ -1,6 +1,5 @@
 import { Page, Browser } from 'puppeteer';
 
-// Visual Test Helper Types
 export interface VisualTestHelper {
   browser: Browser | null;
   config: VisualTestConfig;
@@ -32,7 +31,6 @@ export interface VisualTestHelper {
   scrollToElement(selector: string): Promise<void>;
 }
 
-// Test Configuration Types
 export interface VisualTestSuiteConfig {
   name: string;
   description: string;
@@ -50,7 +48,6 @@ export interface VisualTestAction {
   url?: string;
 }
 
-// Visual Regression Types
 export interface VisualRegressionResult {
   testName: string;
   passed: boolean;

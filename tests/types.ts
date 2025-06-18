@@ -6,7 +6,6 @@ import { RootStackParamList } from '../src/navigation/types';
 import { ResponseErrors } from '../src/services/types';
 import { IAuthStore, IUserStore, User } from '../src/store/types';
 
-// Test Data Types
 export interface TestDataConfig {
   validEmails: string[];
   invalidEmails: string[];
@@ -22,7 +21,6 @@ export interface MockAuthValues {
   password: string;
 }
 
-// Mock Store Types
 export interface MockAuthStore
   extends Omit<
     IAuthStore,
@@ -43,7 +41,6 @@ export interface MockStoreSetup {
   userStore: MockUserStore;
 }
 
-// Test Helper Function Types
 export interface AuthStorePropertyMockValues {
   isLoginFormValid?: boolean;
   isSignUpFormValid?: boolean;
@@ -68,7 +65,6 @@ export interface MockAuthError {
   };
 }
 
-// Navigation Mock Types
 export interface MockNavigationFunctions {
   goBack: jest.Mock;
   navigate: jest.Mock;
@@ -82,7 +78,6 @@ export interface MockRouteConfig {
 
 export type MockRoute = RouteProp<RootStackParamList, keyof RootStackParamList>;
 
-// Testing Library Types
 export interface TestingLibraryQueries {
   getByTestId: (testId: string) => ReactTestInstance;
   queryByTestId: (testId: string) => ReactTestInstance | null;
@@ -94,7 +89,6 @@ export interface RenderResult extends TestingLibraryQueries {
   unmount: () => void;
 }
 
-// Service Mock Types
 export interface MockAuthService {
   login: jest.Mock;
   register: jest.Mock;
@@ -123,7 +117,6 @@ export interface MockAxiosInstance {
   patchForm: jest.Mock;
 }
 
-// Validation Test Types
 export type ValidationFunction = (input: string) => boolean;
 
 export interface ValidationTestConfig {
@@ -133,14 +126,12 @@ export interface ValidationTestConfig {
   expectedInvalid?: boolean;
 }
 
-// Form Interaction Types
 export interface FormFieldInteractionResult {
   field: ReactTestInstance;
   setValue: string;
   expectedAction: jest.Mock;
 }
 
-// Generic Test Utility Types
 export type TestSetupFunction = () => void;
 export type AsyncTestAction = () => Promise<void>;
 export type LoadingCheckFunction = () => boolean;

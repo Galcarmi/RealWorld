@@ -1,6 +1,5 @@
 import '@testing-library/jest-native/extend-expect';
 
-// Suppress console warnings during tests (like inbox)
 const suppressedErrors = [
   /(.*Use PascalCase for React components, or lowercase for HTML elements.)/,
   /React does not recognize the.*prop on a DOM element|Unknown event handler property/,
@@ -34,7 +33,6 @@ console.warn = message => {
   realConsoleWarn(message);
 };
 
-// Mock react-native-gesture-handler
 jest.mock('react-native-gesture-handler', () => {
   const ReactNative = require('react-native');
   return {
@@ -67,20 +65,17 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
-// Mock StatusBarManager for react-native-ui-lib
 const { NativeModules } = require('react-native');
 NativeModules.StatusBarManager = {
   getHeight: jest.fn(() => 20),
   HEIGHT: 20,
 };
 
-// Mock react-native-safe-area-context (uses variant with React.createElement)
 jest.mock('react-native-safe-area-context', () => {
   const { createSafeAreaMock } = require('./setupUtils');
   return createSafeAreaMock(true);
 });
 
-// Mock Expo vector icons to prevent font loading issues
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
   AntDesign: 'AntDesign',
@@ -89,7 +84,6 @@ jest.mock('@expo/vector-icons', () => ({
   Feather: 'Feather',
 }));
 
-// Mock rn-navio
 jest.mock('rn-navio', () => ({
   generateNavioStackNavigator: jest.fn(() => ({
     Stack: {
@@ -105,7 +99,6 @@ jest.mock('rn-navio', () => ({
   },
 }));
 
-// Mock AuthService
 jest.mock('../../src/services/auth/AuthService', () => ({
   AuthService: jest.fn().mockImplementation(() => ({
     login: jest.fn(() =>
@@ -121,7 +114,6 @@ jest.mock('../../src/services/auth/AuthService', () => ({
   })),
 }));
 
-// Mock utils with all the actual exported functions
 jest.mock('../../src/utils', () => ({
   showErrorAlert: jest.fn(),
   showInfoAlert: jest.fn(),

@@ -1,4 +1,3 @@
-// Service Types
 export type {
   ResponseErrors,
   BaseUserCredentials,
@@ -20,7 +19,6 @@ export type {
   ArticleFilters,
 } from './types';
 
-// Service Interfaces
 export type {
   IAuthService,
   IProfileService,
@@ -29,7 +27,6 @@ export type {
   INavigationService,
 } from './types';
 
-// Services
 export { BaseService } from './BaseService';
 export { AuthService } from './auth/AuthService';
 export { ProfileService } from './profiles/ProfileService';
