@@ -81,6 +81,12 @@ module.exports = [
         navigator: 'readonly',
         alert: 'readonly',
         require: 'readonly',
+        process: 'readonly',
+        global: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
       },
     },
     plugins: {

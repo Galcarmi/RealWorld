@@ -10,6 +10,7 @@ import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
+import { TEST_IDS } from '../../constants';
 import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
@@ -31,10 +32,15 @@ export const Main: NavioScreen = observer(() => {
   return (
     <SafeAreaView
       style={componentStyles.homeScreenSafeArea}
-      testID='register-screen'
+      testID={TEST_IDS.REGISTER_SCREEN}
     >
       <View center style={styles.width100Percent} marginB-40 marginT-40>
-        <Text title primaryColor marginB-70 testID='signup-screen-title'>
+        <Text
+          title
+          primaryColor
+          marginB-70
+          testID={TEST_IDS.SIGNUP_SCREEN_TITLE}
+        >
           Sign Up
         </Text>
         <InputField
@@ -43,7 +49,7 @@ export const Main: NavioScreen = observer(() => {
           validationMessage={['Username is required', 'Username is too short']}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onUsernameChange}
-          testID='signup-username-input'
+          testID={TEST_IDS.SIGNUP_USERNAME_INPUT}
         />
         <InputField
           placeholder={'Email'}
@@ -52,7 +58,7 @@ export const Main: NavioScreen = observer(() => {
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
-          testID='signup-email-input'
+          testID={TEST_IDS.SIGNUP_EMAIL_INPUT}
         />
         <InputField
           placeholder={'Password'}
@@ -61,7 +67,7 @@ export const Main: NavioScreen = observer(() => {
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
           secureTextEntry={true}
-          testID='signup-password-input'
+          testID={TEST_IDS.SIGNUP_PASSWORD_INPUT}
         />
       </View>
       <View
@@ -82,7 +88,7 @@ export const Main: NavioScreen = observer(() => {
               : themeColors.greyColor
           }
           disabled={!isSignUpFormValid || isLoading}
-          testID='signup-submit-button'
+          testID={TEST_IDS.SIGNUP_SUBMIT_BUTTON}
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or
@@ -93,7 +99,7 @@ export const Main: NavioScreen = observer(() => {
           link
           labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
-          testID='signup-signin-button'
+          testID={TEST_IDS.SIGNUP_SIGNIN_BUTTON}
         />
       </View>
     </SafeAreaView>

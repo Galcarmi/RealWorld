@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { VALIDATION } from '../constants';
+import { APP_VALIDATION } from '../constants';
 import { AuthService } from '../services';
 import { navigationService } from '../services/navigationService';
 import { ResponseErrors } from '../services/types';
@@ -34,16 +34,16 @@ class AuthStore implements IAuthStore {
     return (
       this.email.trim().length > 0 &&
       this.password.trim().length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())
+      APP_VALIDATION.EMAIL_REGEX.test(this.email.trim())
     );
   }
 
   public get isSignUpFormValid(): boolean {
     return (
-      this.username.trim().length >= VALIDATION.MIN_USERNAME_LENGTH &&
+      this.username.trim().length >= APP_VALIDATION.MIN_USERNAME_LENGTH &&
       this.email.trim().length > 0 &&
-      this.password.trim().length >= VALIDATION.MIN_PASSWORD_LENGTH &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())
+      this.password.trim().length >= APP_VALIDATION.MIN_PASSWORD_LENGTH &&
+      APP_VALIDATION.EMAIL_REGEX.test(this.email.trim())
     );
   }
 

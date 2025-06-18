@@ -5,7 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { API_URI } from '../constants';
+import { API } from '../constants';
 import { IAuthStore, IUserStore } from '../store/types';
 import { Logger, showErrorAlert } from '../utils';
 
@@ -22,7 +22,7 @@ export abstract class BaseService {
     this._userStore = userStore;
 
     this._api = axios.create({
-      baseURL: API_URI,
+      baseURL: API.URI,
     });
 
     this._setupInterceptors();

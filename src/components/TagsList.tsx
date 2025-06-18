@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native-ui-lib';
 
+import { APP_UI } from '../constants';
 import { themeColors } from '../theme/colors';
 
 interface TagsListProps {
@@ -8,7 +9,10 @@ interface TagsListProps {
   maxVisible?: number;
 }
 
-export const TagsList: React.FC<TagsListProps> = ({ tags, maxVisible = 3 }) => {
+export const TagsList: React.FC<TagsListProps> = ({
+  tags,
+  maxVisible = APP_UI.MAX_VISIBLE_TAGS,
+}) => {
   const tagList = tags || [];
 
   if (tagList.length === 0) {

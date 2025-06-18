@@ -3,6 +3,7 @@ import { View, Button } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { TEST_IDS } from '../constants';
 import { componentStyles } from '../styles/componentStyles';
 import { themeColors } from '../theme/colors';
 
@@ -27,7 +28,7 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
         )}
         iconOnRight={false}
         style={componentStyles.newArticleButton}
-        testID='new-article-button'
+        testID={TEST_IDS.NEW_ARTICLE_BUTTON}
       />
     </View>
   );

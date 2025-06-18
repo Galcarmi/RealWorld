@@ -10,6 +10,7 @@ import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
+import { TEST_IDS } from '../../constants';
 import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
@@ -29,10 +30,15 @@ export const LoginScreen: NavioScreen = observer(() => {
   return (
     <SafeAreaView
       style={componentStyles.homeScreenSafeArea}
-      testID='login-screen'
+      testID={TEST_IDS.LOGIN_SCREEN}
     >
       <View center style={styles.width100Percent} marginB-40 marginT-40>
-        <Text title primaryColor marginB-70 testID='login-screen-title'>
+        <Text
+          title
+          primaryColor
+          marginB-70
+          testID={TEST_IDS.LOGIN_SCREEN_TITLE}
+        >
           Sign In
         </Text>
         <InputField
@@ -42,7 +48,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
-          testID='login-email-input'
+          testID={TEST_IDS.LOGIN_EMAIL_INPUT}
         />
         <InputField
           placeholder={'Password'}
@@ -51,7 +57,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
           secureTextEntry={true}
-          testID='login-password-input'
+          testID={TEST_IDS.LOGIN_PASSWORD_INPUT}
         />
       </View>
       <View
@@ -72,7 +78,7 @@ export const LoginScreen: NavioScreen = observer(() => {
               : themeColors.greyColor
           }
           disabled={!isLoginFormValid || isLoading}
-          testID='login-submit-button'
+          testID={TEST_IDS.LOGIN_SUBMIT_BUTTON}
         />
         <Text center color={themeColors.greyColor} marginT-small>
           Or
@@ -83,7 +89,7 @@ export const LoginScreen: NavioScreen = observer(() => {
           link
           labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
-          testID='login-signup-button'
+          testID={TEST_IDS.LOGIN_SIGNUP_BUTTON}
         />
       </View>
     </SafeAreaView>

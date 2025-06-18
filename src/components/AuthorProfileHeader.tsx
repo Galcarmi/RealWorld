@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Avatar, Button } from 'react-native-ui-lib';
 
+import { TEST_IDS } from '../constants';
 import { Profile } from '../services/types';
 import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
@@ -39,7 +40,11 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
           paddingH-20
           paddingV-8
           onPress={onFollowToggle}
-          testID={`${profile.following ? 'unfollow' : 'follow'}-button`}
+          testID={
+            profile.following
+              ? TEST_IDS.UNFOLLOW_BUTTON
+              : TEST_IDS.FOLLOW_BUTTON
+          }
         />
       </View>
     </View>

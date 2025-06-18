@@ -4,6 +4,7 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { TEST_IDS } from '../constants';
 import { User } from '../store/types';
 import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
@@ -23,7 +24,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <TouchableOpacity
           onPress={onEditProfile}
           padding-8
-          testID='edit-profile-button'
+          testID={TEST_IDS.EDIT_PROFILE_BUTTON}
         >
           <Ionicons
             name='create-outline'

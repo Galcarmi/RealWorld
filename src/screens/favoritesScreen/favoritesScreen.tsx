@@ -10,6 +10,7 @@ import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { TEST_IDS } from '../../constants';
 
 import { useFavoriteArticles } from './useFavoriteArticles';
 
@@ -24,7 +25,10 @@ export const FavoritesScreen: NavioScreen = observer(() => {
   } = useFavoriteArticles();
 
   return (
-    <View style={componentStyles.homeScreenSafeArea} testID='favorites-screen'>
+    <View
+      style={componentStyles.homeScreenSafeArea}
+      testID={TEST_IDS.FAVORITES_SCREEN}
+    >
       <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>
