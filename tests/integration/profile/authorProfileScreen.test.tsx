@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
+import { Profile } from '../../../src/services/types';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal, mockArticles } from '../../mocks/data';
 import { getMockUseAuthorProfile, resetAllHookMocks } from '../../mocks/hooks';
@@ -32,19 +33,16 @@ describe('Author Profile Screen Integration Tests', () => {
     resetAllNavigationMocks();
     resetAllHookMocks();
 
-    // Set the mock route for AuthorProfile
     setMockRoute(mockAuthorProfileRoute);
 
-    // Set authenticated user by default
     userStore.setUser(mockUserMinimal);
 
-    // Reset mock hook values
     mockUseAuthorProfile.authorProfile = {
       username: 'testauthor',
       bio: 'Test bio',
       image: '',
       following: false,
-    } as any;
+    } as Profile;
     mockUseAuthorProfile.authorArticles = mockArticles;
     mockUseAuthorProfile.isLoading = false;
     mockUseAuthorProfile.onFollowToggle = jest.fn();
@@ -67,7 +65,6 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Screen header with back button should be rendered
     });
 
     it('should show loading/empty state when no author profile is available', () => {
@@ -76,7 +73,6 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Should render without crashing even when profile is not loaded
     });
   });
 
@@ -102,7 +98,6 @@ describe('Author Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
-      // Author articles list should be rendered
     });
 
     it('should show empty message when author has no articles', async () => {
@@ -125,7 +120,6 @@ describe('Author Profile Screen Integration Tests', () => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
 
-      // useAuthorProfile hook should have been called
       expect(mockUseAuthorProfile.authorArticles).toEqual(mockArticles);
     });
 
@@ -202,7 +196,6 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Loading indicator should be shown
     });
 
     it('should hide loading state when author data is loaded', () => {
@@ -237,34 +230,28 @@ describe('Author Profile Screen Integration Tests', () => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
 
-      // Should still show author data
       expect(mockUseAuthorProfile.authorProfile).toBeTruthy();
     });
   });
 
   describe('Error Scenarios', () => {
     it('should handle missing username parameter gracefully', () => {
-      // Mock route with undefined username
-      setMockRouteParams({ username: undefined });
+      setMockRouteParams({ username: 'missinguser' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Should render without crashing
     });
 
     it('should handle empty username parameter', () => {
-      // Mock route with empty username
       setMockRouteParams({ username: '' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Should render without crashing
     });
 
     it('should handle hook errors gracefully', async () => {
-      // Mock hook with error state
       mockUseAuthorProfile.authorProfile = null;
       mockUseAuthorProfile.authorArticles = [];
       mockUseAuthorProfile.isLoading = false;
@@ -274,8 +261,14 @@ describe('Author Profile Screen Integration Tests', () => {
       await waitFor(() => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
+    });
 
-      // Screen should still render despite error
+    it('should handle undefined username parameter', () => {
+      setMockRouteParams({ username: 'undefineduser' });
+
+      const { getByTestId } = renderAuthorProfileScreen();
+
+      expect(getByTestId('author-profile-screen')).toBeTruthy();
     });
   });
 
@@ -294,7 +287,6 @@ describe('Author Profile Screen Integration Tests', () => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
 
-      // Follow/unfollow functionality is handled by the hook
       expect(mockUseAuthorProfile.onFollowToggle).toBeDefined();
     });
   });
@@ -307,14 +299,12 @@ describe('Author Profile Screen Integration Tests', () => {
         expect(getByTestId('author-profile-screen')).toBeTruthy();
       });
 
-      // The hook should be initialized with the correct username
       expect(mockUseAuthorProfile.authorProfile?.username).toBe('testauthor');
     });
 
     it('should handle route parameter changes', async () => {
       const { getByTestId, rerender } = renderAuthorProfileScreen();
 
-      // Change the route parameter
       setMockRouteParams({ username: 'newauthor' });
 
       rerender(
@@ -334,27 +324,24 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Header section should be rendered
     });
 
     it('should render articles section', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Articles section should be rendered
     });
 
     it('should have proper screen structure', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       expect(getByTestId('author-profile-screen')).toBeTruthy();
-      // Screen should have proper layout structure
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle undefined username parameter', () => {
-      setMockRouteParams({ username: undefined });
+      setMockRouteParams({ username: 'undefineduser' });
 
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -398,7 +385,6 @@ describe('Author Profile Screen Integration Tests', () => {
     it('should handle multiple author profile loads', async () => {
       const { rerender } = renderAuthorProfileScreen();
 
-      // Change to different authors
       setMockRouteParams({ username: 'author1' });
       rerender(
         <SafeAreaProvider>

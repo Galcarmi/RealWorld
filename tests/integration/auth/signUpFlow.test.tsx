@@ -25,7 +25,6 @@ describe('Sign Up Flow Integration Tests', () => {
     userStore.forgetUser();
     resetAllStoreMocks();
 
-    // Reset to default state
     mockAuthStore.isLoading = false;
     mockAuthStore.errors = undefined;
     mockAuthStore.username = '';
@@ -109,7 +108,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent(passwordInput, 'focus');
       fireEvent(passwordInput, 'blur');
 
-      // All inputs should handle focus/blur without errors
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -128,8 +126,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Button state depends on complex store computed properties
-      // We verify the interaction happened correctly
       const submitButton = getByTestId('signup-submit-button');
       expect(submitButton).toBeTruthy();
     });
@@ -141,9 +137,9 @@ describe('Sign Up Flow Integration Tests', () => {
       const emailInput = getByTestId('signup-email-input');
       const passwordInput = getByTestId('signup-password-input');
 
-      fireEvent.changeText(usernameInput, 'u'); // Too short
+      fireEvent.changeText(usernameInput, 'u');
       fireEvent.changeText(emailInput, 'invalid-email');
-      fireEvent.changeText(passwordInput, '123'); // Too short
+      fireEvent.changeText(passwordInput, '123');
 
       const submitButton = getByTestId('signup-submit-button');
       expect(submitButton).toBeDisabled();
@@ -156,18 +152,16 @@ describe('Sign Up Flow Integration Tests', () => {
       const emailInput = getByTestId('signup-email-input');
       const passwordInput = getByTestId('signup-password-input');
 
-      // Start with empty form - should be invalid
       expect(getByTestId('signup-submit-button')).toBeDisabled();
 
       fireEvent.changeText(usernameInput, 'testuser');
-      expect(getByTestId('signup-submit-button')).toBeDisabled(); // Still missing email and password
+      expect(getByTestId('signup-submit-button')).toBeDisabled();
 
       fireEvent.changeText(emailInput, 'test@example.com');
-      expect(getByTestId('signup-submit-button')).toBeDisabled(); // Still missing password
+      expect(getByTestId('signup-submit-button')).toBeDisabled();
 
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Form should now have all fields filled
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -187,10 +181,8 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Try to press the button regardless of disabled state for integration testing
       fireEvent.press(submitButton);
 
-      // The press event should be handled even if button is disabled
       expect(submitButton).toBeTruthy();
     });
 
@@ -215,7 +207,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Verify the form accepts input correctly
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -258,7 +249,6 @@ describe('Sign Up Flow Integration Tests', () => {
 
       expect(submitButton).toBeDisabled();
 
-      // Inputs should still be usable but form should be disabled
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
@@ -279,7 +269,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Verify form fields work correctly when not loading
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -300,7 +289,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(passwordInput, 'password123');
       fireEvent.press(signUpButton);
 
-      // Should handle error gracefully without crashing
       expect(getByTestId('register-screen')).toBeTruthy();
     });
 
@@ -317,7 +305,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(passwordInput, 'password123');
       fireEvent.press(signUpButton);
 
-      // Should handle network error gracefully without crashing
       expect(getByTestId('register-screen')).toBeTruthy();
     });
 
@@ -332,7 +319,6 @@ describe('Sign Up Flow Integration Tests', () => {
       const usernameInput = getByTestId('signup-username-input');
       fireEvent.changeText(usernameInput, 'newusername');
 
-      // Store method should be called
       expect(setUsernameSpy).toHaveBeenCalledWith('newusername');
     });
   });
@@ -393,7 +379,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'valid@email.com');
       fireEvent.changeText(passwordInput, 'validpassword');
 
-      // UI should reflect store state
       expect(getByTestId('register-screen')).toBeTruthy();
     });
   });
@@ -404,10 +389,10 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const usernameInput = getByTestId('signup-username-input');
 
-      fireEvent.changeText(usernameInput, 'ab'); // Too short
+      fireEvent.changeText(usernameInput, 'ab');
       expect(getByTestId('signup-submit-button')).toBeDisabled();
 
-      fireEvent.changeText(usernameInput, 'abc'); // Minimum length
+      fireEvent.changeText(usernameInput, 'abc');
       expect(usernameInput).toBeTruthy();
     });
 
@@ -416,10 +401,10 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const usernameInput = getByTestId('signup-username-input');
 
-      fireEvent.changeText(usernameInput, 'a'); // 1 char - too short
-      fireEvent.changeText(usernameInput, 'ab'); // 2 chars - too short
-      fireEvent.changeText(usernameInput, 'abc'); // 3 chars - valid
-      fireEvent.changeText(usernameInput, 'abcd'); // 4 chars - valid
+      fireEvent.changeText(usernameInput, 'a');
+      fireEvent.changeText(usernameInput, 'ab');
+      fireEvent.changeText(usernameInput, 'abc');
+      fireEvent.changeText(usernameInput, 'abcd');
 
       expect(usernameInput).toBeTruthy();
     });
@@ -431,10 +416,10 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const passwordInput = getByTestId('signup-password-input');
 
-      fireEvent.changeText(passwordInput, '12345'); // Too short
+      fireEvent.changeText(passwordInput, '12345');
       expect(getByTestId('signup-submit-button')).toBeDisabled();
 
-      fireEvent.changeText(passwordInput, '123456'); // Minimum length
+      fireEvent.changeText(passwordInput, '123456');
       expect(passwordInput).toBeTruthy();
     });
 
@@ -443,9 +428,9 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const passwordInput = getByTestId('signup-password-input');
 
-      fireEvent.changeText(passwordInput, '123456'); // Weak but valid length
-      fireEvent.changeText(passwordInput, 'password123'); // Strong
-      fireEvent.changeText(passwordInput, 'P@ssw0rd!'); // Very strong
+      fireEvent.changeText(passwordInput, '123456');
+      fireEvent.changeText(passwordInput, 'password123');
+      fireEvent.changeText(passwordInput, 'P@ssw0rd!');
 
       expect(passwordInput).toBeTruthy();
     });
@@ -464,7 +449,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      // Multiple interactions should be handled gracefully
       fireEvent.press(submitButton);
       fireEvent.press(submitButton);
       fireEvent.press(submitButton);
@@ -485,7 +469,6 @@ describe('Sign Up Flow Integration Tests', () => {
       fireEvent.press(signInButton);
       fireEvent.press(signInButton);
 
-      // Should handle multiple presses gracefully
       expect(navigationSpy).toHaveBeenCalled();
     });
   });
@@ -517,14 +500,12 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const usernameInput = getByTestId('signup-username-input');
 
-      // Rapid field changes
       fireEvent.changeText(usernameInput, 'a');
       fireEvent.changeText(usernameInput, 'ab');
       fireEvent.changeText(usernameInput, 'abc');
       fireEvent.changeText(usernameInput, 'abcd');
       fireEvent.changeText(usernameInput, 'finaluser');
 
-      // Should handle rapid changes without errors
       expect(usernameInput).toBeTruthy();
     });
   });

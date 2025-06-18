@@ -8,7 +8,6 @@ const importPlugin = require('eslint-plugin-import');
 const prettier = require('eslint-plugin-prettier');
 
 module.exports = [
-  // Ignore patterns (replaces .eslintignore)
   {
     ignores: [
       'node_modules/**',
@@ -23,10 +22,8 @@ module.exports = [
     ],
   },
 
-  // Base configuration for all files
   js.configs.recommended,
 
-  // Configuration files (Node.js environment)
   {
     files: [
       '*.config.js',
@@ -58,7 +55,6 @@ module.exports = [
     },
   },
 
-  // TypeScript and React configuration
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: [
@@ -84,7 +80,7 @@ module.exports = [
         fetch: 'readonly',
         navigator: 'readonly',
         alert: 'readonly',
-        require: 'readonly', // For React Native require() calls
+        require: 'readonly',
       },
     },
     plugins: {
@@ -96,10 +92,8 @@ module.exports = [
       prettier,
     },
     rules: {
-      // Prettier integration
       'prettier/prettier': 'error',
 
-      // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
@@ -109,7 +103,6 @@ module.exports = [
         'error',
         {
           default: [
-            // Static members first
             'public-static-field',
             'protected-static-field',
             'private-static-field',
@@ -117,15 +110,12 @@ module.exports = [
             'protected-static-method',
             'private-static-method',
 
-            // Instance fields
             'public-instance-field',
             'protected-instance-field',
             'private-instance-field',
 
-            // Constructor
             'constructor',
 
-            // Instance methods (public first, then private)
             'public-instance-method',
             'protected-instance-method',
             'private-instance-method',
@@ -133,22 +123,19 @@ module.exports = [
         },
       ],
 
-      // React specific rules
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
-      'react/prop-types': 'off', // Using TypeScript for prop validation
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'react/display-name': 'off',
       'react/no-unescaped-entities': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      // React Native specific rules
       'react-native/no-unused-styles': 'warn',
       'react-native/split-platform-components': 'warn',
       'react-native/no-inline-styles': 'warn',
-      'react-native/no-color-literals': 'off', // Allow color literals for theme integration
-      'react-native/no-raw-text': 'off', // Allow raw text in Text components
+      'react-native/no-color-literals': 'off',
+      'react-native/no-raw-text': 'off',
 
-      // Import/Export rules (simplified to avoid resolver issues)
       'import/order': [
         'error',
         {
@@ -167,13 +154,12 @@ module.exports = [
           },
         },
       ],
-      'import/no-unresolved': 'off', // Disabled for React Native
+      'import/no-unresolved': 'off',
 
-      // General code quality rules
       'no-console': 'warn',
       'no-debugger': 'error',
       'no-duplicate-imports': 'error',
-      'no-unused-vars': 'off', // Using TypeScript version
+      'no-unused-vars': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
     },
@@ -184,7 +170,6 @@ module.exports = [
     },
   },
 
-  // TypeScript-specific overrides
   {
     files: ['**/*.{ts,tsx}'],
     ignores: [
@@ -200,7 +185,6 @@ module.exports = [
     },
   },
 
-  // JavaScript-specific overrides
   {
     files: ['**/*.{js,jsx}'],
     ignores: [
@@ -216,7 +200,6 @@ module.exports = [
     },
   },
 
-  // Jest configuration for test files and setup
   {
     files: [
       '**/__tests__/**/*.{js,jsx,ts,tsx}',
@@ -248,17 +231,15 @@ module.exports = [
       },
     },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off', // Allow any in tests for mocking
-      'no-console': 'off', // Allow console in tests
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-console': 'off',
     },
   },
 
-  // Visual test configuration for Puppeteer tests
   {
     files: ['tests/visual/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
-        // Jest globals
         jest: 'readonly',
         describe: 'readonly',
         it: 'readonly',
@@ -269,7 +250,6 @@ module.exports = [
         afterAll: 'readonly',
         test: 'readonly',
 
-        // Node.js globals
         process: 'readonly',
         console: 'readonly',
         require: 'readonly',
@@ -283,7 +263,6 @@ module.exports = [
         setInterval: 'readonly',
         clearInterval: 'readonly',
 
-        // Browser globals (for Puppeteer page context)
         document: 'readonly',
         window: 'readonly',
         navigator: 'readonly',
@@ -300,7 +279,6 @@ module.exports = [
     },
   },
 
-  // Jest and Node globals for config/jest files
   {
     files: ['config/jest/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {

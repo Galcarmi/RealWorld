@@ -29,7 +29,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   emptyMessage = 'No articles found',
   contextKey,
 }) => {
-  const renderArticle = ({ item }: { item: Article }) => {
+  const createArticleHandlers = (item: Article) => {
     const handlePress = () => {
       onArticlePress?.(item.slug);
     };
@@ -37,6 +37,12 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     const handleFavorite = () => {
       onFavoritePress?.(item.slug, item.favorited);
     };
+
+    return { handlePress, handleFavorite };
+  };
+
+  const renderArticle = ({ item }: { item: Article }) => {
+    const { handlePress, handleFavorite } = createArticleHandlers(item);
 
     return (
       <ArticleCard
@@ -47,9 +53,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     );
   };
 
-  const renderFooter = () => {
-    if (!isLoading) return null;
-
+  const renderLoadingFooter = () => {
     return (
       <View padding-16 center>
         <ActivityIndicator size='small' color={themeColors.primaryColor} />
@@ -57,15 +61,20 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     );
   };
 
-  const renderEmpty = () => {
-    if (articles.length === 0 && isLoading) {
-      return (
-        <View flex center padding-32>
-          <ActivityIndicator size='large' color={themeColors.primaryColor} />
-        </View>
-      );
-    }
+  const renderFooter = () => {
+    if (!isLoading) return null;
+    return renderLoadingFooter();
+  };
 
+  const renderLoadingIndicator = () => {
+    return (
+      <View flex center padding-32>
+        <ActivityIndicator size='large' color={themeColors.primaryColor} />
+      </View>
+    );
+  };
+
+  const renderEmptyMessage = () => {
     return (
       <View flex center padding-32>
         <Text text60 color={themeColors.placeholderColor} center>
@@ -75,19 +84,30 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     );
   };
 
+  const renderEmpty = () => {
+    if (articles.length === 0 && isLoading) {
+      return renderLoadingIndicator();
+    }
+    return renderEmptyMessage();
+  };
+
+  const createRefreshControl = () => {
+    return (
+      <RefreshControl
+        refreshing={isLoading && articles.length === 0}
+        onRefresh={onRefresh}
+        colors={[themeColors.primaryColor]}
+        tintColor={themeColors.primaryColor}
+      />
+    );
+  };
+
   return (
     <FlatList
       data={articles}
       renderItem={renderArticle}
       keyExtractor={item => `${contextKey}-${item.slug}`}
-      refreshControl={
-        <RefreshControl
-          refreshing={isLoading && articles.length === 0}
-          onRefresh={onRefresh}
-          colors={[themeColors.primaryColor]}
-          tintColor={themeColors.primaryColor}
-        />
-      }
+      refreshControl={createRefreshControl()}
       onEndReached={onLoadMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={renderFooter}

@@ -1,13 +1,21 @@
+import { Profile, Article } from '../../src/services/types';
+
 import { mockArticles } from './data';
 
-// Mock useAuthorProfile hook data
-const mockUseAuthorProfileData = {
+const mockUseAuthorProfileData: {
+  authorProfile: Profile | null;
+  authorArticles: Article[];
+  isLoading: boolean;
+  onFollowToggle: jest.Mock;
+  onToggleFavorite: jest.Mock;
+  refreshAuthorArticles: jest.Mock;
+} = {
   authorProfile: {
     username: 'testauthor',
     bio: 'Test bio',
     image: '',
     following: false,
-  } as any,
+  } as Profile,
   authorArticles: mockArticles,
   isLoading: false,
   onFollowToggle: jest.fn(),
@@ -15,25 +23,21 @@ const mockUseAuthorProfileData = {
   refreshAuthorArticles: jest.fn(),
 };
 
-// Jest module mock for useAuthorProfile
 jest.mock('../../src/screens/authorProfile/useAuthorProfile', () => ({
   useAuthorProfile: () => mockUseAuthorProfileData,
 }));
 
-// Export for use in tests
 export const getMockUseAuthorProfile = () => mockUseAuthorProfileData;
 
-// Helper to reset all hook mocks
 export const resetAllHookMocks = (): void => {
   jest.clearAllMocks();
 
-  // Reset to default values
   mockUseAuthorProfileData.authorProfile = {
     username: 'testauthor',
     bio: 'Test bio',
     image: '',
     following: false,
-  } as any;
+  } as Profile;
   mockUseAuthorProfileData.authorArticles = mockArticles;
   mockUseAuthorProfileData.isLoading = false;
   mockUseAuthorProfileData.onFollowToggle = jest.fn();

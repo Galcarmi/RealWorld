@@ -33,7 +33,6 @@ describe('Home Screen Integration Tests', () => {
     userStore.forgetUser();
     resetAllStoreMocks();
 
-    // Set default mock values with proper TypeScript
     mockArticlesStore.homeArticles = mockArticles;
     mockArticlesStore.homeIsLoading = false;
     mockArticlesStore.feedType = FeedType.GLOBAL;
@@ -75,7 +74,6 @@ describe('Home Screen Integration Tests', () => {
       const { getByTestId } = renderHomeScreen();
 
       expect(getByTestId('home-screen')).toBeTruthy();
-      // ArticlesList will show loading indicator when isLoading=true and articles=[]
     });
 
     it('should show empty message when no articles available in global feed', async () => {
@@ -212,7 +210,7 @@ describe('Home Screen Integration Tests', () => {
 
       await waitFor(() => {
         const forYouTab = getByText('For You');
-        // The "For You" tab should be active (global feed)
+
         expect(forYouTab).toBeTruthy();
       });
     });
@@ -224,13 +222,12 @@ describe('Home Screen Integration Tests', () => {
 
       await waitFor(() => {
         const followingTab = getByText('Following');
-        // The "Following" tab should be active (user feed)
+
         expect(followingTab).toBeTruthy();
       });
     });
 
     it('should display appropriate empty messages for different feed types', async () => {
-      // Test both feed types with separate renders to ensure clean state
       mockArticlesStore.homeArticles = [];
       mockArticlesStore.feedType = FeedType.GLOBAL;
 

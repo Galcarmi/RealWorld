@@ -33,10 +33,7 @@ class ArticlesStore implements IArticlesStore {
   }
 
   public async loadMoreHomeArticles() {
-    if (
-      !this.homeIsLoading &&
-      this.homeArticles.length < this.homeArticlesCount
-    ) {
+    if (this.canLoadMoreHomeArticles()) {
       await this.fetchHomeArticles(this.homeCurrentOffset + 10, false);
     }
   }
@@ -46,14 +43,12 @@ class ArticlesStore implements IArticlesStore {
   }
 
   public async switchToGlobalFeed() {
-    this.feedType = FeedType.GLOBAL;
-    this.homeCurrentOffset = 0;
+    this.setFeedTypeAndReset(FeedType.GLOBAL);
     await this.fetchHomeArticles(0, true);
   }
 
   public async switchToUserFeed() {
-    this.feedType = FeedType.FEED;
-    this.homeCurrentOffset = 0;
+    this.setFeedTypeAndReset(FeedType.FEED);
     await this.fetchHomeArticles(0, true);
   }
 
@@ -62,10 +57,7 @@ class ArticlesStore implements IArticlesStore {
   }
 
   public async loadMoreFavoriteArticles() {
-    if (
-      !this.favoritesIsLoading &&
-      this.favoriteArticles.length < this.favoritesArticlesCount
-    ) {
+    if (this.canLoadMoreFavoriteArticles()) {
       await this.fetchFavoriteArticles(this.favoritesCurrentOffset + 10, false);
     }
   }
@@ -91,14 +83,7 @@ class ArticlesStore implements IArticlesStore {
   public async createArticle(articleData: CreateArticleRequest) {
     try {
       const response = await this.articleService.createArticle(articleData);
-
-      runInAction(() => {
-        if (this.homeArticles.length > 0) {
-          this.homeArticles.unshift(response.article);
-          this.homeArticlesCount += 1;
-        }
-      });
-
+      this.addNewArticleToHomeList(response.article);
       return response.article;
     } catch {
       showErrorAlert('Failed to create article');
@@ -111,44 +96,116 @@ class ArticlesStore implements IArticlesStore {
     currentlyFavorited: boolean
   ) {
     try {
-      const response = currentlyFavorited
-        ? await this.articleService.unfavoriteArticle(slug)
-        : await this.articleService.favoriteArticle(slug);
-
-      runInAction(() => {
-        this.updateArticleInHomeList(slug, response.article);
-        this.updateArticleInFavoritesList(
-          slug,
-          response.article,
-          currentlyFavorited
-        );
-      });
+      const response = await this.performFavoriteAction(
+        slug,
+        currentlyFavorited
+      );
+      this.updateArticleAfterFavoriteToggle(
+        slug,
+        response.article,
+        currentlyFavorited
+      );
     } catch {
       showErrorAlert('Failed to update article');
     }
   }
 
+  private canLoadMoreHomeArticles(): boolean {
+    return (
+      !this.homeIsLoading && this.homeArticles.length < this.homeArticlesCount
+    );
+  }
+
+  private canLoadMoreFavoriteArticles(): boolean {
+    return (
+      !this.favoritesIsLoading &&
+      this.favoriteArticles.length < this.favoritesArticlesCount
+    );
+  }
+
+  private setFeedTypeAndReset(feedType: FeedType): void {
+    this.feedType = feedType;
+    this.homeCurrentOffset = 0;
+  }
+
+  private addNewArticleToHomeList(article: Article): void {
+    runInAction(() => {
+      if (this.homeArticles.length > 0) {
+        this.homeArticles.unshift(article);
+        this.homeArticlesCount += 1;
+      }
+    });
+  }
+
+  private async performFavoriteAction(
+    slug: string,
+    currentlyFavorited: boolean
+  ) {
+    return currentlyFavorited
+      ? await this.articleService.unfavoriteArticle(slug)
+      : await this.articleService.favoriteArticle(slug);
+  }
+
+  private updateArticleAfterFavoriteToggle(
+    slug: string,
+    updatedArticle: Article,
+    wasUnfavorited: boolean
+  ): void {
+    runInAction(() => {
+      this.updateArticleInHomeList(slug, updatedArticle);
+      this.updateArticleInFavoritesList(slug, updatedArticle, wasUnfavorited);
+    });
+  }
+
+  private async getArticlesBasedOnFeedType(limit: number, offset: number) {
+    return this.feedType === FeedType.GLOBAL
+      ? await this.articleService.getArticles({ limit, offset })
+      : await this.articleService.getFeedArticles({ limit, offset });
+  }
+
+  private updateHomeArticlesState(
+    response: { articles: Article[]; articlesCount: number },
+    offset: number,
+    resetList: boolean
+  ): void {
+    if (resetList) {
+      this.homeArticles = response.articles;
+      this.homeCurrentOffset = offset;
+    } else {
+      this.homeArticles = this.mergeArticlesWithoutDuplicates(
+        this.homeArticles,
+        response.articles
+      );
+      this.homeCurrentOffset = offset;
+    }
+    this.homeArticlesCount = response.articlesCount;
+  }
+
+  private updateFavoriteArticlesState(
+    response: { articles: Article[]; articlesCount: number },
+    offset: number,
+    resetList: boolean
+  ): void {
+    if (resetList) {
+      this.favoriteArticles = response.articles;
+      this.favoritesCurrentOffset = offset;
+    } else {
+      this.favoriteArticles = this.mergeArticlesWithoutDuplicates(
+        this.favoriteArticles,
+        response.articles
+      );
+      this.favoritesCurrentOffset = offset;
+    }
+    this.favoritesArticlesCount = response.articlesCount;
+  }
+
   private async fetchHomeArticles(offset: number, resetList: boolean) {
     try {
       this.homeIsLoading = true;
-
-      const response =
-        this.feedType === FeedType.GLOBAL
-          ? await this.articleService.getArticles({ limit: 10, offset })
-          : await this.articleService.getFeedArticles({ limit: 10, offset });
+      const response = await this.getArticlesBasedOnFeedType(10, offset);
 
       runInAction(() => {
-        if (resetList) {
-          this.homeArticles = response.articles;
-          this.homeCurrentOffset = offset;
-        } else {
-          this.homeArticles = this.mergeArticlesWithoutDuplicates(
-            this.homeArticles,
-            response.articles
-          );
-          this.homeCurrentOffset = offset;
-        }
-        this.homeArticlesCount = response.articlesCount;
+        this.updateHomeArticlesState(response, offset, resetList);
       });
     } catch {
       showErrorAlert('Failed to load articles');
@@ -174,17 +231,7 @@ class ArticlesStore implements IArticlesStore {
       });
 
       runInAction(() => {
-        if (resetList) {
-          this.favoriteArticles = response.articles;
-          this.favoritesCurrentOffset = offset;
-        } else {
-          this.favoriteArticles = this.mergeArticlesWithoutDuplicates(
-            this.favoriteArticles,
-            response.articles
-          );
-          this.favoritesCurrentOffset = offset;
-        }
-        this.favoritesArticlesCount = response.articlesCount;
+        this.updateFavoriteArticlesState(response, offset, resetList);
       });
     } catch {
       showErrorAlert('Failed to load favorite articles');

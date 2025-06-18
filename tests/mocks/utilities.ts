@@ -1,4 +1,3 @@
-// Mock utility functions
 export const mockUtilities = {
   showErrorModals: jest.fn(),
   lengthValidation: jest.fn(() => jest.fn(() => true)),
@@ -13,10 +12,8 @@ export const mockUtilities = {
   formatDate: jest.fn(() => 'Mocked Date'),
 };
 
-// Jest module mock for utilities
 jest.mock('../../src/utils', () => mockUtilities);
 
-// Export for use in tests
 export const getMockShowErrorModals = () => mockUtilities.showErrorModals;
 export const getMockLengthValidation = () => mockUtilities.lengthValidation;
 export const getMockEmailValidation = () => mockUtilities.emailValidation;
@@ -27,7 +24,6 @@ export const getMockGetInitials = () => mockUtilities.getInitials;
 export const getMockGetUserInitial = () => mockUtilities.getUserInitial;
 export const getMockFormatDate = () => mockUtilities.formatDate;
 
-// Helper to reset all utility mocks
 export const resetAllUtilityMocks = (): void => {
   jest.clearAllMocks();
   mockUtilities.lengthValidation.mockImplementation(() => jest.fn(() => true));

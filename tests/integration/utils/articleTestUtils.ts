@@ -3,11 +3,6 @@ import { fireEvent, waitFor, RenderAPI } from '@testing-library/react-native';
 import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 
-/**
- * Shared utility functions for common article interaction tests
- * to reduce redundancy across different screen tests
- */
-
 export const testArticleCardPress = async (
   renderResult: RenderAPI,
   expectedUsername: string

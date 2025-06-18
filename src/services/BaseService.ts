@@ -7,7 +7,7 @@ import axios, {
 
 import { API_URI } from '../constants';
 import { IAuthStore, IUserStore } from '../store/types';
-import { showErrorAlert } from '../utils';
+import { Logger, showErrorAlert } from '../utils';
 
 import { navigationService } from './navigationService';
 import { ApiErrorResponse } from './types';
@@ -33,7 +33,13 @@ export abstract class BaseService {
   }
 
   protected _logError(errorResponse: ApiErrorResponse): never {
-    console.log('🔴 API Error:', {
+    this._logApiError(errorResponse);
+    this._showErrorAlert(errorResponse);
+    throw errorResponse;
+  }
+
+  private _logApiError(errorResponse: ApiErrorResponse): void {
+    Logger.log('🔴 API Error:', {
       status: errorResponse?.response?.status,
       statusText: errorResponse?.response?.statusText,
       data: errorResponse?.response?.data,
@@ -41,7 +47,9 @@ export abstract class BaseService {
       method: errorResponse?.config?.method,
       timestamp: new Date().toISOString(),
     });
+  }
 
+  private _showErrorAlert(errorResponse: ApiErrorResponse): void {
     if (errorResponse?.response?.data?.errors) {
       showErrorAlert(
         'Error',
@@ -50,8 +58,52 @@ export abstract class BaseService {
     } else {
       showErrorAlert();
     }
+  }
 
-    throw errorResponse;
+  private _logRequestDetails(config: InternalAxiosRequestConfig): void {
+    Logger.log('🔵 API Request:', {
+      method: config.method?.toUpperCase(),
+      url: config.url,
+      baseURL: config.baseURL,
+      fullURL: `${config.baseURL}${config.url}`,
+      headers: {
+        authorization: config.headers.authorization ? '[REDACTED]' : undefined,
+        'content-type': config.headers['content-type'],
+      },
+      params: config.params,
+      data: config.data,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  private _logSuccessfulResponse(response: AxiosResponse): void {
+    Logger.log('🟢 API Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      url: response.config.url,
+      method: response.config.method?.toUpperCase(),
+      data: response.data,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  private _logErrorResponse(error: AxiosError): void {
+    Logger.log('🔴 API Error Response:', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      url: error.config?.url,
+      method: error.config?.method?.toUpperCase(),
+      data: error.response?.data,
+      message: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  private _handleUnauthorizedError(): void {
+    Logger.log('🔴 401 Unauthorized - Redirecting to login');
+    this._userStore.forgetUser();
+    navigationService.navigateToAuthTabs();
+    navigationService.navigateToLoginScreen();
   }
 
   private _setupInterceptors(): void {
@@ -63,58 +115,21 @@ export abstract class BaseService {
           config.headers.authorization = `Token ${token}`;
         }
 
-        // Debug logging for requests
-        console.log('🔵 API Request:', {
-          method: config.method?.toUpperCase(),
-          url: config.url,
-          baseURL: config.baseURL,
-          fullURL: `${config.baseURL}${config.url}`,
-          headers: {
-            authorization: config.headers.authorization
-              ? '[REDACTED]'
-              : undefined,
-            'content-type': config.headers['content-type'],
-          },
-          params: config.params,
-          data: config.data,
-          timestamp: new Date().toISOString(),
-        });
-
+        this._logRequestDetails(config);
         return config;
       }
     );
 
     this._api.interceptors.response.use(
       (response: AxiosResponse): AxiosResponse => {
-        // Debug logging for successful responses
-        console.log('🟢 API Response:', {
-          status: response.status,
-          statusText: response.statusText,
-          url: response.config.url,
-          method: response.config.method?.toUpperCase(),
-          data: response.data,
-          timestamp: new Date().toISOString(),
-        });
-
+        this._logSuccessfulResponse(response);
         return response;
       },
       (error: AxiosError): Promise<never> => {
-        // Debug logging for error responses
-        console.log('🔴 API Error Response:', {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          url: error.config?.url,
-          method: error.config?.method?.toUpperCase(),
-          data: error.response?.data,
-          message: error.message,
-          timestamp: new Date().toISOString(),
-        });
+        this._logErrorResponse(error);
 
         if (error.response && error.response.status === 401) {
-          console.log('🔴 401 Unauthorized - Redirecting to login');
-          this._userStore.forgetUser();
-          navigationService.navigateToAuthTabs();
-          navigationService.navigateToLoginScreen();
+          this._handleUnauthorizedError();
         }
         return Promise.reject(error);
       }

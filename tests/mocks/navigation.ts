@@ -1,14 +1,13 @@
 import { RouteProp } from '@react-navigation/native';
 
 import { RootStackParamList } from '../../src/navigation/types';
+import { MockNavigationFunctions, MockRoute } from '../types';
 
-// Mock navigation functions
-export const mockNavigationFunctions = {
+export const mockNavigationFunctions: MockNavigationFunctions = {
   goBack: jest.fn(),
   navigate: jest.fn(),
 };
 
-// Mock route for AuthorProfile screen
 export const mockAuthorProfileRoute: RouteProp<
   RootStackParamList,
   'AuthorProfile'
@@ -18,30 +17,33 @@ export const mockAuthorProfileRoute: RouteProp<
   params: { username: 'testauthor' },
 };
 
-// Global mock route state that can be modified
-let mockCurrentRoute = mockAuthorProfileRoute;
+let mockCurrentRoute: MockRoute = mockAuthorProfileRoute;
 
-export const setMockRoute = (route: any) => {
+export const setMockRoute = (route: MockRoute) => {
   mockCurrentRoute = route;
 };
 
-export const setMockRouteParams = (params: any) => {
+export const setMockRouteParams = (
+  params: RootStackParamList[keyof RootStackParamList]
+) => {
   if (mockCurrentRoute && 'params' in mockCurrentRoute) {
-    (mockCurrentRoute as any).params = params;
+    (
+      mockCurrentRoute as MockRoute & {
+        params: RootStackParamList[keyof RootStackParamList];
+      }
+    ).params = params;
   }
 };
 
-// Jest module mock for React Navigation
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => mockNavigationFunctions,
   useRoute: () => mockCurrentRoute,
 }));
 
-// Export for use in tests
-export const getMockNavigation = () => mockNavigationFunctions;
-export const getMockRoute = () => mockCurrentRoute;
+export const getMockNavigation = (): MockNavigationFunctions =>
+  mockNavigationFunctions;
+export const getMockRoute = (): MockRoute => mockCurrentRoute;
 
-// Helper to reset all navigation mocks
 export const resetAllNavigationMocks = (): void => {
   jest.clearAllMocks();
   mockCurrentRoute = mockAuthorProfileRoute;

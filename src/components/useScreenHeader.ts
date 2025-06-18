@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NavigationInstance } from '../navigation/types';
 import { navigationService } from '../services/navigationService';
+import { Logger } from '../utils';
 
 interface UseScreenHeaderProps {
   showBackButton?: boolean;
@@ -17,19 +18,21 @@ export const useScreenHeader = ({
 }: UseScreenHeaderProps = {}) => {
   const insets = useSafeAreaInsets();
 
+  const attemptGoBack = useCallback(() => {
+    try {
+      navigationService.goBack();
+    } catch (error) {
+      Logger.warn('Navigation goBack failed:', error);
+    }
+  }, []);
+
   const handleBackPress = useCallback(() => {
     if (onBackPress) {
       onBackPress();
     } else {
-      try {
-        navigationService.goBack();
-      } catch (error) {
-        // If navigation fails, do nothing - we're likely at the root screen
-        // eslint-disable-next-line no-console
-        console.warn('Navigation goBack failed:', error);
-      }
+      attemptGoBack();
     }
-  }, [onBackPress]);
+  }, [onBackPress, attemptGoBack]);
 
   const shouldShowBackButton =
     showBackButton && (!!onBackPress || !!navigation);

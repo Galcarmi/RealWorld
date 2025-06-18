@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../../mocks';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
+import { Article } from '../../../src/services/types';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal } from '../../mocks/data';
@@ -22,10 +23,7 @@ describe('Article Creation Integration Tests', () => {
     userStore.forgetUser();
     resetAllStoreMocks();
 
-    // Set up authenticated user
     userStore.setUser(mockUserMinimal);
-
-    // Reset to default mock values (no need to set properties that don't exist on the store)
   });
 
   afterEach(() => {
@@ -69,7 +67,6 @@ describe('Article Creation Integration Tests', () => {
       fireEvent.changeText(descriptionInput, 'Test Article Description');
       fireEvent.changeText(bodyInput, 'Test Article Body Content');
 
-      // All fields should accept input without errors
       expect(titleInput).toBeTruthy();
       expect(descriptionInput).toBeTruthy();
       expect(bodyInput).toBeTruthy();
@@ -89,7 +86,6 @@ describe('Article Creation Integration Tests', () => {
       fireEvent(bodyInput, 'focus');
       fireEvent(bodyInput, 'blur');
 
-      // All inputs should handle focus/blur without errors
       expect(titleInput).toBeTruthy();
       expect(descriptionInput).toBeTruthy();
       expect(bodyInput).toBeTruthy();
@@ -160,14 +156,13 @@ describe('Article Creation Integration Tests', () => {
       const descriptionInput = getByTestId('article-description-input');
       const bodyInput = getByTestId('article-body-input');
 
-      // Start with empty form - should be invalid
       expect(getByTestId('publish-article-button')).toBeDisabled();
 
       fireEvent.changeText(titleInput, 'Test Title');
-      expect(getByTestId('publish-article-button')).toBeDisabled(); // Still missing description and body
+      expect(getByTestId('publish-article-button')).toBeDisabled();
 
       fireEvent.changeText(descriptionInput, 'Test Description');
-      expect(getByTestId('publish-article-button')).toBeDisabled(); // Still missing body
+      expect(getByTestId('publish-article-button')).toBeDisabled();
 
       fireEvent.changeText(bodyInput, 'Test Body');
 
@@ -229,8 +224,6 @@ describe('Article Creation Integration Tests', () => {
 
   describe('Loading States', () => {
     it('should show loading state is handled by useNewArticle hook', async () => {
-      // The loading state in this component is managed by the useNewArticle hook internally
-      // We can verify the button becomes disabled during submission
       const { getByTestId } = renderNewArticleScreen();
 
       const titleInput = getByTestId('article-title-input');
@@ -246,7 +239,6 @@ describe('Article Creation Integration Tests', () => {
         expect(publishButton).not.toBeDisabled();
       });
 
-      // Button should be enabled when form is valid
       const publishButton = getByTestId('publish-article-button');
       expect(publishButton).not.toBeDisabled();
     });
@@ -271,7 +263,6 @@ describe('Article Creation Integration Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle article creation errors gracefully', async () => {
-      // Mock createArticle to throw an error
       jest
         .spyOn(articlesStore, 'createArticle')
         .mockRejectedValue(new Error('Creation failed'));
@@ -293,13 +284,29 @@ describe('Article Creation Integration Tests', () => {
 
       fireEvent.press(publishButton);
 
-      // Should handle error gracefully without crashing
       expect(getByTestId('new-article-screen')).toBeTruthy();
     });
 
     it('should clear form on successful submission', async () => {
-      // Mock successful createArticle
-      jest.spyOn(articlesStore, 'createArticle').mockResolvedValue({} as any);
+      const mockArticle: Article = {
+        slug: 'test-article',
+        title: 'Test Article',
+        description: 'Test Description',
+        body: 'Test Body',
+        tagList: ['test'],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        favorited: false,
+        favoritesCount: 0,
+        author: {
+          username: 'testuser',
+          bio: 'Test bio',
+          image: null,
+          following: false,
+        },
+      };
+
+      jest.spyOn(articlesStore, 'createArticle').mockResolvedValue(mockArticle);
 
       const { getByTestId } = renderNewArticleScreen();
 
@@ -318,7 +325,6 @@ describe('Article Creation Integration Tests', () => {
 
       fireEvent.press(publishButton);
 
-      // The form should be handled by the hook
       expect(getByTestId('new-article-screen')).toBeTruthy();
     });
   });
@@ -337,7 +343,6 @@ describe('Article Creation Integration Tests', () => {
       fireEvent.changeText(descriptionInput, longContent);
       fireEvent.changeText(bodyInput, longContent);
 
-      // Should handle long content without errors
       expect(titleInput).toBeTruthy();
       expect(descriptionInput).toBeTruthy();
       expect(bodyInput).toBeTruthy();
@@ -356,7 +361,6 @@ describe('Article Creation Integration Tests', () => {
       fireEvent.changeText(descriptionInput, specialContent);
       fireEvent.changeText(bodyInput, specialContent);
 
-      // Should handle special characters without errors
       expect(titleInput).toBeTruthy();
       expect(descriptionInput).toBeTruthy();
       expect(bodyInput).toBeTruthy();
@@ -375,7 +379,6 @@ Line 5 with empty line above`;
 
       fireEvent.changeText(bodyInput, multilineContent);
 
-      // Should handle multiline content without errors
       expect(bodyInput).toBeTruthy();
     });
   });
@@ -402,7 +405,6 @@ Line 5 with empty line above`;
       fireEvent.press(publishButton);
       fireEvent.press(publishButton);
 
-      // Should handle multiple rapid submissions
       expect(createArticleSpy).toHaveBeenCalled();
     });
 
@@ -413,17 +415,14 @@ Line 5 with empty line above`;
       const descriptionInput = getByTestId('article-description-input');
       const bodyInput = getByTestId('article-body-input');
 
-      // Fill form
       fireEvent.changeText(titleInput, 'First Title');
       fireEvent.changeText(descriptionInput, 'First Description');
       fireEvent.changeText(bodyInput, 'First Body');
 
-      // Clear form
       fireEvent.changeText(titleInput, '');
       fireEvent.changeText(descriptionInput, '');
       fireEvent.changeText(bodyInput, '');
 
-      // Refill form
       fireEvent.changeText(titleInput, 'Second Title');
       fireEvent.changeText(descriptionInput, 'Second Description');
       fireEvent.changeText(bodyInput, 'Second Body');
@@ -447,14 +446,12 @@ Line 5 with empty line above`;
 
       const titleInput = getByTestId('article-title-input');
 
-      // Rapid field changes
       fireEvent.changeText(titleInput, 'A');
       fireEvent.changeText(titleInput, 'AB');
       fireEvent.changeText(titleInput, 'ABC');
       fireEvent.changeText(titleInput, 'ABCD');
       fireEvent.changeText(titleInput, 'Final Title');
 
-      // Should handle rapid changes without errors
       expect(titleInput).toBeTruthy();
     });
   });

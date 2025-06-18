@@ -1,4 +1,15 @@
 export type {
+  RootStackParamList,
+  IoniconsName,
+  TabIconCreatorProps,
+  TabOptions,
+  TabBarOptions,
+  AuthorProfileRouteProp,
+  NavigationServiceType,
+  NavigationInstance,
+} from '../navigation/types';
+
+export type {
   ResponseErrors,
   BaseUserCredentials,
   LoginUserRequest,
@@ -17,18 +28,16 @@ export type {
   ServiceConfig,
   PaginationParams,
   ArticleFilters,
-} from './types';
-
-export type {
   IAuthService,
   IProfileService,
   IArticleService,
   ILogger,
   INavigationService,
-} from './types';
+} from '../services/types';
 
-export { BaseService } from './BaseService';
-export { AuthService } from './auth/AuthService';
-export { ProfileService } from './profiles/ProfileService';
-export { ArticleService } from './articles/ArticleService';
-export { navigationService } from './navigationService';
+export type {
+  User,
+  IAuthStore,
+  IUserStore,
+  IArticlesStore,
+} from '../store/types';

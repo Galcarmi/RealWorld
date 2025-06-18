@@ -4,8 +4,11 @@ import { Keyboard } from 'react-native';
 import useAuth from '../../../../src/screens/login/useAuth';
 import { navigationService } from '../../../../src/services/navigationService';
 import { authStore } from '../../../../src/store/authStore';
+import {
+  setupAuthStorePropertyMocks,
+  testData,
+} from '../../../utils/testHelpers';
 
-// Mock dependencies
 jest.mock('react-native', () => ({
   Keyboard: {
     dismiss: jest.fn(),
@@ -22,7 +25,6 @@ describe('useAuth Hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Mock authStore methods
     authStore.setUsername = jest.fn();
     authStore.setEmail = jest.fn();
     authStore.setPassword = jest.fn();
@@ -30,27 +32,10 @@ describe('useAuth Hook', () => {
     authStore.register = jest.fn();
     authStore.clear = jest.fn();
 
-    // Mock readonly properties using Object.defineProperty
-    Object.defineProperty(authStore, 'isLoginFormValid', {
-      value: true,
-      writable: true,
-      configurable: true,
-    });
-
-    Object.defineProperty(authStore, 'isSignUpFormValid', {
-      value: true,
-      writable: true,
-      configurable: true,
-    });
-
-    Object.defineProperty(authStore, 'authValues', {
-      value: {
-        email: 'test@example.com',
-        username: 'testuser',
-        password: 'password123',
-      },
-      writable: true,
-      configurable: true,
+    setupAuthStorePropertyMocks(authStore, {
+      isLoginFormValid: true,
+      isSignUpFormValid: true,
+      authValues: testData.mockAuthValues,
     });
   });
 
@@ -144,10 +129,6 @@ describe('useAuth Hook', () => {
   it('should provide user data from auth values', () => {
     const { result } = renderHook(() => useAuth());
 
-    expect(result.current.user).toEqual({
-      email: 'test@example.com',
-      username: 'testuser',
-      password: 'password123',
-    });
+    expect(result.current.user).toEqual(testData.mockAuthValues);
   });
 });

@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 
+import { NavigationInstance, RootStackParamList } from '../navigation/types';
 import { User } from '../store/types';
 
 export type ResponseErrors = {
@@ -99,3 +100,48 @@ export type ApiErrorResponse = AxiosError & {
     };
   };
 };
+
+export type LogLevel = 'log' | 'error' | 'warn' | 'info' | 'debug';
+
+export type LogArgument = string | number | boolean | object | null | undefined;
+
+export interface ILogger {
+  log(message: string, ...args: LogArgument[]): void;
+  error(message: string, ...args: LogArgument[]): void;
+  warn(message: string, ...args: LogArgument[]): void;
+  info(message: string, ...args: LogArgument[]): void;
+  debug(message: string, ...args: LogArgument[]): void;
+}
+
+export interface INavigationService {
+  setNavioInstance: (instance: NavigationInstance) => void;
+  navigateToScreen: (
+    screenName: keyof RootStackParamList,
+    params?: RootStackParamList[keyof RootStackParamList]
+  ) => void;
+  goBack: () => void;
+}
+
+export interface ApiResponse<T> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: Record<string, string>;
+}
+
+export interface ServiceConfig {
+  baseURL: string;
+  timeout: number;
+  headers?: Record<string, string>;
+}
+
+export interface PaginationParams {
+  limit?: number;
+  offset?: number;
+}
+
+export interface ArticleFilters extends PaginationParams {
+  tag?: string;
+  author?: string;
+  favorited?: string;
+}

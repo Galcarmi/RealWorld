@@ -1,4 +1,3 @@
-// Mock expo modules
 jest.mock('expo-splash-screen', () => ({
   preventAutoHideAsync: jest.fn(),
   hideAsync: jest.fn(),
@@ -18,13 +17,11 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
-// Mock react-native-safe-area-context — uses the simple variant (no React.createElement)
 jest.mock('react-native-safe-area-context', () => {
   const { createSafeAreaMock } = require('./setupUtils');
   return createSafeAreaMock(false);
 });
 
-// Mock react-native-ui-lib
 jest.mock('react-native-ui-lib', () => {
   const ReactNative = require('react-native');
   return {
@@ -37,7 +34,6 @@ jest.mock('react-native-ui-lib', () => {
   };
 });
 
-// Mock navigation
 jest.mock('rn-navio', () => ({
   navio: {
     setRoot: jest.fn(),
@@ -56,7 +52,6 @@ jest.mock('@react-navigation/native', () => ({
   NavigationContainer: ({ children }) => children,
 }));
 
-// Mock axios with proper interceptors
 const mockAxiosInstance = {
   get: jest.fn(),
   post: jest.fn(),
@@ -89,7 +84,6 @@ jest.mock('axios', () => ({
   delete: jest.fn(),
 }));
 
-// Mock utilities
 jest.mock('../../src/utils/alertUtils', () => ({
   showErrorAlert: jest.fn(),
   showInfoAlert: jest.fn(),
@@ -99,7 +93,6 @@ jest.mock('../../src/utils/errors', () => ({
   showErrorModals: jest.fn(),
 }));
 
-// Mock services
 jest.mock('../../src/services/navigationService', () => ({
   navigationService: {
     navigateToLoginScreen: jest.fn(),
@@ -114,7 +107,6 @@ jest.mock('../../src/services/navigationService', () => ({
   },
 }));
 
-// Silence console warnings during tests
 global.console = {
   ...console,
   warn: jest.fn(),

@@ -6,6 +6,8 @@ import puppeteer, {
   HTTPResponse,
 } from 'puppeteer';
 
+import { TestLogger } from '../utils/TestLogger';
+
 export interface MockApiResponse {
   url: string | RegExp;
   method?: string;
@@ -72,19 +74,16 @@ export class PuppeteerTestHelper {
       await this.setupApiMocking();
     }
 
-    // Always use consistent viewport settings
     await this.page.setViewport({
       width: this.config.viewport.width,
       height: this.config.viewport.height,
       deviceScaleFactor: 2,
     });
 
-    // Set consistent user agent across platforms
     await this.page.setUserAgent(
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     );
 
-    // Force consistent fonts
     await this.page.evaluateOnNewDocument(() => {
       const style = document.createElement('style');
       style.textContent = `
@@ -375,7 +374,8 @@ export class PuppeteerTestHelper {
 
       const isVisible = await element.isIntersectingViewport();
       return isVisible;
-    } catch {
+    } catch (error) {
+      TestLogger.error('Failed to check element visibility:', error);
       return false;
     }
   }

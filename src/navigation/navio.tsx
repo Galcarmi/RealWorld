@@ -12,6 +12,35 @@ import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigationService';
 import { themeColors } from '../theme/colors';
 
+import { IoniconsName, TabIconProps } from './types';
+
+const createTabIcon = (iconName: IoniconsName, testId: string) => {
+  return ({ color, size }: TabIconProps) => (
+    <Ionicons name={iconName} size={size} color={color} testID={testId} />
+  );
+};
+
+const createTabOptions = (
+  title: string,
+  iconName: IoniconsName,
+  testId: string
+) => {
+  return () => ({
+    title,
+    tabBarIcon: createTabIcon(iconName, testId),
+  });
+};
+
+const getCommonTabBarOptions = () => ({
+  tabBarActiveTintColor: themeColors.tabBarActiveTint,
+  tabBarInactiveTintColor: themeColors.tabBarInactiveTint,
+  tabBarStyle: {
+    backgroundColor: themeColors.bgColor,
+    borderTopWidth: 1,
+    borderTopColor: themeColors.tabBarBorder,
+  },
+});
+
 const navio = Navio.build({
   screens: {
     SignUp: SignUpScreen,
@@ -36,111 +65,47 @@ const navio = Navio.build({
       layout: {
         HomeTab: {
           stack: 'HomeStack',
-          options: () => ({
-            title: 'Home',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='home'
-                size={size}
-                color={color}
-                testID='home-main-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions('Home', 'home', 'home-main-tab-icon'),
         },
         FavoritesTab: {
           stack: 'FavoritesStack',
-          options: () => ({
-            title: 'Favorites',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='heart'
-                size={size}
-                color={color}
-                testID='favorites-main-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions(
+            'Favorites',
+            'heart',
+            'favorites-main-tab-icon'
+          ),
         },
         ProfileTab: {
           stack: 'ProfileStack',
-          options: () => ({
-            title: 'Profile',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='person'
-                size={size}
-                color={color}
-                testID='profile-main-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions(
+            'Profile',
+            'person',
+            'profile-main-tab-icon'
+          ),
         },
       },
-      options: {
-        tabBarActiveTintColor: themeColors.tabBarActiveTint,
-        tabBarInactiveTintColor: themeColors.tabBarInactiveTint,
-        tabBarStyle: {
-          backgroundColor: themeColors.bgColor,
-          borderTopWidth: 1,
-          borderTopColor: themeColors.tabBarBorder,
-        },
-      },
+      options: getCommonTabBarOptions(),
     },
     AuthTabs: {
       layout: {
         ArticlesTab: {
           stack: 'HomeStack',
-          options: () => ({
-            title: 'Home',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='home'
-                size={size}
-                color={color}
-                testID='home-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions('Home', 'home', 'home-tab-icon'),
         },
         LoginTab: {
           stack: 'SignInStack',
-          options: () => ({
-            title: 'Login',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='log-in'
-                size={size}
-                color={color}
-                testID='login-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions('Login', 'log-in', 'login-tab-icon'),
         },
         RegisterTab: {
           stack: 'SignUpStack',
-          options: () => ({
-            title: 'Register',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name='person-add'
-                size={size}
-                color={color}
-                testID='register-tab-icon'
-              />
-            ),
-          }),
+          options: createTabOptions(
+            'Register',
+            'person-add',
+            'register-tab-icon'
+          ),
         },
       },
-      options: {
-        tabBarActiveTintColor: themeColors.tabBarActiveTint,
-        tabBarInactiveTintColor: themeColors.tabBarInactiveTint,
-        tabBarStyle: {
-          backgroundColor: themeColors.bgColor,
-          borderTopWidth: 1,
-          borderTopColor: themeColors.tabBarBorder,
-        },
-      },
+      options: getCommonTabBarOptions(),
     },
   },
   defaultOptions: {
