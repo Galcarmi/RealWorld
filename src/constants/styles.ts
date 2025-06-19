@@ -64,11 +64,8 @@ export const DIMENSIONS = {
   // Elevation/Shadow
   ELEVATION_LOW: 3,
 
-  // Icon sizes (already in app.ts but adding here for styles)
-  ICON_SMALL: 16,
-  ICON_MEDIUM: 20,
-  ICON_LARGE: 24,
-  ICON_XLARGE: 32,
+  // Icon sizes (imported from app.ts for consistency)
+  ...UI.ICON_SIZES,
 } as const;
 
 export const FLEX_VALUES = {
