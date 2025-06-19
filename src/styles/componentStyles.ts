@@ -1,25 +1,31 @@
 import { StyleSheet } from 'react-native';
 
-import { themeColors } from '../theme/colors';
+import {
+  SPACINGS,
+  DIMENSIONS,
+  COMPONENT_DIMENSIONS,
+  FONT_WEIGHTS,
+  themeColors,
+} from '../constants/styles';
 
 export const componentStyles = StyleSheet.create({
   // ArticlesList styles
   articlesListContentContainer: {
     flexGrow: 1,
-    paddingBottom: 20,
+    paddingBottom: SPACINGS.PADDING_EXTRA_LARGE,
   },
 
   // FeedTabs styles
   feedTabsActiveTab: {
-    borderBottomWidth: 2,
+    borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
     borderBottomColor: themeColors.primaryColor,
-    marginRight: 3,
-    marginLeft: 3,
+    marginRight: SPACINGS.MARGIN_TAB,
+    marginLeft: SPACINGS.MARGIN_TAB,
   },
   feedTabsInactiveTab: {
     borderBottomWidth: 0,
-    marginRight: 3,
-    marginLeft: 3,
+    marginRight: SPACINGS.MARGIN_TAB,
+    marginLeft: SPACINGS.MARGIN_TAB,
   },
 
   // HomeScreen styles
@@ -40,17 +46,17 @@ export const componentStyles = StyleSheet.create({
 
   // AuthorHeader styles
   authorFollowingIcon: {
-    marginLeft: 6,
-    marginBottom: 2,
+    marginLeft: SPACINGS.MARGIN_SMALL,
+    marginBottom: SPACINGS.MARGIN_TINY,
   },
 
   // NewArticleButton styles
   newArticleButton: {
-    borderRadius: 25,
-    height: 45,
-    borderWidth: 1,
+    borderRadius: COMPONENT_DIMENSIONS.BUTTON_BORDER_RADIUS,
+    height: COMPONENT_DIMENSIONS.BUTTON_HEIGHT,
+    borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
     borderColor: themeColors.primaryColor,
-    width: '50%',
+    width: DIMENSIONS.WIDTH_50_PERCENT,
   },
 
   // NewArticleForm styles
@@ -59,21 +65,21 @@ export const componentStyles = StyleSheet.create({
   },
   newArticleFormContentContainer: {
     flexGrow: 1,
-    padding: 20,
+    padding: SPACINGS.PADDING_EXTRA_LARGE,
   },
   newArticleFormTitleInput: {
-    marginBottom: 24,
+    marginBottom: SPACINGS.FORM_SPACING,
   },
   newArticleFormDescriptionInput: {
-    marginBottom: 24,
+    marginBottom: SPACINGS.FORM_SPACING,
   },
   newArticleFormBodyInput: {
-    marginBottom: 40,
+    marginBottom: SPACINGS.MARGIN_XXL,
     flex: 1,
   },
   newArticleFormPublishButton: {
     marginTop: 'auto',
-    marginBottom: 20,
+    marginBottom: SPACINGS.PADDING_EXTRA_LARGE,
   },
 
   // ProfileHeader styles
@@ -91,22 +97,22 @@ export const componentStyles = StyleSheet.create({
 
   // ScreenHeader styles
   screenHeader: {
-    minHeight: 56,
+    minHeight: COMPONENT_DIMENSIONS.HEADER_MIN_HEIGHT,
   },
   screenHeaderContainer: {
     backgroundColor: themeColors.primaryColor,
   },
   screenHeaderTitle: {
-    fontWeight: '600',
+    fontWeight: FONT_WEIGHTS.SEMIBOLD,
   },
   screenHeaderLeftSpacer: {
-    width: 70,
+    width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
   },
   screenHeaderRightContainer: {
-    width: 70,
+    width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
     alignItems: 'flex-end',
   },
   screenHeaderRightSpacer: {
-    width: 70,
+    width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
   },
 });

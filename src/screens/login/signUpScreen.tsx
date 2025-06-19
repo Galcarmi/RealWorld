@@ -4,12 +4,20 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
+import {
+  TEST_IDS,
+  VALIDATION_MESSAGES,
+  BUTTON_LABELS,
+  PLACEHOLDERS,
+  SCREEN_TITLES,
+  INPUT_SECURITY,
+} from '../../constants';
 import { emailValidation } from '../../utils';
 
 import useAuth from './useAuth';
@@ -31,37 +39,51 @@ export const Main: NavioScreen = observer(() => {
   return (
     <SafeAreaView
       style={componentStyles.homeScreenSafeArea}
-      testID='register-screen'
+      testID={TEST_IDS.REGISTER_SCREEN}
     >
       <View center style={styles.width100Percent} marginB-40 marginT-40>
-        <Text title primaryColor marginB-70 testID='signup-screen-title'>
-          Sign Up
+        <Text
+          title
+          primaryColor
+          marginB-70
+          testID={TEST_IDS.SIGNUP_SCREEN_TITLE}
+        >
+          {SCREEN_TITLES.SIGN_UP}
         </Text>
         <InputField
-          placeholder={'Username'}
+          placeholder={PLACEHOLDERS.USERNAME}
           value={username}
-          validationMessage={['Username is required', 'Username is too short']}
+          validationMessage={[
+            VALIDATION_MESSAGES.USERNAME_REQUIRED,
+            VALIDATION_MESSAGES.USERNAME_TOO_SHORT,
+          ]}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onUsernameChange}
-          testID='signup-username-input'
+          testID={TEST_IDS.SIGNUP_USERNAME_INPUT}
         />
         <InputField
-          placeholder={'Email'}
+          placeholder={PLACEHOLDERS.EMAIL}
           value={email}
-          validationMessage={['Email is required', 'Not a valid email']}
+          validationMessage={[
+            VALIDATION_MESSAGES.EMAIL_REQUIRED,
+            VALIDATION_MESSAGES.EMAIL_INVALID,
+          ]}
           validation={emailValidation}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onEmailChange}
-          testID='signup-email-input'
+          testID={TEST_IDS.SIGNUP_EMAIL_INPUT}
         />
         <InputField
-          placeholder={'Password'}
+          placeholder={PLACEHOLDERS.PASSWORD}
           value={password}
-          validationMessage={['Password is required', 'Password is too short']}
+          validationMessage={[
+            VALIDATION_MESSAGES.PASSWORD_REQUIRED,
+            VALIDATION_MESSAGES.PASSWORD_TOO_SHORT,
+          ]}
           containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
           onChangeText={onPasswordChange}
-          secureTextEntry={true}
-          testID='signup-password-input'
+          secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
+          testID={TEST_IDS.SIGNUP_PASSWORD_INPUT}
         />
       </View>
       <View
@@ -73,7 +95,7 @@ export const Main: NavioScreen = observer(() => {
         marginL-40
       >
         <Button
-          label={'Sign Up'}
+          label={BUTTON_LABELS.SIGN_UP}
           onPress={onSignUp}
           fullWidth
           backgroundColor={
@@ -82,18 +104,18 @@ export const Main: NavioScreen = observer(() => {
               : themeColors.greyColor
           }
           disabled={!isSignUpFormValid || isLoading}
-          testID='signup-submit-button'
+          testID={TEST_IDS.SIGNUP_SUBMIT_BUTTON}
         />
         <Text center color={themeColors.greyColor} marginT-small>
-          Or
+          {BUTTON_LABELS.OR}
         </Text>
         <Button
-          label={'Sign In'}
+          label={BUTTON_LABELS.SIGN_IN}
           onPress={onNavigateToLogin}
           link
           labelStyle={componentStyles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
-          testID='signup-signin-button'
+          testID={TEST_IDS.SIGNUP_SIGNIN_BUTTON}
         />
       </View>
     </SafeAreaView>

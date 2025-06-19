@@ -1,25 +1,31 @@
 import { Alert } from 'react-native';
 
-export const showErrorAlert = (title?: string, message?: string) => {
-  Alert.alert(
-    title || 'Error',
-    message || 'Something went wrong, please try again',
-    [{ text: 'OK' }]
-  );
+import { ALERT_BUTTONS, ALERT_BUTTON_STYLES, ERROR_TYPES } from '../constants';
+
+export const showErrorAlert = (
+  title?: string,
+  message?: string,
+  buttons = [{ text: ALERT_BUTTONS.OK }]
+) => {
+  Alert.alert(title || ERROR_TYPES.GENERIC, message || '', buttons);
 };
 
-export const showInfoAlert = (title: string, message?: string) => {
-  Alert.alert(title, message, [{ text: 'OK' }]);
+export const showInfoAlert = (title: string, message: string) => {
+  Alert.alert(title, message, [{ text: ALERT_BUTTONS.OK }]);
 };
 
 export const showConfirmAlert = (
   title: string,
-  message?: string,
-  onConfirm?: () => void,
+  message: string,
+  onConfirm: () => void,
   onCancel?: () => void
 ) => {
   Alert.alert(title, message, [
-    { text: 'Cancel', onPress: onCancel, style: 'cancel' },
-    { text: 'OK', onPress: onConfirm },
+    {
+      text: ALERT_BUTTONS.CANCEL,
+      onPress: onCancel,
+      style: ALERT_BUTTON_STYLES.CANCEL,
+    },
+    { text: ALERT_BUTTONS.OK, onPress: onConfirm },
   ]);
 };

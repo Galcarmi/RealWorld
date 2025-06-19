@@ -2,21 +2,14 @@ import { useEffect } from 'react';
 
 import * as SplashScreen from 'expo-splash-screen';
 
-import { loadColors } from './colors';
+import { initializeTheme } from './config';
 import { useCustomFonts } from './fonts';
-import { loadSpacings } from './spacings';
-import { loadTypography } from './typography';
-
-export const loadThemeConfiguration = () => {
-  loadColors();
-  loadTypography();
-  loadSpacings();
-};
 
 export const useAppTheme = () => {
   const [fontsLoaded, fontError] = useCustomFonts();
   const isReady = fontsLoaded || !!fontError;
-  loadThemeConfiguration();
+
+  initializeTheme();
 
   useEffect(() => {
     if (isReady) {
@@ -26,3 +19,5 @@ export const useAppTheme = () => {
 
   return isReady;
 };
+
+export { initializeTheme };

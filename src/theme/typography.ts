@@ -1,11 +1,13 @@
 import { Typography } from 'react-native-ui-lib';
 
+import { TYPOGRAPHY } from '../constants/styles';
+
 export const themeTypography = {
-  heading: { fontSize: 40, fontFamily: 'WixMadeforText-Regular' },
-  subheading: { fontSize: 28, fontFamily: 'WixMadeforText-Medium' },
-  body: { fontSize: 18, fontFamily: 'WixMadeforText-Regular' },
-  bold: { fontSize: 20, fontFamily: 'WixMadeforText-Bold' },
-  title: { fontSize: 28, weight: 700, fontFamily: 'WixMadeforText-Bold' },
+  heading: TYPOGRAPHY.HEADING,
+  subheading: TYPOGRAPHY.SUBHEADING,
+  body: TYPOGRAPHY.BODY,
+  bold: TYPOGRAPHY.BOLD,
+  title: TYPOGRAPHY.TITLE,
 };
 
 export const loadTypography = () => {

@@ -5,7 +5,13 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { API_URI } from '../constants';
+import {
+  API,
+  HTTP_STATUS,
+  AUTH,
+  HTTP_HEADERS,
+  ERROR_TYPES,
+} from '../constants/app';
 import { IAuthStore, IUserStore } from '../store/types';
 import { Logger, showErrorAlert } from '../utils';
 
@@ -22,7 +28,7 @@ export abstract class BaseService {
     this._userStore = userStore;
 
     this._api = axios.create({
-      baseURL: API_URI,
+      baseURL: API.URI,
     });
 
     this._setupInterceptors();
@@ -52,7 +58,7 @@ export abstract class BaseService {
   private _showErrorAlert(errorResponse: ApiErrorResponse): void {
     if (errorResponse?.response?.data?.errors) {
       showErrorAlert(
-        'Error',
+        ERROR_TYPES.GENERIC,
         JSON.stringify(errorResponse.response.data.errors.message)
       );
     } else {
@@ -68,7 +74,7 @@ export abstract class BaseService {
       fullURL: `${config.baseURL}${config.url}`,
       headers: {
         authorization: config.headers.authorization ? '[REDACTED]' : undefined,
-        'content-type': config.headers['content-type'],
+        [HTTP_HEADERS.CONTENT_TYPE]: config.headers[HTTP_HEADERS.CONTENT_TYPE],
       },
       params: config.params,
       data: config.data,
@@ -112,7 +118,7 @@ export abstract class BaseService {
         const token = this._userStore.user?.token;
 
         if (token) {
-          config.headers.authorization = `Token ${token}`;
+          config.headers[AUTH.HEADER_NAME] = `${AUTH.TOKEN_PREFIX}${token}`;
         }
 
         this._logRequestDetails(config);
@@ -128,7 +134,10 @@ export abstract class BaseService {
       (error: AxiosError): Promise<never> => {
         this._logErrorResponse(error);
 
-        if (error.response && error.response.status === 401) {
+        if (
+          error.response &&
+          error.response.status === HTTP_STATUS.UNAUTHORIZED
+        ) {
           this._handleUnauthorizedError();
         }
         return Promise.reject(error);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native-ui-lib';
 
-import { themeColors } from '../theme/colors';
+import { themeColors } from '../constants/styles';
 
 interface ArticleContentProps {
   title: string;

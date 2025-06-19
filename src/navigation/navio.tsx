@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Navio } from 'rn-navio';
 
+import { themeColors } from '../constants/styles';
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';
 import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
@@ -11,7 +12,6 @@ import { Main as SignUpScreen } from '../screens/login/signUpScreen';
 import { NewArticleScreen } from '../screens/newArticle/newArticleScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigationService';
-import { themeColors } from '../theme/colors';
 
 import { IoniconsName, TabIconProps } from './types';
 

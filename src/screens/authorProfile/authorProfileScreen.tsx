@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 import { componentStyles } from '../../styles/componentStyles';
@@ -15,6 +15,7 @@ import { componentStyles } from '../../styles/componentStyles';
 import { ArticlesList } from '../../components/ArticlesList';
 import { AuthorProfileHeader } from '../../components/AuthorProfileHeader';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { TEST_IDS } from '../../constants';
 
 import { useAuthorProfile } from './useAuthorProfile';
 
@@ -43,7 +44,7 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
       return (
         <View
           style={componentStyles.homeScreenSafeArea}
-          testID='author-profile-screen'
+          testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}
         >
           <ScreenHeader showBackButton={true} />
         </View>
@@ -53,7 +54,7 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
     return (
       <View
         style={componentStyles.homeScreenSafeArea}
-        testID='author-profile-screen'
+        testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}
       >
         <ScreenHeader showBackButton={true} />
 

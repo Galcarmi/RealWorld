@@ -5,13 +5,14 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { FORM_LIMITS, TEST_IDS } from '../../constants';
 
 import { useEditProfile } from './useEditProfile';
 
@@ -31,7 +32,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
   return (
     <View
       style={componentStyles.homeScreenSafeArea}
-      testID='edit-profile-screen'
+      testID={TEST_IDS.EDIT_PROFILE_SCREEN}
     >
       <ScreenHeader title='Edit Profile' showBackButton={true} />
 
@@ -43,9 +44,9 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             onChangeText={onImageChange}
             validationMessage={[]}
             minLength={0}
-            maxLength={200}
+            maxLength={FORM_LIMITS.PROFILE_IMAGE_MAX}
             containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
-            testID='edit-profile-image-input'
+            testID={TEST_IDS.EDIT_PROFILE_IMAGE_INPUT}
           />
 
           <InputField
@@ -53,7 +54,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             value={profileFormValues.username}
             onChangeText={onNameChange}
             validationMessage={[]}
-            testID='edit-profile-username-input'
+            testID={TEST_IDS.EDIT_PROFILE_USERNAME_INPUT}
           />
 
           <InputField
@@ -62,8 +63,8 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             onChangeText={onBioChange}
             validationMessage={[]}
             minLength={0}
-            maxLength={300}
-            testID='edit-profile-bio-input'
+            maxLength={FORM_LIMITS.PROFILE_BIO_MAX}
+            testID={TEST_IDS.EDIT_PROFILE_BIO_INPUT}
           />
 
           <InputField
@@ -71,8 +72,8 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             value={profileFormValues.email}
             onChangeText={onEmailChange}
             validationMessage={[]}
-            maxLength={50}
-            testID='edit-profile-email-input'
+            maxLength={FORM_LIMITS.PROFILE_EMAIL_MAX}
+            testID={TEST_IDS.EDIT_PROFILE_EMAIL_INPUT}
           />
 
           <InputField
@@ -82,7 +83,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             validationMessage={[]}
             secureTextEntry={true}
             minLength={0}
-            testID='edit-profile-password-input'
+            testID={TEST_IDS.EDIT_PROFILE_PASSWORD_INPUT}
           />
 
           <View marginT-30>
@@ -94,7 +95,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
                 canUpdate ? themeColors.primaryColor : themeColors.greyColor
               }
               disabled={!canUpdate}
-              testID='edit-profile-update-button'
+              testID={TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON}
             />
 
             <Text center color={themeColors.greyColor} marginT-20 marginB-10>
@@ -106,7 +107,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               onPress={onLogout}
               backgroundColor='transparent'
               color={themeColors.errorColor}
-              testID='edit-profile-logout-button'
+              testID={TEST_IDS.EDIT_PROFILE_LOGOUT_BUTTON}
             />
           </View>
         </View>

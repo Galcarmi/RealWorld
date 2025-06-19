@@ -2,8 +2,9 @@ import React from 'react';
 import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
+import { TEST_IDS, DIMENSIONS, TOUCH_OPACITY } from '../constants';
+import { themeColors } from '../constants/styles';
 import { Article } from '../services/types';
-import { themeColors } from '../theme/colors';
 
 import { ArticleContent } from './ArticleContent';
 import { AuthorHeader } from './AuthorHeader';
@@ -27,10 +28,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       padding-16
       backgroundColor={themeColors.bgColor}
       enableShadow={true}
-      elevation={3}
-      testID={`article-card-${article.slug}`}
+      elevation={DIMENSIONS.ELEVATION_LOW}
+      testID={TEST_IDS.ARTICLE_CARD(article.slug)}
     >
-      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onPress} activeOpacity={TOUCH_OPACITY.DEFAULT}>
         <AuthorHeader
           author={article.author}
           createdAt={article.createdAt}

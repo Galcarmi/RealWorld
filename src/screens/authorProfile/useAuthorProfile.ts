@@ -6,6 +6,7 @@ import { userStore } from '../../store/userStore';
 
 import { Article, Profile } from '../../services/types';
 
+import { APP_PAGINATION } from '../../constants';
 import { ProfileService } from '../../services';
 import { Logger } from '../../utils';
 
@@ -35,7 +36,11 @@ export const useAuthorProfile = (username: string) => {
 
     setIsLoading(true);
     try {
-      const response = await articlesStore.getUserArticles(username, 10, 0);
+      const response = await articlesStore.getUserArticles(
+        username,
+        APP_PAGINATION.DEFAULT_LIMIT,
+        APP_PAGINATION.DEFAULT_OFFSET
+      );
       setAuthorArticles(response.articles);
     } catch (error) {
       Logger.error('Failed to load author articles:', error);

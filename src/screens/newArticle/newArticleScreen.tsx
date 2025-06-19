@@ -8,6 +8,7 @@ import { componentStyles } from '../../styles/componentStyles';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { TEST_IDS } from '../../constants';
 
 import { useNewArticle } from './useNewArticle';
 
@@ -31,7 +32,7 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
     return (
       <View
         style={componentStyles.homeScreenSafeArea}
-        testID='new-article-screen'
+        testID={TEST_IDS.NEW_ARTICLE_SCREEN}
       >
         <ScreenHeader
           title='New Article'

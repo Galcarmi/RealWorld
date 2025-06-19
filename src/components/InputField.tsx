@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
+import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
 import { componentStyles } from '../styles/componentStyles';
 import { lengthValidation } from '../utils';
 
@@ -27,15 +28,15 @@ interface InputFieldProps {
 export const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   value,
-  maxLength = 30,
-  minLength = 6,
+  maxLength = FORM_LIMITS.INPUT_FIELD_DEFAULT_MAX,
+  minLength = FORM_LIMITS.INPUT_FIELD_DEFAULT_MIN,
   validationMessage,
   onChangeText,
   validation,
   containerStyle,
   secureTextEntry = false,
   testID,
-  keyboardType = 'default',
+  keyboardType = KEYBOARD_TYPES.DEFAULT,
 }) => {
   return (
     <TextField

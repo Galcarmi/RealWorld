@@ -1,10 +1,6 @@
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-};
+import { DATE_FORMAT } from '../constants';
 
-export { formatDate };
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(DATE_FORMAT.LOCALE, DATE_FORMAT.OPTIONS);
+};

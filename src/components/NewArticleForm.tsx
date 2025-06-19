@@ -2,8 +2,15 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 
+import {
+  FORM_LIMITS,
+  TEST_IDS,
+  VALIDATION_MESSAGES,
+  BUTTON_LABELS,
+  PLACEHOLDERS,
+} from '../constants';
+import { DIMENSIONS, themeColors } from '../constants/styles';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 import { InputField } from './InputField';
 
@@ -32,40 +39,40 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
 }) => {
   const createTitleInputField = () => (
     <InputField
-      placeholder='Title'
+      placeholder={PLACEHOLDERS.TITLE}
       value={title}
-      maxLength={100}
-      minLength={1}
-      validationMessage={['Title is required']}
+      maxLength={FORM_LIMITS.ARTICLE_TITLE_MAX}
+      minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
+      validationMessage={[VALIDATION_MESSAGES.TITLE_REQUIRED]}
       onChangeText={onTitleChange}
       containerStyle={componentStyles.newArticleFormTitleInput}
-      testID='article-title-input'
+      testID={TEST_IDS.ARTICLE_TITLE_INPUT}
     />
   );
 
   const createDescriptionInputField = () => (
     <InputField
-      placeholder='Description'
+      placeholder={PLACEHOLDERS.DESCRIPTION}
       value={description}
-      maxLength={200}
-      minLength={1}
-      validationMessage={['Description is required']}
+      maxLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MAX}
+      minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
+      validationMessage={[VALIDATION_MESSAGES.DESCRIPTION_REQUIRED]}
       onChangeText={onDescriptionChange}
       containerStyle={componentStyles.newArticleFormDescriptionInput}
-      testID='article-description-input'
+      testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
     />
   );
 
   const createBodyInputField = () => (
     <InputField
-      placeholder='Article text'
+      placeholder={PLACEHOLDERS.ARTICLE_TEXT}
       value={body}
-      maxLength={5000}
-      minLength={1}
-      validationMessage={['Article text is required']}
+      maxLength={FORM_LIMITS.ARTICLE_BODY_MAX}
+      minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
+      validationMessage={[VALIDATION_MESSAGES.ARTICLE_TEXT_REQUIRED]}
       onChangeText={onBodyChange}
       containerStyle={componentStyles.newArticleFormBodyInput}
-      testID='article-body-input'
+      testID={TEST_IDS.ARTICLE_BODY_INPUT}
     />
   );
 
@@ -75,15 +82,15 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
 
   const createPublishButton = () => (
     <Button
-      label='Publish'
+      label={BUTTON_LABELS.PUBLISH}
       backgroundColor={determineButtonBackgroundColor()}
       color={themeColors.bgColor}
-      borderRadius={8}
+      borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
       paddingV-15
       disabled={!canPublish || isLoading}
       onPress={onPublishArticle}
       style={componentStyles.newArticleFormPublishButton}
-      testID='publish-article-button'
+      testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
     />
   );
 

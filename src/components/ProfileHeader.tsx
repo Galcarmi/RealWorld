@@ -4,8 +4,9 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
+import { themeColors } from '../constants/styles';
 import { User } from '../store/types';
-import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
 
 interface ProfileHeaderProps {
@@ -23,11 +24,11 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <TouchableOpacity
           onPress={onEditProfile}
           padding-8
-          testID='edit-profile-button'
+          testID={TEST_IDS.EDIT_PROFILE_BUTTON}
         >
           <Ionicons
-            name='create-outline'
-            size={24}
+            name={ICON_NAMES.CREATE_OUTLINE}
+            size={APP_UI.ICON_SIZES.LARGE}
             color={themeColors.primaryColor}
           />
         </TouchableOpacity>
@@ -35,10 +36,10 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
       <View center>
         <Avatar
-          source={{ uri: user.image || undefined }}
-          size={100}
+          source={{ uri: user?.image || undefined }}
+          size={APP_UI.ICON_SIZES.AVATAR_LARGE}
           backgroundColor={themeColors.secondaryColor}
-          label={getInitials(user.username, 2)}
+          label={getInitials(user?.username || '', 2)}
           labelColor={themeColors.bgColor}
           marginB-12
         />

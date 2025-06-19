@@ -4,7 +4,7 @@ import { View } from 'react-native-ui-lib';
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { componentStyles } from '../../styles/componentStyles';
 
@@ -12,6 +12,7 @@ import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
 import { ProfileHeader } from '../../components/ProfileHeader';
 import { ScreenHeader } from '../../components/ScreenHeader';
+import { TEST_IDS } from '../../constants';
 import { navigationService } from '../../services';
 
 import { useProfile } from './useProfile';
@@ -36,7 +37,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   }
 
   return (
-    <View style={componentStyles.homeScreenSafeArea} testID='profile-screen'>
+    <View
+      style={componentStyles.homeScreenSafeArea}
+      testID={TEST_IDS.PROFILE_SCREEN}
+    >
       <ScreenHeader title='Profile' />
 
       <View

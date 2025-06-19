@@ -6,6 +6,7 @@ import { userStore } from '../../store/userStore';
 import { navigationService } from '../../services/navigationService';
 import { Article } from '../../services/types';
 
+import { APP_PAGINATION } from '../../constants';
 import { showErrorAlert } from '../../utils';
 
 export const useProfile = () => {
@@ -21,8 +22,8 @@ export const useProfile = () => {
     try {
       const response = await articlesStore.getUserArticles(
         currentUser.username,
-        10,
-        0
+        APP_PAGINATION.DEFAULT_LIMIT,
+        APP_PAGINATION.DEFAULT_OFFSET
       );
       setUserArticles(response.articles);
     } catch {
