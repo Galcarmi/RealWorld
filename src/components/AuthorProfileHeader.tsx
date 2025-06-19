@@ -3,7 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-ui-lib';
 
 import { TEST_IDS, APP_UI } from '../constants';
-import { themeColors } from '../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  TYPOGRAPHY,
+  DIMENSIONS,
+} from '../constants/styles';
 import { Profile } from '../services/types';
 import { getInitials } from '../utils';
 
@@ -37,7 +42,7 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
             profile.following ? themeColors.greyColor : themeColors.primaryColor
           }
           color={themeColors.bgColor}
-          borderRadius={25}
+          borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
           paddingH-20
           paddingV-8
           onPress={onFollowToggle}
@@ -55,16 +60,16 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      paddingBottom: 30,
-      paddingTop: 20,
+      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
+      paddingTop: SPACINGS.HEADER_PADDING_TOP,
     },
     profileInfo: {
       alignItems: 'center',
     },
     username: {
-      fontSize: 35,
+      fontSize: TYPOGRAPHY.HEADING.fontSize - 5, // 35 = 40 - 5
       color: themeColors.blackColor,
       textAlign: 'center',
-      marginBottom: 16,
+      marginBottom: SPACINGS.PADDING_LARGE,
     },
   });

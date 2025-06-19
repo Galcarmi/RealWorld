@@ -9,6 +9,7 @@ import {
   themeColors,
   DIMENSIONS,
   COMPONENT_DIMENSIONS,
+  SPACINGS,
 } from '../constants/styles';
 
 interface NewArticleButtonProps {
@@ -47,8 +48,8 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      marginTop: 20,
-      marginBottom: 20,
+      marginTop: SPACINGS.MARGIN_LARGE,
+      marginBottom: SPACINGS.MARGIN_LARGE,
       alignItems: 'center',
     },
     button: {

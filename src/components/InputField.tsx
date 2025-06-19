@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
 import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
-import { themeColors } from '../constants/styles';
+import { FONT_SIZES, themeColors } from '../constants/styles';
 import { lengthValidation } from '../utils';
 
 type ValidationFunction = (value?: string) => boolean;
@@ -70,6 +70,6 @@ const createStyles = () =>
       color: themeColors.placeholderColor,
     },
     inputField: {
-      fontSize: 22,
+      fontSize: FONT_SIZES.LARGE,
     },
   });

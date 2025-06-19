@@ -6,7 +6,12 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  DIMENSIONS,
+  FLEX_VALUES,
+} from '../../constants/styles';
 
 import { styles as globalStyles } from '../../styles/globalStyles';
 
@@ -124,13 +129,13 @@ export const Main: NavioScreen = observer(() => {
 const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
   StyleSheet.create({
     container: {
-      flex: 1,
+      flex: FLEX_VALUES.FLEX_1,
       backgroundColor: themeColors.bgColor,
     },
     formContainer: {
-      width: '100%',
-      marginBottom: 40,
-      marginTop: 40,
+      width: DIMENSIONS.WIDTH_FULL,
+      marginBottom: SPACINGS.MARGIN_XXL,
+      marginTop: SPACINGS.MARGIN_XXL,
     },
     submitButton: {
       backgroundColor:

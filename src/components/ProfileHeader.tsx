@@ -5,7 +5,7 @@ import { Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors, TYPOGRAPHY } from '../constants/styles';
+import { themeColors, TYPOGRAPHY, SPACINGS } from '../constants/styles';
 import { User } from '../store/types';
 import { getInitials } from '../utils';
 
@@ -54,23 +54,23 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      paddingBottom: 30,
-      paddingTop: 20,
+      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
+      paddingTop: SPACINGS.HEADER_PADDING_TOP,
     },
     editButtonContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      marginBottom: 20,
+      marginBottom: SPACINGS.MARGIN_LARGE,
     },
     editButton: {
-      padding: 8,
+      padding: SPACINGS.PADDING_SMALL,
     },
     profileInfo: {
       alignItems: 'center',
     },
     username: {
-      fontSize: 35,
+      fontSize: TYPOGRAPHY.PROFILE_USERNAME.fontSize,
       color: themeColors.blackColor,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
       textAlign: 'center',

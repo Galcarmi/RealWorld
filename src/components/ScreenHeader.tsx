@@ -8,6 +8,9 @@ import {
   themeColors,
   COMPONENT_DIMENSIONS,
   FONT_WEIGHTS,
+  SPACINGS,
+  TYPOGRAPHY,
+  FONT_SIZES,
 } from '../constants/styles';
 import { NavigationInstance } from '../navigation/types';
 
@@ -77,17 +80,17 @@ const createStyles = (paddingTop: number) =>
       minHeight: COMPONENT_DIMENSIONS.HEADER_MIN_HEIGHT,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingVertical: 12,
+      paddingHorizontal: SPACINGS.SCREEN_PADDING_HORIZONTAL,
+      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
     },
     backButton: {
       flexDirection: 'row',
       alignItems: 'center',
     },
     backButtonText: {
-      fontSize: 16,
+      fontSize: FONT_SIZES.MEDIUM,
       color: themeColors.bgColor,
-      marginLeft: 4,
+      marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
     leftSpacer: {
       width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
@@ -97,7 +100,7 @@ const createStyles = (paddingTop: number) =>
       alignItems: 'center',
     },
     title: {
-      fontSize: 18,
+      fontSize: TYPOGRAPHY.BODY.fontSize,
       color: themeColors.bgColor,
       fontWeight: FONT_WEIGHTS.SEMIBOLD,
     },

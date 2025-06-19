@@ -5,7 +5,12 @@ import { Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors, SPACINGS, TYPOGRAPHY } from '../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  TYPOGRAPHY,
+  FONT_SIZES,
+} from '../constants/styles';
 import { Profile } from '../services/types';
 import { formatDate, getInitials } from '../utils';
 
@@ -74,20 +79,20 @@ const createStyles = () =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 12,
+      marginBottom: SPACINGS.PADDING_MEDIUM,
     },
     authorInfo: {
       flex: 1,
-      marginLeft: 8,
+      marginLeft: SPACINGS.PADDING_SMALL,
     },
     usernameRow: {
       flexDirection: 'row',
       alignItems: 'center',
     },
     username: {
-      fontSize: 17,
+      fontSize: FONT_SIZES.MEDIUM,
       color: themeColors.textColor,
-      marginBottom: 2,
+      marginBottom: SPACINGS.MARGIN_TINY,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     followingIcon: {
@@ -95,7 +100,7 @@ const createStyles = () =>
       marginBottom: SPACINGS.MARGIN_TINY,
     },
     createdAt: {
-      fontSize: 14,
+      fontSize: FONT_SIZES.SMALL,
       color: themeColors.placeholderColor,
     },
     favoriteContainer: {
@@ -103,8 +108,8 @@ const createStyles = () =>
       alignItems: 'center',
     },
     favoritesCount: {
-      fontSize: 14,
+      fontSize: FONT_SIZES.SMALL,
       color: themeColors.placeholderColor,
-      marginLeft: 4,
+      marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
   });

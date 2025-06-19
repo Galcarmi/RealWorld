@@ -4,7 +4,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
 
 import { FeedType } from '../constants/feedTypes';
-import { themeColors } from '../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  DIMENSIONS,
+  FONT_SIZES,
+} from '../constants/styles';
 
 interface Tab {
   id: string;
@@ -52,7 +57,7 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
               >
                 <Text
                   style={[
-                    styles.tabText,
+                    styles.tabLabel,
                     { color: isActive ? activeColor : inactiveColor },
                   ]}
                 >
@@ -70,31 +75,33 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 16,
-      paddingTop: 16,
-      paddingBottom: 8,
+      flexDirection: 'row',
+      backgroundColor: themeColors.bgColor,
+      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
+      borderBottomColor: themeColors.tabBarBorder,
     },
     tabsRow: {
       flexDirection: 'row',
     },
     tab: {
-      flex: 1,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      alignItems: 'center',
+      paddingHorizontal: SPACINGS.TAB_PADDING_HORIZONTAL,
+      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
+      borderBottomColor: 'transparent',
     },
     activeTab: {
-      borderBottomWidth: 2,
       borderBottomColor: themeColors.primaryColor,
-      marginRight: 3,
-      marginLeft: 3,
     },
     inactiveTab: {
       borderBottomWidth: 0,
-      marginRight: 3,
-      marginLeft: 3,
+      marginRight: SPACINGS.MARGIN_TAB,
+      marginLeft: SPACINGS.MARGIN_TAB,
     },
-    tabText: {
-      fontSize: 16,
+    tabLabel: {
+      fontSize: FONT_SIZES.MEDIUM,
+      color: themeColors.placeholderColor,
+    },
+    activeTabLabel: {
+      color: themeColors.primaryColor,
     },
   });

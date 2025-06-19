@@ -20,13 +20,20 @@ export const COLORS = {
   TRANSPARENT: 'transparent',
 } as const;
 
-// Typography - migrated from src/theme/typography.ts
 export const TYPOGRAPHY = {
   HEADING: { fontSize: 40, fontFamily: 'WixMadeforText-Regular' },
   SUBHEADING: { fontSize: 28, fontFamily: 'WixMadeforText-Medium' },
   BODY: { fontSize: 18, fontFamily: 'WixMadeforText-Regular' },
   BOLD: { fontSize: 20, fontFamily: 'WixMadeforText-Bold' },
   TITLE: { fontSize: 28, weight: 700, fontFamily: 'WixMadeforText-Bold' },
+} as const;
+
+export const FONT_SIZES = {
+  LARGE: 22,
+  EXTRA_LARGE: 30,
+  SMALL: 14,
+  X_SMALL: 12,
+  MEDIUM: 16,
 } as const;
 
 export const SPACINGS = {

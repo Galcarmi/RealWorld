@@ -8,7 +8,12 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { themeColors } from '../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  TYPOGRAPHY,
+  LAYOUT_STYLES,
+} from '../constants/styles';
 import { Article } from '../services/types';
 
 import { ArticleCard } from './ArticleCard';
@@ -127,19 +132,19 @@ const createStyles = () =>
   StyleSheet.create({
     contentContainer: {
       flexGrow: 1,
-      paddingBottom: 20,
+      paddingBottom: SPACINGS.MARGIN_LARGE,
     },
     loadingFooter: {
-      padding: 16,
+      padding: SPACINGS.PADDING_LARGE,
       alignItems: 'center',
     },
     centerContainer: {
-      flex: 1,
-      alignItems: 'center',
-      padding: 32,
+      ...LAYOUT_STYLES.FLEX_1,
+      ...LAYOUT_STYLES.CENTER,
+      padding: SPACINGS.LIST_CONTENT_PADDING,
     },
     emptyText: {
-      fontSize: 18,
+      fontSize: TYPOGRAPHY.BODY.fontSize,
       color: themeColors.placeholderColor,
       textAlign: 'center',
     },

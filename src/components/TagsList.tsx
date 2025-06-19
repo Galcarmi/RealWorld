@@ -2,7 +2,13 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import { APP_UI } from '../constants';
-import { themeColors, SPACINGS, TYPOGRAPHY } from '../constants/styles';
+import {
+  themeColors,
+  SPACINGS,
+  TYPOGRAPHY,
+  DIMENSIONS,
+  FONT_SIZES,
+} from '../constants/styles';
 
 interface TagsListProps {
   tags: string[] | null;
@@ -40,22 +46,22 @@ const createStyles = () =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 12,
+      marginTop: SPACINGS.PADDING_MEDIUM,
     },
     tag: {
       paddingVertical: SPACINGS.PADDING_SMALL,
-      paddingHorizontal: SPACINGS.PADDING_SMALL + 4,
+      paddingHorizontal: SPACINGS.PADDING_MEDIUM,
       marginRight: SPACINGS.PADDING_SMALL,
       backgroundColor: themeColors.secondaryColor,
-      borderRadius: 10,
+      borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
     },
     tagText: {
-      fontSize: 12,
+      fontSize: FONT_SIZES.X_SMALL,
       color: themeColors.primaryColor,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     moreText: {
-      fontSize: 12,
+      fontSize: FONT_SIZES.X_SMALL,
       color: themeColors.placeholderColor,
     },
   });
