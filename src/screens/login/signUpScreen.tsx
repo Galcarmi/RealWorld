@@ -130,8 +130,8 @@ const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
     },
     formContainer: {
       width: DIMENSIONS.WIDTH_FULL,
-      marginBottom: SPACINGS.MARGIN_XXL,
-      marginTop: SPACINGS.MARGIN_XXL,
+      marginBottom: SPACINGS.MARGIN_2X_EXTRA_LARGE,
+      marginTop: SPACINGS.MARGIN_2X_EXTRA_LARGE,
     },
     submitButton: {
       backgroundColor:
