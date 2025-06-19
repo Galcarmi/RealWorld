@@ -130,7 +130,7 @@ const createStyles = () =>
       marginBottom: SPACINGS.FORM_SPACING,
     },
     bodyInput: {
-      marginBottom: SPACINGS.MARGIN_XXL,
+      marginBottom: SPACINGS.MARGIN_2X_EXTRA_LARGE,
       flex: 1,
     },
     publishButton: {
