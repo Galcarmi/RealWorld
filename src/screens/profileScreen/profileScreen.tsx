@@ -5,7 +5,7 @@ import { View } from 'react-native-ui-lib';
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 
-import { themeColors } from '../../constants/styles';
+import { COLORS } from '../../constants/styles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
@@ -43,7 +43,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
 
       <View
         style={styles.headerSection}
-        backgroundColor={themeColors.secondaryColor}
+        backgroundColor={COLORS.SECONDARY}
         paddingH-20
       >
         <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
@@ -71,7 +71,7 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
     },
     headerSection: {
       flex: 0.38,

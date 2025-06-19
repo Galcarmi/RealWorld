@@ -5,7 +5,7 @@ import { View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
+import { COLORS } from '../../constants/styles';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -60,6 +60,6 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
     },
   });

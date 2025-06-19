@@ -5,13 +5,11 @@ import { View, Button, Text } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
-
 import { styles as globalStyles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { FORM_LIMITS, TEST_IDS } from '../../constants';
+import { COLORS, FORM_LIMITS, TEST_IDS } from '../../constants';
 
 import { useEditProfile } from './useEditProfile';
 
@@ -97,7 +95,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               testID={TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON}
             />
 
-            <Text center color={themeColors.greyColor} marginT-20 marginB-10>
+            <Text center color={COLORS.GREY} marginT-20 marginB-10>
               Or
             </Text>
 
@@ -105,7 +103,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               label='Log out'
               onPress={onLogout}
               backgroundColor='transparent'
-              color={themeColors.errorColor}
+              color={COLORS.ERROR}
               testID={TEST_IDS.EDIT_PROFILE_LOGOUT_BUTTON}
             />
           </View>
@@ -119,14 +117,12 @@ const createStyles = (canUpdate: boolean) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
     },
     scrollView: {
       width: '100%',
     },
     updateButton: {
-      backgroundColor: canUpdate
-        ? themeColors.primaryColor
-        : themeColors.greyColor,
+      backgroundColor: canUpdate ? COLORS.PRIMARY : COLORS.GREY,
     },
   });

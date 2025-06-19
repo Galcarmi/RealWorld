@@ -1,12 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import {
-  themeColors,
-  TYPOGRAPHY,
-  SPACINGS,
-  FONT_SIZES,
-} from '../constants/styles';
+import { TYPOGRAPHY, SPACINGS, FONT_SIZES, COLORS } from '../constants/styles';
 
 interface ArticleContentProps {
   title: string;
@@ -33,13 +28,12 @@ const createStyles = () =>
   StyleSheet.create({
     container: {},
     title: {
-      fontSize: TYPOGRAPHY.BOLD.fontSize,
-      color: themeColors.textColor,
+      color: COLORS.TEXT,
       marginBottom: SPACINGS.PADDING_SMALL,
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+      ...TYPOGRAPHY.BOLD,
     },
     description: {
       fontSize: FONT_SIZES.MEDIUM,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
     },
   });

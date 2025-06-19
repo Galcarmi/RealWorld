@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { TOUCH_OPACITY, APP_UI, ICON_NAMES } from '../constants';
 import {
-  themeColors,
+  COLORS,
   COMPONENT_DIMENSIONS,
   FONT_WEIGHTS,
   SPACINGS,
@@ -49,7 +49,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
               <Ionicons
                 name={ICON_NAMES.CHEVRON_BACK}
                 size={APP_UI.ICON_SIZES.LARGE}
-                color={themeColors.bgColor}
+                color={COLORS.BACKGROUND}
               />
               <Text style={styles.backButtonText}>Back</Text>
             </View>
@@ -73,7 +73,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 const createStyles = (paddingTop: number) =>
   StyleSheet.create({
     headerContainer: {
-      backgroundColor: themeColors.primaryColor,
+      backgroundColor: COLORS.PRIMARY,
       paddingTop,
     },
     headerContent: {
@@ -89,7 +89,7 @@ const createStyles = (paddingTop: number) =>
     },
     backButtonText: {
       fontSize: FONT_SIZES.MEDIUM,
-      color: themeColors.bgColor,
+      color: COLORS.BACKGROUND,
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
     leftSpacer: {
@@ -101,7 +101,7 @@ const createStyles = (paddingTop: number) =>
     },
     title: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
-      color: themeColors.bgColor,
+      color: COLORS.BACKGROUND,
       fontWeight: FONT_WEIGHTS.SEMIBOLD,
     },
     rightContainer: {

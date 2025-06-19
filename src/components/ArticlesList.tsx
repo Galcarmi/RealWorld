@@ -8,12 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {
-  themeColors,
-  SPACINGS,
-  TYPOGRAPHY,
-  LAYOUT_STYLES,
-} from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
 import { Article } from '../services/types';
 
 import { ArticleCard } from './ArticleCard';
@@ -68,7 +63,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   const renderLoadingFooter = () => {
     return (
       <View style={styles.loadingFooter}>
-        <ActivityIndicator size='small' color={themeColors.primaryColor} />
+        <ActivityIndicator size='small' color={COLORS.PRIMARY} />
       </View>
     );
   };
@@ -81,7 +76,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   const renderLoadingIndicator = () => {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size='large' color={themeColors.primaryColor} />
+        <ActivityIndicator size='large' color={COLORS.PRIMARY} />
       </View>
     );
   };
@@ -106,8 +101,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       <RefreshControl
         refreshing={isLoading && articles.length === 0}
         onRefresh={onRefresh}
-        colors={[themeColors.primaryColor]}
-        tintColor={themeColors.primaryColor}
+        colors={[COLORS.PRIMARY]}
+        tintColor={COLORS.PRIMARY}
       />
     );
   };
@@ -139,13 +134,14 @@ const createStyles = () =>
       alignItems: 'center',
     },
     centerContainer: {
-      ...LAYOUT_STYLES.FLEX_1,
-      ...LAYOUT_STYLES.CENTER,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
       padding: SPACINGS.LIST_CONTENT_PADDING,
     },
     emptyText: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
       textAlign: 'center',
     },
   });

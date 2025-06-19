@@ -5,7 +5,7 @@ import { View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
+import { COLORS } from '../../constants/styles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -29,7 +29,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
     <View style={styles.container} testID={TEST_IDS.FAVORITES_SCREEN}>
       <ScreenHeader />
 
-      <View flex backgroundColor={themeColors.bgColor}>
+      <View flex backgroundColor={COLORS.BACKGROUND}>
         <ArticlesList
           articles={articles}
           isLoading={isLoading}
@@ -49,6 +49,6 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
     },
   });

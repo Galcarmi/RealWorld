@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
 import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
-import { FONT_SIZES, themeColors } from '../constants/styles';
+import { FONT_SIZES, COLORS } from '../constants/styles';
 import { lengthValidation } from '../utils';
 
 type ValidationFunction = (value?: string) => boolean;
@@ -67,7 +67,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 const createStyles = () =>
   StyleSheet.create({
     floatingPlaceholder: {
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
     },
     inputField: {
       fontSize: FONT_SIZES.LARGE,

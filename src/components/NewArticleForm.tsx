@@ -9,7 +9,7 @@ import {
   BUTTON_LABELS,
   PLACEHOLDERS,
 } from '../constants';
-import { DIMENSIONS, themeColors, SPACINGS } from '../constants/styles';
+import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
 
 import { InputField } from './InputField';
 
@@ -39,7 +39,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
   const styles = useMemo(() => createStyles(), []);
 
   const determineButtonBackgroundColor = () => {
-    return canPublish ? themeColors.primaryColor : themeColors.greyColor;
+    return canPublish ? COLORS.PRIMARY : COLORS.GREY;
   };
 
   const createTitleInputField = () => (
@@ -85,7 +85,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
     <Button
       label={BUTTON_LABELS.PUBLISH}
       backgroundColor={determineButtonBackgroundColor()}
-      color={themeColors.bgColor}
+      color={COLORS.BACKGROUND}
       borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
       paddingV-15
       disabled={!canPublish || isLoading}

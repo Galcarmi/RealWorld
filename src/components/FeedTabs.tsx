@@ -4,12 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
 
 import { FeedType } from '../constants/feedTypes';
-import {
-  themeColors,
-  SPACINGS,
-  DIMENSIONS,
-  FONT_SIZES,
-} from '../constants/styles';
+import { COLORS, SPACINGS, DIMENSIONS, FONT_SIZES } from '../constants/styles';
 
 interface Tab {
   id: string;
@@ -30,8 +25,8 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     feedType,
     onGlobalFeedPress,
     onUserFeedPress,
-    activeColor = themeColors.primaryColor,
-    inactiveColor = themeColors.placeholderColor,
+    activeColor = COLORS.PRIMARY,
+    inactiveColor = COLORS.PLACEHOLDER,
   }) => {
     const styles = useMemo(() => createStyles(), []);
 
@@ -76,9 +71,9 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
       borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
-      borderBottomColor: themeColors.tabBarBorder,
+      borderBottomColor: COLORS.TAB_BAR_BORDER,
     },
     tabsRow: {
       flexDirection: 'row',
@@ -90,7 +85,7 @@ const createStyles = () =>
       borderBottomColor: 'transparent',
     },
     activeTab: {
-      borderBottomColor: themeColors.primaryColor,
+      borderBottomColor: COLORS.PRIMARY,
     },
     inactiveTab: {
       borderBottomWidth: 0,
@@ -99,9 +94,9 @@ const createStyles = () =>
     },
     tabLabel: {
       fontSize: FONT_SIZES.MEDIUM,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
     },
     activeTabLabel: {
-      color: themeColors.primaryColor,
+      color: COLORS.PRIMARY,
     },
   });

@@ -8,7 +8,7 @@ import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
+import { COLORS } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 
@@ -56,7 +56,7 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
 
         <View
           style={styles.headerSection}
-          backgroundColor={themeColors.secondaryColor}
+          backgroundColor={COLORS.SECONDARY}
           paddingH-20
         >
           <AuthorProfileHeader
@@ -84,7 +84,7 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.bgColor,
+      backgroundColor: COLORS.BACKGROUND,
     },
     headerSection: {
       flex: 0.35,

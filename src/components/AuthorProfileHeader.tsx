@@ -3,12 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-ui-lib';
 
 import { TEST_IDS, APP_UI } from '../constants';
-import {
-  themeColors,
-  SPACINGS,
-  TYPOGRAPHY,
-  DIMENSIONS,
-} from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY, DIMENSIONS } from '../constants/styles';
 import { Profile } from '../services/types';
 import { getInitials } from '../utils';
 
@@ -29,19 +24,17 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
         <Avatar
           source={{ uri: profile.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
-          backgroundColor={themeColors.secondaryColor}
+          backgroundColor={COLORS.SECONDARY}
           label={getInitials(profile.username, 2)}
-          labelColor={themeColors.bgColor}
+          labelColor={COLORS.BACKGROUND}
           marginB-12
         />
         <Text style={styles.username}>{profile.username}</Text>
 
         <Button
           label={profile.following ? 'Unfollow' : 'Follow'}
-          backgroundColor={
-            profile.following ? themeColors.greyColor : themeColors.primaryColor
-          }
-          color={themeColors.bgColor}
+          backgroundColor={profile.following ? COLORS.GREY : COLORS.PRIMARY}
+          color={COLORS.BACKGROUND}
           borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
           paddingH-20
           paddingV-8
@@ -68,7 +61,7 @@ const createStyles = () =>
     },
     username: {
       fontSize: TYPOGRAPHY.HEADING.fontSize - 5, // 35 = 40 - 5
-      color: themeColors.blackColor,
+      color: COLORS.BLACK,
       textAlign: 'center',
       marginBottom: SPACINGS.PADDING_LARGE,
     },

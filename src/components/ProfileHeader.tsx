@@ -5,7 +5,7 @@ import { Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors, TYPOGRAPHY, SPACINGS } from '../constants/styles';
+import { COLORS, TYPOGRAPHY, SPACINGS, FONT_SIZES } from '../constants/styles';
 import { User } from '../store/types';
 import { getInitials } from '../utils';
 
@@ -31,7 +31,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           <Ionicons
             name={ICON_NAMES.CREATE_OUTLINE}
             size={APP_UI.ICON_SIZES.LARGE}
-            color={themeColors.primaryColor}
+            color={COLORS.PRIMARY}
           />
         </TouchableOpacity>
       </View>
@@ -40,9 +40,9 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <Avatar
           source={{ uri: user?.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
-          backgroundColor={themeColors.secondaryColor}
+          backgroundColor={COLORS.SECONDARY}
           label={getInitials(user?.username || '', 2)}
-          labelColor={themeColors.bgColor}
+          labelColor={COLORS.BACKGROUND}
           marginB-12
         />
         <Text style={styles.username}>{user.username}</Text>
@@ -70,8 +70,8 @@ const createStyles = () =>
       alignItems: 'center',
     },
     username: {
-      fontSize: TYPOGRAPHY.PROFILE_USERNAME.fontSize,
-      color: themeColors.blackColor,
+      fontSize: FONT_SIZES.EXTRA_LARGE,
+      color: COLORS.BLACK,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
       textAlign: 'center',
     },

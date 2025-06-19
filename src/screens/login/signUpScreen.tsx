@@ -6,12 +6,7 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
-import {
-  themeColors,
-  SPACINGS,
-  DIMENSIONS,
-  FLEX_VALUES,
-} from '../../constants/styles';
+import { COLORS, SPACINGS, DIMENSIONS } from '../../constants/styles';
 
 import { styles as globalStyles } from '../../styles/globalStyles';
 
@@ -110,7 +105,7 @@ export const Main: NavioScreen = observer(() => {
           disabled={!isSignUpFormValid || isLoading}
           testID={TEST_IDS.SIGNUP_SUBMIT_BUTTON}
         />
-        <Text center color={themeColors.greyColor} marginT-small>
+        <Text center color={COLORS.GREY} marginT-small>
           {BUTTON_LABELS.OR}
         </Text>
         <Button
@@ -118,7 +113,7 @@ export const Main: NavioScreen = observer(() => {
           onPress={onNavigateToLogin}
           link
           labelStyle={styles.authButtonLabel}
-          backgroundColor={themeColors.primaryColor}
+          backgroundColor={COLORS.PRIMARY}
           testID={TEST_IDS.SIGNUP_SIGNIN_BUTTON}
         />
       </View>
@@ -129,8 +124,8 @@ export const Main: NavioScreen = observer(() => {
 const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
   StyleSheet.create({
     container: {
-      flex: FLEX_VALUES.FLEX_1,
-      backgroundColor: themeColors.bgColor,
+      flex: 1,
+      backgroundColor: COLORS.BACKGROUND,
     },
     formContainer: {
       width: DIMENSIONS.WIDTH_FULL,
@@ -139,12 +134,10 @@ const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
     },
     submitButton: {
       backgroundColor:
-        isSignUpFormValid && !isLoading
-          ? themeColors.primaryColor
-          : themeColors.greyColor,
+        isSignUpFormValid && !isLoading ? COLORS.PRIMARY : COLORS.GREY,
     },
     authButtonLabel: {
-      color: themeColors.primaryColor,
+      color: COLORS.PRIMARY,
     },
     inputFieldContainer: {
       ...globalStyles.width80Percent,

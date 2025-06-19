@@ -5,12 +5,7 @@ import { Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import {
-  themeColors,
-  SPACINGS,
-  TYPOGRAPHY,
-  FONT_SIZES,
-} from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY, FONT_SIZES } from '../constants/styles';
 import { Profile } from '../services/types';
 import { formatDate, getInitials } from '../utils';
 
@@ -36,9 +31,9 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
       <Avatar
         source={{ uri: author.image || undefined }}
         size={APP_UI.ICON_SIZES.AVATAR_SMALL}
-        backgroundColor={themeColors.placeholderColor}
+        backgroundColor={COLORS.PLACEHOLDER}
         label={getInitials(author.username, 2)}
-        labelColor={themeColors.bgColor}
+        labelColor={COLORS.BACKGROUND}
         marginR-8
       />
       <View style={styles.authorInfo}>
@@ -48,7 +43,7 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
             <Ionicons
               name={ICON_NAMES.CHECKMARK_CIRCLE}
               size={16}
-              color={themeColors.primaryColor}
+              color={COLORS.PRIMARY}
               style={styles.followingIcon}
             />
           )}
@@ -63,9 +58,7 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           <Ionicons
             name={favorited ? ICON_NAMES.HEART : ICON_NAMES.HEART_OUTLINE}
             size={APP_UI.ICON_SIZES.MEDIUM}
-            color={
-              favorited ? themeColors.errorColor : themeColors.placeholderColor
-            }
+            color={favorited ? COLORS.ERROR : COLORS.PLACEHOLDER}
           />
           <Text style={styles.favoritesCount}>{favoritesCount}</Text>
         </View>
@@ -91,7 +84,7 @@ const createStyles = () =>
     },
     username: {
       fontSize: FONT_SIZES.MEDIUM,
-      color: themeColors.textColor,
+      color: COLORS.TEXT,
       marginBottom: SPACINGS.MARGIN_TINY,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
@@ -101,7 +94,7 @@ const createStyles = () =>
     },
     createdAt: {
       fontSize: FONT_SIZES.SMALL,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
     },
     favoriteContainer: {
       flexDirection: 'row',
@@ -109,7 +102,7 @@ const createStyles = () =>
     },
     favoritesCount: {
       fontSize: FONT_SIZES.SMALL,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
   });

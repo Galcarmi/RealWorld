@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { APP_UI } from '../constants';
 import {
-  themeColors,
+  COLORS,
   SPACINGS,
   TYPOGRAPHY,
   DIMENSIONS,
@@ -52,16 +52,16 @@ const createStyles = () =>
       paddingVertical: SPACINGS.PADDING_SMALL,
       paddingHorizontal: SPACINGS.PADDING_MEDIUM,
       marginRight: SPACINGS.PADDING_SMALL,
-      backgroundColor: themeColors.secondaryColor,
+      backgroundColor: COLORS.SECONDARY,
       borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
     },
     tagText: {
       fontSize: FONT_SIZES.X_SMALL,
-      color: themeColors.primaryColor,
+      color: COLORS.PRIMARY,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     moreText: {
       fontSize: FONT_SIZES.X_SMALL,
-      color: themeColors.placeholderColor,
+      color: COLORS.PLACEHOLDER,
     },
   });

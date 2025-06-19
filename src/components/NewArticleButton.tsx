@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES, BUTTON_LABELS } from '../constants';
 import {
-  themeColors,
+  COLORS,
   DIMENSIONS,
   COMPONENT_DIMENSIONS,
   SPACINGS,
@@ -26,15 +26,15 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
       <Button
         label={BUTTON_LABELS.NEW_ARTICLE}
         onPress={onPress}
-        backgroundColor={themeColors.bgColor}
-        color={themeColors.primaryColor}
+        backgroundColor={COLORS.BACKGROUND}
+        color={COLORS.PRIMARY}
         outline
-        outlineColor={themeColors.primaryColor}
+        outlineColor={COLORS.PRIMARY}
         iconSource={() => (
           <Ionicons
             name={ICON_NAMES.ADD}
             size={APP_UI.ICON_SIZES.MEDIUM}
-            color={themeColors.primaryColor}
+            color={COLORS.PRIMARY}
           />
         )}
         iconOnRight={false}
@@ -56,7 +56,7 @@ const createStyles = () =>
       borderRadius: COMPONENT_DIMENSIONS.BUTTON_BORDER_RADIUS,
       height: COMPONENT_DIMENSIONS.BUTTON_HEIGHT,
       borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
-      borderColor: themeColors.primaryColor,
+      borderColor: COLORS.PRIMARY,
       width: DIMENSIONS.WIDTH_50_PERCENT,
     },
   });

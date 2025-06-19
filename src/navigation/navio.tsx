@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Navio } from 'rn-navio';
 
-import { themeColors } from '../constants/styles';
+import { COLORS } from '../constants/styles';
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';
 import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
@@ -33,12 +33,12 @@ const createTabOptions = (
 };
 
 const getCommonTabBarOptions = () => ({
-  tabBarActiveTintColor: themeColors.tabBarActiveTint,
-  tabBarInactiveTintColor: themeColors.tabBarInactiveTint,
+  tabBarActiveTintColor: COLORS.TAB_BAR_ACTIVE_TINT,
+  tabBarInactiveTintColor: COLORS.TAB_BAR_INACTIVE_TINT,
   tabBarStyle: {
-    backgroundColor: themeColors.bgColor,
+    backgroundColor: COLORS.BACKGROUND,
     borderTopWidth: 1,
-    borderTopColor: themeColors.tabBarBorder,
+    borderTopColor: COLORS.TAB_BAR_BORDER,
   },
 });
 
