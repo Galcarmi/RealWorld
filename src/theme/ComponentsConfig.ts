@@ -1,48 +1,45 @@
 import { ThemeManager } from 'react-native-ui-lib';
 
-import { TYPOGRAPHY } from '../constants/styles';
+import { TYPOGRAPHY, COLORS } from '../constants/styles';
+
+import { loadFoundationPresets } from './loadFoundationPresets';
 
 export const configureTextDefaults = () => {
   ThemeManager.setComponentTheme('Text', {
-    fontFamily: TYPOGRAPHY.BODY.fontFamily,
     body: true,
-    fontSize: TYPOGRAPHY.BODY.fontSize,
-    fontWeight: '400',
+    text: true,
   });
 };
 
 export const configureButtonDefaults = () => {
   ThemeManager.setComponentTheme('Button', {
-    label: {
+    style: {
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+    },
+    labelStyle: {
       fontWeight: 'bold',
       fontSize: 16,
+      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
+    primary: true,
   });
 };
 
 export const configureTextFieldDefaults = () => {
   ThemeManager.setComponentTheme('TextField', {
-    text: {
+    style: {
       fontFamily: TYPOGRAPHY.BODY.fontFamily,
       fontSize: TYPOGRAPHY.BODY.fontSize,
       fontWeight: '400',
     },
-    placeholder: {
-      fontFamily: TYPOGRAPHY.BODY.fontFamily,
-      fontSize: TYPOGRAPHY.BODY.fontSize,
-      fontWeight: '400',
-    },
+    placeholderTextColor: COLORS.PLACEHOLDER,
   });
 };
 
-export const configureViewDefaults = () => {
-  ThemeManager.setComponentTheme('View', {});
-};
-
 export const initializeComponentThemes = () => {
+  loadFoundationPresets();
+
   configureTextDefaults();
   configureButtonDefaults();
   configureTextFieldDefaults();
-  configureViewDefaults();
 };
