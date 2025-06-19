@@ -1,10 +1,15 @@
-import React from 'react';
-import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { View, Text } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
 
 import { themeColors } from '../constants/styles';
 import { Article } from '../services/types';
-import { componentStyles } from '../styles/componentStyles';
 
 import { ArticleCard } from './ArticleCard';
 
@@ -29,6 +34,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   emptyMessage = 'No articles found',
   contextKey,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   const createArticleHandlers = (item: Article) => {
     const handlePress = () => {
       onArticlePress?.(item.slug);
@@ -55,7 +62,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const renderLoadingFooter = () => {
     return (
-      <View padding-16 center>
+      <View style={styles.loadingFooter}>
         <ActivityIndicator size='small' color={themeColors.primaryColor} />
       </View>
     );
@@ -68,7 +75,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const renderLoadingIndicator = () => {
     return (
-      <View flex center padding-32>
+      <View style={styles.centerContainer}>
         <ActivityIndicator size='large' color={themeColors.primaryColor} />
       </View>
     );
@@ -76,10 +83,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const renderEmptyMessage = () => {
     return (
-      <View flex center padding-32>
-        <Text text60 color={themeColors.placeholderColor} center>
-          {emptyMessage}
-        </Text>
+      <View style={styles.centerContainer}>
+        <Text style={styles.emptyText}>{emptyMessage}</Text>
       </View>
     );
   };
@@ -113,7 +118,29 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={componentStyles.articlesListContentContainer}
+      contentContainerStyle={styles.contentContainer}
     />
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    contentContainer: {
+      flexGrow: 1,
+      paddingBottom: 20,
+    },
+    loadingFooter: {
+      padding: 16,
+      alignItems: 'center',
+    },
+    centerContainer: {
+      flex: 1,
+      alignItems: 'center',
+      padding: 32,
+    },
+    emptyText: {
+      fontSize: 18,
+      color: themeColors.placeholderColor,
+      textAlign: 'center',
+    },
+  });

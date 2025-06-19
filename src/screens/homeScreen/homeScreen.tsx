@@ -1,11 +1,11 @@
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
 import { themeColors } from '../../constants/styles';
-
-import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
@@ -28,6 +28,8 @@ export const HomeScreen: NavioScreen = observer(() => {
     handleArticlePress,
   } = useArticles();
 
+  const styles = useMemo(() => createStyles(), []);
+
   const renderFeedTabs = () =>
     userStore.isAuthenticated() ? (
       <FeedTabs
@@ -38,10 +40,7 @@ export const HomeScreen: NavioScreen = observer(() => {
     ) : null;
 
   return (
-    <View
-      style={componentStyles.homeScreenSafeArea}
-      testID={TEST_IDS.HOME_SCREEN}
-    >
+    <View style={styles.container} testID={TEST_IDS.HOME_SCREEN}>
       <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>
@@ -65,3 +64,11 @@ export const HomeScreen: NavioScreen = observer(() => {
     </View>
   );
 });
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.bgColor,
+    },
+  });

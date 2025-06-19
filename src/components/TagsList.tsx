@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 import { APP_UI } from '../constants';
-import { themeColors } from '../constants/styles';
+import { themeColors, SPACINGS } from '../constants/styles';
 
 interface TagsListProps {
   tags: string[] | null;
@@ -15,31 +15,46 @@ export const TagsList: React.FC<TagsListProps> = ({
 }) => {
   const tagList = tags || [];
 
+  const styles = useMemo(() => createStyles(), []);
+
   if (tagList.length === 0) {
     return null;
   }
 
   return (
-    <View row marginT-12>
+    <View style={styles.container}>
       {tagList.slice(0, maxVisible).map((tag, index) => (
-        <View
-          key={index}
-          padding-4
-          paddingH-8
-          marginR-8
-          backgroundColor={themeColors.secondaryColor}
-          br10
-        >
-          <Text text90 color={themeColors.primaryColor}>
-            {tag}
-          </Text>
+        <View key={index} style={styles.tag}>
+          <Text style={styles.tagText}>{tag}</Text>
         </View>
       ))}
       {tagList.length > maxVisible && (
-        <Text text90 color={themeColors.placeholderColor}>
-          +{tagList.length - maxVisible} more
-        </Text>
+        <Text style={styles.moreText}>+{tagList.length - maxVisible} more</Text>
       )}
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 12,
+    },
+    tag: {
+      paddingVertical: SPACINGS.PADDING_SMALL,
+      paddingHorizontal: SPACINGS.PADDING_SMALL + 4,
+      marginRight: SPACINGS.PADDING_SMALL,
+      backgroundColor: themeColors.secondaryColor,
+      borderRadius: 10,
+    },
+    tagText: {
+      fontSize: 12,
+      color: themeColors.primaryColor,
+    },
+    moreText: {
+      fontSize: 12,
+      color: themeColors.placeholderColor,
+    },
+  });

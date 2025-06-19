@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
 import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
-import { componentStyles } from '../styles/componentStyles';
+import { themeColors } from '../constants/styles';
 import { lengthValidation } from '../utils';
 
 type ValidationFunction = (value?: string) => boolean;
@@ -38,10 +38,12 @@ export const InputField: React.FC<InputFieldProps> = ({
   testID,
   keyboardType = KEYBOARD_TYPES.DEFAULT,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
     <TextField
       containerStyle={containerStyle}
-      floatingPlaceholderStyle={componentStyles.inputFieldFloatingPlaceholder}
+      floatingPlaceholderStyle={styles.floatingPlaceholder}
       placeholder={placeholder}
       value={value}
       floatingPlaceholder
@@ -60,3 +62,10 @@ export const InputField: React.FC<InputFieldProps> = ({
     />
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    floatingPlaceholder: {
+      color: themeColors.placeholderColor,
+    },
+  });

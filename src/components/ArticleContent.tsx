@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 import { themeColors } from '../constants/styles';
 
@@ -12,14 +12,28 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
   title,
   description,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View>
-      <Text text60 color={themeColors.textColor} marginB-8>
-        {title}
-      </Text>
-      <Text text70 color={themeColors.placeholderColor} numberOfLines={3}>
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.description} numberOfLines={3}>
         {description}
       </Text>
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {},
+    title: {
+      fontSize: 18,
+      color: themeColors.textColor,
+      marginBottom: 8,
+    },
+    description: {
+      fontSize: 16,
+      color: themeColors.placeholderColor,
+    },
+  });

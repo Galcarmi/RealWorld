@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, Text, Avatar, Button } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Avatar, Button } from 'react-native-ui-lib';
 
 import { TEST_IDS, APP_UI } from '../constants';
 import { themeColors } from '../constants/styles';
@@ -15,9 +16,11 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
   profile,
   onFollowToggle,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View paddingB-30 paddingT-20>
-      <View center>
+    <View style={styles.container}>
+      <View style={styles.profileInfo}>
         <Avatar
           source={{ uri: profile.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
@@ -26,9 +29,7 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
           labelColor={themeColors.bgColor}
           marginB-12
         />
-        <Text text30 color={themeColors.blackColor} center marginB-16>
-          {profile.username}
-        </Text>
+        <Text style={styles.username}>{profile.username}</Text>
 
         <Button
           label={profile.following ? 'Unfollow' : 'Follow'}
@@ -50,3 +51,20 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 30,
+      paddingTop: 20,
+    },
+    profileInfo: {
+      alignItems: 'center',
+    },
+    username: {
+      fontSize: 22,
+      color: themeColors.blackColor,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+  });

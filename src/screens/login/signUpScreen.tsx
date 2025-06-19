@@ -1,3 +1,5 @@
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text, View } from 'react-native-ui-lib';
 
@@ -6,8 +8,7 @@ import { NavioScreen } from 'rn-navio';
 
 import { themeColors } from '../../constants/styles';
 
-import { componentStyles } from '../../styles/componentStyles';
-import { styles } from '../../styles/globalStyles';
+import { styles as globalStyles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
 import {
@@ -36,12 +37,14 @@ export const Main: NavioScreen = observer(() => {
     username,
   } = useAuth();
 
+  const styles = useMemo(
+    () => createStyles(isSignUpFormValid, isLoading),
+    [isSignUpFormValid, isLoading]
+  );
+
   return (
-    <SafeAreaView
-      style={componentStyles.homeScreenSafeArea}
-      testID={TEST_IDS.REGISTER_SCREEN}
-    >
-      <View center style={styles.width100Percent} marginB-40 marginT-40>
+    <SafeAreaView style={styles.container} testID={TEST_IDS.REGISTER_SCREEN}>
+      <View center style={styles.formContainer}>
         <Text
           title
           primaryColor
@@ -57,7 +60,10 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.USERNAME_REQUIRED,
             VALIDATION_MESSAGES.USERNAME_TOO_SHORT,
           ]}
-          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          containerStyle={{
+            ...globalStyles.width80Percent,
+            ...globalStyles.height60px,
+          }}
           onChangeText={onUsernameChange}
           testID={TEST_IDS.SIGNUP_USERNAME_INPUT}
         />
@@ -69,7 +75,10 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.EMAIL_INVALID,
           ]}
           validation={emailValidation}
-          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          containerStyle={{
+            ...globalStyles.width80Percent,
+            ...globalStyles.height60px,
+          }}
           onChangeText={onEmailChange}
           testID={TEST_IDS.SIGNUP_EMAIL_INPUT}
         />
@@ -80,7 +89,10 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.PASSWORD_REQUIRED,
             VALIDATION_MESSAGES.PASSWORD_TOO_SHORT,
           ]}
-          containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+          containerStyle={{
+            ...globalStyles.width80Percent,
+            ...globalStyles.height60px,
+          }}
           onChangeText={onPasswordChange}
           secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
           testID={TEST_IDS.SIGNUP_PASSWORD_INPUT}
@@ -89,7 +101,7 @@ export const Main: NavioScreen = observer(() => {
       <View
         marginT-small
         spread
-        style={{ ...styles.height25Percent, ...styles.width80Percent }}
+        style={[globalStyles.height25Percent, globalStyles.width80Percent]}
         paddingT-30
         paddingB-30
         marginL-40
@@ -98,11 +110,7 @@ export const Main: NavioScreen = observer(() => {
           label={BUTTON_LABELS.SIGN_UP}
           onPress={onSignUp}
           fullWidth
-          backgroundColor={
-            isSignUpFormValid && !isLoading
-              ? themeColors.primaryColor
-              : themeColors.greyColor
-          }
+          backgroundColor={styles.submitButton.backgroundColor}
           disabled={!isSignUpFormValid || isLoading}
           testID={TEST_IDS.SIGNUP_SUBMIT_BUTTON}
         />
@@ -113,7 +121,7 @@ export const Main: NavioScreen = observer(() => {
           label={BUTTON_LABELS.SIGN_IN}
           onPress={onNavigateToLogin}
           link
-          labelStyle={componentStyles.authButtonLabel}
+          labelStyle={styles.authButtonLabel}
           backgroundColor={themeColors.primaryColor}
           testID={TEST_IDS.SIGNUP_SIGNIN_BUTTON}
         />
@@ -121,3 +129,25 @@ export const Main: NavioScreen = observer(() => {
     </SafeAreaView>
   );
 });
+
+const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.bgColor,
+    },
+    formContainer: {
+      width: '100%',
+      marginBottom: 40,
+      marginTop: 40,
+    },
+    submitButton: {
+      backgroundColor:
+        isSignUpFormValid && !isLoading
+          ? themeColors.primaryColor
+          : themeColors.greyColor,
+    },
+    authButtonLabel: {
+      color: themeColors.primaryColor,
+    },
+  });

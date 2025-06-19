@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { componentStyles } from '../../styles/componentStyles';
+import { themeColors } from '../../constants/styles';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -29,11 +30,10 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
       onGoBack,
     } = useNewArticle();
 
+    const styles = useMemo(() => createStyles(), []);
+
     return (
-      <View
-        style={componentStyles.homeScreenSafeArea}
-        testID={TEST_IDS.NEW_ARTICLE_SCREEN}
-      >
+      <View style={styles.container} testID={TEST_IDS.NEW_ARTICLE_SCREEN}>
         <ScreenHeader
           title='New Article'
           showBackButton={true}
@@ -55,3 +55,11 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
     );
   }
 );
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.bgColor,
+    },
+  });

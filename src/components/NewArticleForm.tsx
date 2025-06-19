@@ -1,6 +1,6 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, View } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-ui-lib';
 
 import {
   FORM_LIMITS,
@@ -9,8 +9,7 @@ import {
   BUTTON_LABELS,
   PLACEHOLDERS,
 } from '../constants';
-import { DIMENSIONS, themeColors } from '../constants/styles';
-import { componentStyles } from '../styles/componentStyles';
+import { DIMENSIONS, themeColors, SPACINGS } from '../constants/styles';
 
 import { InputField } from './InputField';
 
@@ -37,6 +36,12 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
   onBodyChange,
   onPublishArticle,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
+  const determineButtonBackgroundColor = () => {
+    return canPublish ? themeColors.primaryColor : themeColors.greyColor;
+  };
+
   const createTitleInputField = () => (
     <InputField
       placeholder={PLACEHOLDERS.TITLE}
@@ -45,7 +50,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
       validationMessage={[VALIDATION_MESSAGES.TITLE_REQUIRED]}
       onChangeText={onTitleChange}
-      containerStyle={componentStyles.newArticleFormTitleInput}
+      containerStyle={styles.titleInput}
       testID={TEST_IDS.ARTICLE_TITLE_INPUT}
     />
   );
@@ -58,7 +63,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
       validationMessage={[VALIDATION_MESSAGES.DESCRIPTION_REQUIRED]}
       onChangeText={onDescriptionChange}
-      containerStyle={componentStyles.newArticleFormDescriptionInput}
+      containerStyle={styles.descriptionInput}
       testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
     />
   );
@@ -71,14 +76,10 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
       validationMessage={[VALIDATION_MESSAGES.ARTICLE_TEXT_REQUIRED]}
       onChangeText={onBodyChange}
-      containerStyle={componentStyles.newArticleFormBodyInput}
+      containerStyle={styles.bodyInput}
       testID={TEST_IDS.ARTICLE_BODY_INPUT}
     />
   );
-
-  const determineButtonBackgroundColor = () => {
-    return canPublish ? themeColors.primaryColor : themeColors.greyColor;
-  };
 
   const createPublishButton = () => (
     <Button
@@ -89,18 +90,18 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
       paddingV-15
       disabled={!canPublish || isLoading}
       onPress={onPublishArticle}
-      style={componentStyles.newArticleFormPublishButton}
+      style={styles.publishButton}
       testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
     />
   );
 
   return (
     <ScrollView
-      style={componentStyles.newArticleFormScrollView}
-      contentContainerStyle={componentStyles.newArticleFormContentContainer}
+      style={styles.scrollView}
+      contentContainerStyle={styles.contentContainer}
       keyboardShouldPersistTaps='handled'
     >
-      <View flex>
+      <View style={styles.container}>
         {createTitleInputField()}
         {createDescriptionInputField()}
         {createBodyInputField()}
@@ -109,3 +110,31 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
     </ScrollView>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      padding: SPACINGS.PADDING_EXTRA_LARGE,
+    },
+    titleInput: {
+      marginBottom: SPACINGS.FORM_SPACING,
+    },
+    descriptionInput: {
+      marginBottom: SPACINGS.FORM_SPACING,
+    },
+    bodyInput: {
+      marginBottom: SPACINGS.MARGIN_XXL,
+      flex: 1,
+    },
+    publishButton: {
+      marginTop: 'auto',
+      marginBottom: SPACINGS.PADDING_EXTRA_LARGE,
+    },
+  });

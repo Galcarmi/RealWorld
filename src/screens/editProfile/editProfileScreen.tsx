@@ -1,14 +1,13 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, Text, View } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import { View, Button, Text } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
 import { themeColors } from '../../constants/styles';
 
-import { componentStyles } from '../../styles/componentStyles';
-import { styles } from '../../styles/globalStyles';
+import { styles as globalStyles } from '../../styles/globalStyles';
 
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -29,14 +28,13 @@ export const EditProfileScreen: NavioScreen = observer(() => {
     onLogout,
   } = useEditProfile();
 
+  const styles = useMemo(() => createStyles(canUpdate), [canUpdate]);
+
   return (
-    <View
-      style={componentStyles.homeScreenSafeArea}
-      testID={TEST_IDS.EDIT_PROFILE_SCREEN}
-    >
+    <View style={styles.container} testID={TEST_IDS.EDIT_PROFILE_SCREEN}>
       <ScreenHeader title='Edit Profile' showBackButton={true} />
 
-      <ScrollView style={styles.width100Percent}>
+      <ScrollView style={styles.scrollView}>
         <View paddingH-20 paddingV-30>
           <InputField
             placeholder='URL of profile picture'
@@ -45,7 +43,10 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             validationMessage={[]}
             minLength={0}
             maxLength={FORM_LIMITS.PROFILE_IMAGE_MAX}
-            containerStyle={{ ...styles.width80Percent, ...styles.height60px }}
+            containerStyle={{
+              ...globalStyles.width80Percent,
+              ...globalStyles.height60px,
+            }}
             testID={TEST_IDS.EDIT_PROFILE_IMAGE_INPUT}
           />
 
@@ -91,9 +92,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               label='Update'
               onPress={onUpdateProfile}
               fullWidth
-              backgroundColor={
-                canUpdate ? themeColors.primaryColor : themeColors.greyColor
-              }
+              backgroundColor={styles.updateButton.backgroundColor}
               disabled={!canUpdate}
               testID={TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON}
             />
@@ -115,3 +114,19 @@ export const EditProfileScreen: NavioScreen = observer(() => {
     </View>
   );
 });
+
+const createStyles = (canUpdate: boolean) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.bgColor,
+    },
+    scrollView: {
+      width: '100%',
+    },
+    updateButton: {
+      backgroundColor: canUpdate
+        ? themeColors.primaryColor
+        : themeColors.greyColor,
+    },
+  });

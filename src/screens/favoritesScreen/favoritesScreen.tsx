@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react';
 import { NavioScreen } from 'rn-navio';
 
 import { themeColors } from '../../constants/styles';
-
-import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -24,11 +23,10 @@ export const FavoritesScreen: NavioScreen = observer(() => {
     handleArticlePress,
   } = useFavoriteArticles();
 
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View
-      style={componentStyles.homeScreenSafeArea}
-      testID={TEST_IDS.FAVORITES_SCREEN}
-    >
+    <View style={styles.container} testID={TEST_IDS.FAVORITES_SCREEN}>
       <ScreenHeader />
 
       <View flex backgroundColor={themeColors.bgColor}>
@@ -46,3 +44,11 @@ export const FavoritesScreen: NavioScreen = observer(() => {
     </View>
   );
 });
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: themeColors.bgColor,
+    },
+  });

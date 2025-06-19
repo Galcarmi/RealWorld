@@ -1,13 +1,12 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { View, Text, Avatar } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors } from '../constants/styles';
+import { themeColors, SPACINGS } from '../constants/styles';
 import { Profile } from '../services/types';
-import { componentStyles } from '../styles/componentStyles';
 import { formatDate, getInitials } from '../utils';
 
 interface AuthorHeaderProps {
@@ -25,8 +24,10 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
   favoritesCount,
   onFavorite,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View row centerV marginB-12>
+    <View style={styles.container}>
       <Avatar
         source={{ uri: author.image || undefined }}
         size={APP_UI.ICON_SIZES.AVATAR_SMALL}
@@ -35,29 +36,25 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
         labelColor={themeColors.bgColor}
         marginR-8
       />
-      <View flex marginL-8>
-        <View row centerV>
-          <Text text70 color={themeColors.textColor} marginB-2>
-            {author.username}
-          </Text>
+      <View style={styles.authorInfo}>
+        <View style={styles.usernameRow}>
+          <Text style={styles.username}>{author.username}</Text>
           {author.following && (
             <Ionicons
               name={ICON_NAMES.CHECKMARK_CIRCLE}
               size={16}
               color={themeColors.primaryColor}
-              style={componentStyles.authorFollowingIcon}
+              style={styles.followingIcon}
             />
           )}
         </View>
-        <Text text80 color={themeColors.placeholderColor}>
-          {formatDate(createdAt)}
-        </Text>
+        <Text style={styles.createdAt}>{formatDate(createdAt)}</Text>
       </View>
       <TouchableOpacity
         onPress={onFavorite}
         testID={TEST_IDS.FAVORITE_BUTTON(author.username)}
       >
-        <View row centerV>
+        <View style={styles.favoriteContainer}>
           <Ionicons
             name={favorited ? ICON_NAMES.HEART : ICON_NAMES.HEART_OUTLINE}
             size={APP_UI.ICON_SIZES.MEDIUM}
@@ -65,11 +62,48 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
               favorited ? themeColors.errorColor : themeColors.placeholderColor
             }
           />
-          <Text text80 color={themeColors.placeholderColor} marginL-4>
-            {favoritesCount}
-          </Text>
+          <Text style={styles.favoritesCount}>{favoritesCount}</Text>
         </View>
       </TouchableOpacity>
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    authorInfo: {
+      flex: 1,
+      marginLeft: 8,
+    },
+    usernameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    username: {
+      fontSize: 16,
+      color: themeColors.textColor,
+      marginBottom: 2,
+    },
+    followingIcon: {
+      marginLeft: SPACINGS.MARGIN_SMALL,
+      marginBottom: SPACINGS.MARGIN_TINY,
+    },
+    createdAt: {
+      fontSize: 14,
+      color: themeColors.placeholderColor,
+    },
+    favoriteContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    favoritesCount: {
+      fontSize: 14,
+      color: themeColors.placeholderColor,
+      marginLeft: 4,
+    },
+  });
