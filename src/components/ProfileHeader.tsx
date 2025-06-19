@@ -1,11 +1,11 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { View, Text, Avatar } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors } from '../constants/styles';
+import { COLORS, TYPOGRAPHY, SPACINGS, FONT_SIZES } from '../constants/styles';
 import { User } from '../store/types';
 import { getInitials } from '../utils';
 
@@ -18,35 +18,61 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   user,
   onEditProfile,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View paddingB-30 paddingT-20>
-      <View row centerV right marginB-20>
+    <View style={styles.container}>
+      <View style={styles.editButtonContainer}>
         <TouchableOpacity
           onPress={onEditProfile}
-          padding-8
+          style={styles.editButton}
           testID={TEST_IDS.EDIT_PROFILE_BUTTON}
         >
           <Ionicons
             name={ICON_NAMES.CREATE_OUTLINE}
             size={APP_UI.ICON_SIZES.LARGE}
-            color={themeColors.primaryColor}
+            color={COLORS.PRIMARY}
           />
         </TouchableOpacity>
       </View>
 
-      <View center>
+      <View style={styles.profileInfo}>
         <Avatar
           source={{ uri: user?.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
-          backgroundColor={themeColors.secondaryColor}
+          backgroundColor={COLORS.SECONDARY}
           label={getInitials(user?.username || '', 2)}
-          labelColor={themeColors.bgColor}
+          labelColor={COLORS.BACKGROUND}
           marginB-12
         />
-        <Text text30 color={themeColors.blackColor} center>
-          {user.username}
-        </Text>
+        <Text style={styles.username}>{user.username}</Text>
       </View>
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
+      paddingTop: SPACINGS.HEADER_PADDING_TOP,
+    },
+    editButtonContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      marginBottom: SPACINGS.MARGIN_LARGE,
+    },
+    editButton: {
+      padding: SPACINGS.PADDING_SMALL,
+    },
+    profileInfo: {
+      alignItems: 'center',
+    },
+    username: {
+      fontSize: FONT_SIZES.EXTRA_LARGE,
+      color: COLORS.BLACK,
+      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+      textAlign: 'center',
+    },
+  });

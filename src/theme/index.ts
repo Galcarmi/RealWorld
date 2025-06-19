@@ -21,3 +21,10 @@ export const useAppTheme = () => {
 };
 
 export { initializeTheme };
+
+export {
+  initializeComponentThemes,
+  configureTextDefaults,
+  configureButtonDefaults,
+  configureTextFieldDefaults,
+} from './ComponentsConfig';

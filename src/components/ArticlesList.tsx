@@ -1,10 +1,15 @@
-import React from 'react';
-import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { View, Text } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
 
-import { themeColors } from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
 import { Article } from '../services/types';
-import { componentStyles } from '../styles/componentStyles';
 
 import { ArticleCard } from './ArticleCard';
 
@@ -29,6 +34,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   emptyMessage = 'No articles found',
   contextKey,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   const createArticleHandlers = (item: Article) => {
     const handlePress = () => {
       onArticlePress?.(item.slug);
@@ -55,8 +62,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const renderLoadingFooter = () => {
     return (
-      <View padding-16 center>
-        <ActivityIndicator size='small' color={themeColors.primaryColor} />
+      <View style={styles.loadingFooter}>
+        <ActivityIndicator size='small' color={COLORS.PRIMARY} />
       </View>
     );
   };
@@ -68,18 +75,16 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const renderLoadingIndicator = () => {
     return (
-      <View flex center padding-32>
-        <ActivityIndicator size='large' color={themeColors.primaryColor} />
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size='large' color={COLORS.PRIMARY} />
       </View>
     );
   };
 
   const renderEmptyMessage = () => {
     return (
-      <View flex center padding-32>
-        <Text text60 color={themeColors.placeholderColor} center>
-          {emptyMessage}
-        </Text>
+      <View style={styles.centerContainer}>
+        <Text style={styles.emptyText}>{emptyMessage}</Text>
       </View>
     );
   };
@@ -96,8 +101,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       <RefreshControl
         refreshing={isLoading && articles.length === 0}
         onRefresh={onRefresh}
-        colors={[themeColors.primaryColor]}
-        tintColor={themeColors.primaryColor}
+        colors={[COLORS.PRIMARY]}
+        tintColor={COLORS.PRIMARY}
       />
     );
   };
@@ -113,7 +118,30 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={componentStyles.articlesListContentContainer}
+      contentContainerStyle={styles.contentContainer}
     />
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    contentContainer: {
+      flexGrow: 1,
+      paddingBottom: SPACINGS.MARGIN_LARGE,
+    },
+    loadingFooter: {
+      padding: SPACINGS.PADDING_LARGE,
+      alignItems: 'center',
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: SPACINGS.LIST_CONTENT_PADDING,
+    },
+    emptyText: {
+      fontSize: TYPOGRAPHY.BODY.fontSize,
+      color: COLORS.PLACEHOLDER,
+      textAlign: 'center',
+    },
+  });

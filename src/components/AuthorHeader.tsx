@@ -1,13 +1,12 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { View, Text, Avatar } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors } from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY, FONT_SIZES } from '../constants/styles';
 import { Profile } from '../services/types';
-import { componentStyles } from '../styles/componentStyles';
 import { formatDate, getInitials } from '../utils';
 
 interface AuthorHeaderProps {
@@ -25,51 +24,85 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
   favoritesCount,
   onFavorite,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View row centerV marginB-12>
+    <View style={styles.container}>
       <Avatar
         source={{ uri: author.image || undefined }}
         size={APP_UI.ICON_SIZES.AVATAR_SMALL}
-        backgroundColor={themeColors.placeholderColor}
+        backgroundColor={COLORS.PLACEHOLDER}
         label={getInitials(author.username, 2)}
-        labelColor={themeColors.bgColor}
+        labelColor={COLORS.BACKGROUND}
         marginR-8
       />
-      <View flex marginL-8>
-        <View row centerV>
-          <Text text70 color={themeColors.textColor} marginB-2>
-            {author.username}
-          </Text>
+      <View style={styles.authorInfo}>
+        <View style={styles.usernameRow}>
+          <Text style={styles.username}>{author.username}</Text>
           {author.following && (
             <Ionicons
               name={ICON_NAMES.CHECKMARK_CIRCLE}
               size={16}
-              color={themeColors.primaryColor}
-              style={componentStyles.authorFollowingIcon}
+              color={COLORS.PRIMARY}
+              style={styles.followingIcon}
             />
           )}
         </View>
-        <Text text80 color={themeColors.placeholderColor}>
-          {formatDate(createdAt)}
-        </Text>
+        <Text style={styles.createdAt}>{formatDate(createdAt)}</Text>
       </View>
       <TouchableOpacity
         onPress={onFavorite}
         testID={TEST_IDS.FAVORITE_BUTTON(author.username)}
       >
-        <View row centerV>
+        <View style={styles.favoriteContainer}>
           <Ionicons
             name={favorited ? ICON_NAMES.HEART : ICON_NAMES.HEART_OUTLINE}
             size={APP_UI.ICON_SIZES.MEDIUM}
-            color={
-              favorited ? themeColors.errorColor : themeColors.placeholderColor
-            }
+            color={favorited ? COLORS.ERROR : COLORS.PLACEHOLDER}
           />
-          <Text text80 color={themeColors.placeholderColor} marginL-4>
-            {favoritesCount}
-          </Text>
+          <Text style={styles.favoritesCount}>{favoritesCount}</Text>
         </View>
       </TouchableOpacity>
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: SPACINGS.PADDING_MEDIUM,
+    },
+    authorInfo: {
+      flex: 1,
+      marginLeft: SPACINGS.PADDING_SMALL,
+    },
+    usernameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    username: {
+      fontSize: FONT_SIZES.MEDIUM,
+      color: COLORS.TEXT,
+      marginBottom: SPACINGS.MARGIN_TINY,
+      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+    },
+    followingIcon: {
+      marginLeft: SPACINGS.MARGIN_SMALL,
+      marginBottom: SPACINGS.MARGIN_TINY,
+    },
+    createdAt: {
+      fontSize: FONT_SIZES.SMALL,
+      color: COLORS.PLACEHOLDER,
+    },
+    favoriteContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    favoritesCount: {
+      fontSize: FONT_SIZES.SMALL,
+      color: COLORS.PLACEHOLDER,
+      marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
+    },
+  });

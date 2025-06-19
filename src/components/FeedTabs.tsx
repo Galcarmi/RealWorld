@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { observer } from 'mobx-react';
 
 import { FeedType } from '../constants/feedTypes';
-import { themeColors } from '../constants/styles';
-import { componentStyles } from '../styles/componentStyles';
+import { COLORS, SPACINGS, DIMENSIONS, FONT_SIZES } from '../constants/styles';
 
 interface Tab {
   id: string;
@@ -26,34 +25,37 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     feedType,
     onGlobalFeedPress,
     onUserFeedPress,
-    activeColor = themeColors.primaryColor,
-    inactiveColor = themeColors.placeholderColor,
+    activeColor = COLORS.PRIMARY,
+    inactiveColor = COLORS.PLACEHOLDER,
   }) => {
+    const styles = useMemo(() => createStyles(), []);
+
     const tabs: Tab[] = [
       { id: FeedType.GLOBAL, label: 'For You', onPress: onGlobalFeedPress },
       { id: FeedType.FEED, label: 'Following', onPress: onUserFeedPress },
     ];
 
     return (
-      <View paddingH-16 paddingT-16 paddingB-8>
-        <View row>
+      <View style={styles.container}>
+        <View style={styles.tabsRow}>
           {tabs.map(tab => {
             const isActive = tab.id === feedType;
             const tabStyle = isActive
-              ? componentStyles.feedTabsActiveTab
-              : componentStyles.feedTabsInactiveTab;
+              ? [styles.tab, styles.activeTab]
+              : [styles.tab, styles.inactiveTab];
 
             return (
               <TouchableOpacity
                 key={tab.id}
                 onPress={tab.onPress}
-                flex-1
-                paddingV-12
-                paddingH-16
-                center
-                style={[tabStyle]}
+                style={tabStyle}
               >
-                <Text text70 color={isActive ? activeColor : inactiveColor}>
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    { color: isActive ? activeColor : inactiveColor },
+                  ]}
+                >
                   {tab.label}
                 </Text>
               </TouchableOpacity>
@@ -64,3 +66,37 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     );
   }
 );
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      backgroundColor: COLORS.BACKGROUND,
+      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
+      borderBottomColor: COLORS.TAB_BAR_BORDER,
+    },
+    tabsRow: {
+      flexDirection: 'row',
+    },
+    tab: {
+      paddingHorizontal: SPACINGS.TAB_PADDING_HORIZONTAL,
+      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
+      borderBottomColor: 'transparent',
+    },
+    activeTab: {
+      borderBottomColor: COLORS.PRIMARY,
+    },
+    inactiveTab: {
+      borderBottomWidth: 0,
+      marginRight: SPACINGS.MARGIN_TAB,
+      marginLeft: SPACINGS.MARGIN_TAB,
+    },
+    tabLabel: {
+      fontSize: FONT_SIZES.MEDIUM,
+      color: COLORS.PLACEHOLDER,
+    },
+    activeTabLabel: {
+      color: COLORS.PRIMARY,
+    },
+  });

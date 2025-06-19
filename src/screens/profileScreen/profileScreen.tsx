@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 
-import { themeColors } from '../../constants/styles';
-
-import { componentStyles } from '../../styles/componentStyles';
+import { COLORS } from '../../constants/styles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
@@ -30,6 +29,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     refreshUserArticles,
   } = useProfile();
 
+  const styles = useMemo(() => createStyles(), []);
+
   if (!currentUser) {
     navigationService.navigateToLoginScreen();
 
@@ -37,21 +38,18 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   }
 
   return (
-    <View
-      style={componentStyles.homeScreenSafeArea}
-      testID={TEST_IDS.PROFILE_SCREEN}
-    >
+    <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
       <ScreenHeader title='Profile' />
 
       <View
-        style={componentStyles.profileScreenHeaderSection}
-        backgroundColor={themeColors.secondaryColor}
+        style={styles.headerSection}
+        backgroundColor={COLORS.SECONDARY}
         paddingH-20
       >
         <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
       </View>
 
-      <View style={componentStyles.profileScreenArticlesSection}>
+      <View style={styles.articlesSection}>
         <NewArticleButton onPress={onCreateNewArticle} />
 
         <ArticlesList
@@ -68,3 +66,17 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     </View>
   );
 });
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.BACKGROUND,
+    },
+    headerSection: {
+      flex: 0.38,
+    },
+    articlesSection: {
+      flex: 0.62,
+    },
+  });

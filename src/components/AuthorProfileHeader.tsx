@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text, Avatar, Button } from 'react-native-ui-lib';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Avatar, Button } from 'react-native-ui-lib';
 
 import { TEST_IDS, APP_UI } from '../constants';
-import { themeColors } from '../constants/styles';
+import { COLORS, SPACINGS, TYPOGRAPHY, DIMENSIONS } from '../constants/styles';
 import { Profile } from '../services/types';
 import { getInitials } from '../utils';
 
@@ -15,28 +16,26 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
   profile,
   onFollowToggle,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
-    <View paddingB-30 paddingT-20>
-      <View center>
+    <View style={styles.container}>
+      <View style={styles.profileInfo}>
         <Avatar
           source={{ uri: profile.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
-          backgroundColor={themeColors.secondaryColor}
+          backgroundColor={COLORS.SECONDARY}
           label={getInitials(profile.username, 2)}
-          labelColor={themeColors.bgColor}
+          labelColor={COLORS.BACKGROUND}
           marginB-12
         />
-        <Text text30 color={themeColors.blackColor} center marginB-16>
-          {profile.username}
-        </Text>
+        <Text style={styles.username}>{profile.username}</Text>
 
         <Button
           label={profile.following ? 'Unfollow' : 'Follow'}
-          backgroundColor={
-            profile.following ? themeColors.greyColor : themeColors.primaryColor
-          }
-          color={themeColors.bgColor}
-          borderRadius={25}
+          backgroundColor={profile.following ? COLORS.GREY : COLORS.PRIMARY}
+          color={COLORS.BACKGROUND}
+          borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
           paddingH-20
           paddingV-8
           onPress={onFollowToggle}
@@ -50,3 +49,20 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
     </View>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
+      paddingTop: SPACINGS.HEADER_PADDING_TOP,
+    },
+    profileInfo: {
+      alignItems: 'center',
+    },
+    username: {
+      fontSize: TYPOGRAPHY.HEADING.fontSize - 5, // 35 = 40 - 5
+      color: COLORS.BLACK,
+      textAlign: 'center',
+      marginBottom: SPACINGS.PADDING_LARGE,
+    },
+  });

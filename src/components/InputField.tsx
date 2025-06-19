@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
 import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
-import { componentStyles } from '../styles/componentStyles';
+import { FONT_SIZES, COLORS } from '../constants/styles';
 import { lengthValidation } from '../utils';
 
 type ValidationFunction = (value?: string) => boolean;
@@ -38,15 +38,18 @@ export const InputField: React.FC<InputFieldProps> = ({
   testID,
   keyboardType = KEYBOARD_TYPES.DEFAULT,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
     <TextField
       containerStyle={containerStyle}
-      floatingPlaceholderStyle={componentStyles.inputFieldFloatingPlaceholder}
+      floatingPlaceholderStyle={styles.floatingPlaceholder}
       placeholder={placeholder}
       value={value}
       floatingPlaceholder
       onChangeText={onChangeText}
       enableErrors
+      style={styles.inputField}
       secureTextEntry={secureTextEntry}
       validate={[
         'required',
@@ -60,3 +63,13 @@ export const InputField: React.FC<InputFieldProps> = ({
     />
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    floatingPlaceholder: {
+      color: COLORS.PLACEHOLDER,
+    },
+    inputField: {
+      fontSize: FONT_SIZES.LARGE,
+    },
+  });

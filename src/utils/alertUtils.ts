@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import { ALERT_BUTTONS, ALERT_BUTTON_STYLES, ERROR_TYPES } from '../constants';
+import { ALERT_BUTTONS, ERROR_TYPES } from '../constants';
 
 export const showErrorAlert = (
   title?: string,
@@ -24,7 +24,7 @@ export const showConfirmAlert = (
     {
       text: ALERT_BUTTONS.CANCEL,
       onPress: onCancel,
-      style: ALERT_BUTTON_STYLES.CANCEL,
+      style: 'cancel',
     },
     { text: ALERT_BUTTONS.OK, onPress: onConfirm },
   ]);

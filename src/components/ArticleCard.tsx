@@ -1,9 +1,13 @@
-import React from 'react';
-import { GestureResponderEvent, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import {
+  GestureResponderEvent,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
-import { TEST_IDS, DIMENSIONS, TOUCH_OPACITY } from '../constants';
-import { themeColors } from '../constants/styles';
+import { TEST_IDS, DIMENSIONS } from '../constants';
+import { COLORS, SPACINGS } from '../constants/styles';
 import { Article } from '../services/types';
 
 import { ArticleContent } from './ArticleContent';
@@ -21,17 +25,16 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   onPress,
   onFavorite,
 }) => {
+  const styles = useMemo(() => createStyles(), []);
+
   return (
     <Card
-      marginH-16
-      marginV-8
-      padding-16
-      backgroundColor={themeColors.bgColor}
+      style={styles.card}
       enableShadow={true}
       elevation={DIMENSIONS.ELEVATION_LOW}
       testID={TEST_IDS.ARTICLE_CARD(article.slug)}
     >
-      <TouchableOpacity onPress={onPress} activeOpacity={TOUCH_OPACITY.DEFAULT}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <AuthorHeader
           author={article.author}
           createdAt={article.createdAt}
@@ -50,3 +53,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     </Card>
   );
 };
+
+const createStyles = () =>
+  StyleSheet.create({
+    card: {
+      marginHorizontal: SPACINGS.PADDING_LARGE,
+      marginVertical: SPACINGS.PADDING_SMALL,
+      padding: SPACINGS.PADDING_LARGE,
+      backgroundColor: COLORS.BACKGROUND,
+    },
+  });

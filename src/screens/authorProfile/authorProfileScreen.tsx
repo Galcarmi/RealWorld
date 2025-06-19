@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -7,10 +8,9 @@ import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../constants/styles';
+import { COLORS } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
-import { componentStyles } from '../../styles/componentStyles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { AuthorProfileHeader } from '../../components/AuthorProfileHeader';
@@ -40,27 +40,23 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
       refreshAuthorArticles,
     } = useAuthorProfile(username);
 
+    const styles = useMemo(() => createStyles(), []);
+
     if (!authorProfile) {
       return (
-        <View
-          style={componentStyles.homeScreenSafeArea}
-          testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}
-        >
+        <View style={styles.container} testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}>
           <ScreenHeader showBackButton={true} />
         </View>
       );
     }
 
     return (
-      <View
-        style={componentStyles.homeScreenSafeArea}
-        testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}
-      >
+      <View style={styles.container} testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}>
         <ScreenHeader showBackButton={true} />
 
         <View
-          style={componentStyles.profileScreenHeaderSection}
-          backgroundColor={themeColors.secondaryColor}
+          style={styles.headerSection}
+          backgroundColor={COLORS.SECONDARY}
           paddingH-20
         >
           <AuthorProfileHeader
@@ -69,7 +65,7 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
           />
         </View>
 
-        <View style={componentStyles.profileScreenArticlesSection}>
+        <View style={styles.articlesSection}>
           <ArticlesList
             articles={authorArticles}
             isLoading={isLoading}
@@ -82,4 +78,18 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
         </View>
       </View>
     );
+  });
+
+const createStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: COLORS.BACKGROUND,
+    },
+    headerSection: {
+      flex: 0.35,
+    },
+    articlesSection: {
+      flex: 0.65,
+    },
   });
