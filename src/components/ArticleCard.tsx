@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
-import { TEST_IDS, DIMENSIONS, TOUCH_OPACITY } from '../constants';
+import { TEST_IDS, DIMENSIONS } from '../constants';
 import { COLORS, SPACINGS } from '../constants/styles';
 import { Article } from '../services/types';
 
@@ -34,7 +34,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       elevation={DIMENSIONS.ELEVATION_LOW}
       testID={TEST_IDS.ARTICLE_CARD(article.slug)}
     >
-      <TouchableOpacity onPress={onPress} activeOpacity={TOUCH_OPACITY.DEFAULT}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <AuthorHeader
           author={article.author}
           createdAt={article.createdAt}

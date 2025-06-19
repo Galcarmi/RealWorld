@@ -112,48 +112,9 @@ export const DIMENSIONS = {
   ...UI.ICON_SIZES,
 } as const;
 
-export const COMPONENT_DIMENSIONS = {
-  // Button dimensions
-  BUTTON_HEIGHT: 45,
-  BUTTON_BORDER_RADIUS: 25,
-  BUTTON_PADDING_VERTICAL: 15,
-  BUTTON_PADDING_HORIZONTAL: 20,
-
-  // Input dimensions
-  INPUT_HEIGHT: 60,
-  INPUT_BORDER_WIDTH: 1,
-
-  // Header dimensions
-  HEADER_MIN_HEIGHT: 56,
-  HEADER_SPACER_WIDTH: 70,
-
-  // Card dimensions
-  CARD_BORDER_RADIUS: 8,
-  CARD_PADDING: 16,
-  CARD_ELEVATION: 3,
-} as const;
-
-export const BACKGROUND_COLORS = {
-  TRANSPARENT: 'transparent',
-} as const;
-
 export const FONT_WEIGHTS = {
   NORMAL: '400',
   MEDIUM: '500',
   SEMIBOLD: '600',
   BOLD: '700',
-} as const;
-
-// Touch Interaction - migrated from src/constants/app.ts
-export const TOUCH_OPACITY = {
-  DEFAULT: 0.7,
-  LIGHT: 0.8,
-  HEAVY: 0.5,
-} as const;
-
-// Alert Button Styles - migrated from src/constants/app.ts
-export const ALERT_BUTTON_STYLES = {
-  CANCEL: 'cancel',
-  DESTRUCTIVE: 'destructive',
-  DEFAULT: 'default',
 } as const;

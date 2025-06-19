@@ -5,12 +5,7 @@ import { Button } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES, BUTTON_LABELS } from '../constants';
-import {
-  COLORS,
-  DIMENSIONS,
-  COMPONENT_DIMENSIONS,
-  SPACINGS,
-} from '../constants/styles';
+import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
 
 interface NewArticleButtonProps {
   onPress: () => void;
@@ -53,8 +48,8 @@ const createStyles = () =>
       alignItems: 'center',
     },
     button: {
-      borderRadius: COMPONENT_DIMENSIONS.BUTTON_BORDER_RADIUS,
-      height: COMPONENT_DIMENSIONS.BUTTON_HEIGHT,
+      borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
+      height: DIMENSIONS.HEIGHT_60,
       borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
       borderColor: COLORS.PRIMARY,
       width: DIMENSIONS.WIDTH_50_PERCENT,

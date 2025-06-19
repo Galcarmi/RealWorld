@@ -3,14 +3,14 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { TOUCH_OPACITY, APP_UI, ICON_NAMES } from '../constants';
+import { APP_UI, ICON_NAMES } from '../constants';
 import {
   COLORS,
-  COMPONENT_DIMENSIONS,
   FONT_WEIGHTS,
   SPACINGS,
   TYPOGRAPHY,
   FONT_SIZES,
+  DIMENSIONS,
 } from '../constants/styles';
 import { NavigationInstance } from '../navigation/types';
 
@@ -41,10 +41,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
     <View style={styles.headerContainer}>
       <View style={styles.headerContent}>
         {shouldShowBackButton ? (
-          <TouchableOpacity
-            onPress={handleBackPress}
-            activeOpacity={TOUCH_OPACITY.DEFAULT}
-          >
+          <TouchableOpacity onPress={handleBackPress} activeOpacity={0.7}>
             <View style={styles.backButton}>
               <Ionicons
                 name={ICON_NAMES.CHEVRON_BACK}
@@ -77,7 +74,7 @@ const createStyles = (paddingTop: number) =>
       paddingTop,
     },
     headerContent: {
-      minHeight: COMPONENT_DIMENSIONS.HEADER_MIN_HEIGHT,
+      minHeight: DIMENSIONS.HEIGHT_45,
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: SPACINGS.SCREEN_PADDING_HORIZONTAL,
@@ -93,7 +90,7 @@ const createStyles = (paddingTop: number) =>
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
     leftSpacer: {
-      width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
+      width: DIMENSIONS.SMALL,
     },
     titleContainer: {
       flex: 1,
@@ -105,7 +102,7 @@ const createStyles = (paddingTop: number) =>
       fontWeight: FONT_WEIGHTS.SEMIBOLD,
     },
     rightContainer: {
-      width: COMPONENT_DIMENSIONS.HEADER_SPACER_WIDTH,
+      width: DIMENSIONS.SMALL,
       alignItems: 'flex-end',
     },
   });
