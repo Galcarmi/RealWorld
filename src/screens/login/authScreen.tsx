@@ -36,16 +36,14 @@ export const createAuthScreen: (screenType: AUTH_SCREEN_TYPE) => React.FC = (
     } = useAuth();
 
     const screenStyles = useMemo(() => createScreenStyles(), []);
-    
-    const screenTestId = screenType === AUTH_SCREEN_TYPE.SIGN_IN 
-      ? TEST_IDS.LOGIN_SCREEN 
-      : TEST_IDS.REGISTER_SCREEN;
+
+    const screenTestId =
+      screenType === AUTH_SCREEN_TYPE.SIGN_IN
+        ? TEST_IDS.LOGIN_SCREEN
+        : TEST_IDS.REGISTER_SCREEN;
 
     return (
-      <SafeAreaView
-        style={screenStyles.container}
-        testID={screenTestId}
-      >
+      <SafeAreaView style={screenStyles.container} testID={screenTestId}>
         <View style={screenStyles.topSpacer} />
         <View style={screenStyles.middleSpacer}>
           <AuthHeader
