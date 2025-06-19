@@ -54,7 +54,8 @@ export const SPACINGS = {
   MARGIN_MEDIUM: 15,
   MARGIN_LARGE: 20,
   MARGIN_EXTRA_LARGE: 24,
-  MARGIN_XXL: 40,
+  MARGIN_2X_EXTRA_LARGE: 30,
+  MARGIN_3X_EXTRA_LARGE: 40,
   MARGIN_HUGE: 70,
 
   // Hard-coded values found in componentStyles.ts
