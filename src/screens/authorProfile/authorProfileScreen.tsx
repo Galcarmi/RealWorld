@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 import { componentStyles } from '../../styles/componentStyles';

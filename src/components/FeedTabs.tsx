@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity } from 'react-native-ui-lib';
 import { observer } from 'mobx-react';
 
 import { FeedType } from '../constants/feedTypes';
+import { themeColors } from '../constants/styles';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 interface Tab {
   id: string;

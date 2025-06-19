@@ -4,8 +4,8 @@ import { View, Button } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES, BUTTON_LABELS } from '../constants';
+import { themeColors } from '../constants/styles';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 interface NewArticleButtonProps {
   onPress: () => void;

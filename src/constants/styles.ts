@@ -2,6 +2,33 @@
 
 import { UI } from './app';
 
+// Colors - migrated from src/theme/colors.ts
+export const COLORS = {
+  PRIMARY: '#116DFF',
+  SECONDARY: '#007AFF14',
+  TEXT: '#221D23',
+  ERROR: '#E63B2E',
+  SUCCESS: '#ADC76F',
+  WARN: '#FF963C',
+  BACKGROUND: '#FFFFFF',
+  PLACEHOLDER: '#6E7881',
+  GREY: '#6E7881',
+  TAB_BAR_ACTIVE_TINT: '#007AFF',
+  TAB_BAR_INACTIVE_TINT: '#8E8E93',
+  TAB_BAR_BORDER: '#E5E5E7',
+  BLACK: '#000000',
+  TRANSPARENT: 'transparent',
+} as const;
+
+// Typography - migrated from src/theme/typography.ts
+export const TYPOGRAPHY = {
+  HEADING: { fontSize: 40, fontFamily: 'WixMadeforText-Regular' },
+  SUBHEADING: { fontSize: 28, fontFamily: 'WixMadeforText-Medium' },
+  BODY: { fontSize: 18, fontFamily: 'WixMadeforText-Regular' },
+  BOLD: { fontSize: 20, fontFamily: 'WixMadeforText-Bold' },
+  TITLE: { fontSize: 28, weight: 700, fontFamily: 'WixMadeforText-Bold' },
+} as const;
+
 export const SPACINGS = {
   // Padding values
   PADDING_EXTRA_SMALL: 4,
@@ -22,6 +49,14 @@ export const SPACINGS = {
   MARGIN_EXTRA_LARGE: 24,
   MARGIN_XXL: 40,
   MARGIN_HUGE: 70,
+
+  // Hard-coded values found in componentStyles.ts
+  MARGIN_TAB: 3,
+
+  // Theme spacings - migrated from src/theme/spacings.ts
+  PAGE: 20,
+  CARD: 12,
+  GRID_GUTTER: 16,
 
   // Specific semantic spacings
   CARD_PADDING: 16,
@@ -147,6 +182,20 @@ export const FONT_WEIGHTS = {
   BOLD: '700',
 } as const;
 
+// Touch Interaction - migrated from src/constants/app.ts
+export const TOUCH_OPACITY = {
+  DEFAULT: 0.7,
+  LIGHT: 0.8,
+  HEAVY: 0.5,
+} as const;
+
+// Alert Button Styles - migrated from src/constants/app.ts
+export const ALERT_BUTTON_STYLES = {
+  CANCEL: 'cancel',
+  DESTRUCTIVE: 'destructive',
+  DEFAULT: 'default',
+} as const;
+
 // UI Components positioning and styling presets
 export const UI_PRESETS = {
   // Input field container styles
@@ -177,3 +226,30 @@ export const UI_PRESETS = {
     marginBottom: SPACINGS.FORM_SPACING,
   },
 } as const;
+
+// Legacy theme color mapping for backward compatibility
+export const themeColors = {
+  primaryColor: COLORS.PRIMARY,
+  secondaryColor: COLORS.SECONDARY,
+  textColor: COLORS.TEXT,
+  errorColor: COLORS.ERROR,
+  successColor: COLORS.SUCCESS,
+  warnColor: COLORS.WARN,
+  bgColor: COLORS.BACKGROUND,
+  placeholderColor: COLORS.PLACEHOLDER,
+  greyColor: COLORS.GREY,
+  tabBarActiveTint: COLORS.TAB_BAR_ACTIVE_TINT,
+  tabBarInactiveTint: COLORS.TAB_BAR_INACTIVE_TINT,
+  tabBarBorder: COLORS.TAB_BAR_BORDER,
+  blackColor: COLORS.BLACK,
+} as const;
+
+// Legacy theme spacings mapping for backward compatibility
+export const themeSpacings = {
+  page: SPACINGS.PAGE,
+  card: SPACINGS.CARD,
+  gridGutter: SPACINGS.GRID_GUTTER,
+} as const;
+
+// Legacy theme typography mapping for backward compatibility
+export const themeTypography = TYPOGRAPHY;

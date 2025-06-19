@@ -2,9 +2,9 @@ import React from 'react';
 import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import { View, Text } from 'react-native-ui-lib';
 
+import { themeColors } from '../constants/styles';
 import { Article } from '../services/types';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 import { ArticleCard } from './ArticleCard';
 

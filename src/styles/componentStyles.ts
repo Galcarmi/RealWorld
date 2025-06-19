@@ -5,8 +5,8 @@ import {
   DIMENSIONS,
   COMPONENT_DIMENSIONS,
   FONT_WEIGHTS,
+  themeColors,
 } from '../constants/styles';
-import { themeColors } from '../theme/colors';
 
 export const componentStyles = StyleSheet.create({
   // ArticlesList styles
@@ -19,13 +19,13 @@ export const componentStyles = StyleSheet.create({
   feedTabsActiveTab: {
     borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
     borderBottomColor: themeColors.primaryColor,
-    marginRight: 3,
-    marginLeft: 3,
+    marginRight: SPACINGS.MARGIN_TAB,
+    marginLeft: SPACINGS.MARGIN_TAB,
   },
   feedTabsInactiveTab: {
     borderBottomWidth: 0,
-    marginRight: 3,
-    marginLeft: 3,
+    marginRight: SPACINGS.MARGIN_TAB,
+    marginLeft: SPACINGS.MARGIN_TAB,
   },
 
   // HomeScreen styles

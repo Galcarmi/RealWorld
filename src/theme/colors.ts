@@ -1,19 +1,21 @@
 import { Colors } from 'react-native-ui-lib';
 
+import { COLORS } from '../constants/styles';
+
 export const themeColors = {
-  primaryColor: '#116DFF',
-  secondaryColor: '#007AFF14',
-  textColor: '#221D23',
-  errorColor: '#E63B2E',
-  successColor: '#ADC76F',
-  warnColor: '#FF963C',
-  bgColor: '#FFFFFF',
-  placeholderColor: '#6E7881',
-  greyColor: '#6E7881',
-  tabBarActiveTint: '#007AFF',
-  tabBarInactiveTint: '#8E8E93',
-  tabBarBorder: '#E5E5E7',
-  blackColor: '#000000',
+  primaryColor: COLORS.PRIMARY,
+  secondaryColor: COLORS.SECONDARY,
+  textColor: COLORS.TEXT,
+  errorColor: COLORS.ERROR,
+  successColor: COLORS.SUCCESS,
+  warnColor: COLORS.WARN,
+  bgColor: COLORS.BACKGROUND,
+  placeholderColor: COLORS.PLACEHOLDER,
+  greyColor: COLORS.GREY,
+  tabBarActiveTint: COLORS.TAB_BAR_ACTIVE_TINT,
+  tabBarInactiveTint: COLORS.TAB_BAR_INACTIVE_TINT,
+  tabBarBorder: COLORS.TAB_BAR_BORDER,
+  blackColor: COLORS.BLACK,
 };
 
 export const loadColors = () => {

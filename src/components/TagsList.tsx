@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native-ui-lib';
 
 import { APP_UI } from '../constants';
-import { themeColors } from '../theme/colors';
+import { themeColors } from '../constants/styles';
 
 interface TagsListProps {
   tags: string[] | null;

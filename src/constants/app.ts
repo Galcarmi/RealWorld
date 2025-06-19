@@ -233,20 +233,6 @@ export const ALERT_BUTTONS = {
   CONFIRM: 'Confirm',
 } as const;
 
-// Alert Button Styles
-export const ALERT_BUTTON_STYLES = {
-  CANCEL: 'cancel',
-  DESTRUCTIVE: 'destructive',
-  DEFAULT: 'default',
-} as const;
-
-// Touch Interaction
-export const TOUCH_OPACITY = {
-  DEFAULT: 0.7,
-  LIGHT: 0.8,
-  HEAVY: 0.5,
-} as const;
-
 // Log Levels
 export const LOG_LEVELS = {
   LOG: 'log',

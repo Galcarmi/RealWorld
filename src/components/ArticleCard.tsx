@@ -3,8 +3,8 @@ import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
 import { TEST_IDS, DIMENSIONS, TOUCH_OPACITY } from '../constants';
+import { themeColors } from '../constants/styles';
 import { Article } from '../services/types';
-import { themeColors } from '../theme/colors';
 
 import { ArticleContent } from './ArticleContent';
 import { AuthorHeader } from './AuthorHeader';

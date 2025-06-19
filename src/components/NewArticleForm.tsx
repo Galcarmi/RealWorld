@@ -9,9 +9,8 @@ import {
   BUTTON_LABELS,
   PLACEHOLDERS,
 } from '../constants';
-import { DIMENSIONS } from '../constants/styles';
+import { DIMENSIONS, themeColors } from '../constants/styles';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 import { InputField } from './InputField';
 

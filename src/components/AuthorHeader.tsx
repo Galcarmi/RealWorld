@@ -5,9 +5,9 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
+import { themeColors } from '../constants/styles';
 import { Profile } from '../services/types';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 import { formatDate, getInitials } from '../utils';
 
 interface AuthorHeaderProps {

@@ -5,8 +5,8 @@ import { View, Text, Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
+import { themeColors } from '../constants/styles';
 import { User } from '../store/types';
-import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
 
 interface ProfileHeaderProps {

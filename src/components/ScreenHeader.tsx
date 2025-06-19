@@ -5,9 +5,9 @@ import { View, Text } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TOUCH_OPACITY, APP_UI, ICON_NAMES } from '../constants';
+import { themeColors } from '../constants/styles';
 import { NavigationInstance } from '../navigation/types';
 import { componentStyles } from '../styles/componentStyles';
-import { themeColors } from '../theme/colors';
 
 import { useScreenHeader } from './useScreenHeader';
 

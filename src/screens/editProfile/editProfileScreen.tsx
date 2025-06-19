@@ -5,7 +5,7 @@ import { Button, Text, View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { themeColors } from '../../theme/colors';
+import { themeColors } from '../../constants/styles';
 
 import { componentStyles } from '../../styles/componentStyles';
 import { styles } from '../../styles/globalStyles';

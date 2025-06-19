@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, Avatar, Button } from 'react-native-ui-lib';
 
 import { TEST_IDS, APP_UI } from '../constants';
+import { themeColors } from '../constants/styles';
 import { Profile } from '../services/types';
-import { themeColors } from '../theme/colors';
 import { getInitials } from '../utils';
 
 interface AuthorProfileHeaderProps {
