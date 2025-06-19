@@ -60,10 +60,7 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.USERNAME_REQUIRED,
             VALIDATION_MESSAGES.USERNAME_TOO_SHORT,
           ]}
-          containerStyle={{
-            ...globalStyles.width80Percent,
-            ...globalStyles.height60px,
-          }}
+          containerStyle={styles.inputFieldContainer}
           onChangeText={onUsernameChange}
           testID={TEST_IDS.SIGNUP_USERNAME_INPUT}
         />
@@ -75,10 +72,7 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.EMAIL_INVALID,
           ]}
           validation={emailValidation}
-          containerStyle={{
-            ...globalStyles.width80Percent,
-            ...globalStyles.height60px,
-          }}
+          containerStyle={styles.inputFieldContainer}
           onChangeText={onEmailChange}
           testID={TEST_IDS.SIGNUP_EMAIL_INPUT}
         />
@@ -89,10 +83,7 @@ export const Main: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.PASSWORD_REQUIRED,
             VALIDATION_MESSAGES.PASSWORD_TOO_SHORT,
           ]}
-          containerStyle={{
-            ...globalStyles.width80Percent,
-            ...globalStyles.height60px,
-          }}
+          containerStyle={styles.inputFieldContainer}
           onChangeText={onPasswordChange}
           secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
           testID={TEST_IDS.SIGNUP_PASSWORD_INPUT}
@@ -149,5 +140,9 @@ const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
     },
     authButtonLabel: {
       color: themeColors.primaryColor,
+    },
+    inputFieldContainer: {
+      ...globalStyles.width80Percent,
+      ...globalStyles.height60px,
     },
   });

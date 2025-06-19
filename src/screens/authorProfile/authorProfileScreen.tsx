@@ -90,6 +90,6 @@ const createStyles = () =>
       flex: 0.35,
     },
     articlesSection: {
-      flex: 1,
+      flex: 0.65,
     },
   });

@@ -5,7 +5,7 @@ import { Avatar } from 'react-native-ui-lib';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { themeColors, SPACINGS } from '../constants/styles';
+import { themeColors, SPACINGS, TYPOGRAPHY } from '../constants/styles';
 import { Profile } from '../services/types';
 import { formatDate, getInitials } from '../utils';
 
@@ -85,9 +85,10 @@ const createStyles = () =>
       alignItems: 'center',
     },
     username: {
-      fontSize: 16,
+      fontSize: 17,
       color: themeColors.textColor,
       marginBottom: 2,
+      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     followingIcon: {
       marginLeft: SPACINGS.MARGIN_SMALL,

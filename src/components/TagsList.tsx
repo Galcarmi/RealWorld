@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import { APP_UI } from '../constants';
-import { themeColors, SPACINGS } from '../constants/styles';
+import { themeColors, SPACINGS, TYPOGRAPHY } from '../constants/styles';
 
 interface TagsListProps {
   tags: string[] | null;
@@ -52,6 +52,7 @@ const createStyles = () =>
     tagText: {
       fontSize: 12,
       color: themeColors.primaryColor,
+      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     moreText: {
       fontSize: 12,

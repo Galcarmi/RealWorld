@@ -74,9 +74,9 @@ const createStyles = () =>
       backgroundColor: themeColors.bgColor,
     },
     headerSection: {
-      flex: 0.35,
+      flex: 0.38,
     },
     articlesSection: {
-      flex: 1,
+      flex: 0.62,
     },
   });

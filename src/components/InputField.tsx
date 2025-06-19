@@ -49,6 +49,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       floatingPlaceholder
       onChangeText={onChangeText}
       enableErrors
+      style={styles.inputField}
       secureTextEntry={secureTextEntry}
       validate={[
         'required',
@@ -67,5 +68,8 @@ const createStyles = () =>
   StyleSheet.create({
     floatingPlaceholder: {
       color: themeColors.placeholderColor,
+    },
+    inputField: {
+      fontSize: 22,
     },
   });

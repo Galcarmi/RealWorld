@@ -62,7 +62,7 @@ const createStyles = () =>
       alignItems: 'center',
     },
     username: {
-      fontSize: 22,
+      fontSize: 35,
       color: themeColors.blackColor,
       textAlign: 'center',
       marginBottom: 16,
