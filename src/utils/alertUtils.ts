@@ -10,7 +10,7 @@ export const showErrorAlert = (
   Alert.alert(title || ERROR_TYPES.GENERIC, message || '', buttons);
 };
 
-export const showAlert = (title: string, message: string) => {
+export const showInfoAlert = (title: string, message: string) => {
   Alert.alert(title, message, [{ text: ALERT_BUTTONS.OK }]);
 };
 
