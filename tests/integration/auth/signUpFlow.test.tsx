@@ -42,24 +42,25 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should render sign up screen with all required elements', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      expect(getByTestId('register-screen')).toBeTruthy();
-      expect(getByTestId('signup-username-input')).toBeTruthy();
-      expect(getByTestId('signup-email-input')).toBeTruthy();
-      expect(getByTestId('signup-password-input')).toBeTruthy();
-      expect(getByTestId('signup-submit-button')).toBeTruthy();
-      expect(getByTestId('signup-signin-button')).toBeTruthy();
+      expect(getByTestId('auth-screen')).toBeTruthy();
+      expect(getByTestId('auth-username-input')).toBeTruthy();
+      expect(getByTestId('auth-email-input')).toBeTruthy();
+      expect(getByTestId('auth-password-input')).toBeTruthy();
+      expect(getByTestId('auth-submit-button')).toBeTruthy();
+      expect(getByTestId('auth-signin-button')).toBeTruthy();
     });
 
     it('should display correct screen title', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      expect(getByTestId('signup-screen-title')).toBeTruthy();
+      expect(getByTestId('auth-screen-title')).toBeTruthy();
     });
 
     it('should disable submit button with empty fields', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getAllByTestId } = renderSignUpScreen();
 
-      const submitButton = getByTestId('signup-submit-button');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
       expect(submitButton).toBeDisabled();
     });
   });
@@ -69,7 +70,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
+      const usernameInput = getByTestId('auth-username-input');
       fireEvent.changeText(usernameInput, 'testuser');
 
       expect(setUsernameSpy).toHaveBeenCalledWith('testuser');
@@ -79,7 +80,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
       const { getByTestId } = renderSignUpScreen();
 
-      const emailInput = getByTestId('signup-email-input');
+      const emailInput = getByTestId('auth-email-input');
       fireEvent.changeText(emailInput, 'test@example.com');
 
       expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
@@ -89,7 +90,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderSignUpScreen();
 
-      const passwordInput = getByTestId('signup-password-input');
+      const passwordInput = getByTestId('auth-password-input');
       fireEvent.changeText(passwordInput, 'password123');
 
       expect(setPasswordSpy).toHaveBeenCalledWith('password123');
@@ -98,9 +99,9 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should handle all field focus and blur events', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent(usernameInput, 'focus');
       fireEvent(usernameInput, 'blur');
@@ -117,49 +118,54 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Form Validation', () => {
     it('should show submit button state based on form validity', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      const submitButton = getByTestId('signup-submit-button');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
       expect(submitButton).toBeTruthy();
     });
 
     it('should keep submit button disabled with invalid inputs', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(usernameInput, 'u');
       fireEvent.changeText(emailInput, 'invalid-email');
       fireEvent.changeText(passwordInput, '123');
 
-      const submitButton = getByTestId('signup-submit-button');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
       expect(submitButton).toBeDisabled();
     });
 
     it('should handle form field changes progressively', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
-      expect(getByTestId('signup-submit-button')).toBeDisabled();
+      let submitButtons = getAllByTestId('auth-submit-button');
+      expect(submitButtons[0]).toBeDisabled();
 
       fireEvent.changeText(usernameInput, 'testuser');
-      expect(getByTestId('signup-submit-button')).toBeDisabled();
+      submitButtons = getAllByTestId('auth-submit-button');
+      expect(submitButtons[0]).toBeDisabled();
 
       fireEvent.changeText(emailInput, 'test@example.com');
-      expect(getByTestId('signup-submit-button')).toBeDisabled();
+      submitButtons = getAllByTestId('auth-submit-button');
+      expect(submitButtons[0]).toBeDisabled();
 
       fireEvent.changeText(passwordInput, 'password123');
 
@@ -171,12 +177,13 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('SignUp Submission', () => {
     it('should trigger register action when submit is attempted', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const submitButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
 
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
@@ -190,19 +197,21 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should show loading state during registration', () => {
       mockAuthStore.isLoading = true;
 
-      const { getByTestId } = renderSignUpScreen();
+      const { getAllByTestId } = renderSignUpScreen();
 
-      const submitButton = getByTestId('signup-submit-button');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
       expect(submitButton).toBeDisabled();
     });
 
     it('should handle registration process integration', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const submitButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
 
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
@@ -224,7 +233,7 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const { getByTestId } = renderSignUpScreen();
 
-      const signInButton = getByTestId('signup-signin-button');
+      const signInButton = getByTestId('auth-signin-button');
       fireEvent.press(signInButton);
 
       expect(navigationSpy).toHaveBeenCalledTimes(1);
@@ -241,12 +250,13 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should disable all interactions during loading', () => {
       mockAuthStore.isLoading = true;
 
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const submitButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
 
       expect(submitButton).toBeDisabled();
 
@@ -262,9 +272,9 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
@@ -278,35 +288,37 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle registration errors gracefully', async () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const signUpButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const signUpButton = submitButtons[0]; // First button is the main submit button
 
       fireEvent.changeText(usernameInput, 'erroruser');
       fireEvent.changeText(emailInput, 'error@example.com');
       fireEvent.changeText(passwordInput, 'password123');
       fireEvent.press(signUpButton);
 
-      expect(getByTestId('register-screen')).toBeTruthy();
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
 
     it('should handle network errors gracefully', async () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const signUpButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const signUpButton = submitButtons[0]; // First button is the main submit button
 
       fireEvent.changeText(usernameInput, 'networkuser');
       fireEvent.changeText(emailInput, 'network@example.com');
       fireEvent.changeText(passwordInput, 'password123');
       fireEvent.press(signUpButton);
 
-      expect(getByTestId('register-screen')).toBeTruthy();
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
 
     it('should clear errors when user starts typing', () => {
@@ -317,7 +329,7 @@ describe('Sign Up Flow Integration Tests', () => {
       const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
+      const usernameInput = getByTestId('auth-username-input');
       fireEvent.changeText(usernameInput, 'newusername');
 
       expect(setUsernameSpy).toHaveBeenCalledWith('newusername');
@@ -326,12 +338,13 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Accessibility', () => {
     it('should have proper accessibility labels', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const submitButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
 
       expect(usernameInput).toBeTruthy();
       expect(emailInput).toBeTruthy();
@@ -342,7 +355,7 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should support secure text entry for password', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      const passwordInput = getByTestId('signup-password-input');
+      const passwordInput = getByTestId('auth-password-input');
       expect(passwordInput.props.secureTextEntry).toBe(true);
     });
   });
@@ -354,9 +367,9 @@ describe('Sign Up Flow Integration Tests', () => {
       const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(usernameInput, 'integrationuser');
       fireEvent.changeText(emailInput, 'integration@test.com');
@@ -372,26 +385,27 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(usernameInput, 'validuser');
       fireEvent.changeText(emailInput, 'valid@email.com');
       fireEvent.changeText(passwordInput, 'validpassword');
 
-      expect(getByTestId('register-screen')).toBeTruthy();
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
   });
 
   describe('Username Validation Specific Cases', () => {
     it('should handle minimum username length validation', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
+      const usernameInput = getByTestId('auth-username-input');
 
       fireEvent.changeText(usernameInput, 'ab');
-      expect(getByTestId('signup-submit-button')).toBeDisabled();
+      const submitButtons = getAllByTestId('auth-submit-button');
+      expect(submitButtons[0]).toBeDisabled();
 
       fireEvent.changeText(usernameInput, 'abc');
       expect(usernameInput).toBeTruthy();
@@ -400,7 +414,7 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should handle edge case username lengths', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
+      const usernameInput = getByTestId('auth-username-input');
 
       fireEvent.changeText(usernameInput, 'a');
       fireEvent.changeText(usernameInput, 'ab');
@@ -413,12 +427,13 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Password Validation Specific Cases', () => {
     it('should handle minimum password length validation', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const passwordInput = getByTestId('signup-password-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(passwordInput, '12345');
-      expect(getByTestId('signup-submit-button')).toBeDisabled();
+      const submitButtons = getAllByTestId('auth-submit-button');
+      expect(submitButtons[0]).toBeDisabled();
 
       fireEvent.changeText(passwordInput, '123456');
       expect(passwordInput).toBeTruthy();
@@ -427,7 +442,7 @@ describe('Sign Up Flow Integration Tests', () => {
     it('should handle various password strengths', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      const passwordInput = getByTestId('signup-password-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(passwordInput, '123456');
       fireEvent.changeText(passwordInput, 'password123');
@@ -439,12 +454,13 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Multiple Interaction Sequences', () => {
     it('should handle multiple form interactions gracefully', () => {
-      const { getByTestId } = renderSignUpScreen();
+      const { getByTestId, getAllByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
-      const emailInput = getByTestId('signup-email-input');
-      const passwordInput = getByTestId('signup-password-input');
-      const submitButton = getByTestId('signup-submit-button');
+      const usernameInput = getByTestId('auth-username-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
 
       fireEvent.changeText(usernameInput, 'testuser');
       fireEvent.changeText(emailInput, 'test@example.com');
@@ -465,7 +481,7 @@ describe('Sign Up Flow Integration Tests', () => {
 
       const { getByTestId } = renderSignUpScreen();
 
-      const signInButton = getByTestId('signup-signin-button');
+      const signInButton = getByTestId('auth-signin-button');
 
       fireEvent.press(signInButton);
       fireEvent.press(signInButton);
@@ -482,7 +498,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should handle store state changes during component lifecycle', async () => {
-      const { getByTestId, rerender } = renderSignUpScreen();
+      const { getAllByTestId, rerender } = renderSignUpScreen();
 
       mockAuthStore.isLoading = true;
 
@@ -492,14 +508,15 @@ describe('Sign Up Flow Integration Tests', () => {
         </SafeAreaProvider>
       );
 
-      const submitButton = getByTestId('signup-submit-button');
+      const submitButtons = getAllByTestId('auth-submit-button');
+      const submitButton = submitButtons[0]; // First button is the main submit button
       expect(submitButton).toBeDisabled();
     });
 
     it('should handle rapid field changes', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId('signup-username-input');
+      const usernameInput = getByTestId('auth-username-input');
 
       fireEvent.changeText(usernameInput, 'a');
       fireEvent.changeText(usernameInput, 'ab');

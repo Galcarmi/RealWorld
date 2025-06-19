@@ -38,24 +38,24 @@ describe('Login Flow Integration Tests', () => {
       const { getByTestId } = renderLoginScreen();
 
       expectFormFieldExists(getByTestId, [
-        'login-screen',
-        'login-email-input',
-        'login-password-input',
-        'login-submit-button',
-        'login-signup-button',
+        'auth-screen',
+        'auth-email-input',
+        'auth-password-input',
+        'auth-submit-button',
+        'auth-signup-button',
       ]);
     });
 
     it('should display correct screen title', () => {
       const { getByTestId } = renderLoginScreen();
 
-      expect(getByTestId('login-screen-title')).toBeTruthy();
+      expect(getByTestId('auth-screen-title')).toBeTruthy();
     });
 
     it('should disable submit button with empty fields', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeDisabled();
     });
   });
@@ -65,7 +65,7 @@ describe('Login Flow Integration Tests', () => {
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
       const { getByTestId } = renderLoginScreen();
 
-      simulateFieldInput(getByTestId, 'login-email-input', 'test@example.com');
+      simulateFieldInput(getByTestId, 'auth-email-input', 'test@example.com');
 
       expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
     });
@@ -74,7 +74,7 @@ describe('Login Flow Integration Tests', () => {
       const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderLoginScreen();
 
-      simulateFieldInput(getByTestId, 'login-password-input', 'password123');
+      simulateFieldInput(getByTestId, 'auth-password-input', 'password123');
 
       expect(setPasswordSpy).toHaveBeenCalledWith('password123');
     });
@@ -82,7 +82,7 @@ describe('Login Flow Integration Tests', () => {
     it('should handle email field focus and blur', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
+      const emailInput = getByTestId('auth-email-input');
       fireEvent(emailInput, 'focus');
       fireEvent(emailInput, 'blur');
 
@@ -92,7 +92,7 @@ describe('Login Flow Integration Tests', () => {
     it('should handle password field focus and blur', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const passwordInput = getByTestId('login-password-input');
+      const passwordInput = getByTestId('auth-password-input');
       fireEvent(passwordInput, 'focus');
       fireEvent(passwordInput, 'blur');
 
@@ -104,52 +104,52 @@ describe('Login Flow Integration Tests', () => {
     it('should show submit button state based on form validity', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeTruthy();
     });
 
     it('should keep submit button disabled with invalid email', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'invalid-email');
       fireEvent.changeText(passwordInput, 'password123');
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeDisabled();
     });
 
     it('should keep submit button disabled with short password', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, '123');
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeDisabled();
     });
 
     it('should handle form field changes progressively', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
-      expect(getByTestId('login-submit-button')).toBeDisabled();
+      expect(getByTestId('auth-submit-button')).toBeDisabled();
 
       fireEvent.changeText(emailInput, 'test@example.com');
-      expect(getByTestId('login-submit-button')).toBeDisabled();
+      expect(getByTestId('auth-submit-button')).toBeDisabled();
 
       fireEvent.changeText(passwordInput, 'password123');
 
@@ -162,9 +162,9 @@ describe('Login Flow Integration Tests', () => {
     it('should trigger login action when submit is attempted', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButton = getByTestId('auth-submit-button');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
@@ -179,16 +179,16 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeDisabled();
     });
 
     it('should handle login process integration', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButton = getByTestId('auth-submit-button');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
@@ -208,7 +208,7 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const signUpButton = getByTestId('login-signup-button');
+      const signUpButton = getByTestId('auth-signup-button');
       fireEvent.press(signUpButton);
 
       expect(navigationSpy).toHaveBeenCalledTimes(1);
@@ -227,9 +227,9 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButton = getByTestId('auth-submit-button');
 
       expect(submitButton).toBeDisabled();
 
@@ -244,8 +244,8 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
@@ -256,26 +256,28 @@ describe('Login Flow Integration Tests', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle authentication errors gracefully', () => {
-      mockAuthStore.errors = {
-        email: ['Invalid email format'],
-        password: ['Password is too short'],
-      };
-
+    it('should handle authentication errors gracefully', async () => {
       const { getByTestId } = renderLoginScreen();
 
-      expect(getByTestId('login-screen')).toBeTruthy();
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const loginButton = getByTestId('auth-submit-button');
+
+      fireEvent.changeText(emailInput, 'wrong@example.com');
+      fireEvent.changeText(passwordInput, 'wrongpassword');
+
+      fireEvent.press(loginButton);
+
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
 
     it('should clear errors when user starts typing', () => {
-      mockAuthStore.errors = {
-        email: ['Invalid email'],
-      };
+      mockAuthStore.errors = { email: ['Invalid email'] };
 
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
+      const emailInput = getByTestId('auth-email-input');
       fireEvent.changeText(emailInput, 'newemail@example.com');
 
       expect(setEmailSpy).toHaveBeenCalledWith('newemail@example.com');
@@ -284,29 +286,31 @@ describe('Login Flow Integration Tests', () => {
     it('should handle login errors gracefully', async () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const loginButton = getByTestId('auth-submit-button');
 
       fireEvent.changeText(emailInput, 'error@example.com');
       fireEvent.changeText(passwordInput, 'password123');
-      fireEvent.press(submitButton);
 
-      expect(getByTestId('login-screen')).toBeTruthy();
+      fireEvent.press(loginButton);
+
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
 
     it('should handle network errors gracefully', async () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const loginButton = getByTestId('auth-submit-button');
 
       fireEvent.changeText(emailInput, 'network@example.com');
       fireEvent.changeText(passwordInput, 'password123');
-      fireEvent.press(submitButton);
 
-      expect(getByTestId('login-screen')).toBeTruthy();
+      fireEvent.press(loginButton);
+
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
   });
 
@@ -314,9 +318,9 @@ describe('Login Flow Integration Tests', () => {
     it('should have proper accessibility labels', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButton = getByTestId('auth-submit-button');
 
       expect(emailInput).toBeTruthy();
       expect(passwordInput).toBeTruthy();
@@ -326,7 +330,7 @@ describe('Login Flow Integration Tests', () => {
     it('should support secure text entry for password', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const passwordInput = getByTestId('login-password-input');
+      const passwordInput = getByTestId('auth-password-input');
       expect(passwordInput.props.secureTextEntry).toBe(true);
     });
   });
@@ -337,8 +341,8 @@ describe('Login Flow Integration Tests', () => {
       const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'integration@test.com');
       fireEvent.changeText(passwordInput, 'integrationtest');
@@ -352,13 +356,13 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
 
       fireEvent.changeText(emailInput, 'valid@email.com');
       fireEvent.changeText(passwordInput, 'validpassword');
 
-      expect(getByTestId('login-screen')).toBeTruthy();
+      expect(getByTestId('auth-screen')).toBeTruthy();
     });
   });
 
@@ -366,9 +370,9 @@ describe('Login Flow Integration Tests', () => {
     it('should handle multiple form interactions gracefully', () => {
       const { getByTestId } = renderLoginScreen();
 
-      const emailInput = getByTestId('login-email-input');
-      const passwordInput = getByTestId('login-password-input');
-      const submitButton = getByTestId('login-submit-button');
+      const emailInput = getByTestId('auth-email-input');
+      const passwordInput = getByTestId('auth-password-input');
+      const submitButton = getByTestId('auth-submit-button');
 
       fireEvent.changeText(emailInput, 'test@example.com');
       fireEvent.changeText(passwordInput, 'password123');
@@ -388,7 +392,7 @@ describe('Login Flow Integration Tests', () => {
 
       const { getByTestId } = renderLoginScreen();
 
-      const signUpButton = getByTestId('login-signup-button');
+      const signUpButton = getByTestId('auth-signup-button');
 
       fireEvent.press(signUpButton);
       fireEvent.press(signUpButton);
@@ -415,7 +419,7 @@ describe('Login Flow Integration Tests', () => {
         </SafeAreaProvider>
       );
 
-      const submitButton = getByTestId('login-submit-button');
+      const submitButton = getByTestId('auth-submit-button');
       expect(submitButton).toBeDisabled();
     });
   });

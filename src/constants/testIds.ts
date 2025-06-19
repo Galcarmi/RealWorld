@@ -6,9 +6,9 @@ export const TEST_IDS = {
   AUTH_PASSWORD_INPUT: 'auth-password-input',
   AUTH_SUBMIT_BUTTON: 'auth-submit-button',
   AUTH_SIGNUP_BUTTON: 'auth-signup-button',
+  AUTH_SIGNIN_BUTTON: 'auth-signin-button',
   AUTH_USERNAME_INPUT: 'auth-username-input',
   SIGNUP_SIGNIN_BUTTON: 'signup-signin-button',
-  LOGIN_SIGNUP_BUTTON: 'login-signup-button',
 
   // Main Screens
   HOME_SCREEN: 'home-screen',

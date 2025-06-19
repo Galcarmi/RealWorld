@@ -31,37 +31,25 @@ export const AuthActions = ({
 }: AuthActionsProps) => {
   const styles = useMemo(() => createStyles(), []);
 
-  const buttonLabel =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? BUTTON_LABELS.SIGN_IN
-      : BUTTON_LABELS.SIGN_UP;
+  const isSignIn = screenType === AUTH_SCREEN_TYPE.SIGN_IN;
+
+  const buttonLabel = isSignIn ? BUTTON_LABELS.SIGN_IN : BUTTON_LABELS.SIGN_UP;
   const buttonTestID = TEST_IDS.AUTH_SUBMIT_BUTTON;
-  const buttonOnPress =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN ? onLogin : onSignUp;
-  const onNavigateToOtherAuthScreen =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? onNavigateToSignUp
-      : onNavigateToLogin;
-  const otherAuthScreenButtonLabel =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? BUTTON_LABELS.SIGN_UP
-      : BUTTON_LABELS.SIGN_IN;
-  const otherAuthScreenButtonTestID =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? TEST_IDS.AUTH_SIGNUP_BUTTON
-      : TEST_IDS.AUTH_SUBMIT_BUTTON;
+  const buttonOnPress = isSignIn ? onLogin : onSignUp;
+  const onNavigateToOtherAuthScreen = isSignIn
+    ? onNavigateToSignUp
+    : onNavigateToLogin;
+  const otherAuthScreenButtonLabel = isSignIn
+    ? BUTTON_LABELS.SIGN_UP
+    : BUTTON_LABELS.SIGN_IN;
+  const otherAuthScreenButtonTestID = isSignIn
+    ? TEST_IDS.AUTH_SIGNUP_BUTTON
+    : TEST_IDS.AUTH_SIGNIN_BUTTON;
+
+  const isFormValid = isSignIn ? isLoginFormValid : isSignUpFormValid;
   const buttonBackgroundColor =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? isLoginFormValid && !isLoading
-        ? COLORS.PRIMARY
-        : COLORS.GREY
-      : isSignUpFormValid && !isLoading
-        ? COLORS.PRIMARY
-        : COLORS.GREY;
-  const buttonDisabled =
-    screenType === AUTH_SCREEN_TYPE.SIGN_IN
-      ? !isLoginFormValid || isLoading
-      : !isSignUpFormValid || isLoading;
+    isFormValid && !isLoading ? COLORS.PRIMARY : COLORS.GREY;
+  const buttonDisabled = !isFormValid || isLoading;
 
   return (
     <View style={containerStyle}>
