@@ -1,5 +1,7 @@
 // Design System Constants for consistent styling across the app
 
+import { UI } from './app';
+
 export const SPACINGS = {
   // Padding values
   PADDING_EXTRA_SMALL: 4,
