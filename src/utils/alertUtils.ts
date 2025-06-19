@@ -24,7 +24,7 @@ export const showConfirmAlert = (
     {
       text: ALERT_BUTTONS.CANCEL,
       onPress: onCancel,
-      style: "cancel",
+      style: 'cancel',
     },
     { text: ALERT_BUTTONS.OK, onPress: onConfirm },
   ]);

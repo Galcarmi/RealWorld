@@ -8,8 +8,6 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS, SPACINGS, DIMENSIONS } from '../../constants/styles';
 
-import { styles as globalStyles } from '../../styles/globalStyles';
-
 import { InputField } from '../../components/InputField';
 import {
   TEST_IDS,
@@ -92,7 +90,10 @@ export const Main: NavioScreen = observer(() => {
       <View
         marginT-small
         spread
-        style={[globalStyles.height25Percent, globalStyles.width80Percent]}
+        style={{
+          height: DIMENSIONS.HEIGHT_25_PERCENT,
+          width: DIMENSIONS.WIDTH_80_PERCENT,
+        }}
         paddingT-30
         paddingB-30
         marginL-40
@@ -140,7 +141,7 @@ const createStyles = (isSignUpFormValid: boolean, isLoading: boolean) =>
       color: COLORS.PRIMARY,
     },
     inputFieldContainer: {
-      ...globalStyles.width80Percent,
-      ...globalStyles.height60px,
+      width: DIMENSIONS.WIDTH_80_PERCENT,
+      height: DIMENSIONS.HEIGHT_60,
     },
   });

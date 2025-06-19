@@ -8,8 +8,6 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS, SPACINGS, DIMENSIONS } from '../../constants/styles';
 
-import { styles as globalStyles } from '../../styles/globalStyles';
-
 import { InputField } from '../../components/InputField';
 import {
   TEST_IDS,
@@ -60,8 +58,8 @@ export const LoginScreen: NavioScreen = observer(() => {
           ]}
           validation={emailValidation}
           containerStyle={{
-            ...globalStyles.width80Percent,
-            ...globalStyles.height60px,
+            width: DIMENSIONS.WIDTH_80_PERCENT,
+            height: DIMENSIONS.HEIGHT_60,
           }}
           onChangeText={onEmailChange}
           testID={TEST_IDS.LOGIN_EMAIL_INPUT}
@@ -74,8 +72,8 @@ export const LoginScreen: NavioScreen = observer(() => {
             VALIDATION_MESSAGES.PASSWORD_TOO_SHORT,
           ]}
           containerStyle={{
-            ...globalStyles.width80Percent,
-            ...globalStyles.height60px,
+            width: DIMENSIONS.WIDTH_80_PERCENT,
+            height: DIMENSIONS.HEIGHT_60,
           }}
           onChangeText={onPasswordChange}
           secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
@@ -85,7 +83,10 @@ export const LoginScreen: NavioScreen = observer(() => {
       <View
         marginT-small
         spread
-        style={[globalStyles.height25Percent, globalStyles.width80Percent]}
+        style={{
+          height: DIMENSIONS.HEIGHT_25_PERCENT,
+          width: DIMENSIONS.WIDTH_80_PERCENT,
+        }}
         paddingT-30
         paddingB-30
         marginL-40

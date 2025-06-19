@@ -5,11 +5,9 @@ import { View, Button, Text } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { styles as globalStyles } from '../../styles/globalStyles';
-
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
-import { COLORS, FORM_LIMITS, TEST_IDS } from '../../constants';
+import { COLORS, DIMENSIONS, FORM_LIMITS, TEST_IDS } from '../../constants';
 
 import { useEditProfile } from './useEditProfile';
 
@@ -42,8 +40,8 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             minLength={0}
             maxLength={FORM_LIMITS.PROFILE_IMAGE_MAX}
             containerStyle={{
-              ...globalStyles.width80Percent,
-              ...globalStyles.height60px,
+              width: DIMENSIONS.WIDTH_80_PERCENT,
+              height: DIMENSIONS.HEIGHT_60,
             }}
             testID={TEST_IDS.EDIT_PROFILE_IMAGE_INPUT}
           />
