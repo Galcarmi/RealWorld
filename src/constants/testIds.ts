@@ -1,19 +1,14 @@
 export const TEST_IDS = {
   // Auth Screens
-  LOGIN_SCREEN: 'login-screen',
-  LOGIN_SCREEN_TITLE: 'login-screen-title',
-  LOGIN_EMAIL_INPUT: 'login-email-input',
-  LOGIN_PASSWORD_INPUT: 'login-password-input',
-  LOGIN_SUBMIT_BUTTON: 'login-submit-button',
-  LOGIN_SIGNUP_BUTTON: 'login-signup-button',
-
-  REGISTER_SCREEN: 'register-screen',
-  SIGNUP_SCREEN_TITLE: 'signup-screen-title',
-  SIGNUP_USERNAME_INPUT: 'signup-username-input',
-  SIGNUP_EMAIL_INPUT: 'signup-email-input',
-  SIGNUP_PASSWORD_INPUT: 'signup-password-input',
-  SIGNUP_SUBMIT_BUTTON: 'signup-submit-button',
+  AUTH_SCREEN: 'auth-screen',
+  AUTH_SCREEN_TITLE: 'auth-screen-title',
+  AUTH_EMAIL_INPUT: 'auth-email-input',
+  AUTH_PASSWORD_INPUT: 'auth-password-input',
+  AUTH_SUBMIT_BUTTON: 'auth-submit-button',
+  AUTH_SIGNUP_BUTTON: 'auth-signup-button',
+  AUTH_USERNAME_INPUT: 'auth-username-input',
   SIGNUP_SIGNIN_BUTTON: 'signup-signin-button',
+  LOGIN_SIGNUP_BUTTON: 'login-signup-button',
 
   // Main Screens
   HOME_SCREEN: 'home-screen',

@@ -10,7 +10,7 @@ import {
   simulateFieldInput,
 } from '../../utils/testHelpers';
 
-import { LoginScreen } from '../../../src/screens/login/loginScreen';
+import { SignInScreen } from '../../../src/screens/login/signInScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
@@ -411,7 +411,7 @@ describe('Login Flow Integration Tests', () => {
 
       rerender(
         <SafeAreaProvider>
-          <LoginScreen />
+          <SignInScreen />
         </SafeAreaProvider>
       );
 

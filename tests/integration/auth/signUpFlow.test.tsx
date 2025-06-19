@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { render, fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
-import { Main as SignUpScreen } from '../../../src/screens/login/signUpScreen';
+import { SignUpScreen } from '../../../src/screens/login/signUpScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';

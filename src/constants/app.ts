@@ -293,3 +293,8 @@ export const AUTO_COMPLETE = {
   USERNAME: 'username',
   NAME: 'name',
 } as const;
+
+export enum AUTH_SCREEN_TYPE {
+  SIGN_IN,
+  SIGN_UP,
+}

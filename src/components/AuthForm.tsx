@@ -7,28 +7,51 @@ import {
   VALIDATION_MESSAGES,
   INPUT_SECURITY,
 } from '../constants';
+import { AUTH_SCREEN_TYPE } from '../constants/app';
 import { DIMENSIONS } from '../constants/styles';
 import { emailValidation } from '../utils';
 
 import { InputField } from './InputField';
 
-interface LoginFormProps {
+interface AuthFormProps {
   email: string;
   password: string;
   onEmailChange: (email: string) => void;
   onPasswordChange: (password: string) => void;
   containerStyle?: ViewStyle;
+  screenType: AUTH_SCREEN_TYPE;
+  username: string;
+  onUsernameChange: (username: string) => void;
 }
 
-export const LoginForm = ({
+export const AuthForm = ({
   email,
   password,
+  username,
   onEmailChange,
   onPasswordChange,
   containerStyle,
-}: LoginFormProps) => {
+  screenType,
+  onUsernameChange,
+}: AuthFormProps) => {
   return (
     <View style={containerStyle}>
+      {screenType === AUTH_SCREEN_TYPE.SIGN_UP && (
+        <InputField
+          placeholder={PLACEHOLDERS.USERNAME}
+          value={username}
+          validationMessage={[
+            VALIDATION_MESSAGES.USERNAME_REQUIRED,
+            VALIDATION_MESSAGES.USERNAME_TOO_SHORT,
+          ]}
+          containerStyle={{
+            width: DIMENSIONS.WIDTH_80_PERCENT,
+            height: DIMENSIONS.HEIGHT_60,
+          }}
+          onChangeText={onUsernameChange}
+          testID={TEST_IDS.AUTH_USERNAME_INPUT}
+        />
+      )}
       <InputField
         placeholder={PLACEHOLDERS.EMAIL}
         value={email}
@@ -42,7 +65,7 @@ export const LoginForm = ({
           height: DIMENSIONS.HEIGHT_60,
         }}
         onChangeText={onEmailChange}
-        testID={TEST_IDS.LOGIN_EMAIL_INPUT}
+        testID={TEST_IDS.AUTH_EMAIL_INPUT}
       />
       <InputField
         placeholder={PLACEHOLDERS.PASSWORD}
@@ -57,7 +80,7 @@ export const LoginForm = ({
         }}
         onChangeText={onPasswordChange}
         secureTextEntry={INPUT_SECURITY.SECURE_TEXT_ENTRY}
-        testID={TEST_IDS.LOGIN_PASSWORD_INPUT}
+        testID={TEST_IDS.AUTH_PASSWORD_INPUT}
       />
     </View>
   );
