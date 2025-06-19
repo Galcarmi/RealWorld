@@ -70,6 +70,6 @@ const createStyles = () =>
       color: COLORS.PLACEHOLDER,
     },
     inputField: {
-      fontSize: FONT_SIZES.LARGE,
+      fontSize: FONT_SIZES.MEDIUM,
     },
   });
