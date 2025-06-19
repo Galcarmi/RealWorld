@@ -15,12 +15,12 @@ createVisualTestSuite(
         'register-screen'
       );
 
-      await testHelper.waitForTestId('signup-screen-title', 5000);
-      await testHelper.waitForTestId('signup-username-input', 5000);
-      await testHelper.waitForTestId('signup-email-input', 5000);
-      await testHelper.waitForTestId('signup-password-input', 5000);
-      await testHelper.waitForTestId('signup-submit-button', 5000);
-      await testHelper.waitForTestId('signup-signin-button', 5000);
+      await testHelper.waitForTestId('auth-screen-title', 5000);
+      await testHelper.waitForTestId('auth-username-input', 5000);
+      await testHelper.waitForTestId('auth-email-input', 5000);
+      await testHelper.waitForTestId('auth-password-input', 5000);
+      await testHelper.waitForTestId('auth-submit-button', 5000);
+      await testHelper.waitForTestId('auth-signin-button', 5000);
 
       await suite.takeScreenshotAndCompare('signup-screen-empty-form');
     });
@@ -35,9 +35,9 @@ createVisualTestSuite(
         'register-screen'
       );
 
-      await testHelper.typeInTestId('signup-username-input', 'testuser');
-      await testHelper.typeInTestId('signup-email-input', 'test@example.com');
-      await testHelper.typeInTestId('signup-password-input', 'password123');
+      await testHelper.typeInTestId('auth-username-input', 'testuser');
+      await testHelper.typeInTestId('auth-email-input', 'test@example.com');
+      await testHelper.typeInTestId('auth-password-input', 'password123');
 
       await suite.takeScreenshotAndCompare('signup-screen-with-form-data');
     });

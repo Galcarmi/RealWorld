@@ -267,16 +267,16 @@ export async function performLogin(
     'login-screen'
   );
 
-  await testHelper.waitForTestId('login-email-input', 5000);
-  await testHelper.waitForTestId('login-password-input', 5000);
-  await testHelper.waitForTestId('login-submit-button', 5000);
+  await testHelper.waitForTestId('auth-email-input', 5000);
+  await testHelper.waitForTestId('auth-password-input', 5000);
+  await testHelper.waitForTestId('auth-submit-button', 5000);
 
-  await testHelper.typeInTestId('login-email-input', 'test@example.com');
-  await testHelper.typeInTestId('login-password-input', 'password123');
+  await testHelper.typeInTestId('auth-email-input', 'test@example.com');
+  await testHelper.typeInTestId('auth-password-input', 'password123');
 
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
-    'login-submit-button',
+    'auth-submit-button',
     'home-screen'
   );
 }
