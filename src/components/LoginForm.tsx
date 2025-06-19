@@ -1,4 +1,4 @@
-import { ViewStyle, StyleSheet } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import {
