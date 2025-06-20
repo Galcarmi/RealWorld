@@ -1,5 +1,5 @@
-import { useTranslation as useI18nTranslation } from 'react-i18next';
 import { useCallback } from 'react';
+import { useTranslation as useI18nTranslation } from 'react-i18next';
 
 import { languageStore } from '../store/languageStore';
 
@@ -8,7 +8,7 @@ export const useTranslation = () => {
 
   const getCurrentLanguage = useCallback(() => {
     return languageStore.currentLanguage;
-  }, [languageStore.currentLanguage]);
+  }, []);
 
   const isRTL = useCallback((): boolean => {
     return i18n.dir() === 'rtl';
