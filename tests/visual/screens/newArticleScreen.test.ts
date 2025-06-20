@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { mockCollections } from '../../mocks/data';
 import {
   createVisualTestSuite,
@@ -18,26 +19,14 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'new-article-button',
-        'new-article-screen'
+        TEST_IDS.NEW_ARTICLE_BUTTON,
+        TEST_IDS.NEW_ARTICLE_SCREEN
       );
 
-      const page2 = testHelper.getPage();
-      if (!page2) throw new Error('Page not available');
-
-      await page2.waitForSelector('[data-testid*="article-title-input"]', {
-        timeout: 5000,
-      });
-      await page2.waitForSelector(
-        '[data-testid*="article-description-input"]',
-        { timeout: 5000 }
-      );
-      await page2.waitForSelector('[data-testid*="article-body-input"]', {
-        timeout: 5000,
-      });
-      await page2.waitForSelector('[data-testid*="publish-article-button"]', {
-        timeout: 5000,
-      });
+      await testHelper.waitForTestId(TEST_IDS.ARTICLE_TITLE_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.ARTICLE_BODY_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON, 5000);
 
       await suite.takeScreenshotAndCompare('new-article-screen-empty-form');
     });
@@ -51,8 +40,8 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'new-article-button',
-        'new-article-screen'
+        TEST_IDS.NEW_ARTICLE_BUTTON,
+        TEST_IDS.NEW_ARTICLE_SCREEN
       );
 
       const page2 = testHelper.getPage();
@@ -60,13 +49,13 @@ createVisualTestSuite(
 
       await page2.evaluate(() => {
         const titleInput = document.querySelector(
-          '[data-testid*="article-title-input"] input'
+          '[data-testid="article-title-input"] input'
         ) as HTMLInputElement;
         const descriptionInput = document.querySelector(
-          '[data-testid*="article-description-input"] input'
+          '[data-testid="article-description-input"] input'
         ) as HTMLInputElement;
         const bodyInput = document.querySelector(
-          '[data-testid*="article-body-input"] textarea'
+          '[data-testid="article-body-input"] textarea'
         ) as HTMLTextAreaElement;
 
         if (titleInput) {

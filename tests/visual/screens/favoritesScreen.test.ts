@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { mockCollections } from '../../mocks/data';
 import {
   createVisualTestSuite,
@@ -17,8 +18,8 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'favorites-main-tab-icon',
-        'favorites-screen'
+        TEST_IDS.FAVORITES_MAIN_TAB_ICON,
+        TEST_IDS.FAVORITES_SCREEN
       );
       await testHelper.waitForTestId('article-card-test-article-2', 5000);
 

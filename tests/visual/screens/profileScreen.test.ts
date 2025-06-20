@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { mockCollections } from '../../mocks/data';
 import {
   createVisualTestSuite,
@@ -17,8 +18,8 @@ createVisualTestSuite(
 
       await navigateToProfile(testHelper);
 
-      await testHelper.waitForTestId('edit-profile-button', 5000);
-      await testHelper.waitForTestId('new-article-button', 5000);
+      await testHelper.waitForTestId(TEST_IDS.EDIT_PROFILE_BUTTON, 5000);
+      await testHelper.waitForTestId(TEST_IDS.NEW_ARTICLE_BUTTON, 5000);
 
       await suite.takeScreenshotAndCompare('profile-screen-initial');
     });
@@ -32,8 +33,8 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'new-article-button',
-        'new-article-screen'
+        TEST_IDS.NEW_ARTICLE_BUTTON,
+        TEST_IDS.NEW_ARTICLE_SCREEN
       );
 
       await suite.takeScreenshotAndCompare('new-article-screen-from-profile');

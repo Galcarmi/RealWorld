@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { mockCollections } from '../../mocks/data';
 import {
   createVisualTestSuite,
@@ -18,7 +19,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'article-card-test-article-1',
-        'author-profile-screen'
+        TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
 
       await suite.takeScreenshotAndCompare('author-profile-screen-initial');
@@ -33,12 +34,12 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'article-card-test-article-1',
-        'author-profile-screen'
+        TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
-      await testHelper.waitForTestId('follow-button', 5000);
+      await testHelper.waitForTestId(TEST_IDS.FOLLOW_BUTTON, 5000);
 
-      await testHelper.clickByTestId('follow-button');
-      await testHelper.waitForTestId('unfollow-button', 5000);
+      await testHelper.clickByTestId(TEST_IDS.FOLLOW_BUTTON);
+      await testHelper.waitForTestId(TEST_IDS.UNFOLLOW_BUTTON, 5000);
 
       await suite.takeScreenshotAndCompare('author-profile-screen-followed');
     });

@@ -12,16 +12,16 @@ createVisualTestSuite(
       await commonTestActions.navigateAndWaitForBody(testHelper);
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'register-tab-icon',
+        TEST_IDS.REGISTER_TAB_ICON,
         TEST_IDS.SIGNUP_SCREEN
       );
 
-      await testHelper.waitForTestId('auth-screen-title', 5000);
-      await testHelper.waitForTestId('auth-username-input', 5000);
-      await testHelper.waitForTestId('auth-email-input', 5000);
-      await testHelper.waitForTestId('auth-password-input', 5000);
-      await testHelper.waitForTestId('auth-submit-button', 5000);
-      await testHelper.waitForTestId('auth-signin-button', 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_SCREEN_TITLE, 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_USERNAME_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_EMAIL_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_PASSWORD_INPUT, 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_SUBMIT_BUTTON, 5000);
+      await testHelper.waitForTestId(TEST_IDS.AUTH_SIGNIN_BUTTON, 5000);
 
       await suite.takeScreenshotAndCompare('signup-screen-empty-form');
     });
@@ -32,13 +32,19 @@ createVisualTestSuite(
       await commonTestActions.navigateAndWaitForBody(testHelper);
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'register-tab-icon',
+        TEST_IDS.REGISTER_TAB_ICON,
         TEST_IDS.SIGNUP_SCREEN
       );
 
-      await testHelper.typeInTestId('auth-username-input', 'testuser');
-      await testHelper.typeInTestId('auth-email-input', 'test@example.com');
-      await testHelper.typeInTestId('auth-password-input', 'password123');
+      await testHelper.typeInTestId(TEST_IDS.AUTH_USERNAME_INPUT, 'testuser');
+      await testHelper.typeInTestId(
+        TEST_IDS.AUTH_EMAIL_INPUT,
+        'test@example.com'
+      );
+      await testHelper.typeInTestId(
+        TEST_IDS.AUTH_PASSWORD_INPUT,
+        'password123'
+      );
 
       await suite.takeScreenshotAndCompare('signup-screen-with-form-data');
     });
