@@ -3,6 +3,8 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { observer } from 'mobx-react';
+
 import { APP_UI, ICON_NAMES } from '../constants';
 import {
   COLORS,
@@ -12,6 +14,7 @@ import {
   FONT_SIZES,
   DIMENSIONS,
 } from '../constants/styles';
+import { useTranslation } from '../hooks/useTranslation';
 import { NavigationInstance } from '../navigation/types';
 
 import { useScreenHeader } from './useScreenHeader';
@@ -23,56 +26,55 @@ interface ScreenHeaderProps {
   navigation?: NavigationInstance;
 }
 
-export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
-  title,
-  showBackButton = false,
-  onBackPress,
-  navigation,
-}) => {
-  const { insets, handleBackPress, shouldShowBackButton } = useScreenHeader({
-    showBackButton,
-    onBackPress,
-    navigation,
-  });
+export const ScreenHeader: React.FC<ScreenHeaderProps> = observer(
+  ({ title, showBackButton = false, onBackPress, navigation }) => {
+    const { t } = useTranslation();
+    const { insets, handleBackPress, shouldShowBackButton } = useScreenHeader({
+      showBackButton,
+      onBackPress,
+      navigation,
+    });
 
-  const styles = useMemo(() => createStyles(insets.top), [insets.top]);
+    const styles = useMemo(() => createStyles(insets.top), [insets.top]);
 
-  const backButton = useMemo(
-    () =>
-      shouldShowBackButton ? (
-        <TouchableOpacity
-          onPress={handleBackPress}
-          activeOpacity={0.7}
-          style={styles.backButton}
-        >
-          <Ionicons
-            name={ICON_NAMES.CHEVRON_BACK}
-            size={APP_UI.ICON_SIZES.LARGE}
-            color={COLORS.BACKGROUND}
-          />
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-      ) : undefined,
-    [
-      shouldShowBackButton,
-      handleBackPress,
-      styles.backButton,
-      styles.backButtonText,
-    ]
-  );
+    const backButton = useMemo(
+      () =>
+        shouldShowBackButton ? (
+          <TouchableOpacity
+            onPress={handleBackPress}
+            activeOpacity={0.7}
+            style={styles.backButton}
+          >
+            <Ionicons
+              name={ICON_NAMES.CHEVRON_BACK}
+              size={APP_UI.ICON_SIZES.LARGE}
+              color={COLORS.BACKGROUND}
+            />
+            <Text style={styles.backButtonText}>{t('common.back')}</Text>
+          </TouchableOpacity>
+        ) : undefined,
+      [
+        shouldShowBackButton,
+        handleBackPress,
+        styles.backButton,
+        styles.backButtonText,
+        t,
+      ]
+    );
 
-  return (
-    <>
-      <View style={styles.insets} />
-      <View style={styles.headerContainer}>
-        <View style={styles.titleContainer}>
-          {backButton}
-          {title && <Text style={styles.title}>{title}</Text>}
+    return (
+      <>
+        <View style={styles.insets} />
+        <View style={styles.headerContainer}>
+          <View style={styles.titleContainer}>
+            {backButton}
+            {title && <Text style={styles.title}>{title}</Text>}
+          </View>
         </View>
-      </View>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
 
 const createStyles = (paddingTop: number) =>
   StyleSheet.create({

@@ -10,8 +10,9 @@ import {
 
 import { observer } from 'mobx-react';
 
-import { FeedType } from '../constants/feedTypes';
+import { FeedType } from '../constants';
 import { COLORS, SPACINGS, DIMENSIONS, FONT_SIZES } from '../constants/styles';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface Tab {
   id: string;
@@ -37,11 +38,20 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     inactiveColor = COLORS.PLACEHOLDER,
     containerStyle,
   }) => {
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(), []);
 
     const tabs: Tab[] = [
-      { id: FeedType.GLOBAL, label: 'For You', onPress: onGlobalFeedPress },
-      { id: FeedType.FEED, label: 'Following', onPress: onUserFeedPress },
+      {
+        id: FeedType.GLOBAL,
+        label: t('feed.forYou'),
+        onPress: onGlobalFeedPress,
+      },
+      {
+        id: FeedType.FEED,
+        label: t('feed.following'),
+        onPress: onUserFeedPress,
+      },
     ];
 
     return (
@@ -60,7 +70,7 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
             >
               <Text
                 style={[
-                  styles.tabLabel,
+                  styles.tabText,
                   { color: isActive ? activeColor : inactiveColor },
                 ]}
               >
@@ -97,11 +107,8 @@ const createStyles = () =>
       marginRight: SPACINGS.MARGIN_TAB,
       marginLeft: SPACINGS.MARGIN_TAB,
     },
-    tabLabel: {
+    tabText: {
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.PLACEHOLDER,
-    },
-    activeTabLabel: {
-      color: COLORS.PRIMARY,
     },
   });

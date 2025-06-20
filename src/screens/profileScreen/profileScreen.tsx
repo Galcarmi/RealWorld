@@ -12,6 +12,7 @@ import { NewArticleButton } from '../../components/NewArticleButton';
 import { ProfileHeader } from '../../components/ProfileHeader';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 import { navigationService } from '../../services';
 
 import { useProfile } from './useProfile';
@@ -19,6 +20,7 @@ import { useProfile } from './useProfile';
 interface ProfileScreenProps {}
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
+  const { t } = useTranslation();
   const {
     currentUser,
     userArticles,
@@ -39,7 +41,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
-      <ScreenHeader title='Profile' />
+      <ScreenHeader title={t('navigation.profile')} />
       <ProfileHeader
         user={currentUser}
         onEditProfile={onEditProfile}
@@ -57,7 +59,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
         onLoadMore={noop}
         onArticlePress={noop}
         onFavoritePress={onToggleFavorite}
-        emptyMessage="No articles yet. Tap 'New Article' to create your first post"
+        emptyMessage={t('empty.noUserArticles')}
         contextKey='profile'
         containerStyle={styles.articlesSection}
       />

@@ -2,14 +2,11 @@ import React, { useMemo } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
-import {
-  FORM_LIMITS,
-  TEST_IDS,
-  VALIDATION_MESSAGES,
-  BUTTON_LABELS,
-  PLACEHOLDERS,
-} from '../constants';
+import { observer } from 'mobx-react';
+
+import { FORM_LIMITS, TEST_IDS } from '../constants';
 import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
+import { useTranslation } from '../hooks/useTranslation';
 
 import { InputField } from './InputField';
 
@@ -26,86 +23,89 @@ interface NewArticleFormProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-export const NewArticleForm: React.FC<NewArticleFormProps> = ({
-  title,
-  description,
-  body,
-  isLoading,
-  canPublish,
-  onTitleChange,
-  onDescriptionChange,
-  onBodyChange,
-  onPublishArticle,
-  containerStyle,
-}) => {
-  const styles = useMemo(() => createStyles(), []);
+export const NewArticleForm: React.FC<NewArticleFormProps> = observer(
+  ({
+    title,
+    description,
+    body,
+    isLoading,
+    canPublish,
+    onTitleChange,
+    onDescriptionChange,
+    onBodyChange,
+    onPublishArticle,
+    containerStyle,
+  }) => {
+    const { t } = useTranslation();
+    const styles = useMemo(() => createStyles(), []);
 
-  const determineButtonBackgroundColor = () => {
-    return canPublish ? COLORS.PRIMARY : COLORS.GREY;
-  };
+    const determineButtonBackgroundColor = () => {
+      return canPublish ? COLORS.PRIMARY : COLORS.GREY;
+    };
 
-  const createTitleInputField = () => (
-    <InputField
-      placeholder={PLACEHOLDERS.TITLE}
-      value={title}
-      maxLength={FORM_LIMITS.ARTICLE_TITLE_MAX}
-      minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
-      validationMessage={[VALIDATION_MESSAGES.TITLE_REQUIRED]}
-      onChangeText={onTitleChange}
-      containerStyle={styles.titleInput}
-      testID={TEST_IDS.ARTICLE_TITLE_INPUT}
-    />
-  );
+    const createTitleInputField = () => (
+      <InputField
+        placeholder={t('placeholders.title')}
+        value={title}
+        maxLength={FORM_LIMITS.ARTICLE_TITLE_MAX}
+        minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
+        validationMessage={[t('validation.titleRequired')]}
+        onChangeText={onTitleChange}
+        containerStyle={styles.titleInput}
+        testID={TEST_IDS.ARTICLE_TITLE_INPUT}
+      />
+    );
 
-  const createDescriptionInputField = () => (
-    <InputField
-      placeholder={PLACEHOLDERS.DESCRIPTION}
-      value={description}
-      maxLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MAX}
-      minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
-      validationMessage={[VALIDATION_MESSAGES.DESCRIPTION_REQUIRED]}
-      onChangeText={onDescriptionChange}
-      containerStyle={styles.descriptionInput}
-      testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
-    />
-  );
+    const createDescriptionInputField = () => (
+      <InputField
+        placeholder={t('placeholders.description')}
+        value={description}
+        maxLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MAX}
+        minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
+        validationMessage={[t('validation.descriptionRequired')]}
+        onChangeText={onDescriptionChange}
+        containerStyle={styles.descriptionInput}
+        testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
+      />
+    );
 
-  const createBodyInputField = () => (
-    <InputField
-      placeholder={PLACEHOLDERS.ARTICLE_TEXT}
-      value={body}
-      maxLength={FORM_LIMITS.ARTICLE_BODY_MAX}
-      minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
-      validationMessage={[VALIDATION_MESSAGES.ARTICLE_TEXT_REQUIRED]}
-      onChangeText={onBodyChange}
-      containerStyle={styles.bodyInput}
-      testID={TEST_IDS.ARTICLE_BODY_INPUT}
-    />
-  );
+    const createBodyInputField = () => (
+      <InputField
+        placeholder={t('placeholders.articleText')}
+        value={body}
+        maxLength={FORM_LIMITS.ARTICLE_BODY_MAX}
+        minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
+        validationMessage={[t('validation.articleTextRequired')]}
+        onChangeText={onBodyChange}
+        containerStyle={styles.bodyInput}
+        testID={TEST_IDS.ARTICLE_BODY_INPUT}
+      />
+    );
 
-  const createPublishButton = () => (
-    <Button
-      label={BUTTON_LABELS.PUBLISH}
-      backgroundColor={determineButtonBackgroundColor()}
-      color={COLORS.BACKGROUND}
-      borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
-      paddingV-15
-      disabled={!canPublish || isLoading}
-      onPress={onPublishArticle}
-      style={styles.publishButton}
-      testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
-    />
-  );
+    const createPublishButton = () => (
+      <Button
+        label={t('common.publish')}
+        backgroundColor={determineButtonBackgroundColor()}
+        color={COLORS.BACKGROUND}
+        borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
+        paddingV-15
+        disabled={!canPublish || isLoading}
+        onPress={onPublishArticle}
+        style={styles.publishButton}
+        testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
+      />
+    );
 
-  return (
-    <View style={[styles.container, containerStyle]}>
-      {createTitleInputField()}
-      {createDescriptionInputField()}
-      {createBodyInputField()}
-      {createPublishButton()}
-    </View>
-  );
-};
+    return (
+      <View style={[styles.container, containerStyle]}>
+        {createTitleInputField()}
+        {createDescriptionInputField()}
+        {createBodyInputField()}
+        {createPublishButton()}
+      </View>
+    );
+  }
+);
 
 const createStyles = () =>
   StyleSheet.create({

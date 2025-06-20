@@ -84,6 +84,15 @@ jest.mock('@expo/vector-icons', () => ({
   Feather: 'Feather',
 }));
 
+jest.mock('expo-localization', () => ({
+  locale: 'en-US',
+  locales: ['en-US'],
+  timezone: 'America/New_York',
+  isoCurrencyCodes: ['USD'],
+  region: 'US',
+  isRTL: false,
+}));
+
 jest.mock('rn-navio', () => ({
   generateNavioStackNavigator: jest.fn(() => ({
     Stack: {

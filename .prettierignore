@@ -17,4 +17,7 @@ coverage/
 
 # Platform specific
 .DS_Store
-*.log 
+*.log
+
+# Locale files
+src/locales/**/*.json 

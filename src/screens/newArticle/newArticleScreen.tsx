@@ -10,6 +10,7 @@ import { COLORS, SPACINGS } from '../../constants/styles';
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 import { useNewArticle } from './useNewArticle';
 
@@ -17,6 +18,7 @@ interface NewArticleScreenProps {}
 
 export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
   () => {
+    const { t } = useTranslation();
     const {
       title,
       description,
@@ -35,7 +37,7 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
     return (
       <View style={styles.container} testID={TEST_IDS.NEW_ARTICLE_SCREEN}>
         <ScreenHeader
-          title='New Article'
+          title={t('navigation.newArticle')}
           showBackButton={true}
           onBackPress={onGoBack}
         />
