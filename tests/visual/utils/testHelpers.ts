@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../../src/constants/testIds';
 import {
   MockApiResponse,
   PuppeteerTestHelper,
@@ -264,7 +265,7 @@ export async function performLogin(
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
     'login-tab-icon',
-    'login-screen'
+    TEST_IDS.SIGNIN_SCREEN,
   );
 
   await testHelper.waitForTestId('auth-email-input', 5000);

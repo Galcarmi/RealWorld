@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { mockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
@@ -12,7 +13,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
-        'register-screen'
+        TEST_IDS.SIGNUP_SCREEN,
       );
 
       await testHelper.waitForTestId('auth-screen-title', 5000);
@@ -32,7 +33,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
-        'register-screen'
+        TEST_IDS.SIGNUP_SCREEN,
       );
 
       await testHelper.typeInTestId('auth-username-input', 'testuser');
