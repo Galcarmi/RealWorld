@@ -13,7 +13,6 @@ interface AuthorHeaderProps {
   author: Profile;
   createdAt: string;
   favorited: boolean;
-  favoritesCount: number;
   onFavorite: () => void;
 }
 
@@ -21,7 +20,6 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
   author,
   createdAt,
   favorited,
-  favoritesCount,
   onFavorite,
 }) => {
   const styles = useMemo(() => createStyles(), []);
@@ -30,11 +28,10 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
     <View style={styles.container}>
       <Avatar
         source={{ uri: author.image || undefined }}
-        size={APP_UI.ICON_SIZES.AVATAR_SMALL}
+        size={APP_UI.ICON_SIZES.AVATAR_MEDIUM}
         backgroundColor={COLORS.PLACEHOLDER}
         label={getInitials(author.username, 2)}
         labelColor={COLORS.BACKGROUND}
-        marginR-8
       />
       <View style={styles.authorInfo}>
         <View style={styles.usernameRow}>
@@ -58,9 +55,8 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           <Ionicons
             name={favorited ? ICON_NAMES.HEART : ICON_NAMES.HEART_OUTLINE}
             size={APP_UI.ICON_SIZES.MEDIUM}
-            color={favorited ? COLORS.ERROR : COLORS.PLACEHOLDER}
+            color={COLORS.PRIMARY}
           />
-          <Text style={styles.favoritesCount}>{favoritesCount}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -76,7 +72,7 @@ const createStyles = () =>
     },
     authorInfo: {
       flex: 1,
-      marginLeft: SPACINGS.PADDING_SMALL,
+      marginLeft: SPACINGS.PADDING_MEDIUM,
     },
     usernameRow: {
       flexDirection: 'row',

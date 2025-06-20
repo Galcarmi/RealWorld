@@ -39,7 +39,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           author={article.author}
           createdAt={article.createdAt}
           favorited={article.favorited}
-          favoritesCount={article.favoritesCount}
           onFavorite={onFavorite}
         />
 

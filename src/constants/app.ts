@@ -54,6 +54,7 @@ export const UI = {
     LARGE: 24,
     XLARGE: 32,
     AVATAR_SMALL: 32,
+    AVATAR_MEDIUM: 38,
     AVATAR_LARGE: 100,
   },
 } as const;
