@@ -45,6 +45,7 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
           source={{ uri: profile.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
           backgroundColor={COLORS.SECONDARY}
+          labelColor={COLORS.BACKGROUND}
           label={getInitials(profile.username, 2)}
         />
         <Text style={styles.username}>{profile.username}</Text>
