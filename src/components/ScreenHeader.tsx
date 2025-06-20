@@ -70,7 +70,7 @@ const createStyles = (paddingTop: number) =>
       paddingTop,
       minHeight: DIMENSIONS.HEIGHT_45,
       flexDirection: 'row',
-      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      paddingVertical: SPACINGS.SCREEN_TAB_PADDING_VERTICAL,
       position: 'relative',
     },
     backButton: {
