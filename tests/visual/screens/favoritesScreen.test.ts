@@ -21,7 +21,7 @@ createVisualTestSuite(
         TEST_IDS.FAVORITES_MAIN_TAB_ICON,
         TEST_IDS.FAVORITES_SCREEN
       );
-      await testHelper.waitForTestId('article-card-test-article-2', 5000);
+      await testHelper.waitForTestId(TEST_IDS.ARTICLE_CARD('test-article-2'), 5000);
 
       await suite.takeScreenshotAndCompare(
         'favorites-screen-with-favorited-articles'
@@ -34,7 +34,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-testuser1');
+      await testHelper.clickByTestId(TEST_IDS.FAVORITE_BUTTON('testuser1'));
 
       await suite.takeScreenshotAndCompare('home-screen-article-favorited');
     });
@@ -45,7 +45,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-testuser2');
+      await testHelper.clickByTestId(TEST_IDS.FAVORITE_BUTTON('testuser2'));
 
       await suite.takeScreenshotAndCompare('home-screen-article-unfavorited');
     });

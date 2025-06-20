@@ -18,7 +18,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'article-card-test-article-1',
+        TEST_IDS.ARTICLE_CARD('test-article-1'),
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
 
@@ -33,7 +33,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'article-card-test-article-1',
+        TEST_IDS.ARTICLE_CARD('test-article-1'),
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
       await testHelper.waitForTestId(TEST_IDS.FOLLOW_BUTTON, 5000);

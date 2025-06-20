@@ -19,7 +19,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'article-card-test-article-1',
+        TEST_IDS.ARTICLE_CARD('test-article-1'),
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
 
@@ -34,7 +34,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-testuser1');
+      await testHelper.clickByTestId(TEST_IDS.FAVORITE_BUTTON('testuser1'));
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-favorite-unfavorited'
@@ -47,7 +47,7 @@ createVisualTestSuite(
       await performLogin(testHelper);
       await commonTestActions.waitForArticlesToLoad(testHelper);
 
-      await testHelper.clickByTestId('favorite-button-testuser2');
+      await testHelper.clickByTestId(TEST_IDS.FAVORITE_BUTTON('testuser2'));
 
       await suite.takeScreenshotAndCompare(
         'flow-login-articles-unfavorite-favorited'
