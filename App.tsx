@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { observer } from 'mobx-react';
 
+import './src/locales';
 import { navio } from './src/navigation/navio';
 import { userStore } from './src/store/userStore';
 import { useAppTheme } from './src/theme';
