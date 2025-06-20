@@ -33,7 +33,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const styles = useMemo(() => createStyles(), []);
 
   return (
-    <View style={containerStyle}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.editButtonContainer}>
         <TouchableOpacity
           onPress={onEditProfile}
@@ -82,5 +82,8 @@ const createStyles = () =>
       color: COLORS.BLACK,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
       textAlign: 'center',
+    },
+    container: {
+      padding: SPACINGS.PADDING_LARGE,
     },
   });
