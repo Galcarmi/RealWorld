@@ -39,30 +39,26 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 
   return (
     <View style={styles.headerContainer}>
-      <View style={styles.headerContent}>
-        {shouldShowBackButton ? (
-          <TouchableOpacity onPress={handleBackPress} activeOpacity={0.7}>
-            <View style={styles.backButton}>
-              <Ionicons
-                name={ICON_NAMES.CHEVRON_BACK}
-                size={APP_UI.ICON_SIZES.LARGE}
-                color={COLORS.BACKGROUND}
-              />
-              <Text style={styles.backButtonText}>Back</Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.leftSpacer} />
-        )}
+      {shouldShowBackButton ? (
+        <TouchableOpacity
+          onPress={handleBackPress}
+          activeOpacity={0.7}
+          style={styles.backButton}
+        >
+          <Ionicons
+            name={ICON_NAMES.CHEVRON_BACK}
+            size={APP_UI.ICON_SIZES.LARGE}
+            color={COLORS.BACKGROUND}
+          />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      ) : undefined}
 
-        {title && (
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-        )}
-
-        <View style={styles.rightContainer} />
-      </View>
+      {title && (
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -72,37 +68,32 @@ const createStyles = (paddingTop: number) =>
     headerContainer: {
       backgroundColor: COLORS.PRIMARY,
       paddingTop,
-    },
-    headerContent: {
       minHeight: DIMENSIONS.HEIGHT_45,
       flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: SPACINGS.SCREEN_PADDING_HORIZONTAL,
       paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      position: 'relative',
     },
     backButton: {
       flexDirection: 'row',
       alignItems: 'center',
+      position: 'absolute',
+      left: 6,
+      bottom: 6,
     },
     backButtonText: {
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.BACKGROUND,
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
-    leftSpacer: {
-      width: DIMENSIONS.SMALL,
-    },
     titleContainer: {
-      flex: 1,
-      alignItems: 'center',
+      position: 'absolute',
+      left: DIMENSIONS.SCREEN_WIDTH / 2,
+      transform: [{ translateX: '-50%' }],
+      bottom: 6,
     },
     title: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
       color: COLORS.BACKGROUND,
       fontWeight: FONT_WEIGHTS.SEMIBOLD,
-    },
-    rightContainer: {
-      width: DIMENSIONS.SMALL,
-      alignItems: 'flex-end',
     },
   });

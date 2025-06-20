@@ -1,5 +1,7 @@
 // Design System Constants for consistent styling across the app
 
+import { Dimensions } from 'react-native';
+
 import { UI } from './app';
 
 // Colors - migrated from src/theme/colors.ts
@@ -74,7 +76,7 @@ export const SPACINGS = {
   LIST_ITEM_PADDING: 16,
   LIST_CONTENT_PADDING: 32,
   TAB_PADDING_HORIZONTAL: 16,
-  TAB_PADDING_VERTICAL: 12,
+  TAB_PADDING_VERTICAL: 30,
   BUTTON_PADDING_VERTICAL: 15,
   BUTTON_PADDING_HORIZONTAL: 20,
   HEADER_PADDING_TOP: 20,
@@ -84,6 +86,7 @@ export const SPACINGS = {
 } as const;
 
 export const DIMENSIONS = {
+  SCREEN_WIDTH: Dimensions.get('window').width,
   // Common percentages
   WIDTH_FULL: '100%',
   WIDTH_80_PERCENT: '80%',
