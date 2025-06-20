@@ -39,8 +39,8 @@ export const createAuthScreen: (screenType: AUTH_SCREEN_TYPE) => React.FC = (
 
     const screenTestId =
       screenType === AUTH_SCREEN_TYPE.SIGN_IN
-        ? TEST_IDS.LOGIN_SCREEN
-        : TEST_IDS.REGISTER_SCREEN;
+        ? TEST_IDS.SIGNIN_SCREEN
+        : TEST_IDS.SIGNUP_SCREEN;
 
     return (
       <SafeAreaView style={screenStyles.container} testID={screenTestId}>

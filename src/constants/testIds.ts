@@ -1,8 +1,6 @@
 export const TEST_IDS = {
-  // Auth Screens
-  AUTH_SCREEN: 'auth-screen',
-  LOGIN_SCREEN: 'login-screen',
-  REGISTER_SCREEN: 'register-screen',
+  SIGNIN_SCREEN: 'signin-screen',
+  SIGNUP_SCREEN: 'signup-screen',
   AUTH_SCREEN_TITLE: 'auth-screen-title',
   AUTH_EMAIL_INPUT: 'auth-email-input',
   AUTH_PASSWORD_INPUT: 'auth-password-input',
