@@ -1,5 +1,13 @@
 import React, { useMemo } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -12,16 +20,20 @@ import { getInitials } from '../utils';
 interface ProfileHeaderProps {
   user: User;
   onEditProfile: () => void;
+  usernameStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   user,
   onEditProfile,
+  usernameStyle,
+  containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.editButtonContainer}>
         <TouchableOpacity
           onPress={onEditProfile}
@@ -45,7 +57,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           labelColor={COLORS.BACKGROUND}
           marginB-12
         />
-        <Text style={styles.username}>{user.username}</Text>
+        <Text style={[styles.username, usernameStyle]}>{user.username}</Text>
       </View>
     </View>
   );
@@ -53,10 +65,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
 const createStyles = () =>
   StyleSheet.create({
-    container: {
-      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
-      paddingTop: SPACINGS.HEADER_PADDING_TOP,
-    },
     editButtonContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -74,5 +82,8 @@ const createStyles = () =>
       color: COLORS.BLACK,
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
       textAlign: 'center',
+    },
+    container: {
+      padding: SPACINGS.PADDING_LARGE,
     },
   });

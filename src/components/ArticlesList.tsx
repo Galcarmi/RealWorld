@@ -6,6 +6,8 @@ import {
   View,
   Text,
   StyleSheet,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 
 import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
@@ -22,6 +24,7 @@ interface ArticlesListProps {
   onFavoritePress?: (slug: string, favorited: boolean) => void;
   emptyMessage?: string;
   contextKey: string;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -33,6 +36,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onFavoritePress,
   emptyMessage = 'No articles found',
   contextKey,
+  containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
@@ -115,27 +119,24 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   }, [isLoading, articles.length, onRefresh]);
 
   return (
-    <FlatList
-      data={articles}
-      renderItem={renderArticle}
-      keyExtractor={item => `${contextKey}-${item.slug}`}
-      refreshControl={createRefreshControl()}
-      onEndReached={onLoadMore}
-      onEndReachedThreshold={0.1}
-      ListFooterComponent={renderFooter}
-      ListEmptyComponent={renderEmpty}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}
-    />
+    <View style={containerStyle}>
+      <FlatList
+        data={articles}
+        renderItem={renderArticle}
+        keyExtractor={item => `${contextKey}-${item.slug}`}
+        refreshControl={createRefreshControl()}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 
 const createStyles = () =>
   StyleSheet.create({
-    contentContainer: {
-      flexGrow: 1,
-      paddingBottom: SPACINGS.MARGIN_LARGE,
-    },
     loadingFooter: {
       padding: SPACINGS.PADDING_LARGE,
       alignItems: 'center',
