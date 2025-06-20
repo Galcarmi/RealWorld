@@ -83,7 +83,9 @@ const createStyles = (paddingTop: number) =>
     headerContainer: {
       backgroundColor: COLORS.PRIMARY,
       position: 'relative',
-      paddingBottom: SPACINGS.MARGIN_SMALL,
+      height: DIMENSIONS.HEIGHT_30,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     backButton: {
       flexDirection: 'row',
