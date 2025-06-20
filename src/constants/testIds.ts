@@ -10,6 +10,14 @@ export const TEST_IDS = {
   AUTH_SIGNIN_BUTTON: 'auth-signin-button',
   SIGNUP_SIGNIN_BUTTON: 'signup-signin-button',
 
+  // Tab Icons
+  LOGIN_TAB_ICON: 'login-tab-icon',
+  REGISTER_TAB_ICON: 'register-tab-icon',
+  HOME_TAB_ICON: 'home-tab-icon',
+  HOME_MAIN_TAB_ICON: 'home-main-tab-icon',
+  FAVORITES_MAIN_TAB_ICON: 'favorites-main-tab-icon',
+  PROFILE_MAIN_TAB_ICON: 'profile-main-tab-icon',
+
   // Main Screens
   HOME_SCREEN: 'home-screen',
   PROFILE_SCREEN: 'profile-screen',

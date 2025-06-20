@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { render, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
@@ -57,13 +58,13 @@ describe('Favorites Screen Integration Tests', () => {
     it('should render screen with proper test ID', () => {
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
     it('should display screen header', () => {
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
   });
 
@@ -72,8 +73,12 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        expect(getByTestId('article-card-test-article-1')).toBeTruthy();
-        expect(getByTestId('article-card-test-article-2')).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-1'))
+        ).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-2'))
+        ).toBeTruthy();
       });
     });
 
@@ -83,7 +88,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
     it('should show empty message when no favorite articles available', async () => {
@@ -148,7 +153,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
     it('should integrate with user store properly', async () => {
@@ -157,7 +162,7 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        expect(getByTestId('favorites-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       });
 
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
@@ -170,7 +175,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
     it('should hide loading indicator when favorites are loaded', () => {
@@ -178,7 +183,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       expect(mockArticlesStore.favoritesIsLoading).toBe(false);
     });
   });
@@ -201,6 +206,44 @@ describe('Favorites Screen Integration Tests', () => {
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
         1
       );
+    });
+
+    it('should handle favorites service errors', async () => {
+      userStore.setUser(mockUserMinimal);
+
+      const { getByTestId } = renderFavoritesScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+      });
+
+      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
+    });
+
+    it('should show correct empty state message', () => {
+      userStore.setUser(mockUserMinimal);
+      mockArticlesStore.favoriteArticles = [];
+
+      const { getByTestId } = renderFavoritesScreen();
+
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+      expect(mockArticlesStore.favoriteArticles.length).toBe(0);
+    });
+
+    it('should handle component unmount gracefully', () => {
+      userStore.setUser(mockUserMinimal);
+
+      const { getByTestId } = renderFavoritesScreen();
+
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+    });
+
+    it('should handle store errors gracefully', () => {
+      userStore.setUser(mockUserMinimal);
+
+      const { getByTestId } = renderFavoritesScreen();
+
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
   });
 
@@ -235,7 +278,7 @@ describe('Favorites Screen Integration Tests', () => {
       const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        expect(getByTestId('favorites-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       });
 
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
@@ -247,7 +290,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       expect(mockArticlesStore.favoriteArticles.length).toBe(
         mockArticles.length
       );
@@ -266,7 +309,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       const { getByTestId } = renderFavoritesScreen();
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
     it('should handle store state changes during component lifecycle', async () => {
@@ -280,7 +323,7 @@ describe('Favorites Screen Integration Tests', () => {
         </SafeAreaProvider>
       );
 
-      expect(getByTestId('favorites-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
   });
 });

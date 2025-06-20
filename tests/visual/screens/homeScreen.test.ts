@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { visualTestMockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
@@ -13,8 +14,8 @@ createVisualTestSuite(
       await commonTestActions.navigateAndWaitForBody(testHelper);
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        'home-tab-icon',
-        'home-screen'
+        TEST_IDS.HOME_TAB_ICON,
+        TEST_IDS.HOME_SCREEN
       );
       await commonTestActions.waitForArticlesToLoad(testHelper);
 

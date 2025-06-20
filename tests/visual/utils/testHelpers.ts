@@ -264,21 +264,21 @@ export async function performLogin(
   await commonTestActions.navigateAndWaitForBody(testHelper);
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
-    'login-tab-icon',
+    TEST_IDS.LOGIN_TAB_ICON,
     TEST_IDS.SIGNIN_SCREEN
   );
 
-  await testHelper.waitForTestId('auth-email-input', 5000);
-  await testHelper.waitForTestId('auth-password-input', 5000);
-  await testHelper.waitForTestId('auth-submit-button', 5000);
+  await testHelper.waitForTestId(TEST_IDS.AUTH_EMAIL_INPUT, 5000);
+  await testHelper.waitForTestId(TEST_IDS.AUTH_PASSWORD_INPUT, 5000);
+  await testHelper.waitForTestId(TEST_IDS.AUTH_SUBMIT_BUTTON, 5000);
 
-  await testHelper.typeInTestId('auth-email-input', 'test@example.com');
-  await testHelper.typeInTestId('auth-password-input', 'password123');
+  await testHelper.typeInTestId(TEST_IDS.AUTH_EMAIL_INPUT, 'test@example.com');
+  await testHelper.typeInTestId(TEST_IDS.AUTH_PASSWORD_INPUT, 'password123');
 
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
-    'auth-submit-button',
-    'home-screen'
+    TEST_IDS.AUTH_SUBMIT_BUTTON,
+    TEST_IDS.HOME_SCREEN
   );
 }
 
@@ -287,7 +287,7 @@ export async function navigateToProfile(
 ): Promise<void> {
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
-    'profile-main-tab-icon',
-    'profile-screen'
+    TEST_IDS.PROFILE_MAIN_TAB_ICON,
+    TEST_IDS.PROFILE_SCREEN
   );
 }

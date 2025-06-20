@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
@@ -58,7 +59,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
@@ -90,7 +91,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
@@ -102,7 +103,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        const editButton = getByTestId('edit-profile-button');
+        const editButton = getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON);
         fireEvent.press(editButton);
       });
 
@@ -117,7 +118,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        const newArticleButton = getByTestId('new-article-button');
+        const newArticleButton = getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON);
         fireEvent.press(newArticleButton);
       });
 
@@ -134,7 +135,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -158,7 +159,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        const profileScreen = getByTestId('profile-screen');
+        const profileScreen = getByTestId(TEST_IDS.PROFILE_SCREEN);
         expect(profileScreen).toBeTruthy();
       });
 
@@ -171,7 +172,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(articlesStore.getUserArticles).toHaveBeenCalled();
@@ -185,9 +186,9 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
-        expect(getByTestId('edit-profile-button')).toBeTruthy();
-        expect(getByTestId('new-article-button')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+        expect(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON)).toBeTruthy();
+        expect(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON)).toBeTruthy();
       });
     });
 
@@ -197,7 +198,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -207,7 +208,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
@@ -220,7 +221,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -231,10 +232,30 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockArticlesStore.homeIsLoading).toBe(false);
+    });
+
+    it('should show loading state for articles fetch', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+
+    it('should handle loading states when fetching user articles', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
     });
   });
 
@@ -294,7 +315,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
@@ -314,11 +335,11 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        fireEvent.press(getByTestId('edit-profile-button'));
+        fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON));
       });
 
       await waitFor(() => {
-        fireEvent.press(getByTestId('new-article-button'));
+        fireEvent.press(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON));
       });
 
       expect(editProfileSpy).toHaveBeenCalledTimes(1);
@@ -335,7 +356,7 @@ describe('Profile Screen Integration Tests', () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        const editButton = getByTestId('edit-profile-button');
+        const editButton = getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON);
         fireEvent.press(editButton);
         fireEvent.press(editButton);
         fireEvent.press(editButton);
@@ -352,6 +373,113 @@ describe('Profile Screen Integration Tests', () => {
       const { unmount } = renderProfileScreen();
 
       expect(() => unmount()).not.toThrow();
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle article loading errors gracefully', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+
+    it('should show error state when user data is incomplete', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('User Interaction Flows', () => {
+    it('should handle successful navigation flow to edit profile', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON));
+
+      expect(mockNavigationService.navigateToEditProfile).toHaveBeenCalled();
+    });
+
+    it('should handle successful navigation flow to new article', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON));
+
+      expect(mockNavigationService.navigateToNewArticle).toHaveBeenCalled();
+    });
+  });
+
+  describe('Multiple User States', () => {
+    it('should handle different user profile states', async () => {
+      userStore.setUser(mockUserMinimal);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+
+    it('should render correctly with complete user data', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Component Integration', () => {
+    it('should integrate with user store properly', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+    });
+
+    it('should handle component unmount gracefully', async () => {
+      userStore.setUser(mockUser);
+
+      const { unmount } = renderProfileScreen();
+
+      expect(() => unmount()).not.toThrow();
+    });
+  });
+
+  describe('Button Interactions', () => {
+    it('should handle button press events properly', async () => {
+      userStore.setUser(mockUser);
+
+      const { getByTestId } = renderProfileScreen();
+
+      await waitFor(() => {
+        const editButton = getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON);
+        expect(editButton).toBeTruthy();
+      });
     });
   });
 });

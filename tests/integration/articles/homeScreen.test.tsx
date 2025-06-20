@@ -4,6 +4,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
@@ -54,7 +55,7 @@ describe('Home Screen Integration Tests', () => {
     it('should render screen with proper test ID', () => {
       const { getByTestId } = renderHomeScreen();
 
-      expect(getByTestId('home-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.HOME_SCREEN)).toBeTruthy();
     });
   });
 
@@ -63,8 +64,12 @@ describe('Home Screen Integration Tests', () => {
       const { getByTestId } = renderHomeScreen();
 
       await waitFor(() => {
-        expect(getByTestId('article-card-test-article-1')).toBeTruthy();
-        expect(getByTestId('article-card-test-article-2')).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD(mockArticles[0].slug))
+        ).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD(mockArticles[1].slug))
+        ).toBeTruthy();
       });
     });
 
@@ -74,7 +79,7 @@ describe('Home Screen Integration Tests', () => {
 
       const { getByTestId } = renderHomeScreen();
 
-      expect(getByTestId('home-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.HOME_SCREEN)).toBeTruthy();
     });
 
     it('should show empty message when no articles available in global feed', async () => {

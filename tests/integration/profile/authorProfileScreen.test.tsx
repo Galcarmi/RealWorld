@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
 import { Profile } from '../../../src/services/types';
 import { userStore } from '../../../src/store/userStore';
@@ -56,13 +57,13 @@ describe('Author Profile Screen Integration Tests', () => {
     it('should render author profile screen with proper test ID', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should display screen header with back button', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should show loading/empty state when no author profile is available', () => {
@@ -70,7 +71,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
   });
 
@@ -86,7 +87,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -94,7 +95,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -115,7 +116,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockUseAuthorProfile.authorArticles).toEqual(mockArticles);
@@ -127,8 +128,12 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('article-card-test-article-1')).toBeTruthy();
-        expect(getByTestId('article-card-test-article-2')).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-1'))
+        ).toBeTruthy();
+        expect(
+          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-2'))
+        ).toBeTruthy();
       });
     });
   });
@@ -140,7 +145,9 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        const favoriteButton = getByTestId('favorite-button-testuser1');
+        const favoriteButton = getByTestId(
+          TEST_IDS.FAVORITE_BUTTON('testuser1')
+        );
         fireEvent.press(favoriteButton);
       });
 
@@ -156,11 +163,11 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        fireEvent.press(getByTestId('favorite-button-testuser1'));
+        fireEvent.press(getByTestId(TEST_IDS.FAVORITE_BUTTON('testuser1')));
       });
 
       await waitFor(() => {
-        fireEvent.press(getByTestId('favorite-button-testuser2'));
+        fireEvent.press(getByTestId(TEST_IDS.FAVORITE_BUTTON('testuser2')));
       });
 
       expect(mockUseAuthorProfile.onToggleFavorite).toHaveBeenCalledTimes(2);
@@ -174,8 +181,9 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        const articlesList = getByTestId('article-card-test-article-1').parent
-          ?.parent;
+        const articlesList = getByTestId(
+          TEST_IDS.ARTICLE_CARD('test-article-1')
+        ).parent?.parent;
         if (articlesList) {
           fireEvent(articlesList, 'refresh');
         }
@@ -193,7 +201,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should hide loading state when author data is loaded', () => {
@@ -201,7 +209,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       expect(mockUseAuthorProfile.isLoading).toBe(false);
     });
   });
@@ -213,7 +221,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockUseAuthorProfile.authorArticles).toEqual(mockArticles);
@@ -225,7 +233,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockUseAuthorProfile.authorProfile).toBeTruthy();
@@ -238,7 +246,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should handle empty username parameter', () => {
@@ -246,7 +254,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should handle hook errors gracefully', async () => {
@@ -257,7 +265,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
     });
 
@@ -266,7 +274,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
   });
 
@@ -282,7 +290,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockUseAuthorProfile.onFollowToggle).toBeDefined();
@@ -294,7 +302,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
       expect(mockUseAuthorProfile.authorProfile?.username).toBe('testauthor');
@@ -312,7 +320,7 @@ describe('Author Profile Screen Integration Tests', () => {
       );
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
@@ -321,19 +329,19 @@ describe('Author Profile Screen Integration Tests', () => {
     it('should render header section', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should render articles section', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should have proper screen structure', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
   });
 
@@ -343,7 +351,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should handle empty username parameter', () => {
@@ -351,7 +359,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should handle component mount without user data', () => {
@@ -359,7 +367,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       const { getByTestId } = renderAuthorProfileScreen();
 
-      expect(getByTestId('author-profile-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
     });
 
     it('should handle unmounting gracefully', () => {
@@ -374,7 +382,7 @@ describe('Author Profile Screen Integration Tests', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId('author-profile-screen')).toBeTruthy();
+        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
     });
   });
