@@ -84,6 +84,14 @@ jest.mock('@expo/vector-icons', () => ({
   Feather: 'Feather',
 }));
 
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(() => Promise.resolve()),
+  getItem: jest.fn(() => Promise.resolve(null)),
+  removeItem: jest.fn(() => Promise.resolve()),
+  multiRemove: jest.fn(() => Promise.resolve()),
+  clear: jest.fn(() => Promise.resolve()),
+}));
+
 jest.mock('expo-localization', () => ({
   locale: 'en-US',
   locales: ['en-US'],
@@ -135,4 +143,11 @@ jest.mock('../../src/utils', () => ({
     (name, length) => name?.substring(0, length || 2).toUpperCase() || ''
   ),
   getUserInitial: jest.fn(name => name?.charAt(0).toUpperCase() || ''),
+  StorageUtils: {
+    setUserToken: jest.fn(() => Promise.resolve()),
+    getUserToken: jest.fn(() => Promise.resolve(null)),
+    setUserData: jest.fn(() => Promise.resolve()),
+    getUserData: jest.fn(() => Promise.resolve(null)),
+    clearUserData: jest.fn(() => Promise.resolve()),
+  },
 }));
