@@ -1,9 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-ui-lib';
 
-import { TEST_IDS, APP_UI } from '../constants';
-import { COLORS, SPACINGS, TYPOGRAPHY, DIMENSIONS } from '../constants/styles';
+import { Ionicons } from '@expo/vector-icons';
+
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
+import {
+  COLORS,
+  SPACINGS,
+  TYPOGRAPHY,
+  DIMENSIONS,
+  FONT_WEIGHTS,
+} from '../constants/styles';
 import { Profile } from '../services/types';
 import { getInitials } from '../utils';
 
@@ -18,6 +26,18 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
+  const getFollowButtonIcon = useCallback(() => {
+    return (
+      <Ionicons
+        name={
+          profile.following ? ICON_NAMES.CHECKMARK_SHARP : ICON_NAMES.ADD_SHARP
+        }
+        size={APP_UI.ICON_SIZES.SMALL}
+        color={COLORS.PRIMARY}
+      />
+    );
+  }, [profile.following]);
+
   return (
     <View style={styles.container}>
       <View style={styles.profileInfo}>
@@ -25,20 +45,22 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = ({
           source={{ uri: profile.image || undefined }}
           size={APP_UI.ICON_SIZES.AVATAR_LARGE}
           backgroundColor={COLORS.SECONDARY}
-          label={getInitials(profile.username, 2)}
           labelColor={COLORS.BACKGROUND}
-          marginB-12
+          label={getInitials(profile.username, 2)}
         />
         <Text style={styles.username}>{profile.username}</Text>
 
         <Button
           label={profile.following ? 'Unfollow' : 'Follow'}
-          backgroundColor={profile.following ? COLORS.GREY : COLORS.PRIMARY}
-          color={COLORS.BACKGROUND}
+          color={profile.following ? COLORS.PRIMARY : COLORS.PRIMARY}
+          outline
+          outlineColor={COLORS.PRIMARY}
           borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
-          paddingH-20
-          paddingV-8
+          style={styles.followButton}
+          labelStyle={styles.followButtonText}
           onPress={onFollowToggle}
+          iconSource={getFollowButtonIcon}
+          iconOnRight={false}
           testID={
             profile.following
               ? TEST_IDS.UNFOLLOW_BUTTON
@@ -60,9 +82,16 @@ const createStyles = () =>
       alignItems: 'center',
     },
     username: {
-      fontSize: TYPOGRAPHY.HEADING.fontSize - 5, // 35 = 40 - 5
+      fontSize: TYPOGRAPHY.HEADING.fontSize,
       color: COLORS.BLACK,
       textAlign: 'center',
       marginBottom: SPACINGS.PADDING_LARGE,
+    },
+    followButton: {
+      paddingHorizontal: SPACINGS.MARGIN_LARGE,
+      gap: SPACINGS.MARGIN_SMALL,
+    },
+    followButtonText: {
+      fontWeight: FONT_WEIGHTS.BOLD,
     },
   });
