@@ -71,52 +71,43 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     [createArticleHandlers, styles.articleCard]
   );
 
-  const renderLoadingFooter = useCallback(() => {
+  const renderFooter = useCallback(() => {
+    if (!isLoading) return null;
     return (
       <View style={styles.loadingFooter}>
         <ActivityIndicator size='small' color={COLORS.PRIMARY} />
       </View>
     );
-  }, [styles.loadingFooter]);
-
-  const renderFooter = useCallback(() => {
-    if (!isLoading) return null;
-    return renderLoadingFooter();
-  }, [isLoading, renderLoadingFooter]);
-
-  const renderLoadingIndicator = useCallback(() => {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size='large' color={COLORS.PRIMARY} />
-      </View>
-    );
-  }, [styles.centerContainer]);
-
-  const renderEmptyMessage = useCallback(() => {
-    return (
-      <View style={styles.centerContainer}>
-        <Text style={styles.emptyText}>{emptyMessage}</Text>
-      </View>
-    );
-  }, [styles.centerContainer, styles.emptyText, emptyMessage]);
+  }, [isLoading, styles.loadingFooter]);
 
   const renderEmpty = useCallback(() => {
-    if (articles.length === 0 && isLoading) {
-      return renderLoadingIndicator();
+    if (articles.length === 0 && !isLoading) {
+      return (
+        <View style={styles.centerContainer}>
+          <Text style={styles.emptyText}>{emptyMessage}</Text>
+        </View>
+      );
     }
-    return renderEmptyMessage();
-  }, [articles.length, isLoading, renderEmptyMessage, renderLoadingIndicator]);
+    return null;
+  }, [
+    articles.length,
+    isLoading,
+    emptyMessage,
+    styles.centerContainer,
+    styles.emptyText,
+  ]);
 
-  const createRefreshControl = useCallback(() => {
-    return (
+  const refreshControl = useMemo(
+    () => (
       <RefreshControl
-        refreshing={isLoading && articles.length === 0}
+        refreshing={isLoading}
         onRefresh={onRefresh}
         colors={[COLORS.PRIMARY]}
         tintColor={COLORS.PRIMARY}
       />
-    );
-  }, [isLoading, articles.length, onRefresh]);
+    ),
+    [isLoading, onRefresh]
+  );
 
   return (
     <View style={containerStyle}>
@@ -124,7 +115,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         data={articles}
         renderItem={renderArticle}
         keyExtractor={item => `${contextKey}-${item.slug}`}
-        refreshControl={createRefreshControl()}
+        refreshControl={refreshControl}
         onEndReached={onLoadMore}
         onEndReachedThreshold={0.1}
         ListFooterComponent={renderFooter}

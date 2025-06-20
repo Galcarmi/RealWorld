@@ -42,25 +42,22 @@ export const HomeScreen: NavioScreen = observer(() => {
   return (
     <View style={styles.container} testID={TEST_IDS.HOME_SCREEN}>
       <ScreenHeader />
+      {renderFeedTabs()}
 
-      <View flex backgroundColor={COLORS.BACKGROUND}>
-        {renderFeedTabs()}
-
-        <ArticlesList
-          articles={articles}
-          isLoading={isLoading}
-          onRefresh={refreshArticles}
-          onLoadMore={loadMoreArticles}
-          onArticlePress={handleArticlePress}
-          onFavoritePress={handleFavoritePress}
-          emptyMessage={
-            feedType === FEED_TYPES.FEED
-              ? 'Follow some users to see their articles here'
-              : 'No articles available'
-          }
-          contextKey='home'
-        />
-      </View>
+      <ArticlesList
+        articles={articles}
+        isLoading={isLoading}
+        onRefresh={refreshArticles}
+        onLoadMore={loadMoreArticles}
+        onArticlePress={handleArticlePress}
+        onFavoritePress={handleFavoritePress}
+        emptyMessage={
+          feedType === FEED_TYPES.FEED
+            ? 'Follow some users to see their articles here'
+            : 'No articles available'
+        }
+        contextKey='home'
+      />
     </View>
   );
 });
