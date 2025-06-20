@@ -105,9 +105,8 @@ export abstract class BaseService {
     });
   }
 
-  private _handleUnauthorizedError(): void {
-    Logger.log('🔴 401 Unauthorized - Redirecting to login');
-    this._userStore.forgetUser();
+  private async _handleUnauthorizedError(): Promise<void> {
+    await this._userStore.clearStorageOnAuthError();
     navigationService.navigateToAuthTabs();
     navigationService.navigateToLoginScreen();
   }
@@ -131,14 +130,14 @@ export abstract class BaseService {
         this._logSuccessfulResponse(response);
         return response;
       },
-      (error: AxiosError): Promise<never> => {
+      async (error: AxiosError): Promise<never> => {
         this._logErrorResponse(error);
 
         if (
           error.response &&
-          error.response.status === HTTP_STATUS.UNAUTHORIZED
+          error.response.status === HTTP_STATUS.UNAUTHORIZED 
         ) {
-          this._handleUnauthorizedError();
+          await this._handleUnauthorizedError();
         }
         return Promise.reject(error);
       }

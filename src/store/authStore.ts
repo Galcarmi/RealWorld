@@ -74,7 +74,7 @@ class AuthStore implements IAuthStore {
       const { email, password } = this.authValues;
       const response = await this._authService.login({ email, password });
 
-      userStore.setUser(response.user);
+      await userStore.setUser(response.user);
       this.clear();
       navigationService.navigateToMainTabs();
     } catch (error) {
@@ -91,7 +91,7 @@ class AuthStore implements IAuthStore {
     try {
       const response = await this._authService.register(this.authValues);
 
-      userStore.setUser(response.user);
+      await userStore.setUser(response.user);
       this.clear();
       navigationService.navigateToMainTabs();
     } catch (error) {
@@ -101,8 +101,8 @@ class AuthStore implements IAuthStore {
     }
   }
 
-  public logout() {
-    userStore.forgetUser();
+  public async logout() {
+    await userStore.forgetUser();
     navigationService.navigateToAuthTabs();
   }
 

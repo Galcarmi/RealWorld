@@ -74,24 +74,34 @@ const setupAuthStoreMocks = () => {
   mockAuthStore.register.mockImplementation(async () => {
     mockAuthStore.isLoading = true;
   });
+
+  mockAuthStore.logout.mockImplementation(async () => {
+    mockUserStore.user = null;
+    mockUserStore.token = null;
+  });
 };
 
 const setupUserStoreMocks = () => {
   mockUserStore.user = null;
   mockUserStore.token = null;
+  mockUserStore.isInitialized = false;
 
-  mockUserStore.forgetUser.mockImplementation(() => {
+  mockUserStore.forgetUser.mockImplementation(async () => {
     mockUserStore.user = null;
     mockUserStore.token = null;
   });
 
-  mockUserStore.setUser.mockImplementation((user: User) => {
+  mockUserStore.setUser.mockImplementation(async (user: User) => {
     mockUserStore.user = user;
     mockUserStore.token = user?.token || null;
   });
 
   mockUserStore.getToken.mockImplementation(() => mockUserStore.token);
   mockUserStore.isAuthenticated.mockImplementation(() => !!mockUserStore.user);
+  mockUserStore.clearStorageOnAuthError.mockImplementation(async () => {
+    mockUserStore.user = null;
+    mockUserStore.token = null;
+  });
 };
 
 const setupArticlesStoreMocks = () => {

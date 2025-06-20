@@ -27,6 +27,7 @@ export interface IAuthService {
   login(user: LoginUserRequest): Promise<UserResponse>;
   register(user: RegisterUserRequest): Promise<UserResponse>;
   updateUser(user: User): Promise<UserResponse>;
+  validateStoredToken(): Promise<UserResponse | null>;
 }
 
 export type Profile = {

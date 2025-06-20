@@ -94,6 +94,14 @@ jest.mock('@react-navigation/native', () => ({
   NavigationContainer: ({ children }) => children,
 }));
 
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(() => Promise.resolve()),
+  getItem: jest.fn(() => Promise.resolve(null)),
+  removeItem: jest.fn(() => Promise.resolve()),
+  multiRemove: jest.fn(() => Promise.resolve()),
+  clear: jest.fn(() => Promise.resolve()),
+}));
+
 const mockAxiosInstance = {
   get: jest.fn(),
   post: jest.fn(),

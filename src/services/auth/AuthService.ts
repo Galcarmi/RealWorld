@@ -51,6 +51,15 @@ class AuthService extends BaseService implements IAuthService {
       return this._logError(error as ApiErrorResponse);
     }
   }
+
+  public async validateStoredToken(): Promise<UserResponse | null> {
+    try {
+      const response = await this._api.get<UserResponse>('/user');
+      return this._responseBody(response);
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 export { AuthService, IAuthService };
