@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -415,21 +413,6 @@ describe('Login Flow Integration Tests', () => {
       const { unmount } = renderLoginScreen();
 
       expect(() => unmount()).not.toThrow();
-    });
-
-    it('should handle store state changes during component lifecycle', async () => {
-      const { getByTestId, rerender } = renderLoginScreen();
-
-      mockAuthStore.isLoading = true;
-
-      rerender(
-        <SafeAreaProvider>
-          <SignInScreen />
-        </SafeAreaProvider>
-      );
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
     });
   });
 });

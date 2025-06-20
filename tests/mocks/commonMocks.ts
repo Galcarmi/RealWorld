@@ -1,38 +1,5 @@
 import '@testing-library/jest-native/extend-expect';
 
-const suppressedErrors = [
-  /(.*Use PascalCase for React components, or lowercase for HTML elements.)/,
-  /React does not recognize the.*prop on a DOM element|Unknown event handler property/,
-  /is using uppercase HTML/,
-  /Received `true` for a non-boolean attribute `accessible`/,
-  /The tag.*is unrecognized in this browser/,
-  /Warning: forwardRef render functions do not support propTypes.*/,
-  /An update to .* inside a test was not wrapped in act/,
-];
-
-const suppressedWarnings = [
-  /Animated: `useNativeDriver` is not supported.*/,
-  /Method has been deprecated/,
-  /An update to .* inside a test was not wrapped in act/,
-  /DeprecationWarning: 'now' property was accessed on \[Object\] after it was soft deleted/,
-];
-
-const realConsoleError = console.error;
-console.error = message => {
-  if (message?.match && suppressedErrors.some(err => message.match(err))) {
-    return;
-  }
-  realConsoleError(message);
-};
-
-const realConsoleWarn = console.warn;
-console.warn = message => {
-  if (message?.match && suppressedWarnings.some(err => message.match(err))) {
-    return;
-  }
-  realConsoleWarn(message);
-};
-
 jest.mock('react-native-gesture-handler', () => {
   const ReactNative = require('react-native');
   return {
@@ -71,10 +38,64 @@ NativeModules.StatusBarManager = {
   HEIGHT: 20,
 };
 
-jest.mock('react-native-safe-area-context', () => {
-  const { createSafeAreaMock } = require('./setupUtils');
-  return createSafeAreaMock(true);
+// Mock react-native-ui-lib components
+jest.mock('react-native-ui-lib', () => {
+  const ReactNative = require('react-native');
+  return {
+    View: ReactNative.View,
+    Text: ReactNative.Text,
+    Button: ReactNative.TouchableOpacity,
+    Avatar: ReactNative.View,
+    TextField: ReactNative.TextInput,
+    Card: ReactNative.View,
+    Colors: {
+      loadColors: jest.fn(),
+    },
+    Typography: {
+      loadTypographies: jest.fn(),
+    },
+  };
 });
+
+// Mock the translation hook
+jest.mock('../../src/hooks/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'empty.noFavoriteArticles': 'No favorite articles yet',
+        'empty.noArticlesFound': 'No articles found',
+        'empty.followUsersMessage':
+          'Follow some users to see their articles here',
+        'empty.noArticlesAvailable': 'No articles available',
+        'common.back': 'Back',
+        'common.loading': 'Loading...',
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
+// Mock navigation service
+jest.mock('../../src/services/navigationService', () => ({
+  navigationService: {
+    navigateToMainTabs: jest.fn(),
+    navigateToAuthTabs: jest.fn(),
+    navigateToLoginScreen: jest.fn(),
+    navigateToSignUpScreen: jest.fn(),
+    navigateToEditProfile: jest.fn(),
+    navigateToNewArticle: jest.fn(),
+    navigateToAuthorProfile: jest.fn(),
+    push: jest.fn(),
+    pop: jest.fn(),
+    navigate: jest.fn(),
+    setRoot: jest.fn(),
+  },
+}));
+
+// Mock mobx-react observer
+jest.mock('mobx-react', () => ({
+  observer: (component: any) => component,
+}));
 
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
@@ -104,8 +125,8 @@ jest.mock('expo-localization', () => ({
 jest.mock('rn-navio', () => ({
   generateNavioStackNavigator: jest.fn(() => ({
     Stack: {
-      Screen: ({ children }) => children,
-      Navigator: ({ children }) => children,
+      Screen: ({ children }: { children: React.ReactNode }) => children,
+      Navigator: ({ children }: { children: React.ReactNode }) => children,
     },
   })),
   navio: {
@@ -151,3 +172,12 @@ jest.mock('../../src/utils', () => ({
     clearUserData: jest.fn(() => Promise.resolve()),
   },
 }));
+
+jest.mock('react-native-safe-area-context', () => {
+  const insets = { top: 0, right: 0, bottom: 0, left: 0 };
+  return {
+    SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
+    SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
+    useSafeAreaInsets: () => insets,
+  };
+});

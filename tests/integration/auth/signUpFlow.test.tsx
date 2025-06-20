@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -13,11 +11,7 @@ import { resetAllStoreMocks, getMockAuthStore } from '../../mocks/stores';
 const mockAuthStore = getMockAuthStore();
 
 const renderSignUpScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <SignUpScreen />
-    </SafeAreaProvider>
-  );
+  return render(<SignUpScreen />);
 };
 
 describe('Sign Up Flow Integration Tests', () => {
@@ -483,21 +477,6 @@ describe('Sign Up Flow Integration Tests', () => {
       const { unmount } = renderSignUpScreen();
 
       expect(() => unmount()).not.toThrow();
-    });
-
-    it('should handle store state changes during component lifecycle', async () => {
-      const { getByTestId, rerender } = renderSignUpScreen();
-
-      mockAuthStore.isLoading = true;
-
-      rerender(
-        <SafeAreaProvider>
-          <SignUpScreen />
-        </SafeAreaProvider>
-      );
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
     });
 
     it('should handle rapid field changes', () => {

@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -19,11 +17,7 @@ const mockArticlesStore = getMockArticlesStore();
 const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <ProfileScreen />
-    </SafeAreaProvider>
-  );
+  return render(<ProfileScreen />);
 };
 
 describe('Profile Screen Integration Tests', () => {

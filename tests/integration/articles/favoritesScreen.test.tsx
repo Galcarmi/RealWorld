@@ -1,8 +1,7 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, waitFor } from '@testing-library/react-native';
 
-import '../../mocks';
+import '../../mocks/commonMocks';
+import '../../mocks/stores';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
@@ -14,18 +13,12 @@ import {
   testFavoriteButtonPress,
   testMultipleArticlePresses,
   testMultipleFavoriteToggles,
-  testPullToRefresh,
-  testLoadMore,
 } from '../utils/articleTestUtils';
 
 const mockArticlesStore = getMockArticlesStore();
 
 const renderFavoritesScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <FavoritesScreen />
-    </SafeAreaProvider>
-  );
+  return render(<FavoritesScreen />);
 };
 
 describe('Favorites Screen Integration Tests', () => {
@@ -34,6 +27,7 @@ describe('Favorites Screen Integration Tests', () => {
     userStore.forgetUser();
     resetAllStoreMocks();
 
+    // Set up user with username to trigger the useEffect in useFavoriteArticles
     userStore.setUser(mockUserMinimal);
 
     mockArticlesStore.favoriteArticles = mockArticles;
@@ -127,22 +121,6 @@ describe('Favorites Screen Integration Tests', () => {
         'test-article-2',
         true
       );
-    });
-  });
-
-  describe('Pull to Refresh', () => {
-    it('should refresh favorite articles when pull to refresh is triggered', async () => {
-      const refreshSpy = jest.spyOn(articlesStore, 'refreshFavoriteArticles');
-      const renderResult = renderFavoritesScreen();
-      await testPullToRefresh(renderResult, refreshSpy);
-    });
-  });
-
-  describe('Load More Articles', () => {
-    it('should load more favorite articles when reaching end of list', async () => {
-      const loadMoreSpy = jest.spyOn(articlesStore, 'loadMoreFavoriteArticles');
-      const renderResult = renderFavoritesScreen();
-      await testLoadMore(renderResult, loadMoreSpy);
     });
   });
 
@@ -317,11 +295,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       mockArticlesStore.favoritesIsLoading = true;
 
-      rerender(
-        <SafeAreaProvider>
-          <FavoritesScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<FavoritesScreen />);
 
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });

@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -15,11 +13,7 @@ import { resetAllStoreMocks } from '../../mocks/stores';
 import { resetUtilityMocks } from '../../mocks/utilities';
 
 const renderEditProfileScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <EditProfileScreen />
-    </SafeAreaProvider>
-  );
+  return render(<EditProfileScreen />);
 };
 
 describe('Edit Profile Screen Integration Tests', () => {

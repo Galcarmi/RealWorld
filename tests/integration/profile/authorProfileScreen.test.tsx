@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -18,11 +16,7 @@ import {
 import { resetAllStoreMocks } from '../../mocks/stores';
 
 const renderAuthorProfileScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <AuthorProfileScreen />
-    </SafeAreaProvider>
-  );
+  return render(<AuthorProfileScreen />);
 };
 
 describe('Author Profile Screen Integration Tests', () => {
@@ -313,11 +307,7 @@ describe('Author Profile Screen Integration Tests', () => {
 
       setMockRouteParams({ username: 'newauthor' });
 
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<AuthorProfileScreen />);
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
@@ -392,25 +382,13 @@ describe('Author Profile Screen Integration Tests', () => {
       const { rerender } = renderAuthorProfileScreen();
 
       setMockRouteParams({ username: 'author1' });
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<AuthorProfileScreen />);
 
       setMockRouteParams({ username: 'author2' });
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<AuthorProfileScreen />);
 
       setMockRouteParams({ username: 'author3' });
-      rerender(
-        <SafeAreaProvider>
-          <AuthorProfileScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<AuthorProfileScreen />);
 
       expect(getMockUseAuthorProfile()).toBeTruthy();
     });

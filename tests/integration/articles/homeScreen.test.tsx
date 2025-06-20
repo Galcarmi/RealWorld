@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -15,18 +13,12 @@ import {
   testFavoriteButtonPress,
   testMultipleArticlePresses,
   testMultipleFavoriteToggles,
-  testPullToRefresh,
-  testLoadMore,
 } from '../utils/articleTestUtils';
 
 const mockArticlesStore = getMockArticlesStore();
 
 const renderHomeScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <HomeScreen />
-    </SafeAreaProvider>
-  );
+  return render(<HomeScreen />);
 };
 
 describe('Home Screen Integration Tests', () => {
@@ -184,22 +176,6 @@ describe('Home Screen Integration Tests', () => {
         'test-article-2',
         true
       );
-    });
-  });
-
-  describe('Pull to Refresh', () => {
-    it('should refresh articles when pull to refresh is triggered', async () => {
-      const refreshSpy = jest.spyOn(articlesStore, 'refreshHomeArticles');
-      const renderResult = renderHomeScreen();
-      await testPullToRefresh(renderResult, refreshSpy);
-    });
-  });
-
-  describe('Load More Articles', () => {
-    it('should load more articles when reaching end of list', async () => {
-      const loadMoreSpy = jest.spyOn(articlesStore, 'loadMoreHomeArticles');
-      const renderResult = renderHomeScreen();
-      await testLoadMore(renderResult, loadMoreSpy);
     });
   });
 

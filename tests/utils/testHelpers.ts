@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { render } from '@testing-library/react-native';
 
@@ -50,12 +49,6 @@ export const expectValidationResults = (
   invalidInputs.forEach(input => {
     expect(validationFn(input)).toBe(false);
   });
-};
-
-export const renderWithProviders = (Component: React.ComponentType) => {
-  return render(
-    React.createElement(SafeAreaProvider, {}, React.createElement(Component))
-  );
 };
 
 export const expectFormFieldExists = (
@@ -120,5 +113,5 @@ export const setupIntegrationTestEnvironment = () => {
 
 export const renderLoginScreen = () => {
   const { SignInScreen } = require('../../src/screens/login/signInScreen');
-  return renderWithProviders(SignInScreen);
+  return SignInScreen;
 };

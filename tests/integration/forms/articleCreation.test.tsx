@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -12,11 +10,7 @@ import { mockUserMinimal } from '../../mocks/data';
 import { resetAllStoreMocks } from '../../mocks/stores';
 
 const renderNewArticleScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <NewArticleScreen />
-    </SafeAreaProvider>
-  );
+  return render(<NewArticleScreen />);
 };
 
 describe('Article Creation Integration Tests', () => {
