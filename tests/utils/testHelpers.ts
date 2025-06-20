@@ -119,6 +119,6 @@ export const setupIntegrationTestEnvironment = () => {
 };
 
 export const renderLoginScreen = () => {
-  const { LoginScreen } = require('../../src/screens/login/loginScreen');
-  return renderWithProviders(LoginScreen);
+  const { SignInScreen } = require('../../src/screens/login/signInScreen');
+  return renderWithProviders(SignInScreen);
 };

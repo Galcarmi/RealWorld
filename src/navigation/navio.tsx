@@ -7,8 +7,8 @@ import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScree
 import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
 import { HomeScreen } from '../screens/homeScreen/homeScreen';
-import { LoginScreen as SignInScreen } from '../screens/login/loginScreen';
-import { Main as SignUpScreen } from '../screens/login/signUpScreen';
+import { SignInScreen } from '../screens/login/signInScreen';
+import { SignUpScreen } from '../screens/login/signUpScreen';
 import { NewArticleScreen } from '../screens/newArticle/newArticleScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigationService';

@@ -2,25 +2,33 @@ import { ViewStyle, TextStyle } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 
 import { TEST_IDS, SCREEN_TITLES } from '../constants';
+import { AUTH_SCREEN_TYPE } from '../constants/app';
 
-interface LoginHeaderProps {
+interface AuthHeaderProps {
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
+  screenType: AUTH_SCREEN_TYPE;
 }
 
-export const LoginHeader = ({
+export const AuthHeader = ({
   containerStyle,
   textStyle,
-}: LoginHeaderProps = {}) => {
+  screenType,
+}: AuthHeaderProps) => {
+  const title =
+    screenType === AUTH_SCREEN_TYPE.SIGN_IN
+      ? SCREEN_TITLES.SIGN_IN
+      : SCREEN_TITLES.SIGN_UP;
+
   return (
     <View center style={containerStyle}>
       <Text
         title
         primaryColor
         style={textStyle}
-        testID={TEST_IDS.LOGIN_SCREEN_TITLE}
+        testID={TEST_IDS.AUTH_SCREEN_TITLE}
       >
-        {SCREEN_TITLES.SIGN_IN}
+        {title}
       </Text>
     </View>
   );

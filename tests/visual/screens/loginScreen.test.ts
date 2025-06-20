@@ -1,3 +1,4 @@
+import { TEST_IDS } from '../../constants';
 import { visualTestMockCollections } from '../../mocks/data';
 import { createVisualTestSuite, commonTestActions } from '../utils/testHelpers';
 
@@ -12,16 +13,16 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'login-tab-icon',
-        'login-screen'
+        TEST_IDS.SIGNIN_SCREEN
       );
 
-      await testHelper.waitForTestId('login-screen-title', 5000);
-      await testHelper.waitForTestId('login-email-input', 5000);
-      await testHelper.waitForTestId('login-password-input', 5000);
-      await testHelper.waitForTestId('login-submit-button', 5000);
-      await testHelper.waitForTestId('login-signup-button', 5000);
+      await testHelper.waitForTestId('auth-screen-title', 5000);
+      await testHelper.waitForTestId('auth-email-input', 5000);
+      await testHelper.waitForTestId('auth-password-input', 5000);
+      await testHelper.waitForTestId('auth-submit-button', 5000);
+      await testHelper.waitForTestId('auth-signup-button', 5000);
 
-      await suite.takeScreenshotAndCompare('login-screen-empty-form');
+      await suite.takeScreenshotAndCompare('signin-screen-empty-form');
     });
 
     it('should match baseline for login screen with filled form', async () => {
@@ -31,13 +32,13 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'login-tab-icon',
-        'login-screen'
+        TEST_IDS.SIGNIN_SCREEN
       );
 
-      await testHelper.typeInTestId('login-email-input', 'test@example.com');
-      await testHelper.typeInTestId('login-password-input', 'password123');
+      await testHelper.typeInTestId('auth-email-input', 'test@example.com');
+      await testHelper.typeInTestId('auth-password-input', 'password123');
 
-      await suite.takeScreenshotAndCompare('login-screen-with-form-data');
+      await suite.takeScreenshotAndCompare('signin-screen-with-form-data');
     });
   }
 );
