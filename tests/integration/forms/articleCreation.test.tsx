@@ -3,6 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
 import { Article } from '../../../src/services/types';
 import { articlesStore } from '../../../src/store/articlesStore';
@@ -35,11 +36,11 @@ describe('Article Creation Integration Tests', () => {
     it('should render new article screen with all required elements', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      expect(getByTestId('new-article-screen')).toBeTruthy();
-      expect(getByTestId('article-title-input')).toBeTruthy();
-      expect(getByTestId('article-description-input')).toBeTruthy();
-      expect(getByTestId('article-body-input')).toBeTruthy();
-      expect(getByTestId('publish-article-button')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_BODY_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeTruthy();
     });
 
     it('should display correct screen header', () => {
@@ -51,7 +52,7 @@ describe('Article Creation Integration Tests', () => {
     it('should disable publish button with empty fields', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const publishButton = getByTestId('publish-article-button');
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
       expect(publishButton).toBeDisabled();
     });
   });
@@ -60,9 +61,9 @@ describe('Article Creation Integration Tests', () => {
     it('should update all form fields when typing', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'Test Article Title');
       fireEvent.changeText(descriptionInput, 'Test Article Description');
@@ -76,9 +77,9 @@ describe('Article Creation Integration Tests', () => {
     it('should handle field focus and blur events', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent(titleInput, 'focus');
       fireEvent(titleInput, 'blur');
@@ -97,16 +98,16 @@ describe('Article Creation Integration Tests', () => {
     it('should enable publish button when all required fields are filled', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'Test Article Title');
       fireEvent.changeText(descriptionInput, 'Test Article Description');
       fireEvent.changeText(bodyInput, 'Test Article Body');
 
       await waitFor(() => {
-        const publishButton = getByTestId('publish-article-button');
+        const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
         expect(publishButton).not.toBeDisabled();
       });
     });
@@ -114,61 +115,61 @@ describe('Article Creation Integration Tests', () => {
     it('should keep publish button disabled with empty title', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(descriptionInput, 'Test Description');
       fireEvent.changeText(bodyInput, 'Test Body');
 
-      const publishButton = getByTestId('publish-article-button');
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
       expect(publishButton).toBeDisabled();
     });
 
     it('should keep publish button disabled with empty description', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'Test Title');
       fireEvent.changeText(bodyInput, 'Test Body');
 
-      const publishButton = getByTestId('publish-article-button');
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
       expect(publishButton).toBeDisabled();
     });
 
     it('should keep publish button disabled with empty body', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
 
       fireEvent.changeText(titleInput, 'Test Title');
       fireEvent.changeText(descriptionInput, 'Test Description');
 
-      const publishButton = getByTestId('publish-article-button');
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
       expect(publishButton).toBeDisabled();
     });
 
     it('should validate form fields progressively', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
-      expect(getByTestId('publish-article-button')).toBeDisabled();
+      expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeDisabled();
 
       fireEvent.changeText(titleInput, 'Test Title');
-      expect(getByTestId('publish-article-button')).toBeDisabled();
+      expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeDisabled();
 
       fireEvent.changeText(descriptionInput, 'Test Description');
-      expect(getByTestId('publish-article-button')).toBeDisabled();
+      expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeDisabled();
 
       fireEvent.changeText(bodyInput, 'Test Body');
 
       await waitFor(() => {
-        expect(getByTestId('publish-article-button')).not.toBeDisabled();
+        expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).not.toBeDisabled();
       });
     });
   });
@@ -178,10 +179,10 @@ describe('Article Creation Integration Tests', () => {
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
-      const publishButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
 
       fireEvent.changeText(titleInput, 'Integration Test Article');
       fireEvent.changeText(descriptionInput, 'This is a test description');
@@ -204,10 +205,10 @@ describe('Article Creation Integration Tests', () => {
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
-      const publishButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
 
       fireEvent.changeText(titleInput, 'Success Test Article');
       fireEvent.changeText(descriptionInput, 'Success test description');
@@ -227,36 +228,36 @@ describe('Article Creation Integration Tests', () => {
     it('should show loading state is handled by useNewArticle hook', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'Loading Test');
       fireEvent.changeText(descriptionInput, 'Loading Description');
       fireEvent.changeText(bodyInput, 'Loading Body');
 
       await waitFor(() => {
-        const publishButton = getByTestId('publish-article-button');
+        const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
         expect(publishButton).not.toBeDisabled();
       });
 
-      const publishButton = getByTestId('publish-article-button');
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
       expect(publishButton).not.toBeDisabled();
     });
 
     it('should handle form state correctly during validation', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'Valid Test');
       fireEvent.changeText(descriptionInput, 'Valid Description');
       fireEvent.changeText(bodyInput, 'Valid Body');
 
       await waitFor(() => {
-        const publishButton = getByTestId('publish-article-button');
+        const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
         expect(publishButton).not.toBeDisabled();
       });
     });
@@ -270,10 +271,10 @@ describe('Article Creation Integration Tests', () => {
 
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
-      const publishButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
 
       fireEvent.changeText(titleInput, 'Error Test Article');
       fireEvent.changeText(descriptionInput, 'Error test description');
@@ -285,7 +286,7 @@ describe('Article Creation Integration Tests', () => {
 
       fireEvent.press(publishButton);
 
-      expect(getByTestId('new-article-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
     });
 
     it('should clear form on successful submission', async () => {
@@ -311,10 +312,10 @@ describe('Article Creation Integration Tests', () => {
 
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
-      const publishButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
 
       fireEvent.changeText(titleInput, 'Success Article');
       fireEvent.changeText(descriptionInput, 'Success description');
@@ -326,7 +327,7 @@ describe('Article Creation Integration Tests', () => {
 
       fireEvent.press(publishButton);
 
-      expect(getByTestId('new-article-screen')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
     });
   });
 
@@ -334,9 +335,9 @@ describe('Article Creation Integration Tests', () => {
     it('should handle very long content', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       const longContent = 'A'.repeat(1000);
 
@@ -352,9 +353,9 @@ describe('Article Creation Integration Tests', () => {
     it('should handle special characters in content', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       const specialContent = 'Special chars: !@#$%^&*()_+-={}[]|\\:";\'<>?,./';
 
@@ -370,7 +371,7 @@ describe('Article Creation Integration Tests', () => {
     it('should handle multiline content', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const bodyInput = getByTestId('article-body-input');
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       const multilineContent = `Line 1
 Line 2
@@ -389,10 +390,10 @@ Line 5 with empty line above`;
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
-      const publishButton = getByTestId('publish-article-button');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
+      const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
 
       fireEvent.changeText(titleInput, 'Multiple Submission Test');
       fireEvent.changeText(descriptionInput, 'Multiple submission description');
@@ -412,9 +413,9 @@ Line 5 with empty line above`;
     it('should handle form clearing and refilling', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
-      const descriptionInput = getByTestId('article-description-input');
-      const bodyInput = getByTestId('article-body-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
+      const descriptionInput = getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT);
+      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
 
       fireEvent.changeText(titleInput, 'First Title');
       fireEvent.changeText(descriptionInput, 'First Description');
@@ -429,7 +430,7 @@ Line 5 with empty line above`;
       fireEvent.changeText(bodyInput, 'Second Body');
 
       await waitFor(() => {
-        const publishButton = getByTestId('publish-article-button');
+        const publishButton = getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON);
         expect(publishButton).not.toBeDisabled();
       });
     });
@@ -445,7 +446,7 @@ Line 5 with empty line above`;
     it('should handle rapid field changes', () => {
       const { getByTestId } = renderNewArticleScreen();
 
-      const titleInput = getByTestId('article-title-input');
+      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
 
       fireEvent.changeText(titleInput, 'A');
       fireEvent.changeText(titleInput, 'AB');
@@ -462,11 +463,11 @@ Line 5 with empty line above`;
       userStore.setUser(mockUserMinimal);
 
       const { getByTestId } = renderNewArticleScreen();
-      expect(getByTestId('new-article-screen')).toBeTruthy();
-      expect(getByTestId('article-title-input')).toBeTruthy();
-      expect(getByTestId('article-description-input')).toBeTruthy();
-      expect(getByTestId('article-body-input')).toBeTruthy();
-      expect(getByTestId('publish-article-button')).toBeTruthy();
+      expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.ARTICLE_BODY_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeTruthy();
     });
   });
 });

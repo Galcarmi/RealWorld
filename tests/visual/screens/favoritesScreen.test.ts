@@ -21,7 +21,10 @@ createVisualTestSuite(
         TEST_IDS.FAVORITES_MAIN_TAB_ICON,
         TEST_IDS.FAVORITES_SCREEN
       );
-      await testHelper.waitForTestId(TEST_IDS.ARTICLE_CARD('test-article-2'), 5000);
+      await testHelper.waitForTestId(
+        TEST_IDS.ARTICLE_CARD('test-article-2'),
+        5000
+      );
 
       await suite.takeScreenshotAndCompare(
         'favorites-screen-with-favorited-articles'
