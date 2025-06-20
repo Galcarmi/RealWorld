@@ -265,7 +265,7 @@ export async function performLogin(
   await commonTestActions.clickAndNavigateToScreen(
     testHelper,
     'login-tab-icon',
-    TEST_IDS.SIGNIN_SCREEN,
+    TEST_IDS.SIGNIN_SCREEN
   );
 
   await testHelper.waitForTestId('auth-email-input', 5000);

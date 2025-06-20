@@ -13,7 +13,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'login-tab-icon',
-        TEST_IDS.SIGNIN_SCREEN,
+        TEST_IDS.SIGNIN_SCREEN
       );
 
       await testHelper.waitForTestId('auth-screen-title', 5000);
@@ -32,7 +32,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'login-tab-icon',
-        TEST_IDS.SIGNIN_SCREEN,
+        TEST_IDS.SIGNIN_SCREEN
       );
 
       await testHelper.typeInTestId('auth-email-input', 'test@example.com');

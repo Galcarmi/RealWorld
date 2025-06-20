@@ -13,7 +13,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
-        TEST_IDS.SIGNUP_SCREEN,
+        TEST_IDS.SIGNUP_SCREEN
       );
 
       await testHelper.waitForTestId('auth-screen-title', 5000);
@@ -33,7 +33,7 @@ createVisualTestSuite(
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
         'register-tab-icon',
-        TEST_IDS.SIGNUP_SCREEN,
+        TEST_IDS.SIGNUP_SCREEN
       );
 
       await testHelper.typeInTestId('auth-username-input', 'testuser');
