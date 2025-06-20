@@ -5,7 +5,7 @@ import { View } from 'react-native-ui-lib';
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 
-import { COLORS } from '../../constants/styles';
+import { COLORS, TYPOGRAPHY } from '../../constants/styles';
 
 import { ArticlesList } from '../../components/ArticlesList';
 import { NewArticleButton } from '../../components/NewArticleButton';
@@ -40,29 +40,27 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   return (
     <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
       <ScreenHeader title='Profile' />
-
-      <View
-        style={styles.headerSection}
-        backgroundColor={COLORS.SECONDARY}
-        paddingH-20
-      >
-        <ProfileHeader user={currentUser} onEditProfile={onEditProfile} />
-      </View>
-
-      <View style={styles.articlesSection}>
-        <NewArticleButton onPress={onCreateNewArticle} />
-
-        <ArticlesList
-          articles={userArticles}
-          isLoading={isLoading}
-          onRefresh={refreshUserArticles}
-          onLoadMore={noop}
-          onArticlePress={noop}
-          onFavoritePress={onToggleFavorite}
-          emptyMessage="No articles yet. Tap 'New Article' to create your first post"
-          contextKey='profile'
-        />
-      </View>
+      <ProfileHeader
+        user={currentUser}
+        onEditProfile={onEditProfile}
+        usernameStyle={styles.username}
+        containerStyle={styles.headerSection}
+      />
+      <NewArticleButton
+        onPress={onCreateNewArticle}
+        containerStyle={styles.middleSection}
+      />
+      <ArticlesList
+        articles={userArticles}
+        isLoading={isLoading}
+        onRefresh={refreshUserArticles}
+        onLoadMore={noop}
+        onArticlePress={noop}
+        onFavoritePress={onToggleFavorite}
+        emptyMessage="No articles yet. Tap 'New Article' to create your first post"
+        contextKey='profile'
+        contentContainerStyle={styles.articlesSection}
+      />
     </View>
   );
 });
@@ -74,9 +72,20 @@ const createStyles = () =>
       backgroundColor: COLORS.BACKGROUND,
     },
     headerSection: {
-      flex: 0.38,
+      flex: 0.4,
+      backgroundColor: COLORS.SECONDARY,
+    },
+    middleSection: {
+      flex: 0.15,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     articlesSection: {
-      flex: 0.62,
+      flex: 0.45,
+    },
+    username: {
+      fontFamily: TYPOGRAPHY.BODY.fontFamily,
+      color: COLORS.BLACK,
+      textAlign: 'center',
     },
   });

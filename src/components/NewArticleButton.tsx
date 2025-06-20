@@ -1,40 +1,33 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-ui-lib';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
+import { TEST_IDS, ICON_NAMES, BUTTON_LABELS } from '../constants';
+import { COLORS, DIMENSIONS } from '../constants/styles';
 
-import { TEST_IDS, APP_UI, ICON_NAMES, BUTTON_LABELS } from '../constants';
-import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
+import { CustomButton } from './CustomButton';
 
 interface NewArticleButtonProps {
   onPress: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
   onPress,
+  containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
   return (
-    <View style={styles.container}>
-      <Button
-        label={BUTTON_LABELS.NEW_ARTICLE}
+    <View style={containerStyle}>
+      <CustomButton
+        title={BUTTON_LABELS.NEW_ARTICLE}
         onPress={onPress}
-        backgroundColor={COLORS.BACKGROUND}
-        color={COLORS.PRIMARY}
-        outline
-        outlineColor={COLORS.PRIMARY}
-        iconSource={() => (
-          <Ionicons
-            name={ICON_NAMES.ADD}
-            size={APP_UI.ICON_SIZES.MEDIUM}
-            color={COLORS.PRIMARY}
-          />
-        )}
-        iconOnRight={false}
-        style={styles.button}
+        iconName={ICON_NAMES.ADD}
+        iconSize={18}
+        iconColor={COLORS.PRIMARY}
         testID={TEST_IDS.NEW_ARTICLE_BUTTON}
+        buttonContentStyle={styles.button}
+        containerStyle={styles.buttonContainer}
       />
     </View>
   );
@@ -42,16 +35,11 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
 
 const createStyles = () =>
   StyleSheet.create({
-    container: {
-      marginTop: SPACINGS.MARGIN_LARGE,
-      marginBottom: SPACINGS.MARGIN_LARGE,
-      alignItems: 'center',
-    },
     button: {
-      borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
-      height: DIMENSIONS.HEIGHT_60,
-      borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
-      borderColor: COLORS.PRIMARY,
-      width: DIMENSIONS.WIDTH_50_PERCENT,
+      width: DIMENSIONS.WIDTH_150,
+      height: DIMENSIONS.HEIGHT_45,
+    },
+    buttonContainer: {
+      height: DIMENSIONS.HEIGHT_30,
     },
   });

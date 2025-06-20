@@ -93,10 +93,12 @@ export const DIMENSIONS = {
   // Fixed heights
   HEIGHT_60: 60,
   HEIGHT_45: 45,
+  HEIGHT_30: 30,
   HEIGHT_56: 56, // Header height
 
   // Fixed widths
   WIDTH_70: 70, // Header spacer width
+  WIDTH_150: 150,
 
   // Border radius values
   BORDER_RADIUS_SMALL: 8,

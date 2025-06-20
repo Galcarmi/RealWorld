@@ -6,6 +6,8 @@ import {
   View,
   Text,
   StyleSheet,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 
 import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
@@ -22,6 +24,7 @@ interface ArticlesListProps {
   onFavoritePress?: (slug: string, favorited: boolean) => void;
   emptyMessage?: string;
   contextKey: string;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -33,6 +36,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onFavoritePress,
   emptyMessage = 'No articles found',
   contextKey,
+  contentContainerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
@@ -125,17 +129,13 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}
+      contentContainerStyle={contentContainerStyle}
     />
   );
 };
 
 const createStyles = () =>
   StyleSheet.create({
-    contentContainer: {
-      flexGrow: 1,
-      paddingBottom: SPACINGS.MARGIN_LARGE,
-    },
     loadingFooter: {
       padding: SPACINGS.PADDING_LARGE,
       alignItems: 'center',
