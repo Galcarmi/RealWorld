@@ -87,9 +87,9 @@ const createStyles = () =>
       backgroundColor: COLORS.BACKGROUND,
     },
     headerSection: {
-      flex: 0.35,
+      flex: 0.32,
     },
     articlesSection: {
-      flex: 0.65,
+      flex: 0.68,
     },
   });
