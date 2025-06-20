@@ -1,5 +1,12 @@
 import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 
 import { observer } from 'mobx-react';
 
@@ -18,6 +25,7 @@ interface FeedTabsProps {
   onUserFeedPress: () => void;
   activeColor?: string;
   inactiveColor?: string;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const FeedTabs: React.FC<FeedTabsProps> = observer(
@@ -27,6 +35,7 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     onUserFeedPress,
     activeColor = COLORS.PRIMARY,
     inactiveColor = COLORS.PLACEHOLDER,
+    containerStyle,
   }) => {
     const styles = useMemo(() => createStyles(), []);
 
@@ -36,7 +45,7 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     ];
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         {tabs.map(tab => {
           const isActive = tab.id === feedType;
           const tabStyle = isActive
@@ -76,7 +85,6 @@ const createStyles = () =>
     tab: {
       flex: 1,
       alignItems: 'center',
-      paddingHorizontal: SPACINGS.TAB_PADDING_HORIZONTAL,
       paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
       borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
       borderBottomColor: 'transparent',

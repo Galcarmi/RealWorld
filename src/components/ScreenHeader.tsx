@@ -37,72 +37,75 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 
   const styles = useMemo(() => createStyles(insets.top), [insets.top]);
 
+  const backButton = useMemo(
+    () =>
+      shouldShowBackButton ? (
+        <TouchableOpacity
+          onPress={handleBackPress}
+          activeOpacity={0.7}
+          style={styles.backButton}
+        >
+          <Ionicons
+            name={ICON_NAMES.CHEVRON_BACK}
+            size={APP_UI.ICON_SIZES.LARGE}
+            color={COLORS.BACKGROUND}
+          />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      ) : undefined,
+    [
+      shouldShowBackButton,
+      handleBackPress,
+      styles.backButton,
+      styles.backButtonText,
+    ]
+  );
+
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerContent}>
-        {shouldShowBackButton ? (
-          <TouchableOpacity onPress={handleBackPress} activeOpacity={0.7}>
-            <View style={styles.backButton}>
-              <Ionicons
-                name={ICON_NAMES.CHEVRON_BACK}
-                size={APP_UI.ICON_SIZES.LARGE}
-                color={COLORS.BACKGROUND}
-              />
-              <Text style={styles.backButtonText}>Back</Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.leftSpacer} />
-        )}
-
-        {title && (
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-        )}
-
-        <View style={styles.rightContainer} />
+    <>
+      <View style={styles.insets} />
+      <View style={styles.headerContainer}>
+        <View style={styles.titleContainer}>
+          {backButton}
+          {title && <Text style={styles.title}>{title}</Text>}
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const createStyles = (paddingTop: number) =>
   StyleSheet.create({
+    insets: {
+      paddingTop,
+      backgroundColor: COLORS.PRIMARY,
+    },
     headerContainer: {
       backgroundColor: COLORS.PRIMARY,
-      paddingTop,
-    },
-    headerContent: {
-      minHeight: DIMENSIONS.HEIGHT_45,
-      flexDirection: 'row',
+      position: 'relative',
+      height: DIMENSIONS.HEIGHT_30,
       alignItems: 'center',
-      paddingHorizontal: SPACINGS.SCREEN_PADDING_HORIZONTAL,
-      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      justifyContent: 'center',
     },
     backButton: {
       flexDirection: 'row',
       alignItems: 'center',
+      position: 'absolute',
+      left: 6,
     },
     backButtonText: {
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.BACKGROUND,
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
-    leftSpacer: {
-      width: DIMENSIONS.SMALL,
-    },
     titleContainer: {
-      flex: 1,
+      width: DIMENSIONS.WIDTH_FULL,
       alignItems: 'center',
+      justifyContent: 'center',
     },
     title: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
       color: COLORS.BACKGROUND,
       fontWeight: FONT_WEIGHTS.SEMIBOLD,
-    },
-    rightContainer: {
-      width: DIMENSIONS.SMALL,
-      alignItems: 'flex-end',
     },
   });

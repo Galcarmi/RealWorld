@@ -7,12 +7,6 @@ import { navigationService } from '../../../../src/services/navigationService';
 import { authStore } from '../../../../src/store/authStore';
 import { mockUser } from '../../../mocks/data';
 
-jest.mock('react-native', () => ({
-  Keyboard: {
-    dismiss: jest.fn(),
-  },
-}));
-
 jest.mock('../../../../src/store/authStore');
 jest.mock('../../../../src/services/navigationService');
 jest.mock('../../../../src/utils');
