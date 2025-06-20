@@ -37,9 +37,9 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 
   const styles = useMemo(() => createStyles(insets.top), [insets.top]);
 
-  return (
-    <View style={styles.headerContainer}>
-      {shouldShowBackButton ? (
+  const backButton = useMemo(
+    () =>
+      shouldShowBackButton ? (
         <TouchableOpacity
           onPress={handleBackPress}
           activeOpacity={0.7}
@@ -52,33 +52,44 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           />
           <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
-      ) : undefined}
+      ) : undefined,
+    [
+      shouldShowBackButton,
+      handleBackPress,
+      styles.backButton,
+      styles.backButtonText,
+    ]
+  );
 
-      {title && (
+  return (
+    <>
+      <View style={styles.insets} />
+      <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{title}</Text>
+          {backButton}
+          {title && <Text style={styles.title}>{title}</Text>}
         </View>
-      )}
-    </View>
+      </View>
+    </>
   );
 };
 
 const createStyles = (paddingTop: number) =>
   StyleSheet.create({
+    insets: {
+      paddingTop,
+      backgroundColor: COLORS.PRIMARY,
+    },
     headerContainer: {
       backgroundColor: COLORS.PRIMARY,
-      paddingTop,
-      minHeight: DIMENSIONS.HEIGHT_45,
-      flexDirection: 'row',
-      paddingVertical: SPACINGS.SCREEN_TAB_PADDING_VERTICAL,
       position: 'relative',
+      paddingBottom: SPACINGS.MARGIN_SMALL,
     },
     backButton: {
       flexDirection: 'row',
       alignItems: 'center',
       position: 'absolute',
       left: 6,
-      bottom: 6,
     },
     backButtonText: {
       fontSize: FONT_SIZES.MEDIUM,
@@ -86,10 +97,9 @@ const createStyles = (paddingTop: number) =>
       marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
     },
     titleContainer: {
-      position: 'absolute',
-      left: DIMENSIONS.SCREEN_WIDTH / 2,
-      transform: [{ translateX: '-50%' }],
-      bottom: 6,
+      width: DIMENSIONS.WIDTH_FULL,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     title: {
       fontSize: TYPOGRAPHY.BODY.fontSize,

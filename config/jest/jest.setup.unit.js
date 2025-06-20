@@ -29,7 +29,7 @@ jest.mock('react-native', () => ({
   Image: 'Image',
   ActivityIndicator: 'ActivityIndicator',
   RefreshControl: 'RefreshControl',
-  
+
   // APIs
   Dimensions: {
     get: jest.fn().mockReturnValue({ width: 375, height: 812 }),
@@ -43,16 +43,16 @@ jest.mock('react-native', () => ({
   },
   Platform: {
     OS: 'ios',
-    select: jest.fn((obj) => obj.ios),
+    select: jest.fn(obj => obj.ios),
   },
   StyleSheet: {
-    create: jest.fn((styles) => styles),
+    create: jest.fn(styles => styles),
     flatten: jest.fn(),
   },
   Alert: {
     alert: jest.fn(),
   },
-  
+
   // Layout and styling
   PixelRatio: {
     get: jest.fn(() => 2),
