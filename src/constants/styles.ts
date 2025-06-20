@@ -38,6 +38,7 @@ export const FONT_SIZES = {
 
 export const SPACINGS = {
   // Padding values
+  PADDING_TINY: 1.5,
   PADDING_EXTRA_SMALL: 4,
   PADDING_SMALL: 8,
   PADDING_MEDIUM: 12,

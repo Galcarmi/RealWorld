@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -36,67 +36,74 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
-  const createArticleHandlers = (item: Article) => {
-    const handlePress = () => {
-      onArticlePress?.(item.slug);
-    };
+  const createArticleHandlers = useCallback(
+    (item: Article) => {
+      const handlePress = () => {
+        onArticlePress?.(item.slug);
+      };
 
-    const handleFavorite = () => {
-      onFavoritePress?.(item.slug, item.favorited);
-    };
+      const handleFavorite = () => {
+        onFavoritePress?.(item.slug, item.favorited);
+      };
 
-    return { handlePress, handleFavorite };
-  };
+      return { handlePress, handleFavorite };
+    },
+    [onArticlePress, onFavoritePress]
+  );
 
-  const renderArticle = ({ item }: { item: Article }) => {
-    const { handlePress, handleFavorite } = createArticleHandlers(item);
+  const renderArticle = useCallback(
+    ({ item }: { item: Article }) => {
+      const { handlePress, handleFavorite } = createArticleHandlers(item);
 
-    return (
-      <ArticleCard
-        article={item}
-        onPress={handlePress}
-        onFavorite={handleFavorite}
-      />
-    );
-  };
+      return (
+        <ArticleCard
+          article={item}
+          onPress={handlePress}
+          onFavorite={handleFavorite}
+          containerStyle={styles.articleCard}
+        />
+      );
+    },
+    [createArticleHandlers, styles.articleCard]
+  );
 
-  const renderLoadingFooter = () => {
+  const renderLoadingFooter = useCallback(() => {
     return (
       <View style={styles.loadingFooter}>
         <ActivityIndicator size='small' color={COLORS.PRIMARY} />
       </View>
     );
-  };
+  }, [styles.loadingFooter]);
 
-  const renderFooter = () => {
+  const renderFooter = useCallback(() => {
     if (!isLoading) return null;
     return renderLoadingFooter();
-  };
+  }, [isLoading, renderLoadingFooter]);
 
-  const renderLoadingIndicator = () => {
+  const renderLoadingIndicator = useCallback(() => {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size='large' color={COLORS.PRIMARY} />
       </View>
     );
-  };
+  }, [styles.centerContainer]);
 
-  const renderEmptyMessage = () => {
+  const renderEmptyMessage = useCallback(() => {
     return (
       <View style={styles.centerContainer}>
         <Text style={styles.emptyText}>{emptyMessage}</Text>
       </View>
     );
-  };
+  }, [styles.centerContainer, styles.emptyText, emptyMessage]);
 
-  const renderEmpty = () => {
+  const renderEmpty = useCallback(() => {
     if (articles.length === 0 && isLoading) {
       return renderLoadingIndicator();
     }
     return renderEmptyMessage();
-  };
+  }, [articles.length, isLoading, renderEmptyMessage, renderLoadingIndicator]);
 
-  const createRefreshControl = () => {
+  const createRefreshControl = useCallback(() => {
     return (
       <RefreshControl
         refreshing={isLoading && articles.length === 0}
@@ -105,7 +112,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         tintColor={COLORS.PRIMARY}
       />
     );
-  };
+  }, [isLoading, articles.length, onRefresh]);
 
   return (
     <FlatList
@@ -143,5 +150,10 @@ const createStyles = () =>
       fontSize: TYPOGRAPHY.BODY.fontSize,
       color: COLORS.PLACEHOLDER,
       textAlign: 'center',
+    },
+    articleCard: {
+      marginBottom: SPACINGS.PADDING_TINY,
+      borderRadius: 0,
+      padding: SPACINGS.MARGIN_LARGE,
     },
   });
