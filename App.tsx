@@ -16,7 +16,10 @@ const AppWrapper = observer(() => {
   const isUserStoreInitialized = userStore.isInitialized;
   const isAuthenticated = userStore.isAuthenticated();
 
-  const isAppReady = useMemo(() => isThemeReady && isUserStoreInitialized, [isThemeReady, isUserStoreInitialized]);
+  const isAppReady = useMemo(
+    () => isThemeReady && isUserStoreInitialized,
+    [isThemeReady, isUserStoreInitialized]
+  );
 
   useEffect(() => {
     if (isAppReady) {
@@ -25,7 +28,7 @@ const AppWrapper = observer(() => {
       } else {
         navio.setRoot('tabs', 'AuthTabs');
       }
-      
+
       SplashScreen.hideAsync();
     }
   }, [isAppReady, isAuthenticated]);

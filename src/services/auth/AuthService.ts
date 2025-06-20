@@ -56,7 +56,7 @@ class AuthService extends BaseService implements IAuthService {
     try {
       const response = await this._api.get<UserResponse>('/user');
       return this._responseBody(response);
-    } catch (error) {
+    } catch {
       return null;
     }
   }

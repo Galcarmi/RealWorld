@@ -135,7 +135,7 @@ export abstract class BaseService {
 
         if (
           error.response &&
-          error.response.status === HTTP_STATUS.UNAUTHORIZED 
+          error.response.status === HTTP_STATUS.UNAUTHORIZED
         ) {
           await this._handleUnauthorizedError();
         }

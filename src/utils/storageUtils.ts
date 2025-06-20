@@ -17,7 +17,7 @@ export class StorageUtils {
   static async getUserToken(): Promise<string | null> {
     try {
       const token = await AsyncStorage.getItem(STORAGE_KEYS.USER_TOKEN);
- 
+
       return token;
     } catch (error) {
       Logger.error('Failed to retrieve token from storage:', error);
@@ -57,4 +57,4 @@ export class StorageUtils {
       Logger.error('Failed to clear user data from storage:', error);
     }
   }
-} 
+}
