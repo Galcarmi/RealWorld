@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
 import {
@@ -23,6 +23,7 @@ interface NewArticleFormProps {
   onDescriptionChange: (text: string) => void;
   onBodyChange: (text: string) => void;
   onPublishArticle: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const NewArticleForm: React.FC<NewArticleFormProps> = ({
@@ -35,6 +36,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
   onDescriptionChange,
   onBodyChange,
   onPublishArticle,
+  containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
@@ -96,27 +98,18 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = ({
   );
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.contentContainer}
-      keyboardShouldPersistTaps='handled'
-    >
-      <View style={styles.container}>
-        {createTitleInputField()}
-        {createDescriptionInputField()}
-        {createBodyInputField()}
-        {createPublishButton()}
-      </View>
-    </ScrollView>
+    <View style={[styles.container, containerStyle]}>
+      {createTitleInputField()}
+      {createDescriptionInputField()}
+      {createBodyInputField()}
+      {createPublishButton()}
+    </View>
   );
 };
 
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      flex: 1,
-    },
-    scrollView: {
       flex: 1,
     },
     contentContainer: {
@@ -136,5 +129,6 @@ const createStyles = () =>
     publishButton: {
       marginTop: 'auto',
       marginBottom: SPACINGS.PADDING_EXTRA_LARGE,
+      borderRadius: 0,
     },
   });

@@ -5,7 +5,7 @@ import { View } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { COLORS } from '../../constants/styles';
+import { COLORS, SPACINGS } from '../../constants/styles';
 
 import { NewArticleForm } from '../../components/NewArticleForm';
 import { ScreenHeader } from '../../components/ScreenHeader';
@@ -50,6 +50,7 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
           onDescriptionChange={onDescriptionChange}
           onBodyChange={onBodyChange}
           onPublishArticle={onPublishArticle}
+          containerStyle={styles.formContainer}
         />
       </View>
     );
@@ -61,5 +62,8 @@ const createStyles = () =>
     container: {
       flex: 1,
       backgroundColor: COLORS.BACKGROUND,
+    },
+    formContainer: {
+      padding: SPACINGS.PADDING_EXTRA_LARGE,
     },
   });
