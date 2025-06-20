@@ -11,10 +11,10 @@ import {
 } from 'react-native';
 
 import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
+import { useTranslation } from '../hooks/useTranslation';
 import { Article } from '../services/types';
 
 import { ArticleCard } from './ArticleCard';
-import { useTranslation } from '../hooks/useTranslation';
 
 interface ArticlesListProps {
   articles: Article[];

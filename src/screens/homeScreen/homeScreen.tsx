@@ -57,8 +57,8 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
         onFavoritePress={handleFavoritePress}
         emptyMessage={
           feedType === FEED_TYPES.FEED
-            ? 'Follow some users to see their articles here'
-            : 'No articles available'
+            ? t('empty.followUsersMessage')
+            : t('empty.noArticlesAvailable')
         }
         contextKey='home'
       />
