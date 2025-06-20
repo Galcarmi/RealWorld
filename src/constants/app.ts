@@ -54,6 +54,7 @@ export const UI = {
     LARGE: 24,
     XLARGE: 32,
     AVATAR_SMALL: 32,
+    AVATAR_MEDIUM: 38,
     AVATAR_LARGE: 100,
   },
 } as const;
@@ -175,6 +176,7 @@ export const ICON_NAMES = {
   HEART_OUTLINE: 'heart-outline',
   CREATE_OUTLINE: 'create-outline',
   CHECKMARK_CIRCLE: 'checkmark-circle',
+  CHECKMARK_SHARP: 'checkmark-sharp',
   CHEVRON_BACK: 'chevron-back',
 } as const;
 

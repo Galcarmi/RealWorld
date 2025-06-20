@@ -37,31 +37,29 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
 
     return (
       <View style={styles.container}>
-        <View style={styles.tabsRow}>
-          {tabs.map(tab => {
-            const isActive = tab.id === feedType;
-            const tabStyle = isActive
-              ? [styles.tab, styles.activeTab]
-              : [styles.tab, styles.inactiveTab];
+        {tabs.map(tab => {
+          const isActive = tab.id === feedType;
+          const tabStyle = isActive
+            ? [styles.tab, styles.activeTab]
+            : [styles.tab, styles.inactiveTab];
 
-            return (
-              <TouchableOpacity
-                key={tab.id}
-                onPress={tab.onPress}
-                style={tabStyle}
+          return (
+            <TouchableOpacity
+              key={tab.id}
+              onPress={tab.onPress}
+              style={tabStyle}
+            >
+              <Text
+                style={[
+                  styles.tabLabel,
+                  { color: isActive ? activeColor : inactiveColor },
+                ]}
               >
-                <Text
-                  style={[
-                    styles.tabLabel,
-                    { color: isActive ? activeColor : inactiveColor },
-                  ]}
-                >
-                  {tab.label}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+                {tab.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     );
   }
@@ -75,10 +73,9 @@ const createStyles = () =>
       borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
       borderBottomColor: COLORS.TAB_BAR_BORDER,
     },
-    tabsRow: {
-      flexDirection: 'row',
-    },
     tab: {
+      flex: 1,
+      alignItems: 'center',
       paddingHorizontal: SPACINGS.TAB_PADDING_HORIZONTAL,
       paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
       borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
