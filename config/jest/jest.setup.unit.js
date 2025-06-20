@@ -17,6 +17,48 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
+jest.mock('react-native', () => ({
+  // UI Components
+  View: 'View',
+  Text: 'Text',
+  ScrollView: 'ScrollView',
+  FlatList: 'FlatList',
+  TouchableOpacity: 'TouchableOpacity',
+  TouchableHighlight: 'TouchableHighlight',
+  TextInput: 'TextInput',
+  Image: 'Image',
+  ActivityIndicator: 'ActivityIndicator',
+  RefreshControl: 'RefreshControl',
+  
+  // APIs
+  Dimensions: {
+    get: jest.fn().mockReturnValue({ width: 375, height: 812 }),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  },
+  Keyboard: {
+    dismiss: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+  },
+  Platform: {
+    OS: 'ios',
+    select: jest.fn((obj) => obj.ios),
+  },
+  StyleSheet: {
+    create: jest.fn((styles) => styles),
+    flatten: jest.fn(),
+  },
+  Alert: {
+    alert: jest.fn(),
+  },
+  
+  // Layout and styling
+  PixelRatio: {
+    get: jest.fn(() => 2),
+  },
+}));
+
 jest.mock('react-native-safe-area-context', () => {
   const { createSafeAreaMock } = require('./setupUtils');
   return createSafeAreaMock(false);
