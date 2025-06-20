@@ -24,7 +24,7 @@ interface ArticlesListProps {
   onFavoritePress?: (slug: string, favorited: boolean) => void;
   emptyMessage?: string;
   contextKey: string;
-  contentContainerStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -36,7 +36,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onFavoritePress,
   emptyMessage = 'No articles found',
   contextKey,
-  contentContainerStyle,
+  containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
@@ -119,6 +119,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   }, [isLoading, articles.length, onRefresh]);
 
   return (
+    <View style={containerStyle}>
     <FlatList
       data={articles}
       renderItem={renderArticle}
@@ -129,8 +130,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={contentContainerStyle}
-    />
+      />
+    </View>
   );
 };
 

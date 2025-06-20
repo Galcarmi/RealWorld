@@ -59,7 +59,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
         onFavoritePress={onToggleFavorite}
         emptyMessage="No articles yet. Tap 'New Article' to create your first post"
         contextKey='profile'
-        contentContainerStyle={styles.articlesSection}
+        containerStyle={styles.articlesSection}
       />
     </View>
   );
@@ -72,16 +72,16 @@ const createStyles = () =>
       backgroundColor: COLORS.BACKGROUND,
     },
     headerSection: {
-      flex: 0.4,
+      flex: 0.3,
       backgroundColor: COLORS.SECONDARY,
     },
     middleSection: {
-      flex: 0.15,
+      flex: 0.1,
       alignItems: 'center',
       justifyContent: 'center',
     },
     articlesSection: {
-      flex: 0.45,
+      flex: 0.6,
     },
     username: {
       fontFamily: TYPOGRAPHY.BODY.fontFamily,
