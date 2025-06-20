@@ -120,16 +120,16 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   return (
     <View style={containerStyle}>
-    <FlatList
-      data={articles}
-      renderItem={renderArticle}
-      keyExtractor={item => `${contextKey}-${item.slug}`}
-      refreshControl={createRefreshControl()}
-      onEndReached={onLoadMore}
-      onEndReachedThreshold={0.1}
-      ListFooterComponent={renderFooter}
-      ListEmptyComponent={renderEmpty}
-      showsVerticalScrollIndicator={false}
+      <FlatList
+        data={articles}
+        renderItem={renderArticle}
+        keyExtractor={item => `${contextKey}-${item.slug}`}
+        refreshControl={createRefreshControl()}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
