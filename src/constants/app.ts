@@ -176,6 +176,7 @@ export const ICON_NAMES = {
   HEART_OUTLINE: 'heart-outline',
   CREATE_OUTLINE: 'create-outline',
   CHECKMARK_CIRCLE: 'checkmark-circle',
+  CHECKMARK_SHARP: 'checkmark-sharp',
   CHEVRON_BACK: 'chevron-back',
 } as const;
 

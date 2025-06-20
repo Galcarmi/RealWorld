@@ -38,8 +38,8 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
           <Text style={styles.username}>{author.username}</Text>
           {author.following && (
             <Ionicons
-              name={ICON_NAMES.CHECKMARK_CIRCLE}
-              size={16}
+              name={ICON_NAMES.CHECKMARK_SHARP}
+              size={18}
               color={COLORS.PRIMARY}
               style={styles.followingIcon}
             />
@@ -87,6 +87,9 @@ const createStyles = () =>
     followingIcon: {
       marginLeft: SPACINGS.MARGIN_SMALL,
       marginBottom: SPACINGS.MARGIN_TINY,
+      textShadowColor: COLORS.PRIMARY,
+      textShadowOffset: { width: 0, height: 0.2 },
+      textShadowRadius: 0,
     },
     createdAt: {
       fontSize: FONT_SIZES.SMALL,
