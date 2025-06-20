@@ -6,9 +6,11 @@ import { articlesStore } from '../../store/articlesStore';
 import { navigationService } from '../../services/navigationService';
 import { CreateArticleRequest } from '../../services/types';
 
+import { useTranslation } from '../../hooks/useTranslation';
 import { showErrorAlert } from '../../utils';
 
 export const useNewArticle = () => {
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [body, setBody] = useState('');
@@ -62,11 +64,11 @@ export const useNewArticle = () => {
     try {
       await handleArticleCreation();
     } catch {
-      showErrorAlert('Failed to create article');
+      showErrorAlert(t('errors.failedToCreateArticle'));
     } finally {
       setIsLoading(false);
     }
-  }, [validateArticleContent, handleArticleCreation]);
+  }, [validateArticleContent, handleArticleCreation, t]);
 
   const onGoBack = useCallback(() => {
     navigationService.navigateToMainTabs();

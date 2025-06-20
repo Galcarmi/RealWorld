@@ -1,3 +1,100 @@
 {
-  
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "done": "Hecho",
+    "retry": "Reintentar",
+    "ok": "OK",
+    "yes": "Sí",
+    "no": "No",
+    "or": "O",
+    "update": "Actualizar",
+    "publish": "Publicar",
+    "follow": "Seguir",
+    "unfollow": "Dejar de seguir"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "newPassword": "Nueva contraseña",
+    "username": "Nombre de usuario",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "welcome": "Bienvenido"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "editProfile": "Editar Perfil",
+    "newArticle": "Nuevo Artículo",
+    "settings": "Configuración",
+    "about": "Acerca de",
+    "favorites": "Favoritos"
+  },
+  "placeholders": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "newPassword": "Nueva contraseña",
+    "username": "Nombre de usuario",
+    "yourName": "Tu nombre",
+    "profilePictureUrl": "URL de la foto de perfil",
+    "shortBio": "Una breve biografía sobre ti",
+    "yourEmail": "Tu correo electrónico",
+    "title": "Título",
+    "description": "Descripción",
+    "articleText": "Texto del artículo"
+  },
+  "validation": {
+    "emailRequired": "Se requiere correo electrónico",
+    "emailInvalid": "Correo electrónico no válido",
+    "passwordRequired": "Se requiere contraseña",
+    "passwordTooShort": "La contraseña es muy corta",
+    "usernameRequired": "Se requiere nombre de usuario",
+    "usernameTooShort": "El nombre de usuario es muy corto",
+    "titleRequired": "Se requiere título",
+    "descriptionRequired": "Se requiere descripción",
+    "articleTextRequired": "Se requiere texto del artículo"
+  },
+  "errors": {
+    "networkError": "Error de red",
+    "invalidCredentials": "Credenciales inválidas",
+    "somethingWentWrong": "Algo salió mal",
+    "somethingWentWrongTryAgain": "Algo salió mal, por favor intenta de nuevo",
+    "failedToFetchArticles": "Error al obtener artículos",
+    "failedToCreateArticle": "Error al crear artículo",
+    "failedToUpdateArticle": "Error al actualizar artículo",
+    "failedToLoadArticles": "Error al cargar artículos",
+    "failedToLoadFavoriteArticles": "Error al cargar artículos favoritos",
+    "failedToFetchUserArticles": "Error al obtener artículos del usuario",
+    "failedToFetchAuthorProfile": "Error al obtener perfil del autor",
+    "failedToLoadAuthorArticles": "Error al cargar artículos del autor",
+    "failedToToggleFollowStatus": "Error al cambiar estado de seguimiento",
+    "failedToUpdateProfile": "Error al actualizar perfil"
+  },
+  "empty": {
+    "noArticlesFound": "No se encontraron artículos",
+    "noFavoriteArticles": "Aún no hay artículos favoritos",
+    "noArticlesAvailable": "No hay artículos disponibles",
+    "followUsersMessage": "Sigue a algunos usuarios para ver sus artículos aquí",
+    "noUserArticles": "Aún no hay artículos. Toca 'Nuevo Artículo' para crear tu primera publicación"
+  },
+  "feed": {
+    "forYou": "Para Ti",
+    "following": "Siguiendo"
+  },
+  "tags": {
+    "more": "más"
+  }
 } 

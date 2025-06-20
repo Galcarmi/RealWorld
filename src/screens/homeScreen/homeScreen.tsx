@@ -11,11 +11,15 @@ import { ArticlesList } from '../../components/ArticlesList';
 import { FeedTabs } from '../../components/FeedTabs';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { FEED_TYPES, TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 import { userStore } from '../../store';
 
 import useArticles from './useArticles';
 
-export const HomeScreen: NavioScreen = observer(() => {
+interface HomeScreenProps {}
+
+export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
+  const { t } = useTranslation();
   const {
     articles,
     isLoading,

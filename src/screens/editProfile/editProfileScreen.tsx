@@ -8,10 +8,12 @@ import { NavioScreen } from 'rn-navio';
 import { InputField } from '../../components/InputField';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { COLORS, DIMENSIONS, FORM_LIMITS, TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 import { useEditProfile } from './useEditProfile';
 
 export const EditProfileScreen: NavioScreen = observer(() => {
+  const { t } = useTranslation();
   const {
     profileFormValues,
     canUpdate,
@@ -28,12 +30,12 @@ export const EditProfileScreen: NavioScreen = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.EDIT_PROFILE_SCREEN}>
-      <ScreenHeader title='Edit Profile' showBackButton={true} />
+      <ScreenHeader title={t('navigation.editProfile')} showBackButton={true} />
 
       <ScrollView style={styles.scrollView}>
         <View paddingH-20 paddingV-30>
           <InputField
-            placeholder='URL of profile picture'
+            placeholder={t('placeholders.profilePictureUrl')}
             value={profileFormValues.image}
             onChangeText={onImageChange}
             validationMessage={[]}
@@ -47,7 +49,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
           />
 
           <InputField
-            placeholder='Your name'
+            placeholder={t('placeholders.yourName')}
             value={profileFormValues.username}
             onChangeText={onNameChange}
             validationMessage={[]}
@@ -55,7 +57,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
           />
 
           <InputField
-            placeholder='A short bio about you'
+            placeholder={t('placeholders.shortBio')}
             value={profileFormValues.bio}
             onChangeText={onBioChange}
             validationMessage={[]}
@@ -65,7 +67,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
           />
 
           <InputField
-            placeholder='Your email'
+            placeholder={t('placeholders.yourEmail')}
             value={profileFormValues.email}
             onChangeText={onEmailChange}
             validationMessage={[]}
@@ -74,7 +76,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
           />
 
           <InputField
-            placeholder='New password'
+            placeholder={t('placeholders.newPassword')}
             value={profileFormValues.password}
             onChangeText={onPasswordChange}
             validationMessage={[]}
@@ -85,7 +87,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
 
           <View marginT-30>
             <Button
-              label='Update'
+              label={t('common.update')}
               onPress={onUpdateProfile}
               fullWidth
               backgroundColor={styles.updateButton.backgroundColor}
@@ -94,11 +96,11 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             />
 
             <Text center color={COLORS.GREY} marginT-20 marginB-10>
-              Or
+              {t('common.or')}
             </Text>
 
             <Button
-              label='Log out'
+              label={t('auth.logout')}
               onPress={onLogout}
               backgroundColor='transparent'
               color={COLORS.ERROR}

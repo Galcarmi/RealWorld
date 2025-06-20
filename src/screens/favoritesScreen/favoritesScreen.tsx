@@ -10,10 +10,12 @@ import { COLORS } from '../../constants/styles';
 import { ArticlesList } from '../../components/ArticlesList';
 import { ScreenHeader } from '../../components/ScreenHeader';
 import { TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 import { useFavoriteArticles } from './useFavoriteArticles';
 
 export const FavoritesScreen: NavioScreen = observer(() => {
+  const { t } = useTranslation();
   const {
     articles,
     isLoading,
@@ -37,7 +39,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
           onLoadMore={loadMoreArticles}
           onArticlePress={handleArticlePress}
           onFavoritePress={handleFavoritePress}
-          emptyMessage='No favorite articles yet'
+          emptyMessage={t('empty.noFavoriteArticles')}
           contextKey='favorites'
         />
       </View>

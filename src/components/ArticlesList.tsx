@@ -14,6 +14,7 @@ import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
 import { Article } from '../services/types';
 
 import { ArticleCard } from './ArticleCard';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface ArticlesListProps {
   articles: Article[];
@@ -34,11 +35,12 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onLoadMore,
   onArticlePress,
   onFavoritePress,
-  emptyMessage = 'No articles found',
+  emptyMessage,
   contextKey,
   containerStyle,
 }) => {
   const styles = useMemo(() => createStyles(), []);
+  const { t } = useTranslation();
 
   const createArticleHandlers = useCallback(
     (item: Article) => {
@@ -81,10 +83,11 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   }, [isLoading, styles.loadingFooter]);
 
   const renderEmpty = useCallback(() => {
+    const message = emptyMessage || t('empty.noArticlesFound');
     if (articles.length === 0 && !isLoading) {
       return (
         <View style={styles.centerContainer}>
-          <Text style={styles.emptyText}>{emptyMessage}</Text>
+          <Text style={styles.emptyText}>{message}</Text>
         </View>
       );
     }
@@ -95,6 +98,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     emptyMessage,
     styles.centerContainer,
     styles.emptyText,
+    t,
   ]);
 
   const refreshControl = useMemo(

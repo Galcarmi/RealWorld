@@ -7,9 +7,11 @@ import { navigationService } from '../../services/navigationService';
 import { Article } from '../../services/types';
 
 import { APP_PAGINATION } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 import { showErrorAlert } from '../../utils';
 
 export const useProfile = () => {
+  const { t } = useTranslation();
   const [userArticles, setUserArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,11 +29,11 @@ export const useProfile = () => {
       );
       setUserArticles(response.articles);
     } catch {
-      showErrorAlert('Failed to fetch articles');
+      showErrorAlert(t('errors.failedToFetchArticles'));
     } finally {
       setIsLoading(false);
     }
-  }, [currentUser?.username]);
+  }, [currentUser?.username, t]);
 
   const onCreateNewArticle = useCallback(() => {
     navigationService.navigateToNewArticle();

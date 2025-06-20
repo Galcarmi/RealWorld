@@ -3,7 +3,7 @@ import { useTranslation as useI18nTranslation } from 'react-i18next';
 
 import { languageStore } from '../store/languageStore';
 
-export const useTranslation = () => {
+const useTranslation = () => {
   const { t, i18n } = useI18nTranslation();
 
   const getCurrentLanguage = useCallback(() => {
@@ -30,4 +30,4 @@ export const useT = () => {
   return t;
 };
 
-export default useTranslation;
+export { useTranslation };
