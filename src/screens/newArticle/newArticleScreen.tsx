@@ -66,7 +66,6 @@ const createStyles = () =>
       backgroundColor: COLORS.BACKGROUND,
     },
     formContainer: {
-      flex: 1,
-      paddingHorizontal: SPACINGS.PADDING_LARGE,
+      padding: SPACINGS.PADDING_EXTRA_LARGE,
     },
   });

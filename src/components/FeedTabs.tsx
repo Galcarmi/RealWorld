@@ -111,7 +111,4 @@ const createStyles = () =>
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.PLACEHOLDER,
     },
-    activeTabText: {
-      color: COLORS.PRIMARY,
-    },
   });
