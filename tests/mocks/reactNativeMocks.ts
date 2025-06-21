@@ -1,33 +1,8 @@
-import React from 'react';
-
 jest.mock('../../src/utils/alertUtils', () => ({
   showErrorAlert: jest.fn(),
   showInfoAlert: jest.fn(),
   showConfirmAlert: jest.fn(),
 }));
-
-jest.mock('@expo/vector-icons', () => {
-  const React = require('react');
-
-  const createIconComponent = (name: string) => (props: any) =>
-    React.createElement('Text', { testID: `${name}-icon`, ...props }, name);
-
-  return {
-    Ionicons: createIconComponent('Ionicons'),
-    MaterialIcons: createIconComponent('MaterialIcons'),
-    FontAwesome: createIconComponent('FontAwesome'),
-    AntDesign: createIconComponent('AntDesign'),
-    Entypo: createIconComponent('Entypo'),
-    EvilIcons: createIconComponent('EvilIcons'),
-    Feather: createIconComponent('Feather'),
-    FontAwesome5: createIconComponent('FontAwesome5'),
-    Foundation: createIconComponent('Foundation'),
-    MaterialCommunityIcons: createIconComponent('MaterialCommunityIcons'),
-    Octicons: createIconComponent('Octicons'),
-    SimpleLineIcons: createIconComponent('SimpleLineIcons'),
-    Zocial: createIconComponent('Zocial'),
-  };
-});
 
 // Mock react-native-ui-lib components - keep this as it's library-specific
 jest.mock('react-native-ui-lib', () => {
@@ -48,19 +23,6 @@ jest.mock('react-native-ui-lib', () => {
     TextField: (props: any) => React.createElement('TextInput', props),
     Colors: { loadColors: jest.fn() },
     Typography: { loadTypographies: jest.fn() },
-  };
-});
-
-// Mock SafeAreaProvider - keep this as it's commonly needed
-jest.mock('react-native-safe-area-context', () => {
-  const React = require('react');
-  const insets = { top: 0, right: 0, bottom: 0, left: 0 };
-  return {
-    SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
-    SafeAreaView: ({ children, testID, ...props }: any) =>
-      React.createElement('View', { testID, ...props }, children),
-    useSafeAreaInsets: () => insets,
-    useSafeAreaFrame: () => ({ x: 0, y: 0, width: 390, height: 844 }),
   };
 });
 
