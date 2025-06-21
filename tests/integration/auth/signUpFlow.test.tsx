@@ -17,8 +17,11 @@ describe('Sign Up Flow Tests', () => {
     authStore.clear();
   });
 
-  describe('Form Rendering', () => {
-    it('renders signup form with all required fields', () => {
+  describe('Registration', () => {
+    it('renders signup form and integrates with auth store', () => {
+      const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
+      const setEmailSpy = jest.spyOn(authStore, 'setEmail');
+      const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderSignUpScreen();
 
       expect(getByTestId(TEST_IDS.SIGNUP_SCREEN)).toBeTruthy();
@@ -27,21 +30,8 @@ describe('Sign Up Flow Tests', () => {
       expect(getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON)).toBeTruthy();
-    });
-
-    it('initializes with submit button disabled', () => {
-      const { getByTestId } = renderSignUpScreen();
 
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
-    });
-  });
-
-  describe('Form Store', () => {
-    it('integrates form inputs with auth store', () => {
-      const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
-      const setEmailSpy = jest.spyOn(authStore, 'setEmail');
-      const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
-      const { getByTestId } = renderSignUpScreen();
 
       fillSignUpForm(getByTestId);
 
@@ -49,10 +39,8 @@ describe('Sign Up Flow Tests', () => {
       expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
       expect(setPasswordSpy).toHaveBeenCalledWith('password123456');
     });
-  });
 
-  describe('Registration Flow', () => {
-    it('integrates form submission with registration process', () => {
+    it('handles registration submission successfully', () => {
       const registerSpy = jest.spyOn(authStore, 'register');
       const { getByTestId } = renderSignUpScreen();
 
@@ -69,7 +57,7 @@ describe('Sign Up Flow Tests', () => {
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });
 
-    it('displays validation errors from registration failure', () => {
+    it('displays registration validation errors', () => {
       authStore.errors = {
         username: ['Username already exists'],
         email: ['Email is invalid'],
@@ -93,21 +81,6 @@ describe('Sign Up Flow Tests', () => {
       fireEvent.press(getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON));
 
       expect(navigationSpy).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('Complete Registration Flow', () => {
-    it('handles full registration flow from input to submission', () => {
-      const registerSpy = jest
-        .spyOn(authStore, 'register')
-        .mockResolvedValue(undefined);
-      const { getByTestId } = renderSignUpScreen();
-
-      fillSignUpForm(getByTestId);
-
-      fireEvent.press(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON));
-
-      expect(registerSpy).toHaveBeenCalled();
     });
   });
 });

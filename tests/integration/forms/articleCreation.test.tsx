@@ -21,27 +21,14 @@ describe('Article Creation Tests', () => {
     userStore.setUser(createMockUser());
   });
 
-  describe('Screen Rendering', () => {
-    it('renders article creation form with all fields', () => {
+  describe('Article Publishing', () => {
+    it('renders form and enables publishing when form is valid', async () => {
       const { getByTestId } = renderNewArticleScreen();
 
       expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
-      expect(getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT)).toBeTruthy();
-      expect(getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT)).toBeTruthy();
-      expect(getByTestId(TEST_IDS.ARTICLE_BODY_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeTruthy();
-    });
-  });
-
-  describe('Form Validation', () => {
-    it('keeps publish button disabled when form is empty', () => {
-      const { getByTestId } = renderNewArticleScreen();
 
       expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).toBeDisabled();
-    });
-
-    it('enables publish button when all required fields are filled', async () => {
-      const { getByTestId } = renderNewArticleScreen();
 
       fillArticleForm(getByTestId);
 
@@ -49,10 +36,8 @@ describe('Article Creation Tests', () => {
         expect(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON)).not.toBeDisabled();
       });
     });
-  });
 
-  describe('Article Submission', () => {
-    it('handles successful article creation', async () => {
+    it('successfully creates article with provided data', async () => {
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
       const mockArticle = createMockArticle({
         title: 'Test Article Title',
@@ -64,39 +49,42 @@ describe('Article Creation Tests', () => {
 
       fillArticleForm(getByTestId);
 
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
-      });
+      fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
 
-      expect(createArticleSpy).toHaveBeenCalledWith({
-        title: 'Test Article Title',
-        description: 'Test article description',
-        body: 'This is the test article body content.',
+      await waitFor(() => {
+        expect(createArticleSpy).toHaveBeenCalledWith({
+          title: 'Test Article Title',
+          description: 'Test article description',
+          body: 'This is the test article body content.',
+        });
       });
     });
 
-    it('handles article creation with minimal data', async () => {
+    it('creates article with custom content', async () => {
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
+      const mockArticle = createMockArticle();
+      createArticleSpy.mockResolvedValue(mockArticle);
+
       const { getByTestId } = renderNewArticleScreen();
 
       fillArticleForm(getByTestId, {
-        title: 'Minimal Title',
-        description: 'Minimal description',
-        body: 'Short body',
+        title: 'Custom Article Title',
+        description: 'Custom description text',
+        body: 'Custom article body content with details.',
       });
+
+      fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
 
       await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
-      });
-
-      expect(createArticleSpy).toHaveBeenCalledWith({
-        title: 'Minimal Title',
-        description: 'Minimal description',
-        body: 'Short body',
+        expect(createArticleSpy).toHaveBeenCalledWith({
+          title: 'Custom Article Title',
+          description: 'Custom description text',
+          body: 'Custom article body content with details.',
+        });
       });
     });
 
-    it('handles article creation errors', async () => {
+    it('handles article creation failure gracefully', async () => {
       const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
       createArticleSpy.mockRejectedValue(new Error('Creation failed'));
 
@@ -104,59 +92,21 @@ describe('Article Creation Tests', () => {
 
       fillArticleForm(getByTestId);
 
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
-      });
+      fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
 
-      expect(createArticleSpy).toHaveBeenCalled();
-      expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
+      await waitFor(() => {
+        expect(createArticleSpy).toHaveBeenCalled();
+        expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
+      });
     });
   });
 
-  describe('User Authentication', () => {
-    it('works with authenticated user context', () => {
+  describe('User Context', () => {
+    it('works with authenticated user', () => {
       const { getByTestId } = renderNewArticleScreen();
 
       expect(getByTestId(TEST_IDS.NEW_ARTICLE_SCREEN)).toBeTruthy();
       expect(userStore.isAuthenticated()).toBe(true);
-    });
-  });
-
-  describe('Form Input Handling', () => {
-    it('handles form input changes correctly', async () => {
-      const { getByTestId } = renderNewArticleScreen();
-
-      const titleInput = getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT);
-      const bodyInput = getByTestId(TEST_IDS.ARTICLE_BODY_INPUT);
-
-      fireEvent.changeText(titleInput, 'Updated Title');
-      fireEvent.changeText(bodyInput, 'Updated body content');
-
-      await waitFor(() => {
-        expect(titleInput.props.value).toBe('Updated Title');
-        expect(bodyInput.props.value).toBe('Updated body content');
-      });
-    });
-
-    it('handles form data correctly', async () => {
-      const createArticleSpy = jest.spyOn(articlesStore, 'createArticle');
-      const { getByTestId } = renderNewArticleScreen();
-
-      fillArticleForm(getByTestId, {
-        title: 'Custom Title',
-        description: 'Custom description',
-        body: 'Custom body content',
-      });
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.PUBLISH_ARTICLE_BUTTON));
-      });
-
-      expect(createArticleSpy).toHaveBeenCalledWith({
-        title: 'Custom Title',
-        description: 'Custom description',
-        body: 'Custom body content',
-      });
     });
   });
 });

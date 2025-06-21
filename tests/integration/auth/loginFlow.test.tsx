@@ -17,58 +17,35 @@ describe('Login Flow Tests', () => {
     authStore.clear();
   });
 
-  describe('Authentication Form', () => {
-    it('renders login form with required fields', () => {
+  describe('Authentication', () => {
+    it('renders login form and integrates with auth store', () => {
+      const setEmailSpy = jest.spyOn(authStore, 'setEmail');
+      const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderLoginScreen();
 
       expect(getByTestId(TEST_IDS.AUTH_EMAIL_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeTruthy();
-    });
-
-    it('integrates form input with auth store', () => {
-      const setEmailSpy = jest.spyOn(authStore, 'setEmail');
-      const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
-      const { getByTestId } = renderLoginScreen();
 
       fillLoginForm(getByTestId);
 
       expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
       expect(setPasswordSpy).toHaveBeenCalledWith('password123456');
     });
-  });
 
-  describe('Form Validation', () => {
-    it('integrates form submission with validation', () => {
+    it('validates form input and controls submit button state', () => {
       const { getByTestId } = renderLoginScreen();
 
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
-
-      fillLoginForm(getByTestId);
-
-      expect(getByTestId(TEST_IDS.AUTH_EMAIL_INPUT)).toBeTruthy();
-      expect(getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT)).toBeTruthy();
-    });
-
-    it('keeps submit disabled for invalid email format', () => {
-      const { getByTestId } = renderLoginScreen();
 
       fillLoginForm(getByTestId, { email: 'invalid-email' });
-
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
-    });
-
-    it('keeps submit disabled for short password', () => {
-      const { getByTestId } = renderLoginScreen();
 
       fillLoginForm(getByTestId, { password: '12345' });
-
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });
-  });
 
-  describe('Authentication Flow', () => {
-    it('integrates form submission with auth store', () => {
+    it('handles login submission successfully', () => {
       const loginSpy = jest.spyOn(authStore, 'login');
       const { getByTestId } = renderLoginScreen();
 
@@ -85,7 +62,7 @@ describe('Login Flow Tests', () => {
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });
 
-    it('displays errors from authentication failure', () => {
+    it('displays authentication errors', () => {
       authStore.errors = { email: ['Invalid email format'] };
       const { getByTestId } = renderLoginScreen();
 
@@ -105,21 +82,6 @@ describe('Login Flow Tests', () => {
       fireEvent.press(getByTestId(TEST_IDS.AUTH_SIGNUP_BUTTON));
 
       expect(navigationSpy).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('User Experience', () => {
-    it('handles complete login flow from form filling to submission', () => {
-      const loginSpy = jest
-        .spyOn(authStore, 'login')
-        .mockResolvedValue(undefined);
-      const { getByTestId } = renderLoginScreen();
-
-      fillLoginForm(getByTestId);
-
-      fireEvent.press(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON));
-
-      expect(loginSpy).toHaveBeenCalled();
     });
   });
 });

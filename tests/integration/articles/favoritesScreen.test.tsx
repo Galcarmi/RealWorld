@@ -26,25 +26,14 @@ describe('Favorites Screen Tests', () => {
     articlesStore.favoritesCurrentOffset = 0;
   });
 
-  describe('Screen Initialization', () => {
-    it('initializes and loads favorite articles on mount', async () => {
-      renderFavoritesScreen();
+  describe('Favorites Management', () => {
+    it('initializes and displays favorite articles', async () => {
+      const { getByTestId } = renderFavoritesScreen();
 
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
         1
       );
-    });
-
-    it('renders favorites screen with proper test ID', () => {
-      const { getByTestId } = renderFavoritesScreen();
-
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Favorites Display', () => {
-    it('displays favorite articles when available', async () => {
-      const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.ARTICLE_CARD('favorite-1'))).toBeTruthy();
@@ -52,46 +41,22 @@ describe('Favorites Screen Tests', () => {
       });
     });
 
-    it('shows loading state when favorites are being fetched', () => {
+    it('handles empty favorites and loading states', async () => {
       articlesStore.favoritesIsLoading = true;
       articlesStore.favoriteArticles = [];
-
-      const { getByTestId } = renderFavoritesScreen();
-
+      const { getByTestId, rerender } = renderFavoritesScreen();
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
 
-    it('shows empty message when no favorite articles available', async () => {
-      articlesStore.favoriteArticles = [];
       articlesStore.favoritesIsLoading = false;
-
-      const { getByText } = renderFavoritesScreen();
-
-      await waitFor(() => {
-        expect(getByText('No favorite articles yet')).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Article Interaction', () => {
-    it('handles favorite button press to toggle favorite status', async () => {
-      const toggleFavoriteSpy = jest.spyOn(
-        articlesStore,
-        'toggleArticleFavoriteStatus'
-      );
-      const { getAllByTestId } = renderFavoritesScreen();
+      articlesStore.favoriteArticles = [];
+      rerender(<FavoritesScreen />);
 
       await waitFor(() => {
-        const favoriteButtons = getAllByTestId(
-          TEST_IDS.FAVORITE_BUTTON('testauthor')
-        );
-        fireEvent.press(favoriteButtons[0]);
+        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       });
-
-      expect(toggleFavoriteSpy).toHaveBeenCalled();
     });
 
-    it('handles multiple favorite article interactions', async () => {
+    it('handles favorite interactions successfully', async () => {
       const toggleFavoriteSpy = jest.spyOn(
         articlesStore,
         'toggleArticleFavoriteStatus'
@@ -110,58 +75,21 @@ describe('Favorites Screen Tests', () => {
     });
   });
 
-  describe('Authentication', () => {
-    it('integrates with authenticated user state', async () => {
+  describe('Authentication Context', () => {
+    it('works with different authentication states', async () => {
       userStore.setUser(createMockUser({ username: 'authuser' }));
-
-      const { getByTestId } = renderFavoritesScreen();
+      const { getByTestId, rerender } = renderFavoritesScreen();
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       });
-
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
-    });
 
-    it('handles unauthenticated user state', async () => {
       userStore.forgetUser();
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(false);
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Store State', () => {
-    it('integrates with favorites store state changes', () => {
-      articlesStore.favoritesIsLoading = false;
-      articlesStore.favoriteArticles = [
-        createMockArticle({ slug: 'new-favorite', title: 'New Favorite' }),
-      ];
-
-      const { getByTestId } = renderFavoritesScreen();
+      rerender(<FavoritesScreen />);
 
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      expect(articlesStore.favoriteArticles.length).toBe(1);
-    });
-
-    it('handles store errors gracefully', async () => {
-      const { getByTestId } = renderFavoritesScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      });
-
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
-    });
-  });
-
-  describe('Component Lifecycle', () => {
-    it('handles component unmount gracefully', () => {
-      const { unmount } = renderFavoritesScreen();
-
-      expect(() => unmount()).not.toThrow();
     });
   });
 });

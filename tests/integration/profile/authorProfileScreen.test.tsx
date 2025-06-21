@@ -43,47 +43,19 @@ describe('Author Profile Screen Tests', () => {
     setupMockAuthorProfile();
   });
 
-  describe('Screen Rendering', () => {
-    it('renders author profile screen with proper test ID', () => {
-      const { getByTestId } = renderAuthorProfileScreen();
-
-      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
-    });
-
-    it('handles loading state', () => {
+  describe('Author Profile Management', () => {
+    it('displays author profile and articles with loading states', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile();
       mockUseAuthorProfile.isLoading = true;
-
-      const { getByTestId } = renderAuthorProfileScreen();
-
+      const { getByTestId, rerender } = renderAuthorProfileScreen();
       expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
-    });
 
-    it('handles empty author profile state', () => {
-      const { mockUseAuthorProfile } = setupMockAuthorProfile();
-      mockUseAuthorProfile.authorProfile = null;
-
-      const { getByTestId } = renderAuthorProfileScreen();
-
-      expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Author Profile Display', () => {
-    it('displays author profile information', async () => {
+      mockUseAuthorProfile.isLoading = false;
       setupMockAuthorProfile({ username: 'displayauthor', bio: 'Author bio' });
-
-      const { getByTestId } = renderAuthorProfileScreen();
+      rerender(<AuthorProfileScreen />);
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('displays author articles when available', async () => {
-      const { getByTestId } = renderAuthorProfileScreen();
-
-      await waitFor(() => {
         expect(
           getByTestId(TEST_IDS.ARTICLE_CARD('test-article-1'))
         ).toBeTruthy();
@@ -93,39 +65,27 @@ describe('Author Profile Screen Tests', () => {
       });
     });
 
-    it('shows empty message when author has no articles', async () => {
+    it('handles empty states and null profile gracefully', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile();
       mockUseAuthorProfile.authorArticles = [];
-
-      const { getByText } = renderAuthorProfileScreen();
+      const { getByText, rerender } = renderAuthorProfileScreen();
 
       await waitFor(() => {
         expect(getByText('No articles found')).toBeTruthy();
       });
+
+      mockUseAuthorProfile.authorProfile = null;
+      rerender(<AuthorProfileScreen />);
+      expect(
+        renderAuthorProfileScreen().getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)
+      ).toBeTruthy();
     });
   });
 
-  describe('Article Interaction', () => {
-    it('handles favorite button press on author articles', async () => {
+  describe('User Interactions', () => {
+    it('handles article interactions and refresh functionality', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile();
-      const { getAllByTestId } = renderAuthorProfileScreen();
-
-      await waitFor(() => {
-        const favoriteButtons = getAllByTestId(
-          TEST_IDS.FAVORITE_BUTTON('testauthor')
-        );
-        fireEvent.press(favoriteButtons[0]);
-      });
-
-      expect(mockUseAuthorProfile.onToggleFavorite).toHaveBeenCalledWith(
-        'test-article-1',
-        false
-      );
-    });
-
-    it('handles multiple favorite toggles', async () => {
-      const { mockUseAuthorProfile } = setupMockAuthorProfile();
-      const { getAllByTestId } = renderAuthorProfileScreen();
+      const { getAllByTestId, getByTestId } = renderAuthorProfileScreen();
 
       await waitFor(() => {
         const favoriteButtons = getAllByTestId(
@@ -136,13 +96,10 @@ describe('Author Profile Screen Tests', () => {
       });
 
       expect(mockUseAuthorProfile.onToggleFavorite).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe('Refresh', () => {
-    it('handles pull to refresh functionality', async () => {
-      const { mockUseAuthorProfile } = setupMockAuthorProfile();
-      const { getByTestId } = renderAuthorProfileScreen();
+      expect(mockUseAuthorProfile.onToggleFavorite).toHaveBeenCalledWith(
+        'test-article-1',
+        false
+      );
 
       await waitFor(() => {
         const articleCard = getByTestId(
@@ -160,18 +117,9 @@ describe('Author Profile Screen Tests', () => {
     });
   });
 
-  describe('Authentication', () => {
-    it('works with authenticated user', async () => {
+  describe('Authentication Context', () => {
+    it('integrates with authentication and follow status', async () => {
       userStore.setUser(createMockUser({ username: 'authenticateduser' }));
-
-      const { getByTestId } = renderAuthorProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('integrates with user store for follow/unfollow actions', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile({
         following: true,
       });

@@ -64,7 +64,7 @@ export const fillUpdateForm = (
     email: 'updated@example.com',
     bio: 'Updated bio',
     image: 'https://example.com/new-avatar.jpg',
-    password: '', // Added password field that was missing
+    password: '',
     ...overrides,
   };
 

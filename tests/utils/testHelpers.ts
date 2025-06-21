@@ -10,7 +10,6 @@ import {
   FormValidationTestValues,
 } from '../types';
 
-// Re-export form helpers for convenience
 export {
   fillLoginForm,
   fillSignUpForm,
