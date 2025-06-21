@@ -7,11 +7,9 @@ import { authStore } from '../../store/authStore';
 import { User } from '../../store/types';
 import { userStore } from '../../store/userStore';
 
-import { ResponseErrors } from '../../services/types';
-
 import { RootStackParamList } from '../../navigation/types';
 
-import { authService } from '../../services';
+import { authService, ResponseErrors } from '../../services';
 import { showErrorModals } from '../../utils';
 
 type NavigationProps = NavigationProp<RootStackParamList>;

@@ -1,6 +1,6 @@
 import { fireEvent, waitFor, RenderAPI } from '@testing-library/react-native';
 
-import { navigationService } from '../../../src/services/navigationService';
+import { navigationService } from '../../../src/services';
 import { articlesStore } from '../../../src/store/articlesStore';
 
 export const testArticleCardPress = async (

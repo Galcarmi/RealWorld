@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
-import { Profile } from '../../../src/services/types';
+import { Profile } from '../../../src/services';
 import { createMockUser, createMockArticle } from '../../mocks/data';
 import { getMockUseAuthorProfile } from '../../mocks/hooks';
 import { setMockRoute, mockAuthorProfileRoute } from '../../mocks/navigation';

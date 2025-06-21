@@ -11,7 +11,7 @@ import { SignInScreen } from '../screens/login/signInScreen';
 import { SignUpScreen } from '../screens/login/signUpScreen';
 import { NewArticleScreen } from '../screens/newArticle/newArticleScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
-import { navigationService } from '../services/navigationService';
+import { navigationService } from '../services/navigation/NavigationService';
 
 import { IoniconsName, TabIconProps } from './types';
 

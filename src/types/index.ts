@@ -33,7 +33,7 @@ export type {
   IArticleService,
   ILogger,
   INavigationService,
-} from '../services/types';
+} from '../services';
 
 export type {
   User,
