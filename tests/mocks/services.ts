@@ -1,9 +1,17 @@
-import { mockDeep, mockReset, MockProxy } from 'jest-mock-extended';
+import { mockDeep, MockProxy } from 'jest-mock-extended';
 
 import { NavioInstance } from '../../src/navigation/navio';
+import { ArticleService } from '../../src/services/articles/ArticleService';
 import { AuthService } from '../../src/services/auth/AuthService';
-import { BaseService } from '../../src/services/BaseService';
-import { IAuthService, IArticleService } from '../../src/services/types';
+import { ProfileService } from '../../src/services/profiles/ProfileService';
+import {
+  IArticleService,
+  IAuthService,
+  IProfileService,
+} from '../../src/services/types';
+import { StorageUtils } from '../../src/utils/storageUtils';
+
+import { mockUser, mockArticle, mockArticles } from './data';
 
 interface INavigationService {
   setNavioInstance: (navioInstance: NavioInstance) => void;
@@ -21,6 +29,7 @@ interface INavigationService {
 const mockNavigationService = mockDeep<INavigationService>();
 const mockAuthService = mockDeep<IAuthService>();
 const mockArticleService = mockDeep<IArticleService>();
+const mockProfileService = mockDeep<IProfileService>();
 
 jest.mock('../../src/services/navigationService', () => ({
   navigationService: mockNavigationService,
@@ -34,45 +43,107 @@ jest.mock('../../src/services/articles/ArticleService', () => ({
   ArticleService: jest.fn().mockImplementation(() => mockArticleService),
 }));
 
+jest.mock('../../src/services/profiles/ProfileService', () => ({
+  ProfileService: jest.fn().mockImplementation(() => mockProfileService),
+}));
+
 export const getMockNavigationService = (): MockProxy<INavigationService> =>
   mockNavigationService;
-export const getMockAuthService = (): MockProxy<IAuthService> =>
-  mockAuthService;
-export const getMockArticleService = (): MockProxy<IArticleService> =>
-  mockArticleService;
-
 export const createMockAuthService = (): MockProxy<AuthService> => {
   return mockDeep<AuthService>();
 };
 
-export const createMockBaseService = (): MockProxy<BaseService> => {
-  return mockDeep<BaseService>();
+export const setupServiceMocks = () => {
+  const mockAuthServiceClass = AuthService as jest.MockedClass<
+    typeof AuthService
+  >;
+  mockAuthServiceClass.mockImplementation(
+    () =>
+      ({
+        login: jest.fn().mockResolvedValue({
+          user: mockUser,
+        }),
+        register: jest.fn().mockResolvedValue({
+          user: mockUser,
+        }),
+        validateStoredToken: jest.fn().mockResolvedValue({
+          user: mockUser,
+        }),
+        getCurrentUser: jest.fn().mockResolvedValue({
+          user: mockUser,
+        }),
+        updateUser: jest.fn().mockResolvedValue({
+          user: mockUser,
+        }),
+      }) as any
+  );
+
+  // Mock ArticleService
+  const mockArticleServiceClass = ArticleService as jest.MockedClass<
+    typeof ArticleService
+  >;
+  mockArticleServiceClass.mockImplementation(
+    () =>
+      ({
+        getArticles: jest.fn().mockResolvedValue({
+          articles: mockArticles,
+          articlesCount: mockArticles.length,
+        }),
+        getFeedArticles: jest.fn().mockResolvedValue({
+          articles: mockArticles,
+          articlesCount: mockArticles.length,
+        }),
+        createArticle: jest.fn().mockResolvedValue({
+          article: mockArticle,
+        }),
+        favoriteArticle: jest.fn().mockResolvedValue({
+          article: {
+            ...mockArticle,
+            favorited: true,
+            favoritesCount: mockArticle.favoritesCount + 1,
+          },
+        }),
+        unfavoriteArticle: jest.fn().mockResolvedValue({
+          article: {
+            ...mockArticle,
+            favorited: false,
+            favoritesCount: mockArticle.favoritesCount,
+          },
+        }),
+      }) as any
+  );
+
+  // Mock ProfileService
+  const mockProfileServiceClass = ProfileService as jest.MockedClass<
+    typeof ProfileService
+  >;
+  mockProfileServiceClass.mockImplementation(
+    () =>
+      ({
+        getProfile: jest.fn().mockResolvedValue({
+          profile: mockArticle.author,
+        }),
+        followUser: jest.fn().mockResolvedValue({
+          profile: {
+            ...mockArticle.author,
+            following: true,
+          },
+        }),
+        unfollowUser: jest.fn().mockResolvedValue({
+          profile: {
+            ...mockArticle.author,
+            following: false,
+          },
+        }),
+      }) as any
+  );
+
+  // Mock StorageUtils
+  jest.spyOn(StorageUtils, 'setUserToken').mockResolvedValue();
+  jest.spyOn(StorageUtils, 'getUserToken').mockResolvedValue(mockUser.token);
+  jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();
+  jest.spyOn(StorageUtils, 'getUserData').mockResolvedValue(mockUser);
+  jest.spyOn(StorageUtils, 'clearUserData').mockResolvedValue();
 };
 
-export const resetAllServiceMocks = (): void => {
-  mockReset(mockNavigationService);
-  mockReset(mockAuthService);
-  mockReset(mockArticleService);
-};
-
-export const setupMockAxiosResponse = <T>(data: T, status = 200) => ({
-  data,
-  status,
-  statusText: 'OK',
-  headers: {},
-  config: {},
-});
-
-export const setupMockAxiosError = (
-  errors: Record<string, string[]>,
-  status = 400
-) => ({
-  response: {
-    data: { errors },
-    status,
-    statusText: 'Bad Request',
-    headers: {},
-    config: {},
-  },
-  isAxiosError: true,
-});
+setupServiceMocks();

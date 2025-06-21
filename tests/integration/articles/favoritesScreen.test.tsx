@@ -145,13 +145,14 @@ describe('Favorites Screen Integration Tests', () => {
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
-    it('should hide loading indicator when favorites are loaded', () => {
-      mockArticlesStore.favoritesIsLoading = false;
-
+    it('should hide loading indicator when favorites are loaded', async () => {
       const { getByTestId } = renderFavoritesScreen();
 
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      expect(mockArticlesStore.favoritesIsLoading).toBe(false);
+
+      await waitFor(() => {
+        expect(mockArticlesStore.favoritesIsLoading).toBe(false);
+      });
     });
   });
 
