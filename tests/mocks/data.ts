@@ -1,24 +1,30 @@
+import { Profile, Article } from '../../src/services/types';
+import { User } from '../../src/store/types';
 import { MockApiResponse } from '../visual/config/puppeteerConfig';
 
-export const mockUser = {
+export const createMockUser = (overrides: Partial<User> = {}): User => ({
   id: '123',
   email: 'test@example.com',
   username: 'testuser',
   bio: 'Test bio for user',
   image: 'https://example.com/avatar.jpg',
   token: 'test-token',
-};
+  ...overrides,
+});
 
-export const mockUserMinimal = {
-  id: '123',
-  email: 'test@example.com',
-  username: 'testuser',
-  bio: '',
-  image: '',
-  token: 'test-token',
-};
+export const createMockAuthor = (
+  overrides: Partial<Profile> = {}
+): Profile => ({
+  username: 'testauthor',
+  bio: 'Test author bio',
+  image: 'https://example.com/author.jpg',
+  following: false,
+  ...overrides,
+});
 
-export const mockArticle = {
+export const createMockArticle = (
+  overrides: Partial<Article> = {}
+): Article => ({
   slug: 'test-article-slug',
   title: 'Test Article Title',
   description: 'Test article description',
@@ -28,33 +34,29 @@ export const mockArticle = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   favorited: false,
   favoritesCount: 0,
-  author: {
-    username: 'testauthor',
-    bio: 'Test author bio',
-    image: 'https://example.com/author.jpg',
-    following: false,
-  },
-};
+  author: createMockAuthor(),
+  ...overrides,
+});
+
+export const mockUser = createMockUser();
+export const mockUserMinimal = createMockUser({ bio: '', image: '' });
+export const mockArticle = createMockArticle();
 
 export const mockArticles = [
-  {
+  createMockArticle({
     slug: 'test-article-1',
     title: 'Test Article 1',
     description: 'This is a test article description',
     body: 'Test article body content',
     tagList: ['test', 'demo'],
-    createdAt: '2024-01-01T00:00:00.000Z',
-    updatedAt: '2024-01-01T00:00:00.000Z',
-    favorited: false,
     favoritesCount: 5,
-    author: {
+    author: createMockAuthor({
       username: 'testuser1',
       bio: 'Author bio',
       image: null,
-      following: false,
-    },
-  },
-  {
+    }),
+  }),
+  createMockArticle({
     slug: 'test-article-2',
     title: 'Test Article 2',
     description: 'Another test article',
@@ -64,29 +66,33 @@ export const mockArticles = [
     updatedAt: '2024-01-02T00:00:00.000Z',
     favorited: true,
     favoritesCount: 8,
-    author: {
+    author: createMockAuthor({
       username: 'testuser2',
       bio: 'Another user bio',
       image: null,
       following: true,
-    },
-  },
+    }),
+  }),
 ];
 
-export const mockApiResponse = {
-  user: mockUser,
+export const createMockApiResponse = (
+  overrides: Partial<{ user: User; message: string }> = {}
+) => ({
+  user: createMockUser(),
   message: 'Success',
-};
+  ...overrides,
+});
 
-export const mockApiError = {
+export const createMockApiError = (errors: Record<string, string[]> = {}) => ({
   status: 400,
   data: {
     errors: {
       email: ['is invalid'],
       password: ['is too short'],
+      ...errors,
     },
   },
-};
+});
 
 export interface VisualTestMockConfig {
   url: RegExp;
@@ -103,14 +109,12 @@ export const authMocks = {
     method: 'POST',
     status: 200,
     body: {
-      user: {
-        id: 1,
-        email: 'test@example.com',
-        username: 'testuser',
+      user: createMockUser({
+        id: '1',
         bio: 'Test bio',
-        image: null,
+        image: undefined,
         token: 'mock-jwt-token',
-      },
+      }),
     },
   },
   register: {
@@ -118,14 +122,12 @@ export const authMocks = {
     method: 'POST',
     status: 200,
     body: {
-      user: {
-        id: 1,
-        email: 'test@example.com',
-        username: 'testuser',
-        bio: null,
-        image: null,
+      user: createMockUser({
+        id: '1',
+        bio: undefined,
+        image: undefined,
         token: 'mock-jwt-token',
-      },
+      }),
     },
   },
   getCurrentUser: {
@@ -133,14 +135,12 @@ export const authMocks = {
     method: 'GET',
     status: 200,
     body: {
-      user: {
-        id: 1,
-        email: 'test@example.com',
-        username: 'testuser',
+      user: createMockUser({
+        id: '1',
         bio: 'Test bio',
-        image: null,
+        image: undefined,
         token: 'mock-jwt-token',
-      },
+      }),
     },
   },
   updateUser: {
@@ -148,14 +148,14 @@ export const authMocks = {
     method: 'PUT',
     status: 200,
     body: {
-      user: {
-        id: 1,
+      user: createMockUser({
+        id: '1',
         email: 'updated@example.com',
         username: 'updateduser',
         bio: 'Updated bio',
         image: 'https://example.com/avatar.jpg',
         token: 'mock-jwt-token',
-      },
+      }),
     },
   },
 } as const;
@@ -185,23 +185,19 @@ export const articleMocks = {
     status: 200,
     body: {
       articles: [
-        {
+        createMockArticle({
           slug: 'my-article-1',
           title: 'My First Article',
           description: 'This is my first article',
           body: 'Article content here',
           tagList: ['personal', 'first'],
-          createdAt: '2024-01-01T00:00:00.000Z',
-          updatedAt: '2024-01-01T00:00:00.000Z',
-          favorited: false,
           favoritesCount: 2,
-          author: {
+          author: createMockAuthor({
             username: 'testuser',
             bio: 'Test bio',
             image: null,
-            following: false,
-          },
-        },
+          }),
+        }),
       ],
       articlesCount: 1,
     },
@@ -221,23 +217,19 @@ export const articleMocks = {
     status: 200,
     body: {
       articles: [
-        {
+        createMockArticle({
           slug: 'author-article-1',
           title: 'Author Article 1',
           description: 'Article by the author',
           body: 'Author article content',
           tagList: ['author', 'content'],
-          createdAt: '2024-01-01T00:00:00.000Z',
-          updatedAt: '2024-01-01T00:00:00.000Z',
-          favorited: false,
           favoritesCount: 3,
-          author: {
+          author: createMockAuthor({
             username: 'testuser1',
             bio: 'Author bio',
             image: null,
-            following: false,
-          },
-        },
+          }),
+        }),
       ],
       articlesCount: 1,
     },
@@ -247,23 +239,19 @@ export const articleMocks = {
     method: 'POST',
     status: 200,
     body: {
-      article: {
+      article: createMockArticle({
         slug: 'new-test-article',
         title: 'New Test Article',
         description: 'This is a new test article',
         body: 'Article body content here',
         tagList: ['new', 'test'],
-        createdAt: '2024-01-01T00:00:00.000Z',
-        updatedAt: '2024-01-01T00:00:00.000Z',
-        favorited: false,
         favoritesCount: 0,
-        author: {
+        author: createMockAuthor({
           username: 'testuser',
           bio: 'Test bio',
           image: null,
-          following: false,
-        },
-      },
+        }),
+      }),
     },
   },
   favoriteArticle1: {
@@ -298,12 +286,11 @@ export const profileMocks = {
     method: 'GET',
     status: 200,
     body: {
-      profile: {
+      profile: createMockAuthor({
         username: 'testuser1',
         bio: 'Author bio',
         image: null,
-        following: false,
-      },
+      }),
     },
   },
   followAuthor: {
@@ -311,12 +298,12 @@ export const profileMocks = {
     method: 'POST',
     status: 200,
     body: {
-      profile: {
+      profile: createMockAuthor({
         username: 'testuser1',
         bio: 'Author bio',
         image: null,
         following: true,
-      },
+      }),
     },
   },
 } as const;
