@@ -11,7 +11,7 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-ui-lib|react-native-reanimated|react-native-gesture-handler|uilib-native|rn-navio|expo-.*|@expo/.*|@testing-library/react-native)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-ui-lib|react-native-reanimated|react-native-gesture-handler|uilib-native|rn-navio|expo|@expo|@testing-library/react-native)/)',
   ],
   testMatch: ['<rootDir>/tests/integration/**/*.(test|spec).(ts|tsx|js|jsx)'],
   moduleNameMapper: {

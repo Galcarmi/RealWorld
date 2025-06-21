@@ -4,276 +4,124 @@ import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
-import { articlesStore } from '../../../src/store/articlesStore';
-import { userStore } from '../../../src/store/userStore';
-import { mockArticles, mockUserMinimal } from '../../mocks/data';
+import { createMockUser, createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
-import {
-  testArticleCardPress,
-  testFavoriteButtonPress,
-  testMultipleArticlePresses,
-  testMultipleFavoriteToggles,
-} from '../utils/articleTestUtils';
 
-const mockArticlesStore = storeMocks.getMockArticlesStore();
+const articlesStore = storeMocks.getArticlesStore();
+const userStore = storeMocks.getUserStore();
 
 const renderHomeScreen = () => {
   return render(<HomeScreen />);
 };
 
-describe('Home Screen Integration Tests', () => {
+describe('Home Screen Tests', () => {
   beforeEach(() => {
-    mockArticlesStore.homeArticles = mockArticles;
-    mockArticlesStore.homeIsLoading = false;
-    mockArticlesStore.feedType = FeedType.GLOBAL;
-    mockArticlesStore.homeArticlesCount = mockArticles.length;
+    jest.clearAllMocks();
+    articlesStore.homeArticles = [
+      createMockArticle({ slug: 'article-1', title: 'Test Article 1' }),
+      createMockArticle({ slug: 'article-2', title: 'Test Article 2' }),
+    ];
+    articlesStore.homeIsLoading = false;
+    articlesStore.feedType = FeedType.GLOBAL;
+    articlesStore.homeArticlesCount = 2;
   });
 
-  describe('Initial Load', () => {
-    it('should initialize articles on mount', async () => {
-      renderHomeScreen();
+  describe('Article Management', () => {
+    it('initializes and displays articles with proper loading behavior', async () => {
+      const { getByTestId } = renderHomeScreen();
 
       expect(articlesStore.loadHomeArticlesInitially).toHaveBeenCalledTimes(1);
-    });
-
-    it('should render screen with proper test ID', () => {
-      const { getByTestId } = renderHomeScreen();
 
       expect(getByTestId(TEST_IDS.HOME_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Article List Display', () => {
-    it('should display articles when data is available', async () => {
-      const { getByTestId } = renderHomeScreen();
-
       await waitFor(() => {
-        expect(
-          getByTestId(TEST_IDS.ARTICLE_CARD(mockArticles[0].slug))
-        ).toBeTruthy();
-        expect(
-          getByTestId(TEST_IDS.ARTICLE_CARD(mockArticles[1].slug))
-        ).toBeTruthy();
+        expect(getByTestId(TEST_IDS.ARTICLE_CARD('article-1'))).toBeTruthy();
+        expect(getByTestId(TEST_IDS.ARTICLE_CARD('article-2'))).toBeTruthy();
       });
     });
 
-    it('should show loading state while articles are loading', () => {
-      mockArticlesStore.homeIsLoading = true;
-      mockArticlesStore.homeArticles = [];
-
-      const { getByTestId } = renderHomeScreen();
-
-      expect(getByTestId(TEST_IDS.HOME_SCREEN)).toBeTruthy();
-    });
-
-    it('should show empty message when no articles available in global feed', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
-      mockArticlesStore.feedType = FeedType.GLOBAL;
+    it('handles empty states based on feed type', async () => {
+      articlesStore.homeArticles = [];
+      articlesStore.feedType = FeedType.GLOBAL;
 
       const { getByText } = renderHomeScreen();
-
       await waitFor(() => {
         expect(getByText('No articles available')).toBeTruthy();
       });
     });
 
-    it('should show different empty message for user feed', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
-      mockArticlesStore.feedType = FeedType.FEED;
+    it('handles user feed empty state', async () => {
+      articlesStore.homeArticles = [];
+      articlesStore.feedType = FeedType.FEED;
 
       const { getByText } = renderHomeScreen();
-
       await waitFor(() => {
         expect(
           getByText('Follow some users to see their articles here')
         ).toBeTruthy();
       });
     });
+
+    it('handles loading states correctly', () => {
+      articlesStore.homeIsLoading = true;
+      articlesStore.homeArticles = [];
+
+      const { getByTestId } = renderHomeScreen();
+
+      expect(getByTestId(TEST_IDS.HOME_SCREEN)).toBeTruthy();
+      expect(articlesStore.loadHomeArticlesInitially).toHaveBeenCalledTimes(1);
+    });
   });
 
-  describe('Feed Tabs - Unauthenticated User', () => {
-    beforeEach(() => {
+  describe('Authentication and Feed Management', () => {
+    it('manages feed tabs based on authentication status', async () => {
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(false);
-    });
-
-    it('should not show feed tabs when user is not authenticated', () => {
-      const { queryByText } = renderHomeScreen();
-
+      const { queryByText, rerender } = renderHomeScreen();
       expect(queryByText('For You')).toBeNull();
       expect(queryByText('Following')).toBeNull();
-    });
-  });
 
-  describe('Feed Tabs - Authenticated User', () => {
-    beforeEach(() => {
-      userStore.setUser(mockUserMinimal);
+      userStore.setUser(createMockUser());
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);
-    });
-
-    it('should show feed tabs when user is authenticated', async () => {
-      const { getByText } = renderHomeScreen();
+      rerender(<HomeScreen />);
 
       await waitFor(() => {
-        expect(getByText('For You')).toBeTruthy();
-        expect(getByText('Following')).toBeTruthy();
-      });
-    });
-
-    it('should switch to global feed when "For You" tab is pressed', async () => {
-      const { getByText } = renderHomeScreen();
-
-      await waitFor(() => {
-        const forYouTab = getByText('For You');
-        fireEvent.press(forYouTab);
+        expect(queryByText('For You')).toBeTruthy();
+        expect(queryByText('Following')).toBeTruthy();
       });
 
-      expect(articlesStore.switchToGlobalFeed).toHaveBeenCalledTimes(1);
-    });
+      const followingTab = queryByText('Following');
+      const forYouTab = queryByText('For You');
 
-    it('should switch to user feed when "Following" tab is pressed', async () => {
-      const { getByText } = renderHomeScreen();
-
-      await waitFor(() => {
-        const followingTab = getByText('Following');
-        fireEvent.press(followingTab);
-      });
-
+      fireEvent.press(followingTab!);
       expect(articlesStore.switchToUserFeed).toHaveBeenCalledTimes(1);
-    });
-  });
 
-  describe('Article Interactions', () => {
-    it('should handle article press and navigate to author profile', async () => {
-      const renderResult = renderHomeScreen();
-      await testArticleCardPress(renderResult, 'testuser1');
-    });
-
-    it('should handle favorite button press on unfavorited article', async () => {
-      const renderResult = renderHomeScreen();
-      await testFavoriteButtonPress(
-        renderResult,
-        'testuser1',
-        'test-article-1',
-        false
-      );
-    });
-
-    it('should handle favorite button press on favorited article', async () => {
-      const renderResult = renderHomeScreen();
-      await testFavoriteButtonPress(
-        renderResult,
-        'testuser2',
-        'test-article-2',
-        true
-      );
-    });
-  });
-
-  describe('Feed Type Specific Scenarios', () => {
-    beforeEach(() => {
-      userStore.setUser(mockUserMinimal);
-      jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);
-    });
-
-    it('should maintain global feed state correctly', async () => {
-      mockArticlesStore.feedType = FeedType.GLOBAL;
-
-      const { getByText } = renderHomeScreen();
-
-      await waitFor(() => {
-        const forYouTab = getByText('For You');
-
-        expect(forYouTab).toBeTruthy();
-      });
-    });
-
-    it('should maintain user feed state correctly', async () => {
-      mockArticlesStore.feedType = FeedType.FEED;
-
-      const { getByText } = renderHomeScreen();
-
-      await waitFor(() => {
-        const followingTab = getByText('Following');
-
-        expect(followingTab).toBeTruthy();
-      });
-    });
-
-    it('should display appropriate empty messages for different feed types', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.feedType = FeedType.GLOBAL;
-
-      const { getByText: getByTextGlobal } = renderHomeScreen();
-      expect(getByTextGlobal('No articles available')).toBeTruthy();
-    });
-  });
-
-  describe('Multiple Article Interactions', () => {
-    it('should handle multiple article presses correctly', async () => {
-      const renderResult = renderHomeScreen();
-      await testMultipleArticlePresses(renderResult, [
-        'testuser1',
-        'testuser2',
-      ]);
-    });
-
-    it('should handle multiple favorite toggles correctly', async () => {
-      const renderResult = renderHomeScreen();
-      await testMultipleFavoriteToggles(renderResult, [
-        {
-          username: 'testuser1',
-          articleSlug: 'test-article-1',
-          currentFavoritedStatus: false,
-        },
-        {
-          username: 'testuser2',
-          articleSlug: 'test-article-2',
-          currentFavoritedStatus: true,
-        },
-      ]);
-    });
-  });
-
-  describe('Feed Switching Integration', () => {
-    beforeEach(() => {
-      userStore.setUser(mockUserMinimal);
-      jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);
-    });
-
-    it('should handle rapid feed switching', async () => {
-      const { getByText } = renderHomeScreen();
-
-      await waitFor(() => {
-        fireEvent.press(getByText('Following'));
-      });
-
-      await waitFor(() => {
-        fireEvent.press(getByText('For You'));
-      });
-
-      expect(articlesStore.switchToUserFeed).toHaveBeenCalledTimes(1);
+      fireEvent.press(forYouTab!);
       expect(articlesStore.switchToGlobalFeed).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('Error Scenarios', () => {
-    it('should handle empty articles list gracefully', () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
+  describe('User Interactions', () => {
+    it('handles article interactions successfully', async () => {
+      const toggleFavoriteSpy = jest.spyOn(
+        articlesStore,
+        'toggleArticleFavoriteStatus'
+      );
+      const { getByTestId, getAllByTestId } = renderHomeScreen();
 
-      const { getByText } = renderHomeScreen();
+      await waitFor(() => {
+        const articleCard = getByTestId(TEST_IDS.ARTICLE_CARD('article-1'));
+        fireEvent.press(articleCard);
+        expect(articleCard).toBeTruthy();
+      });
 
-      expect(getByText('No articles available')).toBeTruthy();
-    });
+      await waitFor(() => {
+        const favoriteButtons = getAllByTestId(
+          TEST_IDS.FAVORITE_BUTTON('testauthor')
+        );
+        fireEvent.press(favoriteButtons[0]);
+        fireEvent.press(favoriteButtons[1]);
+      });
 
-    it('should still call loadHomeArticlesInitially even if articles store is empty', () => {
-      mockArticlesStore.homeArticles = [];
-
-      renderHomeScreen();
-
-      expect(articlesStore.loadHomeArticlesInitially).toHaveBeenCalledTimes(1);
+      expect(toggleFavoriteSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

@@ -5,7 +5,6 @@ import { User } from '../../../src/store/types';
 import { Logger } from '../../../src/utils';
 import { StorageUtils } from '../../../src/utils/storageUtils';
 
-// Mock dependencies
 jest.mock('@react-native-async-storage/async-storage');
 jest.mock('../../../src/utils/Logger');
 

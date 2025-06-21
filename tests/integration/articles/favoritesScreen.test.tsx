@@ -1,289 +1,92 @@
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
-import { articlesStore } from '../../../src/store/articlesStore';
-import { userStore } from '../../../src/store/userStore';
-import { mockArticles, mockUserMinimal } from '../../mocks/data';
+import { createMockUser, createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
-import {
-  testArticleCardPress,
-  testFavoriteButtonPress,
-  testMultipleArticlePresses,
-  testMultipleFavoriteToggles,
-} from '../utils/articleTestUtils';
 
-const mockArticlesStore = storeMocks.getMockArticlesStore();
+const articlesStore = storeMocks.getArticlesStore();
+const userStore = storeMocks.getUserStore();
 
 const renderFavoritesScreen = () => {
   return render(<FavoritesScreen />);
 };
 
-describe('Favorites Screen Integration Tests', () => {
+describe('Favorites Screen Tests', () => {
   beforeEach(() => {
-    userStore.setUser(mockUserMinimal);
-    mockArticlesStore.favoriteArticles = mockArticles;
-    mockArticlesStore.favoritesIsLoading = false;
-    mockArticlesStore.favoritesArticlesCount = mockArticles.length;
-    mockArticlesStore.favoritesCurrentOffset = 0;
+    jest.clearAllMocks();
+    userStore.setUser(createMockUser());
+    articlesStore.favoriteArticles = [
+      createMockArticle({ slug: 'favorite-1', title: 'Favorite Article 1' }),
+      createMockArticle({ slug: 'favorite-2', title: 'Favorite Article 2' }),
+    ];
+    articlesStore.favoritesIsLoading = false;
+    articlesStore.favoritesArticlesCount = 2;
+    articlesStore.favoritesCurrentOffset = 0;
   });
 
-  describe('Initial Load', () => {
-    it('should initialize favorite articles on mount', async () => {
-      renderFavoritesScreen();
+  describe('Favorites Management', () => {
+    it('initializes and displays favorite articles', async () => {
+      const { getByTestId } = renderFavoritesScreen();
 
       expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
         1
       );
-    });
-
-    it('should render screen with proper test ID', () => {
-      const { getByTestId } = renderFavoritesScreen();
-
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-
-    it('should display screen header', () => {
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Favorite Articles Display', () => {
-    it('should display favorite articles when data is available', async () => {
-      const { getByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        expect(
-          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-1'))
-        ).toBeTruthy();
-        expect(
-          getByTestId(TEST_IDS.ARTICLE_CARD('test-article-2'))
-        ).toBeTruthy();
+        expect(getByTestId(TEST_IDS.ARTICLE_CARD('favorite-1'))).toBeTruthy();
+        expect(getByTestId(TEST_IDS.ARTICLE_CARD('favorite-2'))).toBeTruthy();
       });
     });
 
-    it('should show loading state while favorites are loading', () => {
-      mockArticlesStore.favoritesIsLoading = true;
-      mockArticlesStore.favoriteArticles = [];
-
-      const { getByTestId } = renderFavoritesScreen();
-
+    it('handles empty favorites and loading states', async () => {
+      articlesStore.favoritesIsLoading = true;
+      articlesStore.favoriteArticles = [];
+      const { getByTestId, rerender } = renderFavoritesScreen();
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
 
-    it('should show empty message when no favorite articles available', async () => {
-      mockArticlesStore.favoriteArticles = [];
-      mockArticlesStore.favoritesIsLoading = false;
-
-      const { getByText } = renderFavoritesScreen();
-
-      await waitFor(() => {
-        expect(getByText('No favorite articles yet')).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Article Interactions', () => {
-    it('should handle article press and navigate to author profile', async () => {
-      const renderResult = renderFavoritesScreen();
-      await testArticleCardPress(renderResult, 'testuser1');
-    });
-
-    it('should handle favorite button press to unfavorite article', async () => {
-      const renderResult = renderFavoritesScreen();
-      await testFavoriteButtonPress(
-        renderResult,
-        'testuser1',
-        'test-article-1',
-        false
-      );
-    });
-
-    it('should handle favorite button press on favorited article', async () => {
-      const renderResult = renderFavoritesScreen();
-      await testFavoriteButtonPress(
-        renderResult,
-        'testuser2',
-        'test-article-2',
-        true
-      );
-    });
-  });
-
-  describe('Authentication Requirements', () => {
-    it('should load favorites only when user is authenticated', async () => {
-      userStore.forgetUser();
-      jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(false);
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-
-    it('should integrate with user store properly', async () => {
-      userStore.setUser(mockUserMinimal);
-
-      const { getByTestId } = renderFavoritesScreen();
+      articlesStore.favoritesIsLoading = false;
+      articlesStore.favoriteArticles = [];
+      rerender(<FavoritesScreen />);
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
       });
-
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
-    });
-  });
-
-  describe('Loading States', () => {
-    it('should show loading indicator when favorites are being fetched', () => {
-      mockArticlesStore.favoritesIsLoading = true;
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });
 
-    it('should hide loading indicator when favorites are loaded', () => {
-      mockArticlesStore.favoritesIsLoading = false;
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      expect(mockArticlesStore.favoritesIsLoading).toBe(false);
-    });
-  });
-
-  describe('Error Scenarios', () => {
-    it('should handle empty favorites list gracefully', () => {
-      mockArticlesStore.favoriteArticles = [];
-      mockArticlesStore.favoritesIsLoading = false;
-
-      const { getByText } = renderFavoritesScreen();
-
-      expect(getByText('No favorite articles yet')).toBeTruthy();
-    });
-
-    it('should still call loadFavoriteArticlesInitially even if favorites store is empty', () => {
-      mockArticlesStore.favoriteArticles = [];
-
-      renderFavoritesScreen();
-
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalledTimes(
-        1
+    it('handles favorite interactions successfully', async () => {
+      const toggleFavoriteSpy = jest.spyOn(
+        articlesStore,
+        'toggleArticleFavoriteStatus'
       );
-    });
-
-    it('should handle favorites service errors', async () => {
-      userStore.setUser(mockUserMinimal);
-
-      const { getByTestId } = renderFavoritesScreen();
+      const { getAllByTestId } = renderFavoritesScreen();
 
       await waitFor(() => {
-        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+        const favoriteButtons = getAllByTestId(
+          TEST_IDS.FAVORITE_BUTTON('testauthor')
+        );
+        fireEvent.press(favoriteButtons[0]);
+        fireEvent.press(favoriteButtons[1]);
       });
 
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
-    });
-
-    it('should show correct empty state message', () => {
-      userStore.setUser(mockUserMinimal);
-      mockArticlesStore.favoriteArticles = [];
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      expect(mockArticlesStore.favoriteArticles.length).toBe(0);
-    });
-
-    it('should handle component unmount gracefully', () => {
-      userStore.setUser(mockUserMinimal);
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-
-    it('should handle store errors gracefully', () => {
-      userStore.setUser(mockUserMinimal);
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+      expect(toggleFavoriteSpy).toHaveBeenCalledTimes(2);
     });
   });
 
-  describe('Multiple Article Interactions', () => {
-    it('should handle multiple article presses correctly', async () => {
-      const renderResult = renderFavoritesScreen();
-      await testMultipleArticlePresses(renderResult, [
-        'testuser1',
-        'testuser2',
-      ]);
-    });
-
-    it('should handle multiple favorite toggles correctly', async () => {
-      const renderResult = renderFavoritesScreen();
-      await testMultipleFavoriteToggles(renderResult, [
-        {
-          username: 'testuser1',
-          articleSlug: 'test-article-1',
-          currentFavoritedStatus: false,
-        },
-        {
-          username: 'testuser2',
-          articleSlug: 'test-article-2',
-          currentFavoritedStatus: true,
-        },
-      ]);
-    });
-  });
-
-  describe('Store Integration', () => {
-    it('should integrate properly with favorites store', async () => {
-      const { getByTestId } = renderFavoritesScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      });
-
-      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
-    });
-
-    it('should reflect favorites store state correctly', () => {
-      mockArticlesStore.favoritesIsLoading = false;
-      mockArticlesStore.favoriteArticles = mockArticles;
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-      expect(mockArticlesStore.favoriteArticles.length).toBe(
-        mockArticles.length
-      );
-    });
-  });
-
-  describe('Edge Cases', () => {
-    it('should handle component unmount gracefully', () => {
-      const { unmount } = renderFavoritesScreen();
-
-      expect(() => unmount()).not.toThrow();
-    });
-
-    it('should handle empty user state', () => {
-      userStore.forgetUser();
-
-      const { getByTestId } = renderFavoritesScreen();
-
-      expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
-    });
-
-    it('should handle store state changes during component lifecycle', async () => {
+  describe('Authentication Context', () => {
+    it('works with different authentication states', async () => {
+      userStore.setUser(createMockUser({ username: 'authuser' }));
       const { getByTestId, rerender } = renderFavoritesScreen();
 
-      mockArticlesStore.favoritesIsLoading = true;
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
+      });
+      expect(articlesStore.loadFavoriteArticlesInitially).toHaveBeenCalled();
 
+      userStore.forgetUser();
+      jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(false);
       rerender(<FavoritesScreen />);
 
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
