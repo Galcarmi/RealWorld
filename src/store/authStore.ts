@@ -19,7 +19,7 @@ class AuthStore implements IAuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    this._authService = new AuthService(this, userStore);
+    this._authService = new AuthService(userStore);
   }
 
   public get authValues() {

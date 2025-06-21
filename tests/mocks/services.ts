@@ -136,8 +136,6 @@ export const setupServiceMocks = () => {
       }) as any
   );
 
-  jest.spyOn(StorageUtils, 'setUserToken').mockResolvedValue();
-  jest.spyOn(StorageUtils, 'getUserToken').mockResolvedValue(mockUser.token);
   jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();
   jest.spyOn(StorageUtils, 'getUserData').mockResolvedValue(mockUser);
   jest.spyOn(StorageUtils, 'clearUserData').mockResolvedValue();

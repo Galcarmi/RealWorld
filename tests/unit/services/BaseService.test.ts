@@ -6,7 +6,7 @@ import axios, {
 import { mockDeep, MockProxy } from 'jest-mock-extended';
 
 import { BaseService } from '../../../src/services/BaseService';
-import { IAuthStore, IUserStore } from '../../../src/store/types';
+import { IUserStore } from '../../../src/store/types';
 
 jest.mock('axios');
 
@@ -19,21 +19,19 @@ class TestService extends BaseService {
 }
 
 describe('BaseService', () => {
-  let authStore: MockProxy<IAuthStore>;
   let userStore: MockProxy<IUserStore>;
   let testService: TestService;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    authStore = mockDeep<IAuthStore>();
     userStore = mockDeep<IUserStore>();
 
     const mockAxiosInstance = mockDeep<AxiosInstance>();
 
     mockedAxios.create.mockReturnValue(mockAxiosInstance);
 
-    testService = new TestService(authStore, userStore);
+    testService = new TestService(userStore);
   });
 
   describe('constructor', () => {

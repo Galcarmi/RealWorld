@@ -11,177 +11,127 @@ jest.mock('../../../src/utils/Logger');
 const mockAsyncStorage = AsyncStorage as jest.Mocked<typeof AsyncStorage>;
 const mockLogger = Logger as jest.Mocked<typeof Logger>;
 
+const mockUser: User = {
+  id: '1',
+  email: 'test@example.com',
+  username: 'testuser',
+  token: 'mock-token-123',
+  bio: 'Test bio',
+  image: 'https://example.com/avatar.jpg',
+};
 describe('StorageUtils', () => {
-  const mockUser: User = {
-    id: '1',
-    email: 'test@example.com',
-    username: 'testuser',
-    token: 'mock-token-123',
-    bio: 'Test bio',
-    image: 'https://example.com/avatar.jpg',
-  };
-
-  const mockToken = 'mock-jwt-token';
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('setUserToken', () => {
-    it('should save token to AsyncStorage successfully', async () => {
-      mockAsyncStorage.setItem.mockResolvedValueOnce();
+  it('should return null and log error when AsyncStorage fails', async () => {
+    const error = new Error('AsyncStorage error');
+    mockAsyncStorage.getItem.mockRejectedValueOnce(error);
 
-      await StorageUtils.setUserToken(mockToken);
+    const result = await StorageUtils.getUserData();
 
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN,
-        mockToken
-      );
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledTimes(1);
-    });
+    expect(result).toBeNull();
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'Failed to retrieve token from storage:',
+      error
+    );
+  });
+});
 
-    it('should log error when AsyncStorage fails', async () => {
-      const error = new Error('AsyncStorage error');
-      mockAsyncStorage.setItem.mockRejectedValueOnce(error);
+describe('setUserData', () => {
+  it('should save user data to AsyncStorage successfully', async () => {
+    mockAsyncStorage.setItem.mockResolvedValueOnce();
 
-      await StorageUtils.setUserToken(mockToken);
+    await StorageUtils.setUserData(mockUser);
 
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to save token to storage:',
-        error
-      );
-    });
+    expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      STORAGE_KEYS.USER_DATA,
+      JSON.stringify(mockUser)
+    );
+    expect(mockAsyncStorage.setItem).toHaveBeenCalledTimes(1);
   });
 
-  describe('getUserToken', () => {
-    it('should retrieve token from AsyncStorage successfully', async () => {
-      mockAsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+  it('should log error when AsyncStorage fails', async () => {
+    const error = new Error('AsyncStorage error');
+    mockAsyncStorage.setItem.mockRejectedValueOnce(error);
 
-      const result = await StorageUtils.getUserToken();
+    await StorageUtils.setUserData(mockUser);
 
-      expect(mockAsyncStorage.getItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN
-      );
-      expect(result).toBe(mockToken);
-    });
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'Failed to save user data to storage:',
+      error
+    );
+  });
+});
 
-    it('should return null when no token is stored', async () => {
-      mockAsyncStorage.getItem.mockResolvedValueOnce(null);
+describe('getUserData', () => {
+  it('should retrieve and parse user data from AsyncStorage successfully', async () => {
+    mockAsyncStorage.getItem.mockResolvedValueOnce(JSON.stringify(mockUser));
 
-      const result = await StorageUtils.getUserToken();
+    const result = await StorageUtils.getUserData();
 
-      expect(result).toBeNull();
-    });
-
-    it('should return null and log error when AsyncStorage fails', async () => {
-      const error = new Error('AsyncStorage error');
-      mockAsyncStorage.getItem.mockRejectedValueOnce(error);
-
-      const result = await StorageUtils.getUserToken();
-
-      expect(result).toBeNull();
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to retrieve token from storage:',
-        error
-      );
-    });
+    expect(mockAsyncStorage.getItem).toHaveBeenCalledWith(
+      STORAGE_KEYS.USER_DATA
+    );
+    expect(result).toEqual(mockUser);
   });
 
-  describe('setUserData', () => {
-    it('should save user data to AsyncStorage successfully', async () => {
-      mockAsyncStorage.setItem.mockResolvedValueOnce();
+  it('should return null when no user data is stored', async () => {
+    mockAsyncStorage.getItem.mockResolvedValueOnce(null);
 
-      await StorageUtils.setUserData(mockUser);
+    const result = await StorageUtils.getUserData();
 
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_DATA,
-        JSON.stringify(mockUser)
-      );
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledTimes(1);
-    });
-
-    it('should log error when AsyncStorage fails', async () => {
-      const error = new Error('AsyncStorage error');
-      mockAsyncStorage.setItem.mockRejectedValueOnce(error);
-
-      await StorageUtils.setUserData(mockUser);
-
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to save user data to storage:',
-        error
-      );
-    });
+    expect(result).toBeNull();
   });
 
-  describe('getUserData', () => {
-    it('should retrieve and parse user data from AsyncStorage successfully', async () => {
-      mockAsyncStorage.getItem.mockResolvedValueOnce(JSON.stringify(mockUser));
+  it('should return null and log error when AsyncStorage fails', async () => {
+    const error = new Error('AsyncStorage error');
+    mockAsyncStorage.getItem.mockRejectedValueOnce(error);
 
-      const result = await StorageUtils.getUserData();
+    const result = await StorageUtils.getUserData();
 
-      expect(mockAsyncStorage.getItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_DATA
-      );
-      expect(result).toEqual(mockUser);
-    });
-
-    it('should return null when no user data is stored', async () => {
-      mockAsyncStorage.getItem.mockResolvedValueOnce(null);
-
-      const result = await StorageUtils.getUserData();
-
-      expect(result).toBeNull();
-    });
-
-    it('should return null and log error when AsyncStorage fails', async () => {
-      const error = new Error('AsyncStorage error');
-      mockAsyncStorage.getItem.mockRejectedValueOnce(error);
-
-      const result = await StorageUtils.getUserData();
-
-      expect(result).toBeNull();
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to retrieve user data from storage:',
-        error
-      );
-    });
-
-    it('should return null and log error when JSON parsing fails', async () => {
-      mockAsyncStorage.getItem.mockResolvedValueOnce('invalid-json');
-
-      const result = await StorageUtils.getUserData();
-
-      expect(result).toBeNull();
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to retrieve user data from storage:',
-        expect.any(SyntaxError)
-      );
-    });
+    expect(result).toBeNull();
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'Failed to retrieve user data from storage:',
+      error
+    );
   });
 
-  describe('clearUserData', () => {
-    it('should clear both token and user data from AsyncStorage successfully', async () => {
-      mockAsyncStorage.multiRemove.mockResolvedValueOnce();
+  it('should return null and log error when JSON parsing fails', async () => {
+    mockAsyncStorage.getItem.mockResolvedValueOnce('invalid-json');
 
-      await StorageUtils.clearUserData();
+    const result = await StorageUtils.getUserData();
 
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
-        STORAGE_KEYS.USER_TOKEN,
-        STORAGE_KEYS.USER_DATA,
-      ]);
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalledTimes(1);
-    });
+    expect(result).toBeNull();
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'Failed to retrieve user data from storage:',
+      expect.any(SyntaxError)
+    );
+  });
+});
 
-    it('should log error when AsyncStorage fails', async () => {
-      const error = new Error('AsyncStorage error');
-      mockAsyncStorage.multiRemove.mockRejectedValueOnce(error);
+describe('clearUserData', () => {
+  it('should clear both token and user data from AsyncStorage successfully', async () => {
+    mockAsyncStorage.multiRemove.mockResolvedValueOnce();
 
-      await StorageUtils.clearUserData();
+    await StorageUtils.clearUserData();
 
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'Failed to clear user data from storage:',
-        error
-      );
-    });
+    expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
+      STORAGE_KEYS.USER_TOKEN,
+      STORAGE_KEYS.USER_DATA,
+    ]);
+    expect(mockAsyncStorage.multiRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('should log error when AsyncStorage fails', async () => {
+    const error = new Error('AsyncStorage error');
+    mockAsyncStorage.multiRemove.mockRejectedValueOnce(error);
+
+    await StorageUtils.clearUserData();
+
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'Failed to clear user data from storage:',
+      error
+    );
   });
 });

@@ -12,7 +12,7 @@ import {
   HTTP_HEADERS,
   ERROR_TYPES,
 } from '../constants/app';
-import { IAuthStore, IUserStore } from '../store/types';
+import { IUserStore } from '../store/types';
 import { Logger, showErrorAlert } from '../utils';
 
 import { navigationService } from './navigationService';
@@ -20,11 +20,9 @@ import { ApiErrorResponse } from './types';
 
 export abstract class BaseService {
   protected _api: AxiosInstance;
-  protected _authStore: IAuthStore;
   protected _userStore: IUserStore;
 
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    this._authStore = authStore;
+  constructor(userStore: IUserStore) {
     this._userStore = userStore;
 
     this._api = axios.create({

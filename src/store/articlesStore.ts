@@ -9,7 +9,6 @@ import {
   ResponseErrors,
 } from '../services/types';
 
-import { authStore } from './authStore';
 import { IArticlesStore } from './types';
 import { userStore } from './userStore';
 
@@ -31,7 +30,7 @@ class ArticlesStore implements IArticlesStore {
 
   constructor() {
     makeAutoObservable(this);
-    this._articleService = new ArticleService(authStore, userStore);
+    this._articleService = new ArticleService(userStore);
   }
 
   public get canLoadMoreHomeArticles(): boolean {

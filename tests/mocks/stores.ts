@@ -79,7 +79,6 @@ export const resetAllStoreMocks = (): void => {
     authStore.errors = undefined;
 
     userStore.user = null;
-    userStore.token = null;
     userStore.isInitialized = false;
 
     articlesStore.homeArticles = [];

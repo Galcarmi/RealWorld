@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { articlesStore } from '../../store/articlesStore';
-import { authStore } from '../../store/authStore';
 import { userStore } from '../../store/userStore';
 
 import { Article, Profile } from '../../services/types';
@@ -15,10 +14,7 @@ export const useAuthorProfile = (username: string) => {
   const [authorArticles, setAuthorArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const profileService = useMemo(
-    () => new ProfileService(authStore, userStore),
-    []
-  );
+  const profileService = useMemo(() => new ProfileService(userStore), []);
 
   const fetchAuthorProfile = useCallback(async () => {
     if (!username) return;

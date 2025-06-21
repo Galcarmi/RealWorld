@@ -1,4 +1,4 @@
-import { IAuthStore, IUserStore } from '../../store/types';
+import { IUserStore } from '../../store/types';
 
 import { BaseService } from '../BaseService';
 import {
@@ -12,8 +12,8 @@ import {
 } from '../types';
 
 class ArticleService extends BaseService implements IArticleService {
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    super(authStore, userStore);
+  constructor(userStore: IUserStore) {
+    super(userStore);
   }
 
   public async getArticles(params?: ArticleFilters): Promise<ArticlesResponse> {

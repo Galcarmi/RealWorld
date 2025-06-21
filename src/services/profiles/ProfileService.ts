@@ -1,11 +1,11 @@
-import { IAuthStore, IUserStore } from '../../store/types';
+import { IUserStore } from '../../store/types';
 
 import { BaseService } from '../BaseService';
 import { IProfileService, ProfileResponse, ApiErrorResponse } from '../types';
 
 class ProfileService extends BaseService implements IProfileService {
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    super(authStore, userStore);
+  constructor(userStore: IUserStore) {
+    super(userStore);
   }
 
   public async getProfile(username: string): Promise<ProfileResponse> {

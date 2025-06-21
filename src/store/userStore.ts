@@ -3,7 +3,6 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { AuthService } from '../services/auth/AuthService';
 import { StorageUtils } from '../utils';
 
-import { authStore } from './authStore';
 import { IUserStore, User } from './types';
 
 class UserStore implements IUserStore {
@@ -14,7 +13,7 @@ class UserStore implements IUserStore {
 
   constructor() {
     makeAutoObservable(this);
-    this._authService = new AuthService(authStore, this);
+    this._authService = new AuthService(this);
     this._initializeFromStorage();
   }
 

@@ -100,7 +100,6 @@ describe('Token Persistence Tests', () => {
     it('handles complete storage lifecycle with error resilience', async () => {
       const testToken = 'test-token-456';
 
-      await StorageUtils.setUserToken(testToken);
       await StorageUtils.setUserData(mockUser);
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
@@ -113,13 +112,12 @@ describe('Token Persistence Tests', () => {
       );
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(testToken);
-      const retrievedToken = await StorageUtils.getUserToken();
-      expect(retrievedToken).toBe(testToken);
+      const retrievedUser = await StorageUtils.getUserData();
+      expect(retrievedUser?.token).toBe(testToken);
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
         JSON.stringify(mockUser)
       );
-      const retrievedUser = await StorageUtils.getUserData();
       expect(retrievedUser).toEqual(mockUser);
 
       await StorageUtils.clearUserData();
@@ -135,16 +133,12 @@ describe('Token Persistence Tests', () => {
       (AsyncStorage.getItem as jest.Mock).mockRejectedValue(storageError);
       (AsyncStorage.multiRemove as jest.Mock).mockRejectedValue(storageError);
 
-      await expect(StorageUtils.setUserToken('test')).resolves.not.toThrow();
       await expect(StorageUtils.setUserData(mockUser)).resolves.not.toThrow();
       await expect(StorageUtils.clearUserData()).resolves.not.toThrow();
-      await expect(StorageUtils.getUserToken()).resolves.toBeNull();
       await expect(StorageUtils.getUserData()).resolves.toBeNull();
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
-      const token = await StorageUtils.getUserToken();
       const userData = await StorageUtils.getUserData();
-      expect(token).toBeNull();
       expect(userData).toBeNull();
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue('invalid-json');
@@ -195,8 +189,6 @@ describe('Token Persistence Tests', () => {
       expect(userStore.isAuthenticated()).toBe(true);
 
       const operations = [
-        () => StorageUtils.setUserToken('token1'),
-        () => StorageUtils.setUserToken('token2'),
         () => StorageUtils.setUserData(mockUser),
         () => StorageUtils.clearUserData(),
       ];

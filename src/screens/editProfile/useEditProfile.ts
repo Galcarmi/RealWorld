@@ -52,7 +52,7 @@ const useEditProfile = () => {
     password: '',
   });
 
-  const authService = useMemo(() => new AuthService(authStore, userStore), []);
+  const authService = useMemo(() => new AuthService(userStore), []);
 
   const isFormValid = useMemo(() => {
     const { username, email, password } = profileFormValues;
