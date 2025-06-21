@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
-import { TEST_IDS, ICON_NAMES, BUTTON_LABELS } from '../constants';
-import { COLORS, DIMENSIONS } from '../constants/styles';
+import { COLORS, DIMENSIONS } from '../../constants/styles';
 
-import { CustomButton } from './CustomButton';
+import { TEST_IDS, ICON_NAMES, BUTTON_LABELS } from '../../constants';
+import { CustomButton } from '../common/CustomButton';
 
 interface NewArticleButtonProps {
   onPress: () => void;

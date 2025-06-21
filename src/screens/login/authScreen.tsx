@@ -8,9 +8,7 @@ import { observer } from 'mobx-react';
 import { AUTH_SCREEN_TYPE } from '../../constants/app';
 import { COLORS, SPACINGS } from '../../constants/styles';
 
-import { AuthActions } from '../../components/AuthActions';
-import { AuthForm } from '../../components/AuthForm';
-import { AuthHeader } from '../../components/AuthHeader';
+import { AuthActions, AuthForm, AuthHeader } from '../../components';
 import { TEST_IDS } from '../../constants';
 
 import useAuth from './useAuth';
@@ -95,7 +93,7 @@ const createScreenStyles = () =>
       flex: 0.6,
     },
     headerContainer: {
-      marginBottom: SPACINGS.MARGIN_HUGE,
+      marginBottom: SPACINGS.GIGANTIC,
     },
     formContainer: {
       alignItems: 'center',
@@ -103,8 +101,8 @@ const createScreenStyles = () =>
     actionsContainer: {
       flex: 1,
       alignItems: 'center',
-      gap: SPACINGS.MARGIN_LARGE,
-      paddingVertical: SPACINGS.MARGIN_2X_EXTRA_LARGE,
-      marginTop: SPACINGS.MARGIN_3X_EXTRA_LARGE,
+      gap: SPACINGS.LARGE,
+      paddingVertical: SPACINGS['2_EXTRA_LARGE'],
+      marginTop: SPACINGS.MASSIVE,
     },
   });

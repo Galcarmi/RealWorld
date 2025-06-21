@@ -1,7 +1,8 @@
 import { AxiosError } from 'axios';
 
-import { NavigationInstance, RootStackParamList } from '../navigation/types';
-import { User } from '../store/types';
+import { User } from '../../store/types';
+
+import { NavigationInstance, RootStackParamList } from '../../navigation/types';
 
 export type ResponseErrors = {
   [id: string]: string[];

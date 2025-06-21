@@ -12,9 +12,11 @@ import { COLORS } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 
-import { ArticlesList } from '../../components/ArticlesList';
-import { AuthorProfileHeader } from '../../components/AuthorProfileHeader';
-import { ScreenHeader } from '../../components/ScreenHeader';
+import {
+  ArticlesList,
+  AuthorProfileHeader,
+  ScreenHeader,
+} from '../../components';
 import { TEST_IDS } from '../../constants';
 
 import { useAuthorProfile } from './useAuthorProfile';

@@ -143,7 +143,24 @@ jest.mock('../../src/utils/errors', () => ({
   showErrorModals: jest.fn(),
 }));
 
-jest.mock('../../src/services/navigationService', () => ({
+jest.mock('../../src/services', () => ({
+  authService: {
+    login: jest.fn(),
+    register: jest.fn(),
+    validateStoredToken: jest.fn(),
+  },
+  articleService: {
+    getArticles: jest.fn(),
+    getFeedArticles: jest.fn(),
+    createArticle: jest.fn(),
+    favoriteArticle: jest.fn(),
+    unfavoriteArticle: jest.fn(),
+  },
+  profileService: {
+    getProfile: jest.fn(),
+    followProfile: jest.fn(),
+    unfollowProfile: jest.fn(),
+  },
   navigationService: {
     navigateToLoginScreen: jest.fn(),
     navigateToSignUpScreen: jest.fn(),

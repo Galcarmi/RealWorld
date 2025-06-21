@@ -1,4 +1,4 @@
-import { Profile, Article } from '../../src/services/types';
+import { Profile, Article } from '../../src/services';
 import { User } from '../../src/store/types';
 import { MockApiResponse } from '../visual/config/puppeteerConfig';
 

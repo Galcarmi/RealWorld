@@ -1,24 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { articlesStore } from '../../store/articlesStore';
-import { authStore } from '../../store/authStore';
-import { userStore } from '../../store/userStore';
-
-import { Article, Profile } from '../../services/types';
 
 import { APP_PAGINATION } from '../../constants';
-import { ProfileService } from '../../services';
+import { profileService, Article, Profile } from '../../services';
 import { Logger } from '../../utils';
 
 export const useAuthorProfile = (username: string) => {
   const [authorProfile, setAuthorProfile] = useState<Profile | null>(null);
   const [authorArticles, setAuthorArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const profileService = useMemo(
-    () => new ProfileService(authStore, userStore),
-    []
-  );
 
   const fetchAuthorProfile = useCallback(async () => {
     if (!username) return;
@@ -29,7 +20,7 @@ export const useAuthorProfile = (username: string) => {
     } catch (error) {
       Logger.error('Failed to fetch author profile:', error);
     }
-  }, [username, profileService]);
+  }, [username]);
 
   const loadAuthorArticles = useCallback(async () => {
     if (!username) return;
@@ -65,7 +56,7 @@ export const useAuthorProfile = (username: string) => {
     } catch (error) {
       Logger.error('Failed to toggle follow status:', error);
     }
-  }, [authorProfile, username, profileService]);
+  }, [authorProfile, username]);
 
   const onFollowToggle = useCallback(async () => {
     await toggleUserFollowStatus();

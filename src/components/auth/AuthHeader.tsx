@@ -1,8 +1,9 @@
 import { ViewStyle, TextStyle } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 
-import { TEST_IDS, SCREEN_TITLES } from '../constants';
-import { AUTH_SCREEN_TYPE } from '../constants/app';
+import { AUTH_SCREEN_TYPE } from '../../constants/app';
+
+import { TEST_IDS, SCREEN_TITLES } from '../../constants';
 
 interface AuthHeaderProps {
   containerStyle?: ViewStyle;

@@ -3,10 +3,8 @@ import { Keyboard } from 'react-native';
 
 import { articlesStore } from '../../store/articlesStore';
 
-import { navigationService } from '../../services/navigationService';
-import { CreateArticleRequest } from '../../services/types';
-
 import { useTranslation } from '../../hooks/useTranslation';
+import { CreateArticleRequest, navigationService } from '../../services';
 import { showErrorAlert } from '../../utils';
 
 export const useNewArticle = () => {

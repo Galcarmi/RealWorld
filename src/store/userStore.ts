@@ -1,60 +1,77 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { AuthService } from '../services/auth/AuthService';
+import { authService, navigationService } from '../services';
 import { StorageUtils } from '../utils';
+import { appEventEmitter, AuthErrorEvent } from '../utils/eventEmitter';
+import { setGlobalTokenProvider } from '../utils/tokenProvider';
 
-import { authStore } from './authStore';
 import { IUserStore, User } from './types';
 
 class UserStore implements IUserStore {
   public user: User | null = null;
-  public token: string | null = null;
   public isInitialized = false;
+
+  private _authErrorHandler: (event: AuthErrorEvent) => void;
 
   constructor() {
     makeAutoObservable(this);
+    this._authErrorHandler = this._handleAuthError.bind(this);
     this._initializeFromStorage();
+    this._setupEventListeners();
+    this._setupTokenProvider();
+  }
+
+  public get token(): string | null {
+    return this.user?.token || null;
+  }
+
+  public getToken(): string | null {
+    return this.user?.token || null;
   }
 
   public async forgetUser() {
     this.user = null;
-    this.token = null;
     await StorageUtils.clearUserData();
   }
 
   public async setUser(user: User) {
     this.user = user;
-    this.token = user.token;
-
-    await Promise.all([
-      StorageUtils.setUserData(user),
-      StorageUtils.setUserToken(user.token),
-    ]);
-  }
-
-  public getToken(): string | null {
-    return this.token;
+    await StorageUtils.setUserData(user);
   }
 
   public isAuthenticated(): boolean {
-    return !!this.token && !!this.user;
+    return !!this.user?.token;
   }
 
   public async clearStorageOnAuthError() {
     await this.forgetUser();
   }
 
+  public cleanup(): void {
+    appEventEmitter.offAuthError(this._authErrorHandler);
+  }
+
+  private async _handleAuthError(): Promise<void> {
+    await this.clearStorageOnAuthError();
+    navigationService.navigateToAuthTabs();
+    navigationService.navigateToLoginScreen();
+  }
+
+  private _setupEventListeners(): void {
+    appEventEmitter.onAuthError(this._authErrorHandler);
+  }
+
+  private _setupTokenProvider(): void {
+    setGlobalTokenProvider(() => this.getToken());
+  }
+
   private async _initializeFromStorage() {
     try {
-      const [storedUser, storedToken] = await Promise.all([
-        StorageUtils.getUserData(),
-        StorageUtils.getUserToken(),
-      ]);
+      const storedUser = await StorageUtils.getUserData();
 
-      if (storedUser && storedToken) {
+      if (storedUser?.token) {
         runInAction(() => {
           this.user = storedUser;
-          this.token = storedToken;
         });
 
         await this._validateStoredToken();
@@ -69,11 +86,9 @@ class UserStore implements IUserStore {
   }
 
   private async _validateStoredToken() {
-    if (!this.token) return;
+    if (!this.user?.token) return;
 
     try {
-      const authService = new AuthService(authStore, this);
-
       const currentUser = await authService.validateStoredToken();
 
       if (currentUser) {

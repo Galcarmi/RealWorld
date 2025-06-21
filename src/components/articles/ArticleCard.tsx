@@ -7,11 +7,11 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-ui-lib';
 
-import { TEST_IDS, DIMENSIONS } from '../constants';
-import { Article } from '../services/types';
+import { TEST_IDS, DIMENSIONS } from '../../constants';
+import { Article } from '../../services';
+import { AuthorHeader } from '../profile/AuthorHeader';
 
 import { ArticleContent } from './ArticleContent';
-import { AuthorHeader } from './AuthorHeader';
 import { TagsList } from './TagsList';
 
 interface ArticleCardProps {

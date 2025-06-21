@@ -11,22 +11,18 @@ import {
   AUTH,
   HTTP_HEADERS,
   ERROR_TYPES,
-} from '../constants/app';
-import { IAuthStore, IUserStore } from '../store/types';
-import { Logger, showErrorAlert } from '../utils';
+} from '../../constants/app';
+import { appEventEmitter } from '../../utils/eventEmitter';
+import { getToken } from '../../utils/tokenProvider';
 
-import { navigationService } from './navigationService';
+import { Logger, showErrorAlert } from '../../utils';
+
 import { ApiErrorResponse } from './types';
 
 export abstract class BaseService {
   protected _api: AxiosInstance;
-  protected _authStore: IAuthStore;
-  protected _userStore: IUserStore;
 
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    this._authStore = authStore;
-    this._userStore = userStore;
-
+  constructor() {
     this._api = axios.create({
       baseURL: API.URI,
     });
@@ -106,16 +102,13 @@ export abstract class BaseService {
   }
 
   private async _handleUnauthorizedError(): Promise<void> {
-    await this._userStore.clearStorageOnAuthError();
-    navigationService.navigateToAuthTabs();
-    navigationService.navigateToLoginScreen();
+    appEventEmitter.emitAuthError();
   }
 
   private _setupInterceptors(): void {
     this._api.interceptors.request.use(
       (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        const token = this._userStore.user?.token;
-
+        const token = getToken();
         if (token) {
           config.headers[AUTH.HEADER_NAME] = `${AUTH.TOKEN_PREFIX}${token}`;
         }

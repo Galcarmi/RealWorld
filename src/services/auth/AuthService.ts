@@ -1,17 +1,17 @@
-import { IAuthStore, IUserStore, User } from '../../store/types';
+import { User } from '../../store/types';
 
-import { BaseService } from '../BaseService';
+import { BaseService } from '../common/BaseService';
 import {
   ApiErrorResponse,
   IAuthService,
   LoginUserRequest,
   RegisterUserRequest,
   UserResponse,
-} from '../types';
+} from '../common/types';
 
 class AuthService extends BaseService implements IAuthService {
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    super(authStore, userStore);
+  constructor() {
+    super();
   }
 
   public async getCurrentUser(): Promise<UserResponse> {
@@ -62,4 +62,5 @@ class AuthService extends BaseService implements IAuthService {
   }
 }
 
+export const authService = new AuthService();
 export { AuthService, IAuthService };

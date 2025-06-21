@@ -1,5 +1,6 @@
-import { NAVIGATION_ROOT_TYPES } from '../constants/app';
-import { NavioInstance } from '../navigation/navio';
+import { NAVIGATION_ROOT_TYPES } from '../../constants/app';
+
+import { NavioInstance } from '../../navigation/navio';
 
 interface NavigationServiceType {
   setRoot: (rootType: 'stacks' | 'tabs' | 'drawers', rootName: string) => void;

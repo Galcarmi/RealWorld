@@ -3,11 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { articlesStore } from '../../store/articlesStore';
 import { userStore } from '../../store/userStore';
 
-import { navigationService } from '../../services/navigationService';
-import { Article } from '../../services/types';
-
 import { APP_PAGINATION } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
+import { Article, navigationService } from '../../services';
 import { showErrorAlert } from '../../utils';
 
 export const useProfile = () => {

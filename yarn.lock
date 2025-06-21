@@ -2758,14 +2758,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:~2.2.0":
-  version: 2.2.0
-  resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
+"@react-native-async-storage/async-storage@npm:2.1.2":
+  version: 2.1.2
+  resolution: "@react-native-async-storage/async-storage@npm:2.1.2"
   dependencies:
     merge-options: ^3.0.4
   peerDependencies:
     react-native: ^0.0.0-0 || >=0.65 <1.0
-  checksum: efbb9c801fb7eecfad1568d6a5e9d247db420b8ba8f1789d5b783e679432567a53cf54c7e7b5e6f315276f33d1df297253549e0cefef2e683539df346d2a1f2d
+  checksum: a5c4d486e7e64067ab523b980b76cc2de5bf4b86ed410de09f2a95c3410e0c5b5be46c638a74cf5b7ed6dce10031ebac54350b498a2cb17f1a1c59347e671a73
   languageName: node
   linkType: hard
 
@@ -6404,6 +6404,13 @@ __metadata:
   version: 5.0.1
   resolution: "event-target-shim@npm:5.0.1"
   checksum: 1ffe3bb22a6d51bdeb6bf6f7cf97d2ff4a74b017ad12284cc9e6a279e727dc30a5de6bb613e5596ff4dc3e517841339ad09a7eec44266eccb1aa201a30448166
+  languageName: node
+  linkType: hard
+
+"eventemitter3@npm:~5.0.1":
+  version: 5.0.1
+  resolution: "eventemitter3@npm:5.0.1"
+  checksum: 543d6c858ab699303c3c32e0f0f47fc64d360bf73c3daf0ac0b5079710e340d6fe9f15487f94e66c629f5f82cd1a8678d692f3dbb6f6fcd1190e1b97fcad36f8
   languageName: node
   linkType: hard
 
@@ -10880,7 +10887,7 @@ __metadata:
     "@babel/preset-typescript": ~7.27.1
     "@eslint/js": ~9.28.0
     "@expo/metro-runtime": ~5.0.4
-    "@react-native-async-storage/async-storage": ~2.2.0
+    "@react-native-async-storage/async-storage": 2.1.2
     "@react-native/babel-preset": ~0.80.0
     "@react-native/eslint-config": ~0.79.2
     "@react-navigation/bottom-tabs": ~6.4.0
@@ -10911,6 +10918,7 @@ __metadata:
     eslint-plugin-react: ~7.37.5
     eslint-plugin-react-hooks: ~5.2.0
     eslint-plugin-react-native: ~5.0.0
+    eventemitter3: ~5.0.1
     expo: ~53.0.9
     expo-constants: ~17.1.6
     expo-font: ~13.3.1

@@ -1,11 +1,13 @@
-import { IAuthStore, IUserStore } from '../../store/types';
-
-import { BaseService } from '../BaseService';
-import { IProfileService, ProfileResponse, ApiErrorResponse } from '../types';
+import { BaseService } from '../common/BaseService';
+import {
+  IProfileService,
+  ProfileResponse,
+  ApiErrorResponse,
+} from '../common/types';
 
 class ProfileService extends BaseService implements IProfileService {
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    super(authStore, userStore);
+  constructor() {
+    super();
   }
 
   public async getProfile(username: string): Promise<ProfileResponse> {
@@ -42,4 +44,5 @@ class ProfileService extends BaseService implements IProfileService {
   }
 }
 
+export const profileService = new ProfileService();
 export { ProfileService, IProfileService };

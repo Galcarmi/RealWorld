@@ -37,10 +37,6 @@ describe('Token Persistence Tests', () => {
       });
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN,
-        mockUser.token
-      );
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_DATA,
         JSON.stringify(mockUser)
       );
@@ -59,8 +55,8 @@ describe('Token Persistence Tests', () => {
 
       expect(userStore.token).toBe(userWithDifferentToken.token);
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN,
-        userWithDifferentToken.token
+        STORAGE_KEYS.USER_DATA,
+        JSON.stringify(userWithDifferentToken)
       );
     });
 
@@ -73,10 +69,9 @@ describe('Token Persistence Tests', () => {
         await userStore.forgetUser();
       });
 
-      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
-        STORAGE_KEYS.USER_TOKEN,
-        STORAGE_KEYS.USER_DATA,
-      ]);
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.USER_DATA
+      );
       expect(userStore.user).toBeNull();
       expect(userStore.token).toBeNull();
       expect(userStore.isAuthenticated()).toBe(false);
@@ -86,10 +81,9 @@ describe('Token Persistence Tests', () => {
         await userStore.clearStorageOnAuthError();
       });
 
-      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
-        STORAGE_KEYS.USER_TOKEN,
-        STORAGE_KEYS.USER_DATA,
-      ]);
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.USER_DATA
+      );
       expect(userStore.user).toBeNull();
       expect(userStore.token).toBeNull();
       expect(userStore.isAuthenticated()).toBe(false);
@@ -98,35 +92,24 @@ describe('Token Persistence Tests', () => {
 
   describe('Storage Operations', () => {
     it('handles complete storage lifecycle with error resilience', async () => {
-      const testToken = 'test-token-456';
-
-      await StorageUtils.setUserToken(testToken);
       await StorageUtils.setUserData(mockUser);
 
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN,
-        testToken
-      );
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_DATA,
         JSON.stringify(mockUser)
       );
-
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(testToken);
-      const retrievedToken = await StorageUtils.getUserToken();
-      expect(retrievedToken).toBe(testToken);
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
         JSON.stringify(mockUser)
       );
       const retrievedUser = await StorageUtils.getUserData();
+      expect(retrievedUser?.token).toBe(mockUser.token);
       expect(retrievedUser).toEqual(mockUser);
 
       await StorageUtils.clearUserData();
-      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
-        STORAGE_KEYS.USER_TOKEN,
-        STORAGE_KEYS.USER_DATA,
-      ]);
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.USER_DATA
+      );
     });
 
     it('handles storage errors and edge cases gracefully', async () => {
@@ -135,16 +118,12 @@ describe('Token Persistence Tests', () => {
       (AsyncStorage.getItem as jest.Mock).mockRejectedValue(storageError);
       (AsyncStorage.multiRemove as jest.Mock).mockRejectedValue(storageError);
 
-      await expect(StorageUtils.setUserToken('test')).resolves.not.toThrow();
       await expect(StorageUtils.setUserData(mockUser)).resolves.not.toThrow();
       await expect(StorageUtils.clearUserData()).resolves.not.toThrow();
-      await expect(StorageUtils.getUserToken()).resolves.toBeNull();
       await expect(StorageUtils.getUserData()).resolves.toBeNull();
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
-      const token = await StorageUtils.getUserToken();
       const userData = await StorageUtils.getUserData();
-      expect(token).toBeNull();
       expect(userData).toBeNull();
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue('invalid-json');
@@ -168,8 +147,8 @@ describe('Token Persistence Tests', () => {
       });
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_TOKEN,
-        mockUser.token
+        STORAGE_KEYS.USER_DATA,
+        JSON.stringify(mockUser)
       );
       expect(userStore.isAuthenticated()).toBe(true);
 
@@ -195,15 +174,13 @@ describe('Token Persistence Tests', () => {
       expect(userStore.isAuthenticated()).toBe(true);
 
       const operations = [
-        () => StorageUtils.setUserToken('token1'),
-        () => StorageUtils.setUserToken('token2'),
         () => StorageUtils.setUserData(mockUser),
         () => StorageUtils.clearUserData(),
       ];
 
       await Promise.all(operations.map(op => op()));
       expect(AsyncStorage.setItem).toHaveBeenCalled();
-      expect(AsyncStorage.multiRemove).toHaveBeenCalled();
+      expect(AsyncStorage.removeItem).toHaveBeenCalled();
     });
   });
 });

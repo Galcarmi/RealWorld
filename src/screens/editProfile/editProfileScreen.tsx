@@ -5,8 +5,7 @@ import { View, Button, Text } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { InputField } from '../../components/InputField';
-import { ScreenHeader } from '../../components/ScreenHeader';
+import { InputField, ScreenHeader } from '../../components';
 import { COLORS, DIMENSIONS, FORM_LIMITS, TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 

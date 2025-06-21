@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { navigationService } from '../../services/navigationService';
-
+import { navigationService } from '../../services';
 import { articlesStore } from '../../store';
 
 const useArticles = () => {

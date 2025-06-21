@@ -1,6 +1,4 @@
-import { IAuthStore, IUserStore } from '../../store/types';
-
-import { BaseService } from '../BaseService';
+import { BaseService } from '../common/BaseService';
 import {
   ApiErrorResponse,
   IArticleService,
@@ -9,11 +7,11 @@ import {
   CreateArticleRequest,
   ArticleFilters,
   PaginationParams,
-} from '../types';
+} from '../common/types';
 
 class ArticleService extends BaseService implements IArticleService {
-  constructor(authStore: IAuthStore, userStore: IUserStore) {
-    super(authStore, userStore);
+  constructor() {
+    super();
   }
 
   public async getArticles(params?: ArticleFilters): Promise<ArticlesResponse> {
@@ -88,4 +86,5 @@ class ArticleService extends BaseService implements IArticleService {
   }
 }
 
+export const articleService = new ArticleService();
 export { ArticleService, IArticleService };

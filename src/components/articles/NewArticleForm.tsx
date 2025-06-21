@@ -4,11 +4,11 @@ import { Button } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react';
 
-import { FORM_LIMITS, TEST_IDS } from '../constants';
-import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
+import { COLORS, DIMENSIONS, SPACINGS } from '../../constants/styles';
 
-import { InputField } from './InputField';
+import { FORM_LIMITS, TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
+import { InputField } from '../forms/InputField';
 
 interface NewArticleFormProps {
   title: string;
@@ -114,21 +114,21 @@ const createStyles = () =>
     },
     contentContainer: {
       flexGrow: 1,
-      padding: SPACINGS.PADDING_EXTRA_LARGE,
+      padding: SPACINGS.EXTRA_LARGE,
     },
     titleInput: {
-      marginBottom: SPACINGS.FORM_SPACING,
+      marginBottom: SPACINGS.FORM,
     },
     descriptionInput: {
-      marginBottom: SPACINGS.FORM_SPACING,
+      marginBottom: SPACINGS.FORM,
     },
     bodyInput: {
-      marginBottom: SPACINGS.MARGIN_2X_EXTRA_LARGE,
+      marginBottom: SPACINGS['2_EXTRA_LARGE'],
       flex: 1,
     },
     publishButton: {
       marginTop: 'auto',
-      marginBottom: SPACINGS.PADDING_EXTRA_LARGE,
+      marginBottom: SPACINGS.EXTRA_LARGE,
       borderRadius: 0,
     },
   });

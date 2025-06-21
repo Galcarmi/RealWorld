@@ -7,10 +7,12 @@ import { observer } from 'mobx-react-lite';
 
 import { COLORS, TYPOGRAPHY } from '../../constants/styles';
 
-import { ArticlesList } from '../../components/ArticlesList';
-import { NewArticleButton } from '../../components/NewArticleButton';
-import { ProfileHeader } from '../../components/ProfileHeader';
-import { ScreenHeader } from '../../components/ScreenHeader';
+import {
+  ArticlesList,
+  NewArticleButton,
+  ProfileHeader,
+  ScreenHeader,
+} from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 import { navigationService } from '../../services';

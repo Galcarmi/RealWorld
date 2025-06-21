@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
-import { FORM_LIMITS, KEYBOARD_TYPES } from '../constants';
-import { FONT_SIZES, COLORS } from '../constants/styles';
-import { lengthValidation } from '../utils';
+import { FONT_SIZES, COLORS } from '../../constants/styles';
+
+import { FORM_LIMITS, KEYBOARD_TYPES } from '../../constants';
+import { lengthValidation } from '../../utils';
 
 type ValidationFunction = (value?: string) => boolean;
 

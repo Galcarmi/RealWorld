@@ -1,4 +1,3 @@
-import { MockProxy } from 'jest-mock-extended';
 import { when } from 'mobx';
 
 import {
@@ -8,29 +7,17 @@ import {
   expectStoreCleared,
 } from '../../utils/testHelpers';
 
-import { IAuthService } from '../../../src/services/types';
+import { authService } from '../../../src/services';
 import { authStore } from '../../../src/store/authStore';
 import { userStore } from '../../../src/store/userStore';
-import { createMockAuthService } from '../../mocks/services';
 
 jest.mock('../../../src/services');
 jest.mock('../../../src/store/userStore');
-jest.mock('../../../src/services/navigationService');
 
 describe('AuthStore', () => {
-  let mockAuthService: MockProxy<IAuthService>;
-
   beforeEach(() => {
     jest.clearAllMocks();
     authStore.clear();
-
-    mockAuthService = createMockAuthService();
-
-    Object.defineProperty(authStore, '_authService', {
-      value: mockAuthService,
-      writable: true,
-      configurable: true,
-    });
   });
 
   describe('initial state', () => {
@@ -185,13 +172,13 @@ describe('AuthStore', () => {
 
     it('should set loading state and call auth service', () => {
       const mockResponse = createMockLoginResponse();
-      mockAuthService.login.mockResolvedValue(mockResponse);
+      (authService.login as jest.Mock).mockResolvedValue(mockResponse);
 
       authStore.login();
 
       expect(authStore.isLoading).toBe(true);
       expect(authStore.errors).toBeUndefined();
-      expect(mockAuthService.login).toHaveBeenCalledWith({
+      expect(authService.login).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'password123',
       });
@@ -199,7 +186,7 @@ describe('AuthStore', () => {
 
     it('should handle successful login', async () => {
       const mockResponse = createMockLoginResponse();
-      mockAuthService.login.mockResolvedValue(mockResponse);
+      (authService.login as jest.Mock).mockResolvedValue(mockResponse);
 
       authStore.login();
 
@@ -209,11 +196,13 @@ describe('AuthStore', () => {
       expect(authStore.username).toBe('');
       expect(authStore.email).toBe('');
       expect(authStore.password).toBe('');
+      expect(authStore.errors).toBeUndefined();
+      expect(authStore.isLoading).toBe(false);
     });
 
     it('should handle login error', async () => {
       const mockError = createMockAuthError({ email: ['Invalid email'] });
-      mockAuthService.login.mockRejectedValue(mockError);
+      (authService.login as jest.Mock).mockRejectedValue(mockError);
 
       authStore.login();
 
@@ -221,6 +210,27 @@ describe('AuthStore', () => {
 
       expect(authStore.errors).toEqual({ email: ['Invalid email'] });
       expect(authStore.isLoading).toBe(false);
+    });
+  });
+
+  describe('register method', () => {
+    beforeEach(() => {
+      authStore.setUsername('testuser');
+      authStore.setEmail('test@example.com');
+      authStore.setPassword('password123');
+    });
+
+    it('should call auth service with correct values', () => {
+      const mockResponse = createMockLoginResponse();
+      (authService.register as jest.Mock).mockResolvedValue(mockResponse);
+
+      authStore.register();
+
+      expect(authService.register).toHaveBeenCalledWith({
+        username: 'testuser',
+        email: 'test@example.com',
+        password: 'password123',
+      });
     });
   });
 });

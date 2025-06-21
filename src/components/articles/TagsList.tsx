@@ -3,15 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { observer } from 'mobx-react';
 
-import { APP_UI } from '../constants';
 import {
   COLORS,
   SPACINGS,
   TYPOGRAPHY,
   DIMENSIONS,
   FONT_SIZES,
-} from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
+} from '../../constants/styles';
+
+import { APP_UI } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface TagsListProps {
   tags: string[] | null;
@@ -59,12 +60,12 @@ const createStyles = () =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: SPACINGS.PADDING_MEDIUM,
+      marginTop: SPACINGS.MEDIUM,
     },
     tag: {
-      paddingVertical: SPACINGS.PADDING_SMALL,
-      paddingHorizontal: SPACINGS.PADDING_MEDIUM,
-      marginRight: SPACINGS.PADDING_SMALL,
+      paddingVertical: SPACINGS.SMALL,
+      paddingHorizontal: SPACINGS.MEDIUM,
+      marginRight: SPACINGS.SMALL,
       backgroundColor: COLORS.SECONDARY,
       borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
     },
