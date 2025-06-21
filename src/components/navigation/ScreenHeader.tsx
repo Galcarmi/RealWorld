@@ -100,7 +100,7 @@ const createStyles = (paddingTop: number) =>
     backButtonText: {
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.BACKGROUND,
-      marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
+      marginLeft: SPACINGS.EXTRA_SMALL,
     },
     titleContainer: {
       width: DIMENSIONS.WIDTH_FULL,

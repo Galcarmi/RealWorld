@@ -74,11 +74,11 @@ const createStyles = () =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: SPACINGS.PADDING_MEDIUM,
+      marginBottom: SPACINGS.MEDIUM,
     },
     authorInfo: {
       flex: 1,
-      marginLeft: SPACINGS.PADDING_MEDIUM,
+      marginLeft: SPACINGS.MEDIUM,
     },
     usernameRow: {
       flexDirection: 'row',
@@ -87,12 +87,12 @@ const createStyles = () =>
     username: {
       fontSize: FONT_SIZES.MEDIUM,
       color: COLORS.TEXT,
-      marginBottom: SPACINGS.MARGIN_TINY,
+      marginBottom: SPACINGS['2_EXTRA_SMALL'],
       fontFamily: TYPOGRAPHY.BOLD.fontFamily,
     },
     followingIcon: {
-      marginLeft: SPACINGS.MARGIN_SMALL,
-      marginBottom: SPACINGS.MARGIN_TINY,
+      marginLeft: SPACINGS.SMALL,
+      marginBottom: SPACINGS['2_EXTRA_SMALL'],
       textShadowColor: COLORS.PRIMARY,
       textShadowOffset: { width: 0, height: 0.2 },
       textShadowRadius: 0,
@@ -108,6 +108,6 @@ const createStyles = () =>
     favoritesCount: {
       fontSize: FONT_SIZES.SMALL,
       color: COLORS.PLACEHOLDER,
-      marginLeft: SPACINGS.PADDING_EXTRA_SMALL,
+      marginLeft: SPACINGS.EXTRA_SMALL,
     },
   });

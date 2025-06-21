@@ -76,10 +76,10 @@ const createStyles = () =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      marginBottom: SPACINGS.MARGIN_LARGE,
+      marginBottom: SPACINGS.LARGE,
     },
     editButton: {
-      padding: SPACINGS.PADDING_SMALL,
+      padding: SPACINGS.SMALL,
     },
     profileInfo: {
       alignItems: 'center',
@@ -91,6 +91,6 @@ const createStyles = () =>
       textAlign: 'center',
     },
     container: {
-      padding: SPACINGS.PADDING_LARGE,
+      padding: SPACINGS.LARGE,
     },
   });

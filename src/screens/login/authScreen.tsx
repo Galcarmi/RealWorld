@@ -93,7 +93,7 @@ const createScreenStyles = () =>
       flex: 0.6,
     },
     headerContainer: {
-      marginBottom: SPACINGS.MARGIN_HUGE,
+      marginBottom: SPACINGS.GIGANTIC,
     },
     formContainer: {
       alignItems: 'center',
@@ -101,8 +101,8 @@ const createScreenStyles = () =>
     actionsContainer: {
       flex: 1,
       alignItems: 'center',
-      gap: SPACINGS.MARGIN_LARGE,
-      paddingVertical: SPACINGS.MARGIN_2X_EXTRA_LARGE,
-      marginTop: SPACINGS.MARGIN_3X_EXTRA_LARGE,
+      gap: SPACINGS.LARGE,
+      paddingVertical: SPACINGS['2_EXTRA_LARGE'],
+      marginTop: SPACINGS.MASSIVE,
     },
   });

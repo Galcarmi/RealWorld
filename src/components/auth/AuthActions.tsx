@@ -81,7 +81,7 @@ const createStyles = () =>
   StyleSheet.create({
     submitButton: {
       width: DIMENSIONS.WIDTH_80_PERCENT,
-      padding: SPACINGS.MARGIN_SMALL,
+      padding: SPACINGS.SMALL,
     },
     otherAuthScreenButton: {
       width: DIMENSIONS.WIDTH_80_PERCENT,

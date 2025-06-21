@@ -34,7 +34,7 @@ const createStyles = () =>
     container: {},
     title: {
       color: COLORS.TEXT,
-      marginBottom: SPACINGS.PADDING_SMALL,
+      marginBottom: SPACINGS.SMALL,
       ...TYPOGRAPHY.BOLD,
     },
     description: {

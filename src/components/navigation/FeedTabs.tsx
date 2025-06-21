@@ -101,7 +101,7 @@ const createStyles = () =>
     tab: {
       flex: 1,
       alignItems: 'center',
-      paddingVertical: SPACINGS.TAB_PADDING_VERTICAL,
+      paddingVertical: SPACINGS.TAB_VERTICAL,
       borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
       borderBottomColor: 'transparent',
     },
@@ -110,8 +110,8 @@ const createStyles = () =>
     },
     inactiveTab: {
       borderBottomWidth: 0,
-      marginRight: SPACINGS.MARGIN_TAB,
-      marginLeft: SPACINGS.MARGIN_TAB,
+      marginRight: SPACINGS.TAB,
+      marginLeft: SPACINGS.TAB,
     },
     tabText: {
       fontSize: FONT_SIZES.MEDIUM,

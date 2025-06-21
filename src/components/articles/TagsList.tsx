@@ -60,12 +60,12 @@ const createStyles = () =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: SPACINGS.PADDING_MEDIUM,
+      marginTop: SPACINGS.MEDIUM,
     },
     tag: {
-      paddingVertical: SPACINGS.PADDING_SMALL,
-      paddingHorizontal: SPACINGS.PADDING_MEDIUM,
-      marginRight: SPACINGS.PADDING_SMALL,
+      paddingVertical: SPACINGS.SMALL,
+      paddingHorizontal: SPACINGS.MEDIUM,
+      marginRight: SPACINGS.SMALL,
       backgroundColor: COLORS.SECONDARY,
       borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
     },

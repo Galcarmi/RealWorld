@@ -83,8 +83,8 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = observer(
 const createStyles = () =>
   StyleSheet.create({
     container: {
-      paddingBottom: SPACINGS.HEADER_PADDING_BOTTOM,
-      paddingTop: SPACINGS.HEADER_PADDING_TOP,
+      paddingBottom: SPACINGS.HEADER_BOTTOM,
+      paddingTop: SPACINGS.HEADER_TOP,
     },
     profileInfo: {
       alignItems: 'center',
@@ -93,11 +93,11 @@ const createStyles = () =>
       fontSize: TYPOGRAPHY.HEADING.fontSize,
       color: COLORS.BLACK,
       textAlign: 'center',
-      marginBottom: SPACINGS.PADDING_LARGE,
+      marginBottom: SPACINGS.LARGE,
     },
     followButton: {
-      paddingHorizontal: SPACINGS.MARGIN_LARGE,
-      gap: SPACINGS.MARGIN_SMALL,
+      paddingHorizontal: SPACINGS.LARGE,
+      gap: SPACINGS.SMALL,
     },
     followButtonText: {
       fontWeight: FONT_WEIGHTS.BOLD,

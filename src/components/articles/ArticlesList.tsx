@@ -134,14 +134,14 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 const createStyles = () =>
   StyleSheet.create({
     loadingFooter: {
-      padding: SPACINGS.PADDING_LARGE,
+      padding: SPACINGS.LARGE,
       alignItems: 'center',
     },
     centerContainer: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: SPACINGS.LIST_CONTENT_PADDING,
+      padding: SPACINGS.LIST_CONTENT,
     },
     emptyText: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
@@ -149,8 +149,8 @@ const createStyles = () =>
       textAlign: 'center',
     },
     articleCard: {
-      marginBottom: SPACINGS.PADDING_TINY,
+      marginBottom: SPACINGS['2_EXTRA_SMALL'],
       borderRadius: 0,
-      padding: SPACINGS.MARGIN_LARGE,
+      padding: SPACINGS.LARGE,
     },
   });
