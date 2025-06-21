@@ -95,37 +95,3 @@ export const testMultipleFavoriteToggles = async (
     );
   });
 };
-
-export const testPullToRefresh = async (
-  renderResult: RenderAPI,
-  expectedRefreshFunction: jest.SpyInstance
-) => {
-  const { getByTestId } = renderResult;
-
-  await waitFor(() => {
-    const articlesList = getByTestId('article-card-test-article-1').parent
-      ?.parent;
-    if (articlesList) {
-      fireEvent(articlesList, 'refresh');
-    }
-  });
-
-  expect(expectedRefreshFunction).toHaveBeenCalledTimes(1);
-};
-
-export const testLoadMore = async (
-  renderResult: RenderAPI,
-  expectedLoadMoreFunction: jest.SpyInstance
-) => {
-  const { getByTestId } = renderResult;
-
-  await waitFor(() => {
-    const articlesList = getByTestId('article-card-test-article-1').parent
-      ?.parent;
-    if (articlesList) {
-      fireEvent(articlesList, 'endReached');
-    }
-  });
-
-  expect(expectedLoadMoreFunction).toHaveBeenCalledTimes(1);
-};

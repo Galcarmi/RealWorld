@@ -34,16 +34,18 @@ export interface IAuthStore {
   setPassword(password: string): void;
   login(): Promise<void>;
   register(): Promise<void>;
-  logout(): void;
+  logout(): Promise<void>;
 }
 
 export interface IUserStore {
   user: User | null;
   token: string | null;
-  forgetUser(): void;
-  setUser(user: User): void;
+  isInitialized: boolean;
+  forgetUser(): Promise<void>;
+  setUser(user: User): Promise<void>;
   getToken(): string | null;
   isAuthenticated(): boolean;
+  clearStorageOnAuthError(): Promise<void>;
 }
 
 export interface IArticlesStore {

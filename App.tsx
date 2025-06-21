@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -13,19 +13,27 @@ SplashScreen.preventAutoHideAsync();
 
 const AppWrapper = observer(() => {
   const isThemeReady = useAppTheme();
+  const isUserStoreInitialized = userStore.isInitialized;
   const isAuthenticated = userStore.isAuthenticated();
 
+  const isAppReady = useMemo(
+    () => isThemeReady && isUserStoreInitialized,
+    [isThemeReady, isUserStoreInitialized]
+  );
+
   useEffect(() => {
-    if (isThemeReady) {
+    if (isAppReady) {
       if (isAuthenticated) {
         navio.setRoot('tabs', 'MainTabs');
       } else {
         navio.setRoot('tabs', 'AuthTabs');
       }
-    }
-  }, [isThemeReady, isAuthenticated]);
 
-  if (!isThemeReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [isAppReady, isAuthenticated]);
+
+  if (!isAppReady) {
     return null;
   }
 

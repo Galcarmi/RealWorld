@@ -74,24 +74,34 @@ const setupAuthStoreMocks = () => {
   mockAuthStore.register.mockImplementation(async () => {
     mockAuthStore.isLoading = true;
   });
+
+  mockAuthStore.logout.mockImplementation(async () => {
+    mockUserStore.user = null;
+    mockUserStore.token = null;
+  });
 };
 
 const setupUserStoreMocks = () => {
   mockUserStore.user = null;
   mockUserStore.token = null;
+  mockUserStore.isInitialized = false;
 
-  mockUserStore.forgetUser.mockImplementation(() => {
+  mockUserStore.forgetUser.mockImplementation(async () => {
     mockUserStore.user = null;
     mockUserStore.token = null;
   });
 
-  mockUserStore.setUser.mockImplementation((user: User) => {
+  mockUserStore.setUser.mockImplementation(async (user: User) => {
     mockUserStore.user = user;
     mockUserStore.token = user?.token || null;
   });
 
   mockUserStore.getToken.mockImplementation(() => mockUserStore.token);
   mockUserStore.isAuthenticated.mockImplementation(() => !!mockUserStore.user);
+  mockUserStore.clearStorageOnAuthError.mockImplementation(async () => {
+    mockUserStore.user = null;
+    mockUserStore.token = null;
+  });
 };
 
 const setupArticlesStoreMocks = () => {
@@ -105,9 +115,80 @@ const setupArticlesStoreMocks = () => {
   mockArticlesStore.favoritesArticlesCount = 0;
   mockArticlesStore.favoritesCurrentOffset = 0;
 
-  mockArticlesStore.getUserArticles.mockResolvedValue({
-    articles: [],
-    articlesCount: 0,
+  // Add proper getter mocks
+  Object.defineProperty(mockArticlesStore, 'canLoadMoreFavoriteArticles', {
+    get: () =>
+      !mockArticlesStore.favoritesIsLoading &&
+      mockArticlesStore.favoriteArticles.length <
+        mockArticlesStore.favoritesArticlesCount,
+    configurable: true,
+  });
+
+  Object.defineProperty(mockArticlesStore, 'canLoadMoreHomeArticles', {
+    get: () =>
+      !mockArticlesStore.homeIsLoading &&
+      mockArticlesStore.homeArticles.length <
+        mockArticlesStore.homeArticlesCount,
+    configurable: true,
+  });
+
+  // Mock all the async methods
+  mockArticlesStore.loadFavoriteArticlesInitially.mockImplementation(
+    async () => {
+      // Just mark that it was called, don't modify state
+    }
+  );
+
+  mockArticlesStore.loadMoreFavoriteArticles.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.refreshFavoriteArticles.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.loadHomeArticlesInitially.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.loadMoreHomeArticles.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.refreshHomeArticles.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.switchToGlobalFeed.mockImplementation(async () => {
+    mockArticlesStore.feedType = FeedType.GLOBAL;
+  });
+
+  mockArticlesStore.switchToUserFeed.mockImplementation(async () => {
+    mockArticlesStore.feedType = FeedType.FEED;
+  });
+
+  mockArticlesStore.toggleArticleFavoriteStatus.mockImplementation(async () => {
+    // Mock implementation
+  });
+
+  mockArticlesStore.createArticle.mockImplementation(async () => {
+    return {} as any;
+  });
+
+  mockArticlesStore.getUserArticles.mockImplementation(async () => {
+    // Return immediately with empty articles for the test
+    return {
+      articles: [],
+      articlesCount: 0,
+    };
+  });
+
+  mockArticlesStore.clearHomeErrors.mockImplementation(() => {
+    mockArticlesStore.homeErrors = undefined;
+  });
+
+  mockArticlesStore.clearFavoritesErrors.mockImplementation(() => {
+    mockArticlesStore.favoritesErrors = undefined;
   });
 };
 
@@ -124,6 +205,13 @@ jest.mock('../../src/store/userStore', () => ({
 }));
 
 jest.mock('../../src/store/articlesStore', () => ({
+  articlesStore: mockArticlesStore,
+}));
+
+// Mock the main store index
+jest.mock('../../src/store', () => ({
+  authStore: mockAuthStore,
+  userStore: mockUserStore,
   articlesStore: mockArticlesStore,
 }));
 

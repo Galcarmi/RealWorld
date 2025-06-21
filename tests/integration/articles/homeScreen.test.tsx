@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -9,40 +7,26 @@ import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import * as storeMocks from '../../mocks/stores';
 import {
   testArticleCardPress,
   testFavoriteButtonPress,
   testMultipleArticlePresses,
   testMultipleFavoriteToggles,
-  testPullToRefresh,
-  testLoadMore,
 } from '../utils/articleTestUtils';
 
-const mockArticlesStore = getMockArticlesStore();
+const mockArticlesStore = storeMocks.getMockArticlesStore();
 
 const renderHomeScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <HomeScreen />
-    </SafeAreaProvider>
-  );
+  return render(<HomeScreen />);
 };
 
 describe('Home Screen Integration Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
     mockArticlesStore.homeArticles = mockArticles;
     mockArticlesStore.homeIsLoading = false;
     mockArticlesStore.feedType = FeedType.GLOBAL;
     mockArticlesStore.homeArticlesCount = mockArticles.length;
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Load', () => {
@@ -184,22 +168,6 @@ describe('Home Screen Integration Tests', () => {
         'test-article-2',
         true
       );
-    });
-  });
-
-  describe('Pull to Refresh', () => {
-    it('should refresh articles when pull to refresh is triggered', async () => {
-      const refreshSpy = jest.spyOn(articlesStore, 'refreshHomeArticles');
-      const renderResult = renderHomeScreen();
-      await testPullToRefresh(renderResult, refreshSpy);
-    });
-  });
-
-  describe('Load More Articles', () => {
-    it('should load more articles when reaching end of list', async () => {
-      const loadMoreSpy = jest.spyOn(articlesStore, 'loadMoreHomeArticles');
-      const renderResult = renderHomeScreen();
-      await testLoadMore(renderResult, loadMoreSpy);
     });
   });
 

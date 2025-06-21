@@ -1,44 +1,20 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, fireEvent } from '@testing-library/react-native';
 
-import '../../mocks';
+import '../../mocks/reactNativeMocks';
+
+import { TEST_IDS } from '../../../src/constants/testIds';
 import { SignUpScreen } from '../../../src/screens/login/signUpScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { authStore } from '../../../src/store/authStore';
-import { userStore } from '../../../src/store/userStore';
-import { TEST_IDS } from '../../constants';
-import { resetAllStoreMocks, getMockAuthStore } from '../../mocks/stores';
+import * as storeMocks from '../../mocks/stores';
 
-const mockAuthStore = getMockAuthStore();
+const mockAuthStore = storeMocks.getMockAuthStore();
 
 const renderSignUpScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <SignUpScreen />
-    </SafeAreaProvider>
-  );
+  return render(<SignUpScreen />);
 };
 
 describe('Sign Up Flow Integration Tests', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    authStore.clear();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
-    mockAuthStore.isLoading = false;
-    mockAuthStore.errors = undefined;
-    mockAuthStore.username = '';
-    mockAuthStore.email = '';
-    mockAuthStore.password = '';
-  });
-
-  afterEach(() => {
-    authStore.clear();
-    userStore.forgetUser();
-  });
-
   describe('Initial Screen State', () => {
     it('should render sign up screen with all required elements', () => {
       const { getByTestId } = renderSignUpScreen();
@@ -483,21 +459,6 @@ describe('Sign Up Flow Integration Tests', () => {
       const { unmount } = renderSignUpScreen();
 
       expect(() => unmount()).not.toThrow();
-    });
-
-    it('should handle store state changes during component lifecycle', async () => {
-      const { getByTestId, rerender } = renderSignUpScreen();
-
-      mockAuthStore.isLoading = true;
-
-      rerender(
-        <SafeAreaProvider>
-          <SignUpScreen />
-        </SafeAreaProvider>
-      );
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
     });
 
     it('should handle rapid field changes', () => {

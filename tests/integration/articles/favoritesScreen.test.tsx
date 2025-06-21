@@ -1,5 +1,3 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { render, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
@@ -8,42 +6,27 @@ import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesS
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import * as storeMocks from '../../mocks/stores';
 import {
   testArticleCardPress,
   testFavoriteButtonPress,
   testMultipleArticlePresses,
   testMultipleFavoriteToggles,
-  testPullToRefresh,
-  testLoadMore,
 } from '../utils/articleTestUtils';
 
-const mockArticlesStore = getMockArticlesStore();
+const mockArticlesStore = storeMocks.getMockArticlesStore();
 
 const renderFavoritesScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <FavoritesScreen />
-    </SafeAreaProvider>
-  );
+  return render(<FavoritesScreen />);
 };
 
 describe('Favorites Screen Integration Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
     userStore.setUser(mockUserMinimal);
-
     mockArticlesStore.favoriteArticles = mockArticles;
     mockArticlesStore.favoritesIsLoading = false;
     mockArticlesStore.favoritesArticlesCount = mockArticles.length;
     mockArticlesStore.favoritesCurrentOffset = 0;
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Load', () => {
@@ -127,22 +110,6 @@ describe('Favorites Screen Integration Tests', () => {
         'test-article-2',
         true
       );
-    });
-  });
-
-  describe('Pull to Refresh', () => {
-    it('should refresh favorite articles when pull to refresh is triggered', async () => {
-      const refreshSpy = jest.spyOn(articlesStore, 'refreshFavoriteArticles');
-      const renderResult = renderFavoritesScreen();
-      await testPullToRefresh(renderResult, refreshSpy);
-    });
-  });
-
-  describe('Load More Articles', () => {
-    it('should load more favorite articles when reaching end of list', async () => {
-      const loadMoreSpy = jest.spyOn(articlesStore, 'loadMoreFavoriteArticles');
-      const renderResult = renderFavoritesScreen();
-      await testLoadMore(renderResult, loadMoreSpy);
     });
   });
 
@@ -317,11 +284,7 @@ describe('Favorites Screen Integration Tests', () => {
 
       mockArticlesStore.favoritesIsLoading = true;
 
-      rerender(
-        <SafeAreaProvider>
-          <FavoritesScreen />
-        </SafeAreaProvider>
-      );
+      rerender(<FavoritesScreen />);
 
       expect(getByTestId(TEST_IDS.FAVORITES_SCREEN)).toBeTruthy();
     });

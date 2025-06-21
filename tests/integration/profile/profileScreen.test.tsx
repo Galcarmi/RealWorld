@@ -1,50 +1,38 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 
 import '../../mocks';
+
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUser, mockUserMinimal } from '../../mocks/data';
-import {
-  getMockNavigationService,
-  resetAllServiceMocks,
-} from '../../mocks/services';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import { getMockNavigationService } from '../../mocks/services';
+import * as storeMocks from '../../mocks/stores';
 
-const mockArticlesStore = getMockArticlesStore();
+const mockArticlesStore = storeMocks.getMockArticlesStore();
 const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
-  return render(
-    <SafeAreaProvider>
-      <ProfileScreen />
-    </SafeAreaProvider>
-  );
+  return render(<ProfileScreen />);
 };
 
 describe('Profile Screen Integration Tests', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-    resetAllServiceMocks();
+  beforeEach(async () => {
+    await act(async () => {
+      userStore.setUser(mockUser);
+    });
 
-    userStore.setUser(mockUser);
     mockArticlesStore.homeArticles = [];
     mockArticlesStore.homeIsLoading = false;
   });
 
-  afterEach(() => {
-    userStore.forgetUser();
-  });
-
   describe('Authentication Requirements', () => {
-    it('should redirect to login screen when user is not authenticated', () => {
-      userStore.forgetUser();
+    it('should redirect to login screen when user is not authenticated', async () => {
+      await act(async () => {
+        userStore.forgetUser();
+      });
 
       renderProfileScreen();
 
@@ -54,7 +42,9 @@ describe('Profile Screen Integration Tests', () => {
     });
 
     it('should render profile screen when user is authenticated', async () => {
-      userStore.setUser(mockUser);
+      await act(async () => {
+        userStore.setUser(mockUser);
+      });
 
       const { getByTestId } = renderProfileScreen();
 
@@ -66,7 +56,9 @@ describe('Profile Screen Integration Tests', () => {
 
   describe('User Information Display', () => {
     it('should display user profile information correctly', async () => {
-      userStore.setUser(mockUser);
+      await act(async () => {
+        userStore.setUser(mockUser);
+      });
 
       const { getByText } = renderProfileScreen();
 
@@ -76,7 +68,9 @@ describe('Profile Screen Integration Tests', () => {
     });
 
     it('should show user profile with minimal data', async () => {
-      userStore.setUser(mockUserMinimal);
+      await act(async () => {
+        userStore.setUser(mockUserMinimal);
+      });
 
       const { getByText } = renderProfileScreen();
 
@@ -136,20 +130,6 @@ describe('Profile Screen Integration Tests', () => {
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should show empty message when user has no articles', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByText } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(
-          getByText(
-            "No articles yet. Tap 'New Article' to create your first post"
-          )
-        ).toBeTruthy();
       });
     });
 

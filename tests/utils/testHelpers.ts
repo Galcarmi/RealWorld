@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { render } from '@testing-library/react-native';
 
@@ -50,12 +49,6 @@ export const expectValidationResults = (
   invalidInputs.forEach(input => {
     expect(validationFn(input)).toBe(false);
   });
-};
-
-export const renderWithProviders = (Component: React.ComponentType) => {
-  return render(
-    React.createElement(SafeAreaProvider, {}, React.createElement(Component))
-  );
 };
 
 export const expectFormFieldExists = (
@@ -113,12 +106,19 @@ export const createMockAuthError = (errors: Record<string, string[]>) => ({
   },
 });
 
-export const setupIntegrationTestEnvironment = () => {
-  const { resetAllStoreMocks } = require('../mocks/stores');
-  resetAllStoreMocks();
-};
-
 export const renderLoginScreen = () => {
   const { SignInScreen } = require('../../src/screens/login/signInScreen');
-  return renderWithProviders(SignInScreen);
+  return render(React.createElement(SignInScreen));
+};
+
+export const renderSignUpScreen = () => {
+  const { SignUpScreen } = require('../../src/screens/login/signUpScreen');
+  return render(React.createElement(SignUpScreen));
+};
+
+export const renderProfileScreen = () => {
+  const {
+    ProfileScreen,
+  } = require('../../src/screens/profileScreen/profileScreen');
+  return render(React.createElement(ProfileScreen));
 };
