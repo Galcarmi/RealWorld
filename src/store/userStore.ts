@@ -8,7 +8,6 @@ import { IUserStore, User } from './types';
 
 class UserStore implements IUserStore {
   public user: User | null = null;
-  public token: string | null = null;
   public isInitialized = false;
 
   private _authService: AuthService;
@@ -19,28 +18,26 @@ class UserStore implements IUserStore {
     this._initializeFromStorage();
   }
 
+  public get token(): string | null {
+    return this.user?.token || null;
+  }
+
+  public getToken(): string | null {
+    return this.user?.token || null;
+  }
+
   public async forgetUser() {
     this.user = null;
-    this.token = null;
     await StorageUtils.clearUserData();
   }
 
   public async setUser(user: User) {
     this.user = user;
-    this.token = user.token;
-
-    await Promise.all([
-      StorageUtils.setUserData(user),
-      StorageUtils.setUserToken(user.token),
-    ]);
-  }
-
-  public getToken(): string | null {
-    return this.token;
+    await StorageUtils.setUserData(user);
   }
 
   public isAuthenticated(): boolean {
-    return !!this.token && !!this.user;
+    return !!this.user?.token;
   }
 
   public async clearStorageOnAuthError() {
@@ -49,15 +46,11 @@ class UserStore implements IUserStore {
 
   private async _initializeFromStorage() {
     try {
-      const [storedUser, storedToken] = await Promise.all([
-        StorageUtils.getUserData(),
-        StorageUtils.getUserToken(),
-      ]);
+      const storedUser = await StorageUtils.getUserData();
 
-      if (storedUser && storedToken) {
+      if (storedUser?.token) {
         runInAction(() => {
           this.user = storedUser;
-          this.token = storedToken;
         });
 
         await this._validateStoredToken();
@@ -72,7 +65,7 @@ class UserStore implements IUserStore {
   }
 
   private async _validateStoredToken() {
-    if (!this.token) return;
+    if (!this.user?.token) return;
 
     try {
       const currentUser = await this._authService.validateStoredToken();
