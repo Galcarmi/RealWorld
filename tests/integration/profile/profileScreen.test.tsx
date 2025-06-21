@@ -5,13 +5,12 @@ import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services/navigationService';
-import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUser, mockUserMinimal } from '../../mocks/data';
 import { getMockNavigationService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
-const mockArticlesStore = storeMocks.getMockArticlesStore();
+const articlesStore = storeMocks.getArticlesStore();
 const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
@@ -24,8 +23,8 @@ describe('Profile Screen Integration Tests', () => {
       userStore.setUser(mockUser);
     });
 
-    mockArticlesStore.homeArticles = [];
-    mockArticlesStore.homeIsLoading = false;
+    articlesStore.homeArticles = [];
+    articlesStore.homeIsLoading = false;
   });
 
   describe('Authentication Requirements', () => {
@@ -196,7 +195,7 @@ describe('Profile Screen Integration Tests', () => {
   describe('Loading States', () => {
     it('should show loading state while fetching user articles', async () => {
       userStore.setUser(mockUser);
-      mockArticlesStore.homeIsLoading = true;
+      articlesStore.homeIsLoading = true;
 
       const { getByTestId } = renderProfileScreen();
 
@@ -207,7 +206,7 @@ describe('Profile Screen Integration Tests', () => {
 
     it('should hide loading state when articles are loaded', async () => {
       userStore.setUser(mockUser);
-      mockArticlesStore.homeIsLoading = false;
+      articlesStore.homeIsLoading = false;
 
       const { getByTestId } = renderProfileScreen();
 
@@ -215,7 +214,7 @@ describe('Profile Screen Integration Tests', () => {
         expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
 
-      expect(mockArticlesStore.homeIsLoading).toBe(false);
+      expect(articlesStore.homeIsLoading).toBe(false);
     });
 
     it('should show loading state for articles fetch', async () => {

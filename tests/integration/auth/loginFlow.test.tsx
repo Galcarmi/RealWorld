@@ -6,10 +6,9 @@ import { renderLoginScreen } from '../../utils/testHelpers';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { navigationService } from '../../../src/services/navigationService';
-import { authStore } from '../../../src/store/authStore';
 import * as storeMocks from '../../mocks/stores';
 
-const mockAuthStore = storeMocks.getMockAuthStore();
+const authStore = storeMocks.getAuthStore();
 
 describe('Login Flow Integration Tests', () => {
   describe('Initial Screen State', () => {
@@ -165,7 +164,7 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should show loading state during login', () => {
-      mockAuthStore.isLoading = true;
+      authStore.isLoading = true;
 
       const { getByTestId } = renderLoginScreen();
 
@@ -214,7 +213,7 @@ describe('Login Flow Integration Tests', () => {
 
   describe('Loading States', () => {
     it('should disable all interactions during loading', () => {
-      mockAuthStore.isLoading = true;
+      authStore.isLoading = true;
 
       const { getByTestId } = renderLoginScreen();
 
@@ -231,7 +230,7 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should reflect loading state correctly', () => {
-      mockAuthStore.isLoading = false;
+      authStore.isLoading = false;
 
       const { getByTestId } = renderLoginScreen();
 
@@ -265,7 +264,7 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should clear errors when user starts typing', () => {
-      mockAuthStore.errors = { email: ['Invalid email'] };
+      authStore.errors = { email: ['Invalid email'] };
 
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
       const { getByTestId } = renderLoginScreen();
@@ -354,7 +353,7 @@ describe('Login Flow Integration Tests', () => {
     });
 
     it('should reflect store state in UI', () => {
-      mockAuthStore.isLoading = false;
+      authStore.isLoading = false;
 
       const { getByTestId } = renderLoginScreen();
 

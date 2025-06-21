@@ -105,6 +105,6 @@ export const getAuthStoreSpies = () => authStoreSpies;
 export const getUserStoreSpies = () => userStoreSpies;
 export const getArticlesStoreSpies = () => articlesStoreSpies;
 
-export const getMockAuthStore = () => authStore;
-export const getMockUserStore = () => userStore;
-export const getMockArticlesStore = () => articlesStore;
+export const getAuthStore = () => authStore;
+export const getUserStore = () => userStore;
+export const getArticlesStore = () => articlesStore;

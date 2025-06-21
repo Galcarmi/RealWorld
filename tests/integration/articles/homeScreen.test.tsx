@@ -4,7 +4,6 @@ import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
-import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
@@ -15,7 +14,7 @@ import {
   testMultipleFavoriteToggles,
 } from '../utils/articleTestUtils';
 
-const mockArticlesStore = storeMocks.getMockArticlesStore();
+const articlesStore = storeMocks.getArticlesStore();
 
 const renderHomeScreen = () => {
   return render(<HomeScreen />);
@@ -23,10 +22,10 @@ const renderHomeScreen = () => {
 
 describe('Home Screen Integration Tests', () => {
   beforeEach(() => {
-    mockArticlesStore.homeArticles = mockArticles;
-    mockArticlesStore.homeIsLoading = false;
-    mockArticlesStore.feedType = FeedType.GLOBAL;
-    mockArticlesStore.homeArticlesCount = mockArticles.length;
+    articlesStore.homeArticles = mockArticles;
+    articlesStore.homeIsLoading = false;
+    articlesStore.feedType = FeedType.GLOBAL;
+    articlesStore.homeArticlesCount = mockArticles.length;
   });
 
   describe('Initial Load', () => {
@@ -58,8 +57,8 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should show loading state while articles are loading', () => {
-      mockArticlesStore.homeIsLoading = true;
-      mockArticlesStore.homeArticles = [];
+      articlesStore.homeIsLoading = true;
+      articlesStore.homeArticles = [];
 
       const { getByTestId } = renderHomeScreen();
 
@@ -67,9 +66,9 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should show empty message when no articles available in global feed', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
-      mockArticlesStore.feedType = FeedType.GLOBAL;
+      articlesStore.homeArticles = [];
+      articlesStore.homeIsLoading = false;
+      articlesStore.feedType = FeedType.GLOBAL;
 
       const { getByText } = renderHomeScreen();
 
@@ -79,9 +78,9 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should show different empty message for user feed', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
-      mockArticlesStore.feedType = FeedType.FEED;
+      articlesStore.homeArticles = [];
+      articlesStore.homeIsLoading = false;
+      articlesStore.feedType = FeedType.FEED;
 
       const { getByText } = renderHomeScreen();
 
@@ -178,7 +177,7 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should maintain global feed state correctly', async () => {
-      mockArticlesStore.feedType = FeedType.GLOBAL;
+      articlesStore.feedType = FeedType.GLOBAL;
 
       const { getByText } = renderHomeScreen();
 
@@ -190,7 +189,7 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should maintain user feed state correctly', async () => {
-      mockArticlesStore.feedType = FeedType.FEED;
+      articlesStore.feedType = FeedType.FEED;
 
       const { getByText } = renderHomeScreen();
 
@@ -202,8 +201,8 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should display appropriate empty messages for different feed types', async () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.feedType = FeedType.GLOBAL;
+      articlesStore.homeArticles = [];
+      articlesStore.feedType = FeedType.GLOBAL;
 
       const { getByText: getByTextGlobal } = renderHomeScreen();
       expect(getByTextGlobal('No articles available')).toBeTruthy();
@@ -260,8 +259,8 @@ describe('Home Screen Integration Tests', () => {
 
   describe('Error Scenarios', () => {
     it('should handle empty articles list gracefully', () => {
-      mockArticlesStore.homeArticles = [];
-      mockArticlesStore.homeIsLoading = false;
+      articlesStore.homeArticles = [];
+      articlesStore.homeIsLoading = false;
 
       const { getByText } = renderHomeScreen();
 
@@ -269,7 +268,7 @@ describe('Home Screen Integration Tests', () => {
     });
 
     it('should still call loadHomeArticlesInitially even if articles store is empty', () => {
-      mockArticlesStore.homeArticles = [];
+      articlesStore.homeArticles = [];
 
       renderHomeScreen();
 

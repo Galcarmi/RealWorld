@@ -5,10 +5,9 @@ import '../../mocks/reactNativeMocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { SignUpScreen } from '../../../src/screens/login/signUpScreen';
 import { navigationService } from '../../../src/services/navigationService';
-import { authStore } from '../../../src/store/authStore';
 import * as storeMocks from '../../mocks/stores';
 
-const mockAuthStore = storeMocks.getMockAuthStore();
+const authStore = storeMocks.getAuthStore();
 
 const renderSignUpScreen = () => {
   return render(<SignUpScreen />);
@@ -166,7 +165,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should show loading state during registration', () => {
-      mockAuthStore.isLoading = true;
+      authStore.isLoading = true;
 
       const { getByTestId } = renderSignUpScreen();
 
@@ -217,7 +216,7 @@ describe('Sign Up Flow Integration Tests', () => {
 
   describe('Loading States', () => {
     it('should disable all interactions during loading', () => {
-      mockAuthStore.isLoading = true;
+      authStore.isLoading = true;
 
       const { getByTestId } = renderSignUpScreen();
 
@@ -236,7 +235,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should reflect loading state correctly', () => {
-      mockAuthStore.isLoading = false;
+      authStore.isLoading = false;
 
       const { getByTestId } = renderSignUpScreen();
 
@@ -288,7 +287,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should clear errors when user starts typing', () => {
-      mockAuthStore.errors = {
+      authStore.errors = {
         username: ['Invalid username'],
       };
 
@@ -346,7 +345,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
 
     it('should reflect store state in UI', () => {
-      mockAuthStore.isLoading = false;
+      authStore.isLoading = false;
 
       const { getByTestId } = renderSignUpScreen();
 
