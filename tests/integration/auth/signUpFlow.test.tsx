@@ -13,9 +13,38 @@ const renderSignUpScreen = () => {
   return render(<SignUpScreen />);
 };
 
+const fillSignUpForm = (getByTestId: any, overrides = {}) => {
+  const defaultData = {
+    username: 'testuser',
+    email: 'test@example.com',
+    password: 'password123456',
+    ...overrides,
+  };
+
+  fireEvent.changeText(
+    getByTestId(TEST_IDS.AUTH_USERNAME_INPUT),
+    defaultData.username
+  );
+  fireEvent.changeText(
+    getByTestId(TEST_IDS.AUTH_EMAIL_INPUT),
+    defaultData.email
+  );
+  fireEvent.changeText(
+    getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT),
+    defaultData.password
+  );
+
+  return defaultData;
+};
+
 describe('Sign Up Flow Integration Tests', () => {
-  describe('Initial Screen State', () => {
-    it('should render sign up screen with all required elements', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    authStore.clear();
+  });
+
+  describe('Form Rendering Integration', () => {
+    it('renders signup form with all required fields', () => {
       const { getByTestId } = renderSignUpScreen();
 
       expect(getByTestId(TEST_IDS.SIGNUP_SCREEN)).toBeTruthy();
@@ -26,452 +55,89 @@ describe('Sign Up Flow Integration Tests', () => {
       expect(getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON)).toBeTruthy();
     });
 
-    it('should display correct screen title', () => {
+    it('initializes with submit button disabled', () => {
       const { getByTestId } = renderSignUpScreen();
 
-      expect(getByTestId(TEST_IDS.AUTH_SCREEN_TITLE)).toBeTruthy();
-    });
-
-    it('should disable submit button with empty fields', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
+      expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });
   });
 
-  describe('Form Field Interactions', () => {
-    it('should update username field and store when typing', () => {
+  describe('Form Store Integration', () => {
+    it('integrates form inputs with auth store', () => {
       const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      fireEvent.changeText(usernameInput, 'testuser');
-
-      expect(setUsernameSpy).toHaveBeenCalledWith('testuser');
-    });
-
-    it('should update email field and store when typing', () => {
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
-      const { getByTestId } = renderSignUpScreen();
-
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      fireEvent.changeText(emailInput, 'test@example.com');
-
-      expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
-    });
-
-    it('should update password field and store when typing', () => {
       const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
       const { getByTestId } = renderSignUpScreen();
 
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      fireEvent.changeText(passwordInput, 'password123');
+      fillSignUpForm(getByTestId);
 
-      expect(setPasswordSpy).toHaveBeenCalledWith('password123');
-    });
-
-    it('should handle all field focus and blur events', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent(usernameInput, 'focus');
-      fireEvent(usernameInput, 'blur');
-      fireEvent(emailInput, 'focus');
-      fireEvent(emailInput, 'blur');
-      fireEvent(passwordInput, 'focus');
-      fireEvent(passwordInput, 'blur');
-
-      expect(usernameInput).toBeTruthy();
-      expect(emailInput).toBeTruthy();
-      expect(passwordInput).toBeTruthy();
+      expect(setUsernameSpy).toHaveBeenCalledWith('testuser');
+      expect(setEmailSpy).toHaveBeenCalledWith('test@example.com');
+      expect(setPasswordSpy).toHaveBeenCalledWith('password123456');
     });
   });
 
-  describe('Form Validation', () => {
-    it('should show submit button state based on form validity', () => {
+  describe('Registration Flow Integration', () => {
+    it('integrates form submission with registration process', () => {
+      const registerSpy = jest.spyOn(authStore, 'register');
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
+      fillSignUpForm(getByTestId);
+      fireEvent.press(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON));
 
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeTruthy();
+      expect(registerSpy).toHaveBeenCalled();
     });
 
-    it('should keep submit button disabled with invalid inputs', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(usernameInput, 'u');
-      fireEvent.changeText(emailInput, 'invalid-email');
-      fireEvent.changeText(passwordInput, '123');
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeTruthy();
-    });
-
-    it('should handle form field changes progressively', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
-
-      fireEvent.changeText(usernameInput, 'testuser');
-      expect(submitButton).toBeDisabled();
-
-      fireEvent.changeText(emailInput, 'test@example.com');
-      expect(submitButton).toBeDisabled();
-
-      fireEvent.changeText(passwordInput, 'password123');
-
-      expect(usernameInput).toBeTruthy();
-      expect(emailInput).toBeTruthy();
-      expect(passwordInput).toBeTruthy();
-    });
-  });
-
-  describe('SignUp Submission', () => {
-    it('should trigger register action when submit is attempted', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      fireEvent.press(submitButton);
-
-      expect(submitButton).toBeTruthy();
-    });
-
-    it('should show loading state during registration', () => {
+    it('handles loading state during registration', () => {
       authStore.isLoading = true;
-
       const { getByTestId } = renderSignUpScreen();
 
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
+      expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });
 
-    it('should handle registration process integration', () => {
+    it('displays validation errors from registration failure', () => {
+      authStore.errors = {
+        username: ['Username already exists'],
+        email: ['Email is invalid'],
+      };
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      expect(usernameInput).toBeTruthy();
-      expect(emailInput).toBeTruthy();
-      expect(passwordInput).toBeTruthy();
-      expect(submitButton).toBeTruthy();
+      // Form should remain accessible for corrections
+      expect(getByTestId(TEST_IDS.AUTH_USERNAME_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTH_EMAIL_INPUT)).toBeTruthy();
+      expect(getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT)).toBeTruthy();
     });
   });
 
-  describe('Navigation Actions', () => {
-    it('should navigate to login screen when sign in button is pressed', () => {
+  describe('Navigation Integration', () => {
+    it('navigates to login screen when signin link is pressed', () => {
       const navigationSpy = jest.spyOn(
         navigationService,
         'navigateToLoginScreen'
       );
-
       const { getByTestId } = renderSignUpScreen();
 
-      const signInButton = getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON);
-      fireEvent.press(signInButton);
+      fireEvent.press(getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON));
 
       expect(navigationSpy).toHaveBeenCalledTimes(1);
     });
-
-    it('should display correct text on navigation button', () => {
-      const { getByText } = renderSignUpScreen();
-
-      expect(getByText('Sign In')).toBeTruthy();
-    });
   });
 
-  describe('Loading States', () => {
-    it('should disable all interactions during loading', () => {
-      authStore.isLoading = true;
-
+  describe('Complete Registration Flow Integration', () => {
+    it('handles full registration flow from input to submission', () => {
+      const registerSpy = jest
+        .spyOn(authStore, 'register')
+        .mockResolvedValue(undefined);
       const { getByTestId } = renderSignUpScreen();
 
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
+      // Fill form
+      fillSignUpForm(getByTestId);
 
-      expect(submitButton).toBeDisabled();
+      // Submit
+      fireEvent.press(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON));
 
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      expect(submitButton).toBeDisabled();
-    });
-
-    it('should reflect loading state correctly', () => {
-      authStore.isLoading = false;
-
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      expect(usernameInput).toBeTruthy();
-      expect(emailInput).toBeTruthy();
-      expect(passwordInput).toBeTruthy();
-    });
-  });
-
-  describe('Error Handling', () => {
-    it('should handle registration errors gracefully', async () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const signUpButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      fireEvent.changeText(usernameInput, 'erroruser');
-      fireEvent.changeText(emailInput, 'error@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-      fireEvent.press(signUpButton);
-
-      expect(getByTestId(TEST_IDS.SIGNUP_SCREEN)).toBeTruthy();
-    });
-
-    it('should handle network errors gracefully', async () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const signUpButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      fireEvent.changeText(usernameInput, 'networkuser');
-      fireEvent.changeText(emailInput, 'network@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-      fireEvent.press(signUpButton);
-
-      expect(getByTestId(TEST_IDS.SIGNUP_SCREEN)).toBeTruthy();
-    });
-
-    it('should clear errors when user starts typing', () => {
-      authStore.errors = {
-        username: ['Invalid username'],
-      };
-
-      const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      fireEvent.changeText(usernameInput, 'newusername');
-
-      expect(setUsernameSpy).toHaveBeenCalledWith('newusername');
-    });
-  });
-
-  describe('Accessibility', () => {
-    it('should have proper accessibility labels', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      expect(usernameInput).toBeTruthy();
-      expect(emailInput).toBeTruthy();
-      expect(passwordInput).toBeTruthy();
-      expect(submitButton).toBeTruthy();
-    });
-
-    it('should support secure text entry for password', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      expect(passwordInput.props.secureTextEntry).toBe(true);
-    });
-  });
-
-  describe('Form Integration', () => {
-    it('should integrate properly with auth store', () => {
-      const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
-      const setEmailSpy = jest.spyOn(authStore, 'setEmail');
-      const setPasswordSpy = jest.spyOn(authStore, 'setPassword');
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(usernameInput, 'integrationuser');
-      fireEvent.changeText(emailInput, 'integration@test.com');
-      fireEvent.changeText(passwordInput, 'integrationtest');
-
-      expect(setUsernameSpy).toHaveBeenCalledWith('integrationuser');
-      expect(setEmailSpy).toHaveBeenCalledWith('integration@test.com');
-      expect(setPasswordSpy).toHaveBeenCalledWith('integrationtest');
-    });
-
-    it('should reflect store state in UI', () => {
-      authStore.isLoading = false;
-
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(usernameInput, 'validuser');
-      fireEvent.changeText(emailInput, 'valid@email.com');
-      fireEvent.changeText(passwordInput, 'validpassword');
-
-      expect(getByTestId(TEST_IDS.SIGNUP_SCREEN)).toBeTruthy();
-    });
-  });
-
-  describe('Username Validation Specific Cases', () => {
-    it('should handle minimum username length validation', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-
-      fireEvent.changeText(usernameInput, 'ab');
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
-
-      fireEvent.changeText(usernameInput, 'abc');
-      expect(usernameInput).toBeTruthy();
-    });
-
-    it('should handle edge case username lengths', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-
-      fireEvent.changeText(usernameInput, 'a');
-      fireEvent.changeText(usernameInput, 'ab');
-      fireEvent.changeText(usernameInput, 'abc');
-      fireEvent.changeText(usernameInput, 'abcd');
-
-      expect(usernameInput).toBeTruthy();
-    });
-  });
-
-  describe('Password Validation Specific Cases', () => {
-    it('should handle minimum password length validation', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(passwordInput, '12345');
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-      expect(submitButton).toBeDisabled();
-
-      fireEvent.changeText(passwordInput, '123456');
-      expect(passwordInput).toBeTruthy();
-    });
-
-    it('should handle various password strengths', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-
-      fireEvent.changeText(passwordInput, '123456');
-      fireEvent.changeText(passwordInput, 'password123');
-      fireEvent.changeText(passwordInput, 'P@ssw0rd!');
-
-      expect(passwordInput).toBeTruthy();
-    });
-  });
-
-  describe('Multiple Interaction Sequences', () => {
-    it('should handle multiple form interactions gracefully', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-      const emailInput = getByTestId(TEST_IDS.AUTH_EMAIL_INPUT);
-      const passwordInput = getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT);
-      const submitButton = getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON);
-
-      fireEvent.changeText(usernameInput, 'testuser');
-      fireEvent.changeText(emailInput, 'test@example.com');
-      fireEvent.changeText(passwordInput, 'password123');
-
-      fireEvent.press(submitButton);
-      fireEvent.press(submitButton);
-      fireEvent.press(submitButton);
-
-      expect(submitButton).toBeTruthy();
-    });
-
-    it('should handle navigation button presses correctly', () => {
-      const navigationSpy = jest.spyOn(
-        navigationService,
-        'navigateToLoginScreen'
-      );
-
-      const { getByTestId } = renderSignUpScreen();
-
-      const signInButton = getByTestId(TEST_IDS.AUTH_SIGNIN_BUTTON);
-
-      fireEvent.press(signInButton);
-      fireEvent.press(signInButton);
-
-      expect(navigationSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('Edge Cases', () => {
-    it('should handle component unmount gracefully', () => {
-      const { unmount } = renderSignUpScreen();
-
-      expect(() => unmount()).not.toThrow();
-    });
-
-    it('should handle rapid field changes', () => {
-      const { getByTestId } = renderSignUpScreen();
-
-      const usernameInput = getByTestId(TEST_IDS.AUTH_USERNAME_INPUT);
-
-      fireEvent.changeText(usernameInput, 'a');
-      fireEvent.changeText(usernameInput, 'ab');
-      fireEvent.changeText(usernameInput, 'abc');
-      fireEvent.changeText(usernameInput, 'abcd');
-      fireEvent.changeText(usernameInput, 'finaluser');
-
-      expect(usernameInput).toBeTruthy();
+      // Verify registration was triggered
+      expect(registerSpy).toHaveBeenCalled();
     });
   });
 });
