@@ -25,12 +25,16 @@ const suppressedErrors = [
   /Failed to .* storage:/,
   /Failed to .* token .* storage:/,
   /Failed to .* user data .* storage:/,
+  /Cannot log after tests are done/,
+  /Did you forget to wait for something async in your test/,
 ];
 
 const suppressedWarnings = [
   /Animated: `useNativeDriver` is not supported.*/,
   /Method has been deprecated/,
   /An update to .* inside a test was not wrapped in act/,
+  /Cannot log after tests are done/,
+  /Did you forget to wait for something async in your test/,
 ];
 
 const realConsoleError = console.error;
@@ -55,6 +59,19 @@ console.warn = (...args) => {
     return;
   }
   realConsoleWarn(...args);
+};
+
+// Override console.log to suppress "Cannot log after tests are done" warnings
+const realConsoleLog = console.log;
+console.log = (...args) => {
+  const message = args[0];
+  if (
+    typeof message === 'string' &&
+    message.includes('Cannot log after tests are done')
+  ) {
+    return;
+  }
+  realConsoleLog(...args);
 };
 
 afterEach(cleanup);
