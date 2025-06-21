@@ -32,7 +32,7 @@ describe('StorageUtils', () => {
 
     expect(result).toBeNull();
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'Failed to retrieve token from storage:',
+      'Failed to retrieve user data from storage:',
       error
     );
   });
@@ -111,21 +111,20 @@ describe('getUserData', () => {
 });
 
 describe('clearUserData', () => {
-  it('should clear both token and user data from AsyncStorage successfully', async () => {
-    mockAsyncStorage.multiRemove.mockResolvedValueOnce();
+  it('should clear user data from AsyncStorage successfully', async () => {
+    mockAsyncStorage.removeItem.mockResolvedValueOnce();
 
     await StorageUtils.clearUserData();
 
-    expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
-      STORAGE_KEYS.USER_TOKEN,
-      STORAGE_KEYS.USER_DATA,
-    ]);
-    expect(mockAsyncStorage.multiRemove).toHaveBeenCalledTimes(1);
+    expect(mockAsyncStorage.removeItem).toHaveBeenCalledWith(
+      STORAGE_KEYS.USER_DATA
+    );
+    expect(mockAsyncStorage.removeItem).toHaveBeenCalledTimes(1);
   });
 
   it('should log error when AsyncStorage fails', async () => {
     const error = new Error('AsyncStorage error');
-    mockAsyncStorage.multiRemove.mockRejectedValueOnce(error);
+    mockAsyncStorage.removeItem.mockRejectedValueOnce(error);
 
     await StorageUtils.clearUserData();
 
