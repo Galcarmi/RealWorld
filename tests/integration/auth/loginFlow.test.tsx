@@ -2,6 +2,7 @@ import { fireEvent } from '@testing-library/react-native';
 
 import '../../mocks';
 
+import { fillLoginForm } from '../../utils/formHelpers';
 import { renderLoginScreen } from '../../utils/testHelpers';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
@@ -9,25 +10,6 @@ import { navigationService } from '../../../src/services/navigationService';
 import * as storeMocks from '../../mocks/stores';
 
 const authStore = storeMocks.getAuthStore();
-
-const fillLoginForm = (getByTestId: any, overrides = {}) => {
-  const defaultData = {
-    email: 'test@example.com',
-    password: 'password123456',
-    ...overrides,
-  };
-
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.AUTH_EMAIL_INPUT),
-    defaultData.email
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT),
-    defaultData.password
-  );
-
-  return defaultData;
-};
 
 describe('Login Flow Tests', () => {
   beforeEach(() => {

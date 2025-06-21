@@ -1,6 +1,8 @@
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { fillArticleForm } from '../../utils/formHelpers';
+
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
 import { createMockUser, createMockArticle } from '../../mocks/data';
@@ -11,30 +13,6 @@ const userStore = storeMocks.getUserStore();
 
 const renderNewArticleScreen = () => {
   return render(<NewArticleScreen />);
-};
-
-const fillArticleForm = (getByTestId: any, overrides = {}) => {
-  const defaultData = {
-    title: 'Test Article Title',
-    description: 'Test article description',
-    body: 'This is the test article body content.',
-    ...overrides,
-  };
-
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.ARTICLE_TITLE_INPUT),
-    defaultData.title
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.ARTICLE_DESCRIPTION_INPUT),
-    defaultData.description
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.ARTICLE_BODY_INPUT),
-    defaultData.body
-  );
-
-  return defaultData;
 };
 
 describe('Article Creation Tests', () => {

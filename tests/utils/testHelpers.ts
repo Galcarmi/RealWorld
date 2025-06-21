@@ -10,6 +10,15 @@ import {
   FormValidationTestValues,
 } from '../types';
 
+// Re-export form helpers for convenience
+export {
+  fillLoginForm,
+  fillSignUpForm,
+  fillUpdateForm,
+  fillArticleForm,
+  FormData,
+} from './formHelpers';
+
 export const validationTestData = {
   validEmails: [
     'test@example.com',

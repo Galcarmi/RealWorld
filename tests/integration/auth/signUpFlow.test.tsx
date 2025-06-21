@@ -1,41 +1,15 @@
-import { render, fireEvent } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 
-import '../../mocks/reactNativeMocks';
+import '../../mocks';
+
+import { fillSignUpForm } from '../../utils/formHelpers';
+import { renderSignUpScreen } from '../../utils/testHelpers';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
-import { SignUpScreen } from '../../../src/screens/login/signUpScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import * as storeMocks from '../../mocks/stores';
 
 const authStore = storeMocks.getAuthStore();
-
-const renderSignUpScreen = () => {
-  return render(<SignUpScreen />);
-};
-
-const fillSignUpForm = (getByTestId: any, overrides = {}) => {
-  const defaultData = {
-    username: 'testuser',
-    email: 'test@example.com',
-    password: 'password123456',
-    ...overrides,
-  };
-
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.AUTH_USERNAME_INPUT),
-    defaultData.username
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.AUTH_EMAIL_INPUT),
-    defaultData.email
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT),
-    defaultData.password
-  );
-
-  return defaultData;
-};
 
 describe('Sign Up Flow Tests', () => {
   beforeEach(() => {

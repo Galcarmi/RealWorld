@@ -1,6 +1,8 @@
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
+import { fillUpdateForm } from '../../utils/formHelpers';
+
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileScreen';
 import { createMockUser } from '../../mocks/data';
@@ -19,35 +21,6 @@ jest.mock('@react-navigation/native', () => ({
 
 const renderEditProfileScreen = () => {
   return render(<EditProfileScreen />);
-};
-
-const fillUpdateForm = (getByTestId: any, overrides = {}) => {
-  const defaultData = {
-    username: 'updateduser',
-    email: 'updated@example.com',
-    bio: 'Updated bio',
-    image: 'https://example.com/new-avatar.jpg',
-    ...overrides,
-  };
-
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.EDIT_PROFILE_USERNAME_INPUT),
-    defaultData.username
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.EDIT_PROFILE_EMAIL_INPUT),
-    defaultData.email
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.EDIT_PROFILE_BIO_INPUT),
-    defaultData.bio
-  );
-  fireEvent.changeText(
-    getByTestId(TEST_IDS.EDIT_PROFILE_IMAGE_INPUT),
-    defaultData.image
-  );
-
-  return defaultData;
 };
 
 describe('Edit Profile Screen Tests', () => {
