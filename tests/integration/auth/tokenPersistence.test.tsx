@@ -4,40 +4,52 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act } from '@testing-library/react-native';
 
 import { STORAGE_KEYS } from '../../../src/constants';
-import { authStore } from '../../../src/store/authStore';
 import { User } from '../../../src/store/types';
-import { userStore } from '../../../src/store/userStore';
 import { StorageUtils } from '../../../src/utils/storageUtils';
+import * as storeMocks from '../../mocks/stores';
 
-const mockAsyncStorage = AsyncStorage as jest.Mocked<typeof AsyncStorage>;
+const authStore = storeMocks.getAuthStore();
+const userStore = storeMocks.getUserStore();
 
-describe('Token Persistence Integration Tests', () => {
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  multiRemove: jest.fn(),
+  clear: jest.fn(),
+}));
+
+describe('Token Persistence Tests', () => {
   const mockUser: User = {
     id: '1',
-    email: 'test@example.com',
     username: 'testuser',
-    token: 'test-jwt-token-123',
+    email: 'test@example.com',
     bio: 'Test bio',
-    image: 'https://example.com/avatar.jpg',
+    image: 'test-image.jpg',
+    token: 'test-jwt-token-123',
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
-    userStore.forgetUser();
-    authStore.clear();
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
+    (AsyncStorage.setItem as jest.Mock).mockResolvedValue(undefined);
+    (AsyncStorage.removeItem as jest.Mock).mockResolvedValue(undefined);
+    (AsyncStorage.multiRemove as jest.Mock).mockResolvedValue(undefined);
+    (AsyncStorage.clear as jest.Mock).mockResolvedValue(undefined);
   });
 
-  describe('UserStore Integration', () => {
+  describe('UserStore', () => {
     it('persists token and user data when user is set', async () => {
       await act(async () => {
         await userStore.setUser(mockUser);
       });
 
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_TOKEN,
         mockUser.token
       );
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_DATA,
         JSON.stringify(mockUser)
       );
@@ -53,7 +65,7 @@ describe('Token Persistence Integration Tests', () => {
         await userStore.forgetUser();
       });
 
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
+      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
         STORAGE_KEYS.USER_TOKEN,
         STORAGE_KEYS.USER_DATA,
       ]);
@@ -69,7 +81,7 @@ describe('Token Persistence Integration Tests', () => {
         await userStore.clearStorageOnAuthError();
       });
 
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
+      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
         STORAGE_KEYS.USER_TOKEN,
         STORAGE_KEYS.USER_DATA,
       ]);
@@ -96,27 +108,27 @@ describe('Token Persistence Integration Tests', () => {
       });
 
       expect(userStore.token).toBe(userWithDifferentToken.token);
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_TOKEN,
         userWithDifferentToken.token
       );
     });
   });
 
-  describe('StorageUtils Integration', () => {
+  describe('StorageUtils', () => {
     it('stores and retrieves user token', async () => {
       const testToken = 'test-token-456';
 
       await StorageUtils.setUserToken(testToken);
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_TOKEN,
         testToken
       );
 
-      mockAsyncStorage.getItem.mockResolvedValue(testToken);
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(testToken);
       const retrievedToken = await StorageUtils.getUserToken();
 
-      expect(mockAsyncStorage.getItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_TOKEN
       );
       expect(retrievedToken).toBe(testToken);
@@ -124,24 +136,24 @@ describe('Token Persistence Integration Tests', () => {
 
     it('stores and retrieves user data', async () => {
       await StorageUtils.setUserData(mockUser);
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_DATA,
         JSON.stringify(mockUser)
       );
 
-      mockAsyncStorage.getItem.mockResolvedValue(JSON.stringify(mockUser));
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
+        JSON.stringify(mockUser)
+      );
       const retrievedUser = await StorageUtils.getUserData();
 
-      expect(mockAsyncStorage.getItem).toHaveBeenCalledWith(
-        STORAGE_KEYS.USER_DATA
-      );
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(STORAGE_KEYS.USER_DATA);
       expect(retrievedUser).toEqual(mockUser);
     });
 
     it('clears all user data', async () => {
       await StorageUtils.clearUserData();
 
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalledWith([
+      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
         STORAGE_KEYS.USER_TOKEN,
         STORAGE_KEYS.USER_DATA,
       ]);
@@ -149,9 +161,9 @@ describe('Token Persistence Integration Tests', () => {
 
     it('handles storage errors gracefully', async () => {
       const storageError = new Error('Storage unavailable');
-      mockAsyncStorage.setItem.mockRejectedValue(storageError);
-      mockAsyncStorage.getItem.mockRejectedValue(storageError);
-      mockAsyncStorage.multiRemove.mockRejectedValue(storageError);
+      (AsyncStorage.setItem as jest.Mock).mockRejectedValue(storageError);
+      (AsyncStorage.getItem as jest.Mock).mockRejectedValue(storageError);
+      (AsyncStorage.multiRemove as jest.Mock).mockRejectedValue(storageError);
 
       await expect(StorageUtils.setUserToken('test')).resolves.not.toThrow();
       await expect(StorageUtils.setUserData(mockUser)).resolves.not.toThrow();
@@ -162,8 +174,12 @@ describe('Token Persistence Integration Tests', () => {
     });
   });
 
-  describe('Authentication Flow Integration', () => {
+  describe('Authentication Flow', () => {
     it('maintains token persistence through auth store operations', async () => {
+      await act(async () => {
+        await userStore.forgetUser();
+      });
+
       authStore.setEmail('test@example.com');
       authStore.setPassword('password123');
 
@@ -173,7 +189,7 @@ describe('Token Persistence Integration Tests', () => {
         await userStore.setUser(mockUser);
       });
 
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         STORAGE_KEYS.USER_TOKEN,
         mockUser.token
       );
@@ -205,7 +221,7 @@ describe('Token Persistence Integration Tests', () => {
 
   describe('Storage Edge Cases', () => {
     it('handles null and invalid data retrieval', async () => {
-      mockAsyncStorage.getItem.mockResolvedValue(null);
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
 
       const token = await StorageUtils.getUserToken();
       const userData = await StorageUtils.getUserData();
@@ -215,7 +231,7 @@ describe('Token Persistence Integration Tests', () => {
     });
 
     it('handles invalid JSON in user data', async () => {
-      mockAsyncStorage.getItem.mockResolvedValue('invalid-json');
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue('invalid-json');
 
       const userData = await StorageUtils.getUserData();
 
@@ -232,8 +248,8 @@ describe('Token Persistence Integration Tests', () => {
 
       await Promise.all(operations.map(op => op()));
 
-      expect(mockAsyncStorage.setItem).toHaveBeenCalled();
-      expect(mockAsyncStorage.multiRemove).toHaveBeenCalled();
+      expect(AsyncStorage.setItem).toHaveBeenCalled();
+      expect(AsyncStorage.multiRemove).toHaveBeenCalled();
     });
   });
 });

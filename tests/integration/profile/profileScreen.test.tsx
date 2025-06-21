@@ -5,12 +5,12 @@ import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services/navigationService';
-import { userStore } from '../../../src/store/userStore';
 import { createMockUser } from '../../mocks/data';
 import { getMockNavigationService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
 const articlesStore = storeMocks.getArticlesStore();
+const userStore = storeMocks.getUserStore();
 const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
@@ -26,7 +26,7 @@ const setupAuthenticatedUser = async (userOverrides = {}) => {
   return user;
 };
 
-describe('Profile Screen Integration Tests', () => {
+describe('Profile Screen Tests', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     await setupAuthenticatedUser();
@@ -34,7 +34,7 @@ describe('Profile Screen Integration Tests', () => {
     articlesStore.homeIsLoading = false;
   });
 
-  describe('Authentication Integration', () => {
+  describe('Authentication', () => {
     it('redirects to login when user is not authenticated', async () => {
       await act(async () => {
         userStore.forgetUser();
@@ -56,7 +56,7 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Profile Display Integration', () => {
+  describe('Profile Display', () => {
     it('displays user profile information', async () => {
       const user = await setupAuthenticatedUser({ username: 'testuser123' });
       const { getByText } = renderProfileScreen();
@@ -90,7 +90,7 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Navigation Integration', () => {
+  describe('Navigation', () => {
     it('navigates to edit profile screen', async () => {
       const { getByTestId } = renderProfileScreen();
 
@@ -138,7 +138,7 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Articles Store Integration', () => {
+  describe('Articles Store', () => {
     it('fetches user articles on mount', async () => {
       const user = await setupAuthenticatedUser();
       const getUserArticlesSpy = jest.spyOn(articlesStore, 'getUserArticles');
@@ -179,7 +179,7 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Component Lifecycle Integration', () => {
+  describe('Component Lifecycle', () => {
     it('handles component unmount gracefully', async () => {
       const { unmount } = renderProfileScreen();
 

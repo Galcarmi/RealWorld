@@ -37,13 +37,13 @@ const fillSignUpForm = (getByTestId: any, overrides = {}) => {
   return defaultData;
 };
 
-describe('Sign Up Flow Integration Tests', () => {
+describe('Sign Up Flow Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     authStore.clear();
   });
 
-  describe('Form Rendering Integration', () => {
+  describe('Form Rendering', () => {
     it('renders signup form with all required fields', () => {
       const { getByTestId } = renderSignUpScreen();
 
@@ -62,7 +62,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
   });
 
-  describe('Form Store Integration', () => {
+  describe('Form Store', () => {
     it('integrates form inputs with auth store', () => {
       const setUsernameSpy = jest.spyOn(authStore, 'setUsername');
       const setEmailSpy = jest.spyOn(authStore, 'setEmail');
@@ -77,7 +77,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
   });
 
-  describe('Registration Flow Integration', () => {
+  describe('Registration Flow', () => {
     it('integrates form submission with registration process', () => {
       const registerSpy = jest.spyOn(authStore, 'register');
       const { getByTestId } = renderSignUpScreen();
@@ -109,7 +109,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
   });
 
-  describe('Navigation Integration', () => {
+  describe('Navigation', () => {
     it('navigates to login screen when signin link is pressed', () => {
       const navigationSpy = jest.spyOn(
         navigationService,
@@ -123,7 +123,7 @@ describe('Sign Up Flow Integration Tests', () => {
     });
   });
 
-  describe('Complete Registration Flow Integration', () => {
+  describe('Complete Registration Flow', () => {
     it('handles full registration flow from input to submission', () => {
       const registerSpy = jest
         .spyOn(authStore, 'register')

@@ -4,17 +4,17 @@ import '../../mocks';
 import { FeedType } from '../../../src/constants/feedTypes';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
-import { userStore } from '../../../src/store/userStore';
 import { createMockUser, createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
 
 const articlesStore = storeMocks.getArticlesStore();
+const userStore = storeMocks.getUserStore();
 
 const renderHomeScreen = () => {
   return render(<HomeScreen />);
 };
 
-describe('Home Screen Integration Tests', () => {
+describe('Home Screen Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     articlesStore.homeArticles = [
@@ -26,7 +26,7 @@ describe('Home Screen Integration Tests', () => {
     articlesStore.homeArticlesCount = 2;
   });
 
-  describe('Screen Initialization Integration', () => {
+  describe('Screen Initialization', () => {
     it('initializes and loads articles on mount', async () => {
       renderHomeScreen();
 
@@ -40,7 +40,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Articles Display Integration', () => {
+  describe('Articles Display', () => {
     it('displays articles from store', async () => {
       const { getByTestId } = renderHomeScreen();
 
@@ -84,7 +84,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Authentication Integration', () => {
+  describe('Authentication', () => {
     it('hides feed tabs for unauthenticated users', () => {
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(false);
 
@@ -107,7 +107,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Feed Switching Integration', () => {
+  describe('Feed Switching', () => {
     beforeEach(() => {
       userStore.setUser(createMockUser());
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);
@@ -136,7 +136,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Article Interaction Integration', () => {
+  describe('Article Interaction', () => {
     it('handles article card press integration', async () => {
       const { getByTestId } = renderHomeScreen();
 
@@ -166,7 +166,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Feed Type State Integration', () => {
+  describe('Feed Type State', () => {
     beforeEach(() => {
       userStore.setUser(createMockUser());
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);
@@ -236,7 +236,7 @@ describe('Home Screen Integration Tests', () => {
     });
   });
 
-  describe('Feed Switching Integration', () => {
+  describe('Feed Switching', () => {
     beforeEach(() => {
       userStore.setUser(createMockUser());
       jest.spyOn(userStore, 'isAuthenticated').mockReturnValue(true);

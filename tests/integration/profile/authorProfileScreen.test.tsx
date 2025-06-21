@@ -4,10 +4,12 @@ import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
 import { Profile } from '../../../src/services/types';
-import { userStore } from '../../../src/store/userStore';
 import { createMockUser, createMockArticle } from '../../mocks/data';
 import { getMockUseAuthorProfile } from '../../mocks/hooks';
 import { setMockRoute, mockAuthorProfileRoute } from '../../mocks/navigation';
+import * as storeMocks from '../../mocks/stores';
+
+const userStore = storeMocks.getUserStore();
 
 const renderAuthorProfileScreen = () => {
   return render(<AuthorProfileScreen />);
@@ -34,7 +36,7 @@ const setupMockAuthorProfile = (overrides = {}) => {
   return { mockUseAuthorProfile, profile: defaultProfile };
 };
 
-describe('Author Profile Screen Integration Tests', () => {
+describe('Author Profile Screen Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     setMockRoute(mockAuthorProfileRoute);
@@ -42,7 +44,7 @@ describe('Author Profile Screen Integration Tests', () => {
     setupMockAuthorProfile();
   });
 
-  describe('Screen Rendering Integration', () => {
+  describe('Screen Rendering', () => {
     it('renders author profile screen with proper test ID', () => {
       const { getByTestId } = renderAuthorProfileScreen();
 
@@ -68,7 +70,7 @@ describe('Author Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Author Profile Display Integration', () => {
+  describe('Author Profile Display', () => {
     it('displays author profile information', async () => {
       setupMockAuthorProfile({ username: 'displayauthor', bio: 'Author bio' });
 
@@ -104,7 +106,7 @@ describe('Author Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Article Interaction Integration', () => {
+  describe('Article Interaction', () => {
     it('handles favorite button press on author articles', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile();
       const { getAllByTestId } = renderAuthorProfileScreen();
@@ -138,7 +140,7 @@ describe('Author Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Refresh Integration', () => {
+  describe('Refresh', () => {
     it('handles pull to refresh functionality', async () => {
       const { mockUseAuthorProfile } = setupMockAuthorProfile();
       const { getByTestId } = renderAuthorProfileScreen();
@@ -159,7 +161,7 @@ describe('Author Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Authentication Integration', () => {
+  describe('Authentication', () => {
     it('works with authenticated user', async () => {
       userStore.setUser(createMockUser({ username: 'authenticateduser' }));
 

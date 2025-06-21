@@ -3,17 +3,17 @@ import { render, waitFor, fireEvent } from '@testing-library/react-native';
 import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
-import { userStore } from '../../../src/store/userStore';
 import { createMockUser, createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
 
 const articlesStore = storeMocks.getArticlesStore();
+const userStore = storeMocks.getUserStore();
 
 const renderFavoritesScreen = () => {
   return render(<FavoritesScreen />);
 };
 
-describe('Favorites Screen Integration Tests', () => {
+describe('Favorites Screen Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.setUser(createMockUser());
@@ -26,7 +26,7 @@ describe('Favorites Screen Integration Tests', () => {
     articlesStore.favoritesCurrentOffset = 0;
   });
 
-  describe('Screen Initialization Integration', () => {
+  describe('Screen Initialization', () => {
     it('initializes and loads favorite articles on mount', async () => {
       renderFavoritesScreen();
 
@@ -42,7 +42,7 @@ describe('Favorites Screen Integration Tests', () => {
     });
   });
 
-  describe('Favorites Display Integration', () => {
+  describe('Favorites Display', () => {
     it('displays favorite articles when available', async () => {
       const { getByTestId } = renderFavoritesScreen();
 
@@ -73,7 +73,7 @@ describe('Favorites Screen Integration Tests', () => {
     });
   });
 
-  describe('Article Interaction Integration', () => {
+  describe('Article Interaction', () => {
     it('handles favorite button press to toggle favorite status', async () => {
       const toggleFavoriteSpy = jest.spyOn(
         articlesStore,
@@ -110,7 +110,7 @@ describe('Favorites Screen Integration Tests', () => {
     });
   });
 
-  describe('Authentication Integration', () => {
+  describe('Authentication', () => {
     it('integrates with authenticated user state', async () => {
       userStore.setUser(createMockUser({ username: 'authuser' }));
 
@@ -133,7 +133,7 @@ describe('Favorites Screen Integration Tests', () => {
     });
   });
 
-  describe('Store Integration', () => {
+  describe('Store State', () => {
     it('integrates with favorites store state changes', () => {
       articlesStore.favoritesIsLoading = false;
       articlesStore.favoriteArticles = [
@@ -157,7 +157,7 @@ describe('Favorites Screen Integration Tests', () => {
     });
   });
 
-  describe('Component Lifecycle Integration', () => {
+  describe('Component Lifecycle', () => {
     it('handles component unmount gracefully', () => {
       const { unmount } = renderFavoritesScreen();
 
