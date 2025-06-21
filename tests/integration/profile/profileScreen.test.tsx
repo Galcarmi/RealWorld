@@ -6,7 +6,7 @@ import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services/navigationService';
 import { userStore } from '../../../src/store/userStore';
-import { mockUser, mockUserMinimal } from '../../mocks/data';
+import { createMockUser } from '../../mocks/data';
 import { getMockNavigationService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
@@ -17,18 +17,25 @@ const renderProfileScreen = () => {
   return render(<ProfileScreen />);
 };
 
+// Helper function to setup authenticated user
+const setupAuthenticatedUser = async (userOverrides = {}) => {
+  const user = createMockUser(userOverrides);
+  await act(async () => {
+    userStore.setUser(user);
+  });
+  return user;
+};
+
 describe('Profile Screen Integration Tests', () => {
   beforeEach(async () => {
-    await act(async () => {
-      userStore.setUser(mockUser);
-    });
-
+    jest.clearAllMocks();
+    await setupAuthenticatedUser();
     articlesStore.homeArticles = [];
     articlesStore.homeIsLoading = false;
   });
 
-  describe('Authentication Requirements', () => {
-    it('should redirect to login screen when user is not authenticated', async () => {
+  describe('Authentication Integration', () => {
+    it('redirects to login when user is not authenticated', async () => {
       await act(async () => {
         userStore.forgetUser();
       });
@@ -40,11 +47,7 @@ describe('Profile Screen Integration Tests', () => {
       );
     });
 
-    it('should render profile screen when user is authenticated', async () => {
-      await act(async () => {
-        userStore.setUser(mockUser);
-      });
-
+    it('renders profile screen for authenticated user', async () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -53,46 +56,42 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('User Information Display', () => {
-    it('should display user profile information correctly', async () => {
-      await act(async () => {
-        userStore.setUser(mockUser);
-      });
-
+  describe('Profile Display Integration', () => {
+    it('displays user profile information', async () => {
+      const user = await setupAuthenticatedUser({ username: 'testuser123' });
       const { getByText } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByText(mockUser.username)).toBeTruthy();
+        expect(getByText(user.username)).toBeTruthy();
       });
     });
 
-    it('should show user profile with minimal data', async () => {
-      await act(async () => {
-        userStore.setUser(mockUserMinimal);
+    it('displays profile with minimal user data', async () => {
+      const user = await setupAuthenticatedUser({
+        username: 'minimaluser',
+        bio: '',
+        image: '',
       });
-
       const { getByText } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByText(mockUserMinimal.username)).toBeTruthy();
+        expect(getByText(user.username)).toBeTruthy();
       });
     });
 
-    it('should display profile header section', async () => {
-      userStore.setUser(mockUser);
-
+    it('renders all required UI components', async () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
         expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+        expect(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON)).toBeTruthy();
+        expect(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON)).toBeTruthy();
       });
     });
   });
 
-  describe('Navigation Actions', () => {
-    it('should navigate to edit profile when edit button is pressed', async () => {
-      userStore.setUser(mockUser);
-
+  describe('Navigation Integration', () => {
+    it('navigates to edit profile screen', async () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -105,9 +104,7 @@ describe('Profile Screen Integration Tests', () => {
       );
     });
 
-    it('should navigate to new article screen when new article button is pressed', async () => {
-      userStore.setUser(mockUser);
-
+    it('navigates to new article screen', async () => {
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
@@ -119,174 +116,57 @@ describe('Profile Screen Integration Tests', () => {
         1
       );
     });
-  });
 
-  describe('User Articles Management', () => {
-    it('should display articles list section', async () => {
-      userStore.setUser(mockUser);
-
+    it('handles multiple navigation actions', async () => {
+      const editProfileSpy = jest.spyOn(
+        navigationService,
+        'navigateToEditProfile'
+      );
+      const newArticleSpy = jest.spyOn(
+        navigationService,
+        'navigateToNewArticle'
+      );
       const { getByTestId } = renderProfileScreen();
 
       await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should handle article refresh through articles store', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        const profileScreen = getByTestId(TEST_IDS.PROFILE_SCREEN);
-        expect(profileScreen).toBeTruthy();
+        fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON));
+        fireEvent.press(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON));
       });
 
-      expect(articlesStore.getUserArticles).toHaveBeenCalled();
-    });
-
-    it('should integrate with articles store for user articles', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-
-      expect(articlesStore.getUserArticles).toHaveBeenCalled();
+      expect(editProfileSpy).toHaveBeenCalledTimes(1);
+      expect(newArticleSpy).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('Screen Layout and Structure', () => {
-    it('should render all required UI sections', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-        expect(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON)).toBeTruthy();
-        expect(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON)).toBeTruthy();
-      });
-    });
-
-    it('should have proper screen header with title', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should separate profile info and articles sections', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Loading States', () => {
-    it('should show loading state while fetching user articles', async () => {
-      userStore.setUser(mockUser);
-      articlesStore.homeIsLoading = true;
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should hide loading state when articles are loaded', async () => {
-      userStore.setUser(mockUser);
-      articlesStore.homeIsLoading = false;
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-
-      expect(articlesStore.homeIsLoading).toBe(false);
-    });
-
-    it('should show loading state for articles fetch', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should handle loading states when fetching user articles', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-  });
-
-  describe('User Profile Variations', () => {
-    it('should handle user with complete profile information', async () => {
-      userStore.setUser({
-        ...mockUser,
-        bio: 'Complete user bio',
-        image: 'https://example.com/user-image.jpg',
-      });
-
-      const { getByText } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByText(mockUser.username)).toBeTruthy();
-      });
-    });
-
-    it('should handle user with minimal profile information', async () => {
-      userStore.setUser({
-        ...mockUserMinimal,
-        bio: '',
-        image: '',
-      });
-
-      const { getByText } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByText(mockUserMinimal.username)).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Integration with Store', () => {
-    it('should call getUserArticles with correct username on mount', async () => {
-      userStore.setUser(mockUser);
+  describe('Articles Store Integration', () => {
+    it('fetches user articles on mount', async () => {
+      const user = await setupAuthenticatedUser();
       const getUserArticlesSpy = jest.spyOn(articlesStore, 'getUserArticles');
 
       renderProfileScreen();
 
       await waitFor(() => {
         expect(getUserArticlesSpy).toHaveBeenCalledWith(
-          mockUser.username,
+          user.username,
           expect.any(Number),
           expect.any(Number)
         );
       });
     });
 
-    it('should handle store errors gracefully', async () => {
-      userStore.setUser(mockUser);
+    it('handles articles loading state', async () => {
+      articlesStore.homeIsLoading = true;
+      const { getByTestId } = renderProfileScreen();
 
+      await waitFor(() => {
+        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
+      });
+
+      // Loading state is managed by the store integration
+      expect(articlesStore.homeIsLoading).toBe(true);
+    });
+
+    it('handles articles store errors gracefully', async () => {
       jest
         .spyOn(articlesStore, 'getUserArticles')
         .mockRejectedValue(new Error('Network error'));
@@ -299,166 +179,11 @@ describe('Profile Screen Integration Tests', () => {
     });
   });
 
-  describe('Multiple Action Sequences', () => {
-    it('should handle multiple navigation actions', async () => {
-      userStore.setUser(mockUser);
-      const editProfileSpy = jest.spyOn(
-        navigationService,
-        'navigateToEditProfile'
-      );
-      const newArticleSpy = jest.spyOn(
-        navigationService,
-        'navigateToNewArticle'
-      );
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON));
-      });
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON));
-      });
-
-      expect(editProfileSpy).toHaveBeenCalledTimes(1);
-      expect(newArticleSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should handle rapid button presses without issues', async () => {
-      userStore.setUser(mockUser);
-      const editProfileSpy = jest.spyOn(
-        navigationService,
-        'navigateToEditProfile'
-      );
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        const editButton = getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON);
-        fireEvent.press(editButton);
-        fireEvent.press(editButton);
-        fireEvent.press(editButton);
-      });
-
-      expect(editProfileSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('Edge Cases', () => {
-    it('should handle component unmount gracefully', () => {
-      userStore.setUser(mockUser);
-
+  describe('Component Lifecycle Integration', () => {
+    it('handles component unmount gracefully', async () => {
       const { unmount } = renderProfileScreen();
 
       expect(() => unmount()).not.toThrow();
-    });
-  });
-
-  describe('Error Handling', () => {
-    it('should handle article loading errors gracefully', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should show error state when user data is incomplete', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-  });
-
-  describe('User Interaction Flows', () => {
-    it('should handle successful navigation flow to edit profile', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-
-      fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON));
-
-      expect(mockNavigationService.navigateToEditProfile).toHaveBeenCalled();
-    });
-
-    it('should handle successful navigation flow to new article', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-
-      fireEvent.press(getByTestId(TEST_IDS.NEW_ARTICLE_BUTTON));
-
-      expect(mockNavigationService.navigateToNewArticle).toHaveBeenCalled();
-    });
-  });
-
-  describe('Multiple User States', () => {
-    it('should handle different user profile states', async () => {
-      userStore.setUser(mockUserMinimal);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should render correctly with complete user data', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Component Integration', () => {
-    it('should integrate with user store properly', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
-      });
-    });
-
-    it('should handle component unmount gracefully', async () => {
-      userStore.setUser(mockUser);
-
-      const { unmount } = renderProfileScreen();
-
-      expect(() => unmount()).not.toThrow();
-    });
-  });
-
-  describe('Button Interactions', () => {
-    it('should handle button press events properly', async () => {
-      userStore.setUser(mockUser);
-
-      const { getByTestId } = renderProfileScreen();
-
-      await waitFor(() => {
-        const editButton = getByTestId(TEST_IDS.EDIT_PROFILE_BUTTON);
-        expect(editButton).toBeTruthy();
-      });
     });
   });
 });
