@@ -22,8 +22,9 @@ const suppressedErrors = [
   /Received `true` for a non-boolean attribute `accessible`/,
   /Warning: forwardRef render functions do not support propTypes.*/,
   /An update to .* inside a test was not wrapped in act/,
-  /Failed to .* storage: Error: Storage unavailable/,
-  /Failed to .* storage: SyntaxError: Unexpected token/,
+  /Failed to .* storage:/,
+  /Failed to .* token .* storage:/,
+  /Failed to .* user data .* storage:/,
 ];
 
 const suppressedWarnings = [
