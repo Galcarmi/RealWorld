@@ -11,8 +11,11 @@ class UserStore implements IUserStore {
   public token: string | null = null;
   public isInitialized = false;
 
+  private _authService: AuthService;
+
   constructor() {
     makeAutoObservable(this);
+    this._authService = new AuthService(authStore, this);
     this._initializeFromStorage();
   }
 
@@ -72,9 +75,7 @@ class UserStore implements IUserStore {
     if (!this.token) return;
 
     try {
-      const authService = new AuthService(authStore, this);
-
-      const currentUser = await authService.validateStoredToken();
+      const currentUser = await this._authService.validateStoredToken();
 
       if (currentUser) {
         runInAction(() => {
