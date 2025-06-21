@@ -11,15 +11,6 @@ import * as storeMocks from '../../mocks/stores';
 const authStore = storeMocks.getAuthStore();
 const userStore = storeMocks.getUserStore();
 
-// Mock AsyncStorage
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  multiRemove: jest.fn(),
-  clear: jest.fn(),
-}));
-
 describe('Token Persistence Tests', () => {
   const mockUser: User = {
     id: '1',

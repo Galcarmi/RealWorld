@@ -102,7 +102,6 @@ describe('Sign Up Flow Tests', () => {
       };
       const { getByTestId } = renderSignUpScreen();
 
-      // Form should remain accessible for corrections
       expect(getByTestId(TEST_IDS.AUTH_USERNAME_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_EMAIL_INPUT)).toBeTruthy();
       expect(getByTestId(TEST_IDS.AUTH_PASSWORD_INPUT)).toBeTruthy();
@@ -130,13 +129,10 @@ describe('Sign Up Flow Tests', () => {
         .mockResolvedValue(undefined);
       const { getByTestId } = renderSignUpScreen();
 
-      // Fill form
       fillSignUpForm(getByTestId);
 
-      // Submit
       fireEvent.press(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON));
 
-      // Verify registration was triggered
       expect(registerSpy).toHaveBeenCalled();
     });
   });

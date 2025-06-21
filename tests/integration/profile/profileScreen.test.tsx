@@ -17,7 +17,6 @@ const renderProfileScreen = () => {
   return render(<ProfileScreen />);
 };
 
-// Helper function to setup authenticated user
 const setupAuthenticatedUser = async (userOverrides = {}) => {
   const user = createMockUser(userOverrides);
   await act(async () => {
@@ -162,7 +161,6 @@ describe('Profile Screen Tests', () => {
         expect(getByTestId(TEST_IDS.PROFILE_SCREEN)).toBeTruthy();
       });
 
-      // Loading state is managed by the store integration
       expect(articlesStore.homeIsLoading).toBe(true);
     });
 

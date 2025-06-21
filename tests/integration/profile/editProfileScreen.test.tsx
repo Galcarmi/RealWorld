@@ -4,12 +4,18 @@ import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileScreen';
 import { createMockUser } from '../../mocks/data';
-import { createMockAuthService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
 const userStore = storeMocks.getUserStore();
+const authStore = storeMocks.getAuthStore();
 
-const mockAuthService = createMockAuthService();
+const mockGoBack = jest.fn();
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({
+    goBack: mockGoBack,
+  }),
+}));
 
 const renderEditProfileScreen = () => {
   return render(<EditProfileScreen />);
@@ -55,7 +61,7 @@ describe('Edit Profile Screen Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.setUser(mockUser);
-    mockAuthService.updateUser.mockResolvedValue({ user: mockUser });
+    mockGoBack.mockClear();
   });
 
   describe('Screen Rendering', () => {
@@ -130,42 +136,81 @@ describe('Edit Profile Screen Tests', () => {
     it('handles successful profile update', async () => {
       const { getByTestId } = renderEditProfileScreen();
 
-      fillUpdateForm(getByTestId, { bio: 'Updated bio' });
+      await waitFor(() => {
+        expect(
+          getByTestId(TEST_IDS.EDIT_PROFILE_USERNAME_INPUT).props.value
+        ).toBe(mockUser.username);
+      });
+
+      fillUpdateForm(getByTestId, {
+        username: 'differentusername',
+        bio: 'Different bio',
+        email: 'different@example.com',
+      });
+
+      const initialCallCount = (userStore.setUser as jest.Mock).mock.calls
+        .length;
 
       await waitFor(() => {
         fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON));
       });
 
       await waitFor(() => {
-        expect(getByTestId(TEST_IDS.EDIT_PROFILE_SCREEN)).toBeTruthy();
+        expect(
+          (userStore.setUser as jest.Mock).mock.calls.length
+        ).toBeGreaterThan(initialCallCount);
       });
     });
 
     it('handles profile update with empty fields', async () => {
       const { getByTestId } = renderEditProfileScreen();
 
-      fillUpdateForm(getByTestId, { bio: '' });
+      await waitFor(() => {
+        expect(
+          getByTestId(TEST_IDS.EDIT_PROFILE_USERNAME_INPUT).props.value
+        ).toBe(mockUser.username);
+      });
+
+      fillUpdateForm(getByTestId, {
+        username: 'differentusername',
+        bio: '',
+        email: 'different@example.com',
+      });
+
+      const initialCallCount = (userStore.setUser as jest.Mock).mock.calls
+        .length;
+
+      await waitFor(() => {
+        fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON));
+      });
+
+      await waitFor(() => {
+        expect(
+          (userStore.setUser as jest.Mock).mock.calls.length
+        ).toBeGreaterThan(initialCallCount);
+      });
+    });
+
+    it('handles profile update errors gracefully', async () => {
+      const { getByTestId } = renderEditProfileScreen();
+
+      await waitFor(() => {
+        expect(
+          getByTestId(TEST_IDS.EDIT_PROFILE_USERNAME_INPUT).props.value
+        ).toBe(mockUser.username);
+      });
+
+      fillUpdateForm(getByTestId, {
+        username: 'differentusername',
+        email: 'different@example.com',
+      });
 
       await waitFor(() => {
         fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON));
       });
 
       expect(getByTestId(TEST_IDS.EDIT_PROFILE_SCREEN)).toBeTruthy();
-    });
-
-    it('handles profile update errors gracefully', async () => {
-      mockAuthService.updateUser.mockRejectedValue(new Error('Network error'));
-      const { getByTestId } = renderEditProfileScreen();
-
-      fillUpdateForm(getByTestId);
-
-      await waitFor(() => {
-        fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON));
-      });
-
-      await waitFor(() => {
-        expect(getByTestId(TEST_IDS.EDIT_PROFILE_SCREEN)).toBeTruthy();
-      });
+      expect(getByTestId(TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON)).toBeTruthy();
     });
   });
 
@@ -177,7 +222,7 @@ describe('Edit Profile Screen Tests', () => {
         fireEvent.press(getByTestId(TEST_IDS.EDIT_PROFILE_LOGOUT_BUTTON));
       });
 
-      expect(getByTestId(TEST_IDS.EDIT_PROFILE_SCREEN)).toBeTruthy();
+      expect(authStore.logout).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-native/extend-expect';
 
-// Essential mocks not covered by integration setup
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
   AntDesign: 'AntDesign',
@@ -22,7 +21,6 @@ jest.mock('react-native-safe-area-context', () => {
   };
 });
 
-// Mock react-native-ui-lib components
 jest.mock('react-native-ui-lib', () => {
   const React = require('react');
   const ReactNative = require('react-native');
@@ -52,7 +50,6 @@ jest.mock('react-native-ui-lib', () => {
   };
 });
 
-// Mock the translation hook
 jest.mock('../../src/hooks/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => {
@@ -89,7 +86,6 @@ jest.mock('../../src/hooks/useTranslation', () => ({
   }),
 }));
 
-// Mock navigation service
 jest.mock('../../src/services/navigationService', () => ({
   navigationService: {
     navigateToMainTabs: jest.fn(),
@@ -106,7 +102,6 @@ jest.mock('../../src/services/navigationService', () => ({
   },
 }));
 
-// Mock mobx-react observer
 jest.mock('mobx-react', () => ({
   observer: (component: any) => component,
 }));

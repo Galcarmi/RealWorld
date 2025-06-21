@@ -78,7 +78,6 @@ export const setupServiceMocks = () => {
       }) as any
   );
 
-  // Mock ArticleService
   const mockArticleServiceClass = ArticleService as jest.MockedClass<
     typeof ArticleService
   >;
@@ -113,7 +112,6 @@ export const setupServiceMocks = () => {
       }) as any
   );
 
-  // Mock ProfileService
   const mockProfileServiceClass = ProfileService as jest.MockedClass<
     typeof ProfileService
   >;
@@ -138,7 +136,6 @@ export const setupServiceMocks = () => {
       }) as any
   );
 
-  // Mock StorageUtils
   jest.spyOn(StorageUtils, 'setUserToken').mockResolvedValue();
   jest.spyOn(StorageUtils, 'getUserToken').mockResolvedValue(mockUser.token);
   jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();

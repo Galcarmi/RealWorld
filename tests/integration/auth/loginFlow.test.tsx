@@ -79,7 +79,7 @@ describe('Login Flow Tests', () => {
     it('keeps submit disabled for short password', () => {
       const { getByTestId } = renderLoginScreen();
 
-      fillLoginForm(getByTestId, { password: '12345' }); // Use 5 chars, which should be too short
+      fillLoginForm(getByTestId, { password: '12345' });
 
       expect(getByTestId(TEST_IDS.AUTH_SUBMIT_BUTTON)).toBeDisabled();
     });

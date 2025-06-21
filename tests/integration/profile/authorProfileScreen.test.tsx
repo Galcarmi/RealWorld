@@ -15,7 +15,6 @@ const renderAuthorProfileScreen = () => {
   return render(<AuthorProfileScreen />);
 };
 
-// Helper function to setup mock author profile
 const setupMockAuthorProfile = (overrides = {}) => {
   const mockUseAuthorProfile = getMockUseAuthorProfile();
   const defaultProfile = {
@@ -183,7 +182,6 @@ describe('Author Profile Screen Tests', () => {
         expect(getByTestId(TEST_IDS.AUTHOR_PROFILE_SCREEN)).toBeTruthy();
       });
 
-      // Follow/unfollow integration is handled by the hook
       expect(mockUseAuthorProfile.authorProfile?.following).toBe(true);
     });
   });

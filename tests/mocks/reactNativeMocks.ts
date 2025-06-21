@@ -4,7 +4,6 @@ jest.mock('../../src/utils/alertUtils', () => ({
   showConfirmAlert: jest.fn(),
 }));
 
-// Mock react-native-ui-lib components - keep this as it's library-specific
 jest.mock('react-native-ui-lib', () => {
   const React = require('react');
   return {
@@ -26,7 +25,6 @@ jest.mock('react-native-ui-lib', () => {
   };
 });
 
-// Mock translation hook - keep this as it's app-specific
 jest.mock('../../src/hooks/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
