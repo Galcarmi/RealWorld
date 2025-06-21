@@ -1,7 +1,24 @@
 import { cleanup } from '@testing-library/react-native';
 
-beforeEach(() => {
-  jest.clearAllMocks();
+// Mock the Logger with TestLogger for tests - must be at the top for proper hoisting
+jest.mock('../../src/utils/Logger', () => {
+  const debug = require('debug');
+
+  // Create different debug instances for different log levels
+  const logDebug = debug('test:log');
+  const errorDebug = debug('test:error');
+  const warnDebug = debug('test:warn');
+  const infoDebug = debug('test:info');
+
+  return {
+    Logger: {
+      log: (message, ...args) => logDebug(message, ...args),
+      error: (message, ...args) => errorDebug(message, ...args),
+      warn: (message, ...args) => warnDebug(message, ...args),
+      info: (message, ...args) => infoDebug(message, ...args),
+      debug: (message, ...args) => logDebug(message, ...args),
+    },
+  };
 });
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -15,63 +32,49 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   multiSet: jest.fn(() => Promise.resolve()),
 }));
 
-const suppressedErrors = [
-  /(.*Use PascalCase for React components, or lowercase for HTML elements.)/,
-  /React does not recognize the.*prop on a DOM element|Unknown event handler property/,
-  /is using uppercase HTML/,
-  /Received `true` for a non-boolean attribute `accessible`/,
-  /Warning: forwardRef render functions do not support propTypes.*/,
-  /An update to .* inside a test was not wrapped in act/,
-  /Failed to .* storage:/,
-  /Failed to .* token .* storage:/,
-  /Failed to .* user data .* storage:/,
-  /Cannot log after tests are done/,
-  /Did you forget to wait for something async in your test/,
-];
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
+// Suppress common React Testing Library warnings that don't affect test results
 const suppressedWarnings = [
-  /Animated: `useNativeDriver` is not supported.*/,
-  /Method has been deprecated/,
   /An update to .* inside a test was not wrapped in act/,
+  /You are trying to `import` a file after the Jest environment has been torn down/,
+  /Cannot log after tests are done/,
+  /Did you forget to wait for something async in your test/,
+  /Animated: `useNativeDriver` is not supported/,
+  /Warning: forwardRef render functions do not support propTypes/,
+];
+
+const suppressedErrors = [
+  /An update to .* inside a test was not wrapped in act/,
+  /You are trying to `import` a file after the Jest environment has been torn down/,
   /Cannot log after tests are done/,
   /Did you forget to wait for something async in your test/,
 ];
 
-const realConsoleError = console.error;
-console.error = (...args) => {
-  const message = args[0];
-  if (
-    typeof message === 'string' &&
-    suppressedErrors.some(err => message.match(err))
-  ) {
-    return;
-  }
-  realConsoleError(...args);
-};
-
-const realConsoleWarn = console.warn;
+const originalConsoleWarn = console.warn;
 console.warn = (...args) => {
   const message = args[0];
   if (
     typeof message === 'string' &&
-    suppressedWarnings.some(err => message.match(err))
+    suppressedWarnings.some(pattern => pattern.test(message))
   ) {
     return;
   }
-  realConsoleWarn(...args);
+  originalConsoleWarn(...args);
 };
 
-// Override console.log to suppress "Cannot log after tests are done" warnings
-const realConsoleLog = console.log;
-console.log = (...args) => {
+const originalConsoleError = console.error;
+console.error = (...args) => {
   const message = args[0];
   if (
     typeof message === 'string' &&
-    message.includes('Cannot log after tests are done')
+    suppressedErrors.some(pattern => pattern.test(message))
   ) {
     return;
   }
-  realConsoleLog(...args);
+  originalConsoleError(...args);
 };
 
 afterEach(cleanup);

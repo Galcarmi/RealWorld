@@ -1,5 +1,54 @@
 import React from 'react';
 
+// Mock React Native core modules
+jest.mock('react-native', () => {
+  const React = require('react');
+
+  // Create mock components
+  const View = (props: any) => React.createElement('View', props);
+  const Text = (props: any) => React.createElement('Text', props);
+  const TextInput = (props: any) => React.createElement('TextInput', props);
+  const TouchableOpacity = (props: any) =>
+    React.createElement('TouchableOpacity', props);
+  const ScrollView = (props: any) => React.createElement('ScrollView', props);
+  const ActivityIndicator = (props: any) =>
+    React.createElement('ActivityIndicator', props);
+
+  return {
+    Alert: {
+      alert: jest.fn(),
+    },
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    ScrollView,
+    ActivityIndicator,
+    StyleSheet: {
+      create: jest.fn(styles => styles),
+    },
+    Keyboard: {
+      dismiss: jest.fn(),
+    },
+    NativeModules: {
+      StatusBarManager: {
+        getHeight: jest.fn(() => 20),
+        HEIGHT: 20,
+      },
+    },
+    Dimensions: {
+      get: jest.fn(() => ({
+        width: 375,
+        height: 812,
+      })),
+    },
+    Platform: {
+      OS: 'ios',
+      select: jest.fn(options => options.ios || options.default),
+    },
+  };
+});
+
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
@@ -38,13 +87,6 @@ jest.mock('@expo/vector-icons', () => {
     Zocial: createIconComponent('Zocial'),
   };
 });
-
-// Mock StatusBarManager for react-native-ui-lib
-const { NativeModules } = require('react-native');
-NativeModules.StatusBarManager = {
-  getHeight: jest.fn(() => 20),
-  HEIGHT: 20,
-};
 
 // Mock react-native-ui-lib components
 jest.mock('react-native-ui-lib', () => {
