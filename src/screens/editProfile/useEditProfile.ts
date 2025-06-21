@@ -11,7 +11,7 @@ import { ResponseErrors } from '../../services/types';
 
 import { RootStackParamList } from '../../navigation/types';
 
-import { AuthService } from '../../services';
+import { authService } from '../../services';
 import { showErrorModals } from '../../utils';
 
 type NavigationProps = NavigationProp<RootStackParamList>;
@@ -51,8 +51,6 @@ const useEditProfile = () => {
     email: '',
     password: '',
   });
-
-  const authService = useMemo(() => new AuthService(userStore), []);
 
   const isFormValid = useMemo(() => {
     const { username, email, password } = profileFormValues;
@@ -148,7 +146,7 @@ const useEditProfile = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [profileFormValues, authService, navigation]);
+  }, [profileFormValues, navigation]);
 
   const onLogout = useCallback(() => {
     authStore.logout();

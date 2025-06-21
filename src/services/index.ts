@@ -17,9 +17,6 @@ export type {
   ServiceConfig,
   PaginationParams,
   ArticleFilters,
-} from './types';
-
-export type {
   IAuthService,
   IProfileService,
   IArticleService,
@@ -28,7 +25,9 @@ export type {
 } from './types';
 
 export { BaseService } from './BaseService';
-export { AuthService } from './auth/AuthService';
-export { ProfileService } from './profiles/ProfileService';
-export { ArticleService } from './articles/ArticleService';
+
+export { AuthService, authService } from './auth/AuthService';
+export { ArticleService, articleService } from './articles/ArticleService';
+export { ProfileService, profileService } from './profiles/ProfileService';
+
 export { navigationService } from './navigationService';

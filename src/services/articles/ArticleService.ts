@@ -1,5 +1,3 @@
-import { IUserStore } from '../../store/types';
-
 import { BaseService } from '../BaseService';
 import {
   ApiErrorResponse,
@@ -12,8 +10,8 @@ import {
 } from '../types';
 
 class ArticleService extends BaseService implements IArticleService {
-  constructor(userStore: IUserStore) {
-    super(userStore);
+  constructor() {
+    super();
   }
 
   public async getArticles(params?: ArticleFilters): Promise<ArticlesResponse> {
@@ -88,4 +86,5 @@ class ArticleService extends BaseService implements IArticleService {
   }
 }
 
+export const articleService = new ArticleService();
 export { ArticleService, IArticleService };

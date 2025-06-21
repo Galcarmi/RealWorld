@@ -1,4 +1,4 @@
-import { IUserStore, User } from '../../store/types';
+import { User } from '../../store/types';
 
 import { BaseService } from '../BaseService';
 import {
@@ -10,8 +10,8 @@ import {
 } from '../types';
 
 class AuthService extends BaseService implements IAuthService {
-  constructor(userStore: IUserStore) {
-    super(userStore);
+  constructor() {
+    super();
   }
 
   public async getCurrentUser(): Promise<UserResponse> {
@@ -62,4 +62,5 @@ class AuthService extends BaseService implements IAuthService {
   }
 }
 
+export const authService = new AuthService();
 export { AuthService, IAuthService };

@@ -1,7 +1,10 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { AuthService } from '../services/auth/AuthService';
+import { authService } from '../services/auth/AuthService';
+import { navigationService } from '../services/navigationService';
 import { StorageUtils } from '../utils';
+import { appEventEmitter, AuthErrorEvent } from '../utils/eventEmitter';
+import { setGlobalTokenProvider } from '../utils/tokenProvider';
 
 import { IUserStore, User } from './types';
 
@@ -9,12 +12,14 @@ class UserStore implements IUserStore {
   public user: User | null = null;
   public isInitialized = false;
 
-  private _authService: AuthService;
+  private _authErrorHandler: (event: AuthErrorEvent) => void;
 
   constructor() {
     makeAutoObservable(this);
-    this._authService = new AuthService(this);
+    this._authErrorHandler = this._handleAuthError.bind(this);
     this._initializeFromStorage();
+    this._setupEventListeners();
+    this._setupTokenProvider();
   }
 
   public get token(): string | null {
@@ -43,6 +48,24 @@ class UserStore implements IUserStore {
     await this.forgetUser();
   }
 
+  public cleanup(): void {
+    appEventEmitter.offAuthError(this._authErrorHandler);
+  }
+
+  private async _handleAuthError(): Promise<void> {
+    await this.clearStorageOnAuthError();
+    navigationService.navigateToAuthTabs();
+    navigationService.navigateToLoginScreen();
+  }
+
+  private _setupEventListeners(): void {
+    appEventEmitter.onAuthError(this._authErrorHandler);
+  }
+
+  private _setupTokenProvider(): void {
+    setGlobalTokenProvider(() => this.getToken());
+  }
+
   private async _initializeFromStorage() {
     try {
       const storedUser = await StorageUtils.getUserData();
@@ -67,7 +90,7 @@ class UserStore implements IUserStore {
     if (!this.user?.token) return;
 
     try {
-      const currentUser = await this._authService.validateStoredToken();
+      const currentUser = await authService.validateStoredToken();
 
       if (currentUser) {
         runInAction(() => {

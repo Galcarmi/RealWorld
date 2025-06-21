@@ -1,9 +1,6 @@
 import { mockDeep, MockProxy } from 'jest-mock-extended';
 
 import { NavioInstance } from '../../src/navigation/navio';
-import { ArticleService } from '../../src/services/articles/ArticleService';
-import { AuthService } from '../../src/services/auth/AuthService';
-import { ProfileService } from '../../src/services/profiles/ProfileService';
 import {
   IArticleService,
   IAuthService,
@@ -36,105 +33,92 @@ jest.mock('../../src/services/navigationService', () => ({
 }));
 
 jest.mock('../../src/services/auth/AuthService', () => ({
-  AuthService: jest.fn().mockImplementation(() => mockAuthService),
+  AuthService: jest.fn(),
+  authService: mockAuthService,
 }));
 
 jest.mock('../../src/services/articles/ArticleService', () => ({
-  ArticleService: jest.fn().mockImplementation(() => mockArticleService),
+  ArticleService: jest.fn(),
+  articleService: mockArticleService,
 }));
 
 jest.mock('../../src/services/profiles/ProfileService', () => ({
-  ProfileService: jest.fn().mockImplementation(() => mockProfileService),
+  ProfileService: jest.fn(),
+  profileService: mockProfileService,
+}));
+
+jest.mock('../../src/services', () => ({
+  authService: mockAuthService,
+  articleService: mockArticleService,
+  profileService: mockProfileService,
+  navigationService: mockNavigationService,
 }));
 
 export const getMockNavigationService = (): MockProxy<INavigationService> =>
   mockNavigationService;
-export const createMockAuthService = (): MockProxy<AuthService> => {
-  return mockDeep<AuthService>();
+
+export const createMockAuthService = (): MockProxy<any> => {
+  return mockDeep<any>();
 };
 
 export const setupServiceMocks = () => {
-  const mockAuthServiceClass = AuthService as jest.MockedClass<
-    typeof AuthService
-  >;
-  mockAuthServiceClass.mockImplementation(
-    () =>
-      ({
-        login: jest.fn().mockResolvedValue({
-          user: mockUser,
-        }),
-        register: jest.fn().mockResolvedValue({
-          user: mockUser,
-        }),
-        validateStoredToken: jest.fn().mockResolvedValue({
-          user: mockUser,
-        }),
-        getCurrentUser: jest.fn().mockResolvedValue({
-          user: mockUser,
-        }),
-        updateUser: jest.fn().mockResolvedValue({
-          user: mockUser,
-        }),
-      }) as any
-  );
+  mockAuthService.login.mockResolvedValue({
+    user: mockUser,
+  });
+  mockAuthService.register.mockResolvedValue({
+    user: mockUser,
+  });
+  mockAuthService.validateStoredToken.mockResolvedValue({
+    user: mockUser,
+  });
+  mockAuthService.getCurrentUser.mockResolvedValue({
+    user: mockUser,
+  });
+  mockAuthService.updateUser.mockResolvedValue({
+    user: mockUser,
+  });
 
-  const mockArticleServiceClass = ArticleService as jest.MockedClass<
-    typeof ArticleService
-  >;
-  mockArticleServiceClass.mockImplementation(
-    () =>
-      ({
-        getArticles: jest.fn().mockResolvedValue({
-          articles: mockArticles,
-          articlesCount: mockArticles.length,
-        }),
-        getFeedArticles: jest.fn().mockResolvedValue({
-          articles: mockArticles,
-          articlesCount: mockArticles.length,
-        }),
-        createArticle: jest.fn().mockResolvedValue({
-          article: mockArticle,
-        }),
-        favoriteArticle: jest.fn().mockResolvedValue({
-          article: {
-            ...mockArticle,
-            favorited: true,
-            favoritesCount: mockArticle.favoritesCount + 1,
-          },
-        }),
-        unfavoriteArticle: jest.fn().mockResolvedValue({
-          article: {
-            ...mockArticle,
-            favorited: false,
-            favoritesCount: mockArticle.favoritesCount,
-          },
-        }),
-      }) as any
-  );
+  mockArticleService.getArticles.mockResolvedValue({
+    articles: mockArticles,
+    articlesCount: mockArticles.length,
+  });
+  mockArticleService.getFeedArticles.mockResolvedValue({
+    articles: mockArticles,
+    articlesCount: mockArticles.length,
+  });
+  mockArticleService.createArticle.mockResolvedValue({
+    article: mockArticle,
+  });
+  mockArticleService.favoriteArticle.mockResolvedValue({
+    article: {
+      ...mockArticle,
+      favorited: true,
+      favoritesCount: mockArticle.favoritesCount + 1,
+    },
+  });
+  mockArticleService.unfavoriteArticle.mockResolvedValue({
+    article: {
+      ...mockArticle,
+      favorited: false,
+      favoritesCount: mockArticle.favoritesCount,
+    },
+  });
 
-  const mockProfileServiceClass = ProfileService as jest.MockedClass<
-    typeof ProfileService
-  >;
-  mockProfileServiceClass.mockImplementation(
-    () =>
-      ({
-        getProfile: jest.fn().mockResolvedValue({
-          profile: mockArticle.author,
-        }),
-        followUser: jest.fn().mockResolvedValue({
-          profile: {
-            ...mockArticle.author,
-            following: true,
-          },
-        }),
-        unfollowUser: jest.fn().mockResolvedValue({
-          profile: {
-            ...mockArticle.author,
-            following: false,
-          },
-        }),
-      }) as any
-  );
+  mockProfileService.getProfile.mockResolvedValue({
+    profile: mockArticle.author,
+  });
+  mockProfileService.followUser.mockResolvedValue({
+    profile: {
+      ...mockArticle.author,
+      following: true,
+    },
+  });
+  mockProfileService.unfollowUser.mockResolvedValue({
+    profile: {
+      ...mockArticle.author,
+      following: false,
+    },
+  });
 
   jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();
   jest.spyOn(StorageUtils, 'getUserData').mockResolvedValue(mockUser);

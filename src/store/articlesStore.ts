@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { PAGINATION } from '../constants';
 import { FeedType } from '../constants/feedTypes';
-import { ArticleService } from '../services';
+import { articleService } from '../services';
 import {
   Article,
   CreateArticleRequest,
@@ -26,11 +26,8 @@ class ArticlesStore implements IArticlesStore {
   public favoritesCurrentOffset = 0;
   public favoritesErrors?: ResponseErrors = undefined;
 
-  private _articleService: ArticleService;
-
   constructor() {
     makeAutoObservable(this);
-    this._articleService = new ArticleService(userStore);
   }
 
   public get canLoadMoreHomeArticles(): boolean {
@@ -96,7 +93,7 @@ class ArticlesStore implements IArticlesStore {
     offset = 0
   ) {
     try {
-      return await this._articleService.getArticles({
+      return await articleService.getArticles({
         author: username,
         limit,
         offset,
@@ -109,7 +106,7 @@ class ArticlesStore implements IArticlesStore {
 
   public async createArticle(articleData: CreateArticleRequest) {
     try {
-      const response = await this._articleService.createArticle(articleData);
+      const response = await articleService.createArticle(articleData);
       this._addNewArticleToHomeList(response.article);
       return response.article;
     } catch (error) {
@@ -165,8 +162,8 @@ class ArticlesStore implements IArticlesStore {
     currentlyFavorited: boolean
   ) {
     return currentlyFavorited
-      ? await this._articleService.unfavoriteArticle(slug)
-      : await this._articleService.favoriteArticle(slug);
+      ? await articleService.unfavoriteArticle(slug)
+      : await articleService.favoriteArticle(slug);
   }
 
   private _updateArticleAfterFavoriteToggle(
@@ -182,8 +179,8 @@ class ArticlesStore implements IArticlesStore {
 
   private async _getArticlesBasedOnFeedType(limit: number, offset: number) {
     return this.feedType === FeedType.GLOBAL
-      ? await this._articleService.getArticles({ limit, offset })
-      : await this._articleService.getFeedArticles({ limit, offset });
+      ? await articleService.getArticles({ limit, offset })
+      : await articleService.getFeedArticles({ limit, offset });
   }
 
   private _updateHomeArticlesState(
@@ -252,7 +249,7 @@ class ArticlesStore implements IArticlesStore {
     this.favoritesErrors = undefined;
 
     try {
-      const response = await this._articleService.getArticles({
+      const response = await articleService.getArticles({
         favorited: userStore.user.username,
         limit: PAGINATION.DEFAULT_LIMIT,
         offset,

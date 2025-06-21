@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 import { APP_VALIDATION, ERROR_MESSAGES } from '../constants';
-import { AuthService } from '../services';
+import { authService } from '../services';
 import { navigationService } from '../services/navigationService';
 import { ResponseErrors } from '../services/types';
 
@@ -15,11 +15,8 @@ class AuthStore implements IAuthStore {
   public email = '';
   public password = '';
 
-  private _authService: AuthService;
-
   constructor() {
     makeAutoObservable(this);
-    this._authService = new AuthService(userStore);
   }
 
   public get authValues() {
@@ -72,7 +69,7 @@ class AuthStore implements IAuthStore {
 
     try {
       const { email, password } = this.authValues;
-      const response = await this._authService.login({ email, password });
+      const response = await authService.login({ email, password });
 
       await userStore.setUser(response.user);
       this.clear();
@@ -89,7 +86,7 @@ class AuthStore implements IAuthStore {
     this.errors = undefined;
 
     try {
-      const response = await this._authService.register(this.authValues);
+      const response = await authService.register(this.authValues);
 
       await userStore.setUser(response.user);
       this.clear();
