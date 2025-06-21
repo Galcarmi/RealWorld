@@ -1,12 +1,11 @@
 import React from 'react';
 
-// Since we're using jest-expo preset, it handles React Native core components automatically
-// We only need to mock specific libraries and custom components
+jest.mock('../../src/utils/alertUtils', () => ({
+  showErrorAlert: jest.fn(),
+  showInfoAlert: jest.fn(),
+  showConfirmAlert: jest.fn(),
+}));
 
-// AsyncStorage is already mocked by jest-expo preset
-// No need for manual AsyncStorage mock
-
-// Mock Expo vector icons - keep this as it's specific to your usage
 jest.mock('@expo/vector-icons', () => {
   const React = require('react');
 
