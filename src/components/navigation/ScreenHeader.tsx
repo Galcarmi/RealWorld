@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { observer } from 'mobx-react';
 
-import { APP_UI, ICON_NAMES } from '../constants';
 import {
   COLORS,
   FONT_WEIGHTS,
@@ -13,9 +12,12 @@ import {
   TYPOGRAPHY,
   FONT_SIZES,
   DIMENSIONS,
-} from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
-import { NavigationInstance } from '../navigation/types';
+} from '../../constants/styles';
+
+import { NavigationInstance } from '../../navigation/types';
+
+import { APP_UI, ICON_NAMES } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 import { useScreenHeader } from './useScreenHeader';
 

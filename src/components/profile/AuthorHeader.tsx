@@ -4,10 +4,16 @@ import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { COLORS, SPACINGS, TYPOGRAPHY, FONT_SIZES } from '../constants/styles';
-import { Profile } from '../services/types';
-import { formatDate, getInitials } from '../utils';
+import {
+  COLORS,
+  SPACINGS,
+  TYPOGRAPHY,
+  FONT_SIZES,
+} from '../../constants/styles';
+
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../../constants';
+import { Profile } from '../../services';
+import { formatDate, getInitials } from '../../utils';
 
 interface AuthorHeaderProps {
   author: Profile;

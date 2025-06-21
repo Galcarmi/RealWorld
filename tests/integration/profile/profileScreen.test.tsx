@@ -4,7 +4,7 @@ import '../../mocks';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
-import { navigationService } from '../../../src/services/navigationService';
+import { navigationService } from '../../../src/services';
 import { createMockUser } from '../../mocks/data';
 import { getMockNavigationService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';

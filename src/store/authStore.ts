@@ -1,9 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 import { APP_VALIDATION, ERROR_MESSAGES } from '../constants';
-import { authService } from '../services';
-import { navigationService } from '../services/navigationService';
-import { ResponseErrors } from '../services/types';
+import { authService, navigationService, ResponseErrors } from '../services';
 
 import { IAuthStore } from './types';
 import { userStore } from './userStore';

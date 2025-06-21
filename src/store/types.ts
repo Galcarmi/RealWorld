@@ -4,7 +4,7 @@ import {
   Article,
   CreateArticleRequest,
   ArticlesResponse,
-} from '../services/types';
+} from '../services';
 
 export type User = {
   id: string;

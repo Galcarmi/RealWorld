@@ -86,19 +86,17 @@ jest.mock('../../src/hooks/useTranslation', () => ({
   }),
 }));
 
-jest.mock('../../src/services/navigationService', () => ({
+jest.mock('../../src/services', () => ({
   navigationService: {
     navigateToMainTabs: jest.fn(),
     navigateToAuthTabs: jest.fn(),
     navigateToLoginScreen: jest.fn(),
     navigateToSignUpScreen: jest.fn(),
-    navigateToEditProfile: jest.fn(),
     navigateToNewArticle: jest.fn(),
+    navigateToEditProfile: jest.fn(),
     navigateToAuthorProfile: jest.fn(),
-    push: jest.fn(),
-    pop: jest.fn(),
-    navigate: jest.fn(),
-    setRoot: jest.fn(),
+    goBack: jest.fn(),
+    canGoBack: jest.fn(() => true),
   },
 }));
 

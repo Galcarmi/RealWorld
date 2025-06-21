@@ -16,7 +16,7 @@ import {
   FONT_SIZES,
   DIMENSIONS,
   FONT_WEIGHTS,
-} from '../constants/styles';
+} from '../../constants/styles';
 
 interface CustomButtonProps {
   title: string;

@@ -3,12 +3,11 @@ import { Keyboard } from 'react-native';
 import { renderHook, act } from '@testing-library/react-native';
 
 import useAuth from '../../../../src/screens/login/useAuth';
-import { navigationService } from '../../../../src/services/navigationService';
+import { navigationService } from '../../../../src/services';
 import { authStore } from '../../../../src/store/authStore';
 import { mockUser } from '../../../mocks/data';
 
 jest.mock('../../../../src/store/authStore');
-jest.mock('../../../../src/services/navigationService');
 jest.mock('../../../../src/utils');
 
 const mockKeyboard = Keyboard as jest.Mocked<typeof Keyboard>;

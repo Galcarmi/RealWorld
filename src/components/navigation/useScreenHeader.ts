@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { NavigationInstance } from '../navigation/types';
-import { navigationService } from '../services/navigationService';
-import { Logger } from '../utils';
+import { NavigationInstance } from '../../navigation/types';
+
+import { navigationService } from '../../services';
+import { Logger } from '../../utils';
 
 interface UseScreenHeaderProps {
   showBackButton?: boolean;

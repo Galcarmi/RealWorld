@@ -1,4 +1,4 @@
-import { BaseService } from '../BaseService';
+import { BaseService } from '../common/BaseService';
 import {
   ApiErrorResponse,
   IArticleService,
@@ -7,7 +7,7 @@ import {
   CreateArticleRequest,
   ArticleFilters,
   PaginationParams,
-} from '../types';
+} from '../common/types';
 
 class ArticleService extends BaseService implements IArticleService {
   constructor() {

@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react-native';
 import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
-import { navigationService } from '../../../src/services/navigationService';
+import { navigationService } from '../../../src/services';
 import { appEventEmitter } from '../../../src/utils/eventEmitter';
 import { createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';

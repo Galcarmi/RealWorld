@@ -5,7 +5,7 @@ import {
   IArticleService,
   IAuthService,
   IProfileService,
-} from '../../src/services/types';
+} from '../../src/services';
 import { StorageUtils } from '../../src/utils/storageUtils';
 
 import { mockUser, mockArticle, mockArticles } from './data';
@@ -28,30 +28,11 @@ const mockAuthService = mockDeep<IAuthService>();
 const mockArticleService = mockDeep<IArticleService>();
 const mockProfileService = mockDeep<IProfileService>();
 
-jest.mock('../../src/services/navigationService', () => ({
-  navigationService: mockNavigationService,
-}));
-
-jest.mock('../../src/services/auth/AuthService', () => ({
-  AuthService: jest.fn(),
-  authService: mockAuthService,
-}));
-
-jest.mock('../../src/services/articles/ArticleService', () => ({
-  ArticleService: jest.fn(),
-  articleService: mockArticleService,
-}));
-
-jest.mock('../../src/services/profiles/ProfileService', () => ({
-  ProfileService: jest.fn(),
-  profileService: mockProfileService,
-}));
-
 jest.mock('../../src/services', () => ({
+  navigationService: mockNavigationService,
   authService: mockAuthService,
   articleService: mockArticleService,
   profileService: mockProfileService,
-  navigationService: mockNavigationService,
 }));
 
 export const getMockNavigationService = (): MockProxy<INavigationService> =>

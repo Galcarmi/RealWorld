@@ -13,7 +13,6 @@ import { userStore } from '../../../src/store/userStore';
 
 jest.mock('../../../src/services');
 jest.mock('../../../src/store/userStore');
-jest.mock('../../../src/services/navigationService');
 
 describe('AuthStore', () => {
   beforeEach(() => {

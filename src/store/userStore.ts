@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { authService } from '../services/auth/AuthService';
-import { navigationService } from '../services/navigationService';
+import { authService, navigationService } from '../services';
 import { StorageUtils } from '../utils';
 import { appEventEmitter, AuthErrorEvent } from '../utils/eventEmitter';
 import { setGlobalTokenProvider } from '../utils/tokenProvider';

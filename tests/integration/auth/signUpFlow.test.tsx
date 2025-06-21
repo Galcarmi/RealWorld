@@ -6,7 +6,7 @@ import { fillSignUpForm } from '../../utils/formHelpers';
 import { renderSignUpScreen } from '../../utils/testHelpers';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
-import { navigationService } from '../../../src/services/navigationService';
+import { navigationService } from '../../../src/services';
 import * as storeMocks from '../../mocks/stores';
 
 const authStore = storeMocks.getAuthStore();

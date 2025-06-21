@@ -8,9 +8,7 @@ import { observer } from 'mobx-react';
 import { AUTH_SCREEN_TYPE } from '../../constants/app';
 import { COLORS, SPACINGS } from '../../constants/styles';
 
-import { AuthActions } from '../../components/AuthActions';
-import { AuthForm } from '../../components/AuthForm';
-import { AuthHeader } from '../../components/AuthHeader';
+import { AuthActions, AuthForm, AuthHeader } from '../../components';
 import { TEST_IDS } from '../../constants';
 
 import useAuth from './useAuth';

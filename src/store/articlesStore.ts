@@ -2,12 +2,12 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { PAGINATION } from '../constants';
 import { FeedType } from '../constants/feedTypes';
-import { articleService } from '../services';
 import {
+  articleService,
   Article,
   CreateArticleRequest,
   ResponseErrors,
-} from '../services/types';
+} from '../services';
 
 import { IArticlesStore } from './types';
 import { userStore } from './userStore';

@@ -2,9 +2,10 @@ import { useMemo } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { Button, Text, View } from 'react-native-ui-lib';
 
-import { TEST_IDS, BUTTON_LABELS } from '../constants';
-import { AUTH_SCREEN_TYPE } from '../constants/app';
-import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
+import { AUTH_SCREEN_TYPE } from '../../constants/app';
+import { COLORS, DIMENSIONS, SPACINGS } from '../../constants/styles';
+
+import { TEST_IDS, BUTTON_LABELS } from '../../constants';
 
 interface AuthActionsProps {
   onLogin: () => void;

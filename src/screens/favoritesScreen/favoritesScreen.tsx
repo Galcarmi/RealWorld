@@ -7,8 +7,7 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS } from '../../constants/styles';
 
-import { ArticlesList } from '../../components/ArticlesList';
-import { ScreenHeader } from '../../components/ScreenHeader';
+import { ArticlesList, ScreenHeader } from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 

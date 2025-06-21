@@ -5,7 +5,7 @@ import axios, {
 } from 'axios';
 import { mockDeep } from 'jest-mock-extended';
 
-import { BaseService } from '../../../src/services/BaseService';
+import { BaseService } from '../../../src/services/common/BaseService';
 
 jest.mock('axios');
 

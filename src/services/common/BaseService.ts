@@ -11,10 +11,11 @@ import {
   AUTH,
   HTTP_HEADERS,
   ERROR_TYPES,
-} from '../constants/app';
-import { Logger, showErrorAlert } from '../utils';
-import { appEventEmitter } from '../utils/eventEmitter';
-import { getToken } from '../utils/tokenProvider';
+} from '../../constants/app';
+import { appEventEmitter } from '../../utils/eventEmitter';
+import { getToken } from '../../utils/tokenProvider';
+
+import { Logger, showErrorAlert } from '../../utils';
 
 import { ApiErrorResponse } from './types';
 

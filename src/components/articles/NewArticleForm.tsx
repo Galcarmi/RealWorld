@@ -4,11 +4,11 @@ import { Button } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react';
 
-import { FORM_LIMITS, TEST_IDS } from '../constants';
-import { COLORS, DIMENSIONS, SPACINGS } from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
+import { COLORS, DIMENSIONS, SPACINGS } from '../../constants/styles';
 
-import { InputField } from './InputField';
+import { FORM_LIMITS, TEST_IDS } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
+import { InputField } from '../forms/InputField';
 
 interface NewArticleFormProps {
   title: string;

@@ -12,10 +12,17 @@ import { Avatar } from 'react-native-ui-lib';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
-import { COLORS, TYPOGRAPHY, SPACINGS, FONT_SIZES } from '../constants/styles';
-import { User } from '../store/types';
-import { getInitials } from '../utils';
+import { User } from '../../store/types';
+
+import {
+  COLORS,
+  TYPOGRAPHY,
+  SPACINGS,
+  FONT_SIZES,
+} from '../../constants/styles';
+
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../../constants';
+import { getInitials } from '../../utils';
 
 interface ProfileHeaderProps {
   user: User;

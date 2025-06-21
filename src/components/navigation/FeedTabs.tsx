@@ -10,9 +10,15 @@ import {
 
 import { observer } from 'mobx-react';
 
-import { FeedType } from '../constants';
-import { COLORS, SPACINGS, DIMENSIONS, FONT_SIZES } from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
+import {
+  COLORS,
+  SPACINGS,
+  DIMENSIONS,
+  FONT_SIZES,
+} from '../../constants/styles';
+
+import { FeedType } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface Tab {
   id: string;

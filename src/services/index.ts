@@ -1,3 +1,4 @@
+// Export types and base service from common
 export type {
   ResponseErrors,
   BaseUserCredentials,
@@ -22,12 +23,12 @@ export type {
   IArticleService,
   ILogger,
   INavigationService,
-} from './types';
+} from './common/types';
 
-export { BaseService } from './BaseService';
+export { BaseService } from './common';
 
-export { AuthService, authService } from './auth/AuthService';
-export { ArticleService, articleService } from './articles/ArticleService';
-export { ProfileService, profileService } from './profiles/ProfileService';
-
-export { navigationService } from './navigationService';
+// Export specific services
+export { AuthService, authService } from './auth';
+export { ArticleService, articleService } from './articles';
+export { ProfileService, profileService } from './profiles';
+export { navigationService } from './navigation';

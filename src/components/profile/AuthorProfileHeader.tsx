@@ -6,17 +6,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { observer } from 'mobx-react';
 
-import { TEST_IDS, APP_UI, ICON_NAMES } from '../constants';
 import {
   COLORS,
   SPACINGS,
   TYPOGRAPHY,
   DIMENSIONS,
   FONT_WEIGHTS,
-} from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
-import { Profile } from '../services/types';
-import { getInitials } from '../utils';
+} from '../../constants/styles';
+
+import { TEST_IDS, APP_UI, ICON_NAMES } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
+import { Profile } from '../../services';
+import { getInitials } from '../../utils';
 
 interface AuthorProfileHeaderProps {
   profile: Profile;

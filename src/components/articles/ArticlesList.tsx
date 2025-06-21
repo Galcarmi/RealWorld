@@ -10,9 +10,10 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { COLORS, SPACINGS, TYPOGRAPHY } from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
-import { Article } from '../services/types';
+import { COLORS, SPACINGS, TYPOGRAPHY } from '../../constants/styles';
+
+import { useTranslation } from '../../hooks/useTranslation';
+import { Article } from '../../services';
 
 import { ArticleCard } from './ArticleCard';
 

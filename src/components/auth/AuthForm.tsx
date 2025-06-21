@@ -3,13 +3,13 @@ import { View } from 'react-native-ui-lib';
 
 import { observer } from 'mobx-react';
 
-import { TEST_IDS, INPUT_SECURITY } from '../constants';
-import { AUTH_SCREEN_TYPE } from '../constants/app';
-import { DIMENSIONS } from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
-import { emailValidation } from '../utils';
+import { AUTH_SCREEN_TYPE } from '../../constants/app';
+import { DIMENSIONS } from '../../constants/styles';
 
-import { InputField } from './InputField';
+import { TEST_IDS, INPUT_SECURITY } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
+import { emailValidation } from '../../utils';
+import { InputField } from '../forms/InputField';
 
 interface AuthFormProps {
   email: string;

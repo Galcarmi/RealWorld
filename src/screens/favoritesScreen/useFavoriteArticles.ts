@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { userStore } from '../../store/userStore';
 
-import { navigationService } from '../../services/navigationService';
-
+import { navigationService } from '../../services';
 import { articlesStore } from '../../store';
 
 const useFavoriteArticles = () => {

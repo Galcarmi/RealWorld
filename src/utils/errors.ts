@@ -1,4 +1,4 @@
-import { ResponseErrors } from '../services/types';
+import { ResponseErrors } from '../services';
 
 import { showErrorAlert } from './alertUtils';
 

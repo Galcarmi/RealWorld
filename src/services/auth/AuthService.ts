@@ -1,13 +1,13 @@
 import { User } from '../../store/types';
 
-import { BaseService } from '../BaseService';
+import { BaseService } from '../common/BaseService';
 import {
   ApiErrorResponse,
   IAuthService,
   LoginUserRequest,
   RegisterUserRequest,
   UserResponse,
-} from '../types';
+} from '../common/types';
 
 class AuthService extends BaseService implements IAuthService {
   constructor() {

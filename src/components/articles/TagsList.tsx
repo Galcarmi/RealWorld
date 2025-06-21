@@ -3,15 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { observer } from 'mobx-react';
 
-import { APP_UI } from '../constants';
 import {
   COLORS,
   SPACINGS,
   TYPOGRAPHY,
   DIMENSIONS,
   FONT_SIZES,
-} from '../constants/styles';
-import { useTranslation } from '../hooks/useTranslation';
+} from '../../constants/styles';
+
+import { APP_UI } from '../../constants';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface TagsListProps {
   tags: string[] | null;

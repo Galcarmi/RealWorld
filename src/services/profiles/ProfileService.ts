@@ -1,5 +1,9 @@
-import { BaseService } from '../BaseService';
-import { IProfileService, ProfileResponse, ApiErrorResponse } from '../types';
+import { BaseService } from '../common/BaseService';
+import {
+  IProfileService,
+  ProfileResponse,
+  ApiErrorResponse,
+} from '../common/types';
 
 class ProfileService extends BaseService implements IProfileService {
   constructor() {
