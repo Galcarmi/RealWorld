@@ -175,9 +175,12 @@ const setupArticlesStoreMocks = () => {
     return {} as any;
   });
 
-  mockArticlesStore.getUserArticles.mockResolvedValue({
-    articles: [],
-    articlesCount: 0,
+  mockArticlesStore.getUserArticles.mockImplementation(async () => {
+    // Return immediately with empty articles for the test
+    return {
+      articles: [],
+      articlesCount: 0,
+    };
   });
 
   mockArticlesStore.clearHomeErrors.mockImplementation(() => {

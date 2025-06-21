@@ -7,7 +7,6 @@ import { Article } from '../../../src/services/types';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks } from '../../mocks/stores';
 
 const renderNewArticleScreen = () => {
   return render(<NewArticleScreen />);
@@ -15,15 +14,7 @@ const renderNewArticleScreen = () => {
 
 describe('Article Creation Integration Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
     userStore.setUser(mockUserMinimal);
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Screen State', () => {

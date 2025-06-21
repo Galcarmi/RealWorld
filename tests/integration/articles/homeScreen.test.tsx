@@ -7,7 +7,7 @@ import { HomeScreen } from '../../../src/screens/homeScreen/homeScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import * as storeMocks from '../../mocks/stores';
 import {
   testArticleCardPress,
   testFavoriteButtonPress,
@@ -15,7 +15,7 @@ import {
   testMultipleFavoriteToggles,
 } from '../utils/articleTestUtils';
 
-const mockArticlesStore = getMockArticlesStore();
+const mockArticlesStore = storeMocks.getMockArticlesStore();
 
 const renderHomeScreen = () => {
   return render(<HomeScreen />);
@@ -23,18 +23,10 @@ const renderHomeScreen = () => {
 
 describe('Home Screen Integration Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
     mockArticlesStore.homeArticles = mockArticles;
     mockArticlesStore.homeIsLoading = false;
     mockArticlesStore.feedType = FeedType.GLOBAL;
     mockArticlesStore.homeArticlesCount = mockArticles.length;
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Load', () => {

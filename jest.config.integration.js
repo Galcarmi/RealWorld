@@ -1,7 +1,7 @@
 module.exports = {
   displayName: 'Integration Tests',
   preset: 'react-native',
-  setupFilesAfterEnv: ['<rootDir>/config/jest/jest.cleanup.js'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest/jest-integration.setup.js'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': [
       'babel-jest',

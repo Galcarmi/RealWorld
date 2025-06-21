@@ -6,14 +6,12 @@ import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorPr
 import { Profile } from '../../../src/services/types';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal, mockArticles } from '../../mocks/data';
-import { getMockUseAuthorProfile, resetAllHookMocks } from '../../mocks/hooks';
+import { getMockUseAuthorProfile } from '../../mocks/hooks';
 import {
-  resetAllNavigationMocks,
   setMockRoute,
   mockAuthorProfileRoute,
   setMockRouteParams,
 } from '../../mocks/navigation';
-import { resetAllStoreMocks } from '../../mocks/stores';
 
 const renderAuthorProfileScreen = () => {
   return render(<AuthorProfileScreen />);
@@ -23,16 +21,8 @@ describe('Author Profile Screen Integration Tests', () => {
   const mockUseAuthorProfile = getMockUseAuthorProfile();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-    resetAllNavigationMocks();
-    resetAllHookMocks();
-
     setMockRoute(mockAuthorProfileRoute);
-
     userStore.setUser(mockUserMinimal);
-
     mockUseAuthorProfile.authorProfile = {
       username: 'testauthor',
       bio: 'Test bio',
@@ -41,10 +31,6 @@ describe('Author Profile Screen Integration Tests', () => {
     } as Profile;
     mockUseAuthorProfile.authorArticles = mockArticles;
     mockUseAuthorProfile.isLoading = false;
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Screen State', () => {

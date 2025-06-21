@@ -1,13 +1,12 @@
 import { render, waitFor } from '@testing-library/react-native';
 
-import '../../mocks/commonMocks';
-import '../../mocks/stores';
+import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { FavoritesScreen } from '../../../src/screens/favoritesScreen/favoritesScreen';
 import { articlesStore } from '../../../src/store/articlesStore';
 import { userStore } from '../../../src/store/userStore';
 import { mockArticles, mockUserMinimal } from '../../mocks/data';
-import { resetAllStoreMocks, getMockArticlesStore } from '../../mocks/stores';
+import * as storeMocks from '../../mocks/stores';
 import {
   testArticleCardPress,
   testFavoriteButtonPress,
@@ -15,7 +14,7 @@ import {
   testMultipleFavoriteToggles,
 } from '../utils/articleTestUtils';
 
-const mockArticlesStore = getMockArticlesStore();
+const mockArticlesStore = storeMocks.getMockArticlesStore();
 
 const renderFavoritesScreen = () => {
   return render(<FavoritesScreen />);
@@ -23,21 +22,11 @@ const renderFavoritesScreen = () => {
 
 describe('Favorites Screen Integration Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-
-    // Set up user with username to trigger the useEffect in useFavoriteArticles
     userStore.setUser(mockUserMinimal);
-
     mockArticlesStore.favoriteArticles = mockArticles;
     mockArticlesStore.favoritesIsLoading = false;
     mockArticlesStore.favoritesArticlesCount = mockArticles.length;
     mockArticlesStore.favoritesCurrentOffset = 0;
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Load', () => {

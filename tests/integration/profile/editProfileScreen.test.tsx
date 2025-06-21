@@ -5,12 +5,7 @@ import { TEST_IDS } from '../../../src/constants/testIds';
 import { EditProfileScreen } from '../../../src/screens/editProfile/editProfileScreen';
 import { userStore } from '../../../src/store/userStore';
 import { mockUserMinimal } from '../../mocks/data';
-import {
-  createMockAuthService,
-  resetAllServiceMocks,
-} from '../../mocks/services';
-import { resetAllStoreMocks } from '../../mocks/stores';
-import { resetUtilityMocks } from '../../mocks/utilities';
+import { createMockAuthService } from '../../mocks/services';
 
 const renderEditProfileScreen = () => {
   return render(<EditProfileScreen />);
@@ -20,12 +15,6 @@ describe('Edit Profile Screen Integration Tests', () => {
   const mockAuthService = createMockAuthService();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    userStore.forgetUser();
-    resetAllStoreMocks();
-    resetAllServiceMocks();
-    resetUtilityMocks();
-
     userStore.setUser({
       ...mockUserMinimal,
       bio: 'My bio',
@@ -39,10 +28,6 @@ describe('Edit Profile Screen Integration Tests', () => {
         image: 'https://example.com/updated-avatar.jpg',
       },
     });
-  });
-
-  afterEach(() => {
-    userStore.forgetUser();
   });
 
   describe('Initial Screen State', () => {

@@ -106,12 +106,19 @@ export const createMockAuthError = (errors: Record<string, string[]>) => ({
   },
 });
 
-export const setupIntegrationTestEnvironment = () => {
-  const { resetAllStoreMocks } = require('../mocks/stores');
-  resetAllStoreMocks();
-};
-
 export const renderLoginScreen = () => {
   const { SignInScreen } = require('../../src/screens/login/signInScreen');
-  return SignInScreen;
+  return render(React.createElement(SignInScreen));
+};
+
+export const renderSignUpScreen = () => {
+  const { SignUpScreen } = require('../../src/screens/login/signUpScreen');
+  return render(React.createElement(SignUpScreen));
+};
+
+export const renderProfileScreen = () => {
+  const {
+    ProfileScreen,
+  } = require('../../src/screens/profileScreen/profileScreen');
+  return render(React.createElement(ProfileScreen));
 };

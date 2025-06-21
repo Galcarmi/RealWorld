@@ -1,3 +1,5 @@
+import './commonMocks';
+
 export { getMockNavigationService, resetAllServiceMocks } from './services';
 export {
   getMockAuthStore,
