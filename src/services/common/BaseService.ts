@@ -36,6 +36,12 @@ export abstract class BaseService {
 
   protected _logError(errorResponse: ApiErrorResponse): never {
     this._logApiError(errorResponse);
+
+    throw errorResponse;
+  }
+
+  protected _logErrorAndShowAlert(errorResponse: ApiErrorResponse): never {
+    this._logApiError(errorResponse);
     this._showErrorAlert(errorResponse);
     throw errorResponse;
   }
