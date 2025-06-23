@@ -11,7 +11,6 @@ import {
   ArticlesList,
   NewArticleButton,
   ProfileHeader,
-  ScreenHeader,
 } from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -43,7 +42,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
-      <ScreenHeader title={t('navigation.profile')} />
       <ProfileHeader
         user={currentUser}
         onEditProfile={onEditProfile}
@@ -77,19 +75,15 @@ const createStyles = () =>
     },
     headerSection: {
       flex: 0.3,
-      backgroundColor: COLORS.SECONDARY,
     },
     middleSection: {
-      flex: 0.1,
-      alignItems: 'center',
-      justifyContent: 'center',
+      flex: 0.13,
     },
     articlesSection: {
-      flex: 0.6,
+      flex: 0.57,
     },
     username: {
-      fontFamily: TYPOGRAPHY.BODY.fontFamily,
-      color: COLORS.BLACK,
-      textAlign: 'center',
+      fontSize: TYPOGRAPHY.TITLE.fontSize,
+      color: COLORS.PRIMARY,
     },
   });

@@ -7,7 +7,7 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS } from '../../constants/styles';
 
-import { ArticlesList, ScreenHeader } from '../../components';
+import { ArticlesList } from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -28,8 +28,6 @@ export const FavoritesScreen: NavioScreen = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.FAVORITES_SCREEN}>
-      <ScreenHeader />
-
       <View flex backgroundColor={COLORS.BACKGROUND}>
         <ArticlesList
           articles={articles}

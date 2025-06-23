@@ -7,7 +7,7 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS } from '../../constants/styles';
 
-import { ArticlesList, FeedTabs, ScreenHeader } from '../../components';
+import { ArticlesList, FeedTabs } from '../../components';
 import { FEED_TYPES, TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 import { userStore } from '../../store';
@@ -43,7 +43,6 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.HOME_SCREEN}>
-      <ScreenHeader />
       {renderFeedTabs()}
 
       <ArticlesList
