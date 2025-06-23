@@ -1,3 +1,5 @@
+import { StackScreenOptions } from 'rn-navio/dist/types';
+
 import { Ionicons } from '@expo/vector-icons';
 
 import { Navio } from 'rn-navio';
@@ -42,20 +44,71 @@ const getCommonTabBarOptions = () => ({
   },
 });
 
+const headerOptions: StackScreenOptions = {
+  headerShown: true,
+  headerTitle: '',
+  headerStyle: {
+    backgroundColor: COLORS.PRIMARY,
+  },
+  headerTintColor: COLORS.BACKGROUND,
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+};
+
 const navio = Navio.build({
   screens: {
-    SignUp: SignUpScreen,
-    SignIn: SignInScreen,
-    Home: HomeScreen,
-    Favorites: FavoritesScreen,
-    Profile: ProfileScreen,
-    EditProfile: EditProfileScreen,
-    AuthorProfile: AuthorProfileScreen,
-    NewArticle: NewArticleScreen,
+    SignUp: {
+      component: SignUpScreen,
+      options: () => ({
+        headerShown: false,
+      }),
+    },
+    SignIn: {
+      component: SignInScreen,
+      options: () => ({
+        headerShown: false,
+      }),
+    },
+    Home: {
+      component: HomeScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
+    Favorites: {
+      component: FavoritesScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
+    Profile: {
+      component: ProfileScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
+    EditProfile: {
+      component: EditProfileScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
+    AuthorProfile: {
+      component: AuthorProfileScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
+    NewArticle: {
+      component: NewArticleScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
   },
   stacks: {
-    AuthStack: ['SignUp', 'SignIn'],
-    HomeStack: ['Home', 'AuthorProfile'],
+    HomeStack: ['Home', 'AuthorProfile', 'Favorites'],
     FavoritesStack: ['Favorites', 'AuthorProfile'],
     ProfileStack: ['Profile', 'EditProfile', 'NewArticle', 'AuthorProfile'],
     SignInStack: ['SignIn'],
@@ -112,7 +165,15 @@ const navio = Navio.build({
   defaultOptions: {
     stacks: {
       screen: {
-        headerShown: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: COLORS.PRIMARY,
+        },
+        headerTintColor: COLORS.BACKGROUND,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerBackTitleVisible: false,
       },
     },
   },

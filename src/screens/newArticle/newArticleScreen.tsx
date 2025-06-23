@@ -7,9 +7,8 @@ import { NavioScreen } from 'rn-navio';
 
 import { COLORS, SPACINGS } from '../../constants/styles';
 
-import { NewArticleForm, ScreenHeader } from '../../components';
+import { NewArticleForm } from '../../components';
 import { TEST_IDS } from '../../constants';
-import { useTranslation } from '../../hooks/useTranslation';
 
 import { useNewArticle } from './useNewArticle';
 
@@ -17,7 +16,6 @@ interface NewArticleScreenProps {}
 
 export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
   () => {
-    const { t } = useTranslation();
     const {
       title,
       description,
@@ -28,19 +26,12 @@ export const NewArticleScreen: NavioScreen<NewArticleScreenProps> = observer(
       onDescriptionChange,
       onBodyChange,
       onPublishArticle,
-      onGoBack,
     } = useNewArticle();
 
     const styles = useMemo(() => createStyles(), []);
 
     return (
       <View style={styles.container} testID={TEST_IDS.NEW_ARTICLE_SCREEN}>
-        <ScreenHeader
-          title={t('navigation.newArticle')}
-          showBackButton={true}
-          onBackPress={onGoBack}
-        />
-
         <NewArticleForm
           title={title}
           description={description}
@@ -65,6 +56,7 @@ const createStyles = () =>
       backgroundColor: COLORS.BACKGROUND,
     },
     formContainer: {
-      padding: SPACINGS.EXTRA_LARGE,
+      flex: 1,
+      paddingHorizontal: SPACINGS.LARGE,
     },
   });

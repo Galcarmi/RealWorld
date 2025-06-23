@@ -5,17 +5,16 @@ import { View } from 'react-native-ui-lib';
 import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 
-import { COLORS, TYPOGRAPHY } from '../../constants/styles';
+import { COLORS, DIMENSIONS, TYPOGRAPHY } from '../../constants/styles';
 
 import {
   ArticlesList,
   NewArticleButton,
   ProfileHeader,
-  ScreenHeader,
 } from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
-import { navigationService } from '../../services';
+import { User } from '../../types';
 
 import { useProfile } from './useProfile';
 
@@ -35,17 +34,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
 
   const styles = useMemo(() => createStyles(), []);
 
-  if (!currentUser) {
-    navigationService.navigateToLoginScreen();
-
-    return null;
-  }
-
   return (
     <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
-      <ScreenHeader title={t('navigation.profile')} />
       <ProfileHeader
-        user={currentUser}
+        user={currentUser as User}
         onEditProfile={onEditProfile}
         usernameStyle={styles.username}
         containerStyle={styles.headerSection}
@@ -78,18 +70,18 @@ const createStyles = () =>
     headerSection: {
       flex: 0.3,
       backgroundColor: COLORS.SECONDARY,
+      marginBottom: DIMENSIONS.SMALL,
     },
     middleSection: {
       flex: 0.1,
-      alignItems: 'center',
+      alignSelf: 'center',
       justifyContent: 'center',
     },
     articlesSection: {
-      flex: 0.6,
+      flex: 0.57,
     },
     username: {
-      fontFamily: TYPOGRAPHY.BODY.fontFamily,
-      color: COLORS.BLACK,
-      textAlign: 'center',
+      fontSize: TYPOGRAPHY.TITLE.fontSize,
+      color: COLORS.PRIMARY,
     },
   });

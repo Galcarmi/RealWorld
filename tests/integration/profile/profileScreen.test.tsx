@@ -6,12 +6,10 @@ import { TEST_IDS } from '../../../src/constants/testIds';
 import { ProfileScreen } from '../../../src/screens/profileScreen/profileScreen';
 import { navigationService } from '../../../src/services';
 import { createMockUser } from '../../mocks/data';
-import { getMockNavigationService } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
 const articlesStore = storeMocks.getArticlesStore();
 const userStore = storeMocks.getUserStore();
-const mockNavigationService = getMockNavigationService();
 
 const renderProfileScreen = () => {
   return render(<ProfileScreen />);
@@ -34,17 +32,6 @@ describe('Profile Screen Tests', () => {
   });
 
   describe('Authentication and Profile Display', () => {
-    it('redirects to login when user is not authenticated', async () => {
-      await act(async () => {
-        userStore.forgetUser();
-      });
-
-      renderProfileScreen();
-      expect(mockNavigationService.navigateToLoginScreen).toHaveBeenCalledTimes(
-        1
-      );
-    });
-
     it('displays authenticated user profile with all components', async () => {
       const user = await setupAuthenticatedUser({
         username: 'testuser123',

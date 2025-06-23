@@ -5,7 +5,7 @@ import { View, Button, Text } from 'react-native-ui-lib';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
-import { InputField, ScreenHeader } from '../../components';
+import { InputField } from '../../components';
 import { COLORS, DIMENSIONS, FORM_LIMITS, TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -29,8 +29,6 @@ export const EditProfileScreen: NavioScreen = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.EDIT_PROFILE_SCREEN}>
-      <ScreenHeader title={t('navigation.editProfile')} showBackButton={true} />
-
       <ScrollView style={styles.scrollView}>
         <View paddingH-20 paddingV-30>
           <InputField

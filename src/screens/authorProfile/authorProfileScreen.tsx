@@ -12,11 +12,7 @@ import { COLORS } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 
-import {
-  ArticlesList,
-  AuthorProfileHeader,
-  ScreenHeader,
-} from '../../components';
+import { ArticlesList, AuthorProfileHeader } from '../../components';
 import { TEST_IDS } from '../../constants';
 
 import { useAuthorProfile } from './useAuthorProfile';
@@ -47,15 +43,13 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
     if (!authorProfile) {
       return (
         <View style={styles.container} testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}>
-          <ScreenHeader showBackButton={true} />
+          {/* Loading state - native header will handle back button */}
         </View>
       );
     }
 
     return (
       <View style={styles.container} testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}>
-        <ScreenHeader showBackButton={true} />
-
         <View
           style={styles.headerSection}
           backgroundColor={COLORS.SECONDARY}
