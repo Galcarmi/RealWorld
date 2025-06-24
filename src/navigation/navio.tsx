@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Navio } from 'rn-navio';
 
 import { COLORS } from '../constants/styles';
+import { ArticleScreen } from '../screens/article/articleScreen';
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';
 import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
@@ -106,11 +107,23 @@ const navio = Navio.build({
         ...headerOptions,
       }),
     },
+    Article: {
+      component: ArticleScreen,
+      options: () => ({
+        ...headerOptions,
+      }),
+    },
   },
   stacks: {
-    HomeStack: ['Home', 'AuthorProfile', 'Favorites'],
-    FavoritesStack: ['Favorites', 'AuthorProfile'],
-    ProfileStack: ['Profile', 'EditProfile', 'NewArticle', 'AuthorProfile'],
+    HomeStack: ['Home', 'AuthorProfile', 'Favorites', 'Article'],
+    FavoritesStack: ['Favorites', 'AuthorProfile', 'Article'],
+    ProfileStack: [
+      'Profile',
+      'EditProfile',
+      'NewArticle',
+      'AuthorProfile',
+      'Article',
+    ],
     SignInStack: ['SignIn'],
     SignUpStack: ['SignUp'],
   },

@@ -11,6 +11,7 @@ export type RootStackParamList = {
   EditProfile: undefined;
   AuthorProfile: { username: string };
   NewArticle: undefined;
+  Article: { slug: string };
 };
 
 export interface NavigationInstance {

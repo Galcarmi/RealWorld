@@ -88,6 +88,7 @@ export const NAVIGATION_ROUTES = {
   NEW_ARTICLE: 'NewArticle',
   EDIT_PROFILE: 'EditProfile',
   AUTHOR_PROFILE: 'AuthorProfile',
+  ARTICLE: 'Article',
   SIGN_IN_STACK: 'SignInStack',
   SIGN_UP_STACK: 'SignUpStack',
 } as const;
@@ -98,6 +99,7 @@ export const SCREEN_TITLES = {
   PROFILE: 'Profile',
   EDIT_PROFILE: 'Edit Profile',
   NEW_ARTICLE: 'New Article',
+  ARTICLE: 'Article',
 } as const;
 
 export const BUTTON_LABELS = {
@@ -175,10 +177,13 @@ export const ICON_NAMES = {
   HEART: 'heart',
   HEART_OUTLINE: 'heart-outline',
   CREATE_OUTLINE: 'create-outline',
+  CREATE_SHARP: 'create-sharp',
   CHECKMARK_CIRCLE: 'checkmark-circle',
   CHECKMARK_SHARP: 'checkmark-sharp',
   ADD_SHARP: 'add-sharp',
   CHEVRON_BACK: 'chevron-back',
+  TRASH_OUTLINE: 'trash-outline',
+  TRASH_SHARP: 'trash-sharp',
 } as const;
 
 export const KEYBOARD_TYPES = {

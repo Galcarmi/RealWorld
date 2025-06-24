@@ -10,6 +10,7 @@ export {
   ArticlesList,
   ArticleCard,
   ArticleContent,
+  ArticleHeader,
   NewArticleForm,
   NewArticleButton,
   TagsList,

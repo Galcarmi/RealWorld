@@ -1,44 +1,46 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import {
-  TYPOGRAPHY,
-  SPACINGS,
-  FONT_SIZES,
-  COLORS,
-} from '../../constants/styles';
+import { SPACINGS, FONT_SIZES, COLORS } from '../../constants/styles';
+
+import { TagsList } from './TagsList';
 
 interface ArticleContentProps {
-  title: string;
-  description: string;
+  body: string;
+  tags: string[] | null;
 }
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({
-  title,
-  description,
+  body,
+  tags,
 }) => {
   const styles = useMemo(() => createStyles(), []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description} numberOfLines={3}>
-        {description}
-      </Text>
+      <Text style={styles.body}>{body}</Text>
+
+      {tags && tags.length > 0 && (
+        <View style={styles.tagsSection}>
+          <TagsList tags={tags} />
+        </View>
+      )}
     </View>
   );
 };
 
 const createStyles = () =>
   StyleSheet.create({
-    container: {},
-    title: {
-      color: COLORS.TEXT,
-      marginBottom: SPACINGS.SMALL,
-      ...TYPOGRAPHY.BOLD,
+    container: {
+      flex: 1,
     },
-    description: {
+    body: {
       fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.PLACEHOLDER,
+      color: COLORS.TEXT,
+      lineHeight: 22,
+      marginBottom: SPACINGS.LARGE,
+    },
+    tagsSection: {
+      marginTop: SPACINGS.MEDIUM,
     },
   });

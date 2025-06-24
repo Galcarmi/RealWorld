@@ -22,10 +22,11 @@ const useFavoriteArticles = () => {
   );
 
   const handleArticlePress = useCallback((slug: string) => {
-    const article = articlesStore.favoriteArticles.find(a => a.slug === slug);
-    if (article) {
-      navigationService.navigateToAuthorProfile(article.author.username);
-    }
+    navigationService.navigateToArticle(slug);
+  }, []);
+
+  const handleAuthorPress = useCallback((username: string) => {
+    navigationService.navigateToAuthorProfile(username);
   }, []);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const useFavoriteArticles = () => {
     refreshArticles: handleRefreshArticles,
     handleFavoritePress,
     handleArticlePress,
+    handleAuthorPress,
   };
 };
 
