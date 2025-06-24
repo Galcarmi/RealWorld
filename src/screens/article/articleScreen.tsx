@@ -13,6 +13,7 @@ import { RootStackParamList } from '../../navigation/types';
 
 import { ArticleHeader, ArticleContent } from '../../components';
 import { TEST_IDS } from '../../constants';
+import { userStore } from '../../store';
 
 import { useArticle } from './useArticle';
 
@@ -24,12 +25,7 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
   const route = useRoute<ArticleScreenRouteProp>();
   const slug = route.params?.slug || '';
 
-  const {
-    article,
-    isLoading,
-    onAuthorPress,
-    // onDelete,
-  } = useArticle(slug);
+  const { article, isLoading, onAuthorPress, onDelete } = useArticle(slug);
 
   const styles = useMemo(() => createStyles(), []);
 
@@ -44,6 +40,10 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
     [isLoading]
   );
 
+  const isAuthor = useMemo(() => {
+    return article?.author?.username === userStore.user?.username;
+  }, [article]);
+
   return (
     <View style={styles.container} testID={TEST_IDS.ARTICLE_SCREEN}>
       <ScrollView
@@ -56,9 +56,9 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
             <ArticleHeader
               article={article}
               onAuthorPress={onAuthorPress}
-              // TODO: Add delete action
-              // onDelete={onDelete}
+              onDelete={onDelete}
               containerStyle={styles.headerSection}
+              isAuthor={isAuthor}
             />
 
             <View style={styles.contentSection}>

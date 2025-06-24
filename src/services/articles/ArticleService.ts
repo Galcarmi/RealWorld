@@ -84,6 +84,14 @@ class ArticleService extends BaseService implements IArticleService {
       return this._logError(error as ApiErrorResponse);
     }
   }
+
+  public async deleteArticle(slug: string): Promise<void> {
+    try {
+      await this._api.delete(`/articles/${slug}`);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
 }
 
 export const articleService = new ArticleService();

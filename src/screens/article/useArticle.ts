@@ -32,7 +32,6 @@ export const useArticle = (slug: string) => {
         article.slug,
         article.favorited
       );
-      // Refresh the article to get updated favorite count
       await fetchArticle();
     } catch {
       showErrorAlert(t('errors.failedToUpdateFavorite'));
@@ -45,6 +44,17 @@ export const useArticle = (slug: string) => {
     }
   }, [article]);
 
+  const onDelete = useCallback(async () => {
+    if (!article) return;
+    try {
+      await articleService.deleteArticle(article.slug);
+      articlesStore.removeArticle(article.slug);
+      navigationService.goBack();
+    } catch {
+      showErrorAlert(t('errors.failedToDeleteArticle'));
+    }
+  }, [article, t]);
+
   useEffect(() => {
     fetchArticle();
   }, [fetchArticle]);
@@ -54,5 +64,6 @@ export const useArticle = (slug: string) => {
     isLoading,
     onFavoriteToggle,
     onAuthorPress,
+    onDelete,
   };
 };

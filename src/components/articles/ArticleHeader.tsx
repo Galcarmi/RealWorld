@@ -32,10 +32,11 @@ interface ArticleHeaderProps {
   onAuthorPress: () => void;
   onDelete?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+  isAuthor: boolean;
 }
 
 export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
-  ({ article, onAuthorPress, onDelete, containerStyle }) => {
+  ({ article, onAuthorPress, onDelete, containerStyle, isAuthor }) => {
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(), []);
 
@@ -80,35 +81,37 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
             </View>
           </TouchableOpacity>
 
-          <View style={styles.actionButtons}>
-            <Button
-              label={t('common.edit')}
-              color={COLORS.PRIMARY}
-              outline
-              outlineColor={COLORS.PRIMARY}
-              borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
-              style={styles.actionButton}
-              size={'small'}
-              iconSource={getEditButtonIcon}
-              iconOnRight={false}
-              testID={TEST_IDS.EDIT_ARTICLE_BUTTON}
-            />
+          {isAuthor && (
+            <View style={styles.actionButtons}>
+              <Button
+                label={t('common.edit')}
+                color={COLORS.PRIMARY}
+                outline
+                outlineColor={COLORS.PRIMARY}
+                borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
+                style={styles.actionButton}
+                size={'small'}
+                iconSource={getEditButtonIcon}
+                iconOnRight={false}
+                testID={TEST_IDS.EDIT_ARTICLE_BUTTON}
+              />
 
-            <Button
-              label={t('common.delete')}
-              color={COLORS.ERROR}
-              outline
-              outlineColor={COLORS.ERROR}
-              borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
-              style={styles.actionButton}
-              labelStyle={[{ color: COLORS.ERROR }]}
-              size={'small'}
-              onPress={onDelete}
-              iconSource={getDeleteButtonIcon}
-              iconOnRight={false}
-              testID={TEST_IDS.DELETE_ARTICLE_BUTTON}
-            />
-          </View>
+              <Button
+                label={t('common.delete')}
+                color={COLORS.ERROR}
+                outline
+                outlineColor={COLORS.ERROR}
+                borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
+                style={styles.actionButton}
+                labelStyle={[{ color: COLORS.ERROR }]}
+                size={'small'}
+                onPress={onDelete}
+                iconSource={getDeleteButtonIcon}
+                iconOnRight={false}
+                testID={TEST_IDS.DELETE_ARTICLE_BUTTON}
+              />
+            </View>
+          )}
         </View>
       </View>
     );
