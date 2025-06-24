@@ -31,12 +31,13 @@ interface ArticleHeaderProps {
   article: Article;
   onAuthorPress: () => void;
   onDelete?: () => void;
+  onEdit?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   isAuthor: boolean;
 }
 
 export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
-  ({ article, onAuthorPress, onDelete, containerStyle, isAuthor }) => {
+  ({ article, onAuthorPress, onDelete, onEdit, containerStyle, isAuthor }) => {
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(), []);
 
@@ -94,6 +95,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
                 iconSource={getEditButtonIcon}
                 iconOnRight={false}
                 testID={TEST_IDS.EDIT_ARTICLE_BUTTON}
+                onPress={onEdit}
               />
 
               <Button

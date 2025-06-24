@@ -3,6 +3,6 @@ export { ArticleCard } from './ArticleCard';
 export { ArticleContent } from './ArticleContent';
 export { ArticleCardContent } from './ArticleCardContent';
 export { ArticleHeader } from './ArticleHeader';
-export { NewArticleForm } from './NewArticleForm';
+export { ArticleForm } from './ArticleForm';
 export { NewArticleButton } from './NewArticleButton';
 export { TagsList } from './TagsList';

@@ -11,7 +11,7 @@ export {
   ArticleCard,
   ArticleContent,
   ArticleHeader,
-  NewArticleForm,
+  ArticleForm,
   NewArticleButton,
   TagsList,
 } from './articles';

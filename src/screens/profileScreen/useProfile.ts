@@ -34,7 +34,7 @@ export const useProfile = () => {
   }, [currentUser?.username, t]);
 
   const onCreateNewArticle = useCallback(() => {
-    navigationService.navigateToNewArticle();
+    navigationService.navigateToArticleForm();
   }, []);
 
   const onEditProfile = useCallback(() => {

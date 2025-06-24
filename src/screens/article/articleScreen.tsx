@@ -23,9 +23,10 @@ interface ArticleScreenProps {}
 
 export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
   const route = useRoute<ArticleScreenRouteProp>();
-  const slug = route.params?.slug || '';
+  const slug = route.params?.slug;
 
-  const { article, isLoading, onAuthorPress, onDelete } = useArticle(slug);
+  const { article, isLoading, onAuthorPress, onDelete, onEdit } =
+    useArticle(slug);
 
   const styles = useMemo(() => createStyles(), []);
 
@@ -57,6 +58,7 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
               article={article}
               onAuthorPress={onAuthorPress}
               onDelete={onDelete}
+              onEdit={onEdit}
               containerStyle={styles.headerSection}
               isAuthor={isAuthor}
             />

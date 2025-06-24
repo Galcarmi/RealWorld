@@ -93,6 +93,11 @@ export interface IArticleService {
   favoriteArticle(slug: string): Promise<SingleArticleResponse>;
   unfavoriteArticle(slug: string): Promise<SingleArticleResponse>;
   createArticle(article: CreateArticleRequest): Promise<SingleArticleResponse>;
+  updateArticle(
+    slug: string,
+    article: CreateArticleRequest
+  ): Promise<SingleArticleResponse>;
+  deleteArticle(slug: string): Promise<void>;
 }
 
 export type ApiErrorResponse = AxiosError & {

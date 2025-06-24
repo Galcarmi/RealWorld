@@ -5,7 +5,7 @@ import { Article, articleService, navigationService } from '../../services';
 import { articlesStore } from '../../store';
 import { showErrorAlert } from '../../utils';
 
-export const useArticle = (slug: string) => {
+export const useArticle = (slug?: string) => {
   const { t } = useTranslation();
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +55,12 @@ export const useArticle = (slug: string) => {
     }
   }, [article, t]);
 
+  const onEdit = useCallback(() => {
+    if (article?.slug) {
+      navigationService.navigateToArticleForm(article.slug);
+    }
+  }, [article]);
+
   useEffect(() => {
     fetchArticle();
   }, [fetchArticle]);
@@ -65,5 +71,6 @@ export const useArticle = (slug: string) => {
     onFavoriteToggle,
     onAuthorPress,
     onDelete,
+    onEdit,
   };
 };

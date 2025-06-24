@@ -92,7 +92,7 @@ jest.mock('../../src/services', () => ({
     navigateToAuthTabs: jest.fn(),
     navigateToLoginScreen: jest.fn(),
     navigateToSignUpScreen: jest.fn(),
-    navigateToNewArticle: jest.fn(),
+    navigateToArticleForm: jest.fn(),
     navigateToEditProfile: jest.fn(),
     navigateToAuthorProfile: jest.fn(),
     goBack: jest.fn(),

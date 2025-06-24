@@ -10,7 +10,7 @@ import { FORM_LIMITS, TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 import { InputField } from '../forms/InputField';
 
-interface NewArticleFormProps {
+interface ArticleFormProps {
   title: string;
   description: string;
   body: string;
@@ -19,11 +19,11 @@ interface NewArticleFormProps {
   onTitleChange: (text: string) => void;
   onDescriptionChange: (text: string) => void;
   onBodyChange: (text: string) => void;
-  onPublishArticle: () => void;
+  onFormSubmit: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-export const NewArticleForm: React.FC<NewArticleFormProps> = observer(
+export const ArticleForm: React.FC<ArticleFormProps> = observer(
   ({
     title,
     description,
@@ -33,7 +33,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = observer(
     onTitleChange,
     onDescriptionChange,
     onBodyChange,
-    onPublishArticle,
+    onFormSubmit,
     containerStyle,
   }) => {
     const { t } = useTranslation();
@@ -90,7 +90,7 @@ export const NewArticleForm: React.FC<NewArticleFormProps> = observer(
         borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
         paddingV-15
         disabled={!canPublish || isLoading}
-        onPress={onPublishArticle}
+        onPress={onFormSubmit}
         style={styles.publishButton}
         testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
       />

@@ -17,7 +17,7 @@ interface INavigationService {
   navigateToAuthTabs: () => void;
   navigateToLoginScreen: () => void;
   navigateToSignUpScreen: () => void;
-  navigateToNewArticle: () => void;
+  navigateToArticleForm: (slug?: string) => void;
   navigateToEditProfile: () => void;
   navigateToAuthorProfile: (username: string) => void;
   goBack: () => void;

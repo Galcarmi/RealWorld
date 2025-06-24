@@ -85,6 +85,21 @@ class ArticleService extends BaseService implements IArticleService {
     }
   }
 
+  public async updateArticle(
+    slug: string,
+    article: CreateArticleRequest
+  ): Promise<SingleArticleResponse> {
+    try {
+      const response = await this._api.put<SingleArticleResponse>(
+        `/articles/${slug}`,
+        { article }
+      );
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
   public async deleteArticle(slug: string): Promise<void> {
     try {
       await this._api.delete(`/articles/${slug}`);

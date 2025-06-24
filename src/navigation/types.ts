@@ -10,7 +10,7 @@ export type RootStackParamList = {
   Profile: undefined;
   EditProfile: undefined;
   AuthorProfile: { username: string };
-  NewArticle: undefined;
+  ArticleForm: { slug?: string };
   Article: { slug: string };
 };
 

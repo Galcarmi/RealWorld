@@ -1,18 +1,47 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 
 import { articlesStore } from '../../store/articlesStore';
 
 import { useTranslation } from '../../hooks/useTranslation';
-import { CreateArticleRequest, navigationService } from '../../services';
+import {
+  CreateArticleRequest,
+  navigationService,
+  articleService,
+} from '../../services';
 import { showErrorAlert } from '../../utils';
 
-export const useNewArticle = () => {
+export const useArticleForm = (slug?: string) => {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [body, setBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const fetchArticleForEdit = useCallback(async () => {
+    if (!slug) return;
+
+    setIsLoading(true);
+    try {
+      const response = await articleService.getArticle(slug);
+      const article = response.article;
+      setTitle(article.title);
+      setDescription(article.description);
+      setBody(article.body);
+      setIsEditMode(true);
+    } catch {
+      showErrorAlert(t('errors.failedToFetchArticle'));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [slug, t]);
+
+  useEffect(() => {
+    if (slug) {
+      fetchArticleForEdit();
+    }
+  }, [slug, fetchArticleForEdit]);
 
   const onTitleChange = useCallback((text: string) => {
     setTitle(text);
@@ -25,10 +54,6 @@ export const useNewArticle = () => {
   const onBodyChange = useCallback((text: string) => {
     setBody(text);
   }, []);
-
-  const validateArticleContent = useCallback(() => {
-    return title.trim() && description.trim() && body.trim();
-  }, [title, description, body]);
 
   const createArticleData = useCallback((): CreateArticleRequest => {
     return {
@@ -51,22 +76,13 @@ export const useNewArticle = () => {
     navigationService.navigateToMainTabs();
   }, [createArticleData, resetArticleForm]);
 
-  const onPublishArticle = useCallback(async () => {
-    if (!validateArticleContent()) {
-      return;
-    }
+  const handleArticleUpdate = useCallback(async () => {
+    if (!slug) return;
 
-    Keyboard.dismiss();
-    setIsLoading(true);
-
-    try {
-      await handleArticleCreation();
-    } catch {
-      showErrorAlert(t('errors.failedToCreateArticle'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [validateArticleContent, handleArticleCreation, t]);
+    const articleData = createArticleData();
+    await articleService.updateArticle(slug, articleData);
+    navigationService.goBack();
+  }, [slug, createArticleData]);
 
   const onGoBack = useCallback(() => {
     navigationService.navigateToMainTabs();
@@ -88,16 +104,26 @@ export const useNewArticle = () => {
     return calculateCanPublish();
   }, [calculateCanPublish]);
 
+  const onFormSubmit = useCallback(() => {
+    Keyboard.dismiss();
+    if (isEditMode) {
+      handleArticleUpdate();
+    } else {
+      handleArticleCreation();
+    }
+  }, [isEditMode, handleArticleUpdate, handleArticleCreation]);
+
   return {
     title,
     description,
     body,
     isLoading,
     canPublish,
+    isEditMode,
     onTitleChange,
     onDescriptionChange,
     onBodyChange,
-    onPublishArticle,
+    onFormSubmit,
     onGoBack,
   };
 };
