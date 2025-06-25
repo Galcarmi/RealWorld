@@ -1,98 +1,30 @@
-import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
+import { fireEvent, act, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
-import { TEST_IDS } from '../../../src/constants/testIds';
-import { ArticleScreen } from '../../../src/screens/article/articleScreen';
-import { articleService, navigationService } from '../../../src/services';
 import {
-  createMockUser,
-  createMockArticle,
-  createMockComment,
-  createMockAuthor,
-} from '../../mocks/data';
-import { setMockRoute } from '../../mocks/navigation';
+  renderArticleScreen,
+  setupArticleScreenTest,
+} from '../../utils/testHelpers';
+
+import { TEST_IDS } from '../../../src/constants/testIds';
+import { articleScreenTestMocks, createMockUser } from '../../mocks/data';
+import { setupArticleScreenMocks } from '../../mocks/services';
 import * as storeMocks from '../../mocks/stores';
 
 const userStore = storeMocks.getUserStore();
 const articlesStore = storeMocks.getArticlesStore();
-
-const mockArticle = createMockArticle({
-  slug: 'test-article-slug',
-  title: 'Test Article Title',
-  body: 'This is the test article body content.',
-  author: createMockAuthor({ username: 'testauthor' }),
-});
-
-const mockComments = [
-  createMockComment({
-    id: 1,
-    body: 'Great article! Thanks for sharing.',
-    author: createMockAuthor({ username: 'commenter1' }),
-  }),
-  createMockComment({
-    id: 2,
-    body: 'I disagree with some points but overall good read.',
-    author: createMockAuthor({ username: 'commenter2' }),
-  }),
-];
-
-const mockArticleService = articleService as jest.Mocked<typeof articleService>;
-const mockNavigationService = navigationService as jest.Mocked<
-  typeof navigationService
->;
-
-mockArticleService.getArticle.mockResolvedValue({ article: mockArticle });
-mockArticleService.getComments.mockResolvedValue({ comments: mockComments });
-mockArticleService.createComment.mockResolvedValue({
-  comment: createMockComment({ body: 'New test comment', id: 3 }),
-});
-mockArticleService.deleteArticle.mockResolvedValue(undefined);
-
-const mockToggleFavorite = jest.spyOn(
-  articlesStore,
-  'toggleArticleFavoriteStatus'
-);
 const mockRemoveArticle = jest.spyOn(articlesStore, 'removeArticle');
 
-const mockArticleRoute = {
-  key: 'Article',
-  name: 'Article' as const,
-  params: { slug: 'test-article-slug' },
-};
-
-const renderArticleScreen = () => {
-  return render(<ArticleScreen />);
-};
-
-const setupAuthenticatedUser = async (userOverrides = {}) => {
-  const user = createMockUser(userOverrides);
-  await act(async () => {
-    userStore.setUser(user);
-  });
-  return user;
-};
-
 describe('Article Screen Tests', () => {
+  let mockServices: ReturnType<typeof setupArticleScreenMocks>;
+
   beforeEach(async () => {
-    mockArticleService.getArticle.mockClear();
-    mockArticleService.getComments.mockClear();
-    mockArticleService.createComment.mockClear();
-    mockArticleService.deleteArticle.mockClear();
-    mockToggleFavorite.mockClear();
     mockRemoveArticle.mockClear();
 
-    setMockRoute(mockArticleRoute);
-    await setupAuthenticatedUser();
+    mockServices = setupArticleScreenMocks();
 
-    mockArticleService.getArticle.mockResolvedValue({ article: mockArticle });
-    mockArticleService.getComments.mockResolvedValue({
-      comments: mockComments,
-    });
-    mockArticleService.createComment.mockResolvedValue({
-      comment: createMockComment({ body: 'New test comment', id: 3 }),
-    });
-    mockArticleService.deleteArticle.mockResolvedValue(undefined);
-    mockToggleFavorite.mockResolvedValue(undefined);
+    await setupArticleScreenTest();
+
     mockRemoveArticle.mockImplementation(() => undefined);
   });
 
@@ -104,18 +36,16 @@ describe('Article Screen Tests', () => {
         expect(getByTestId(TEST_IDS.ARTICLE_SCREEN)).toBeTruthy();
       });
 
-      expect(getByText('Test Article Title')).toBeTruthy();
-      expect(getByText('This is the test article body content.')).toBeTruthy();
-      expect(getByText('Great article! Thanks for sharing.')).toBeTruthy();
-      expect(
-        getByText('I disagree with some points but overall good read.')
-      ).toBeTruthy();
+      expect(getByText(articleScreenTestMocks.article.title)).toBeTruthy();
+      expect(getByText(articleScreenTestMocks.article.body)).toBeTruthy();
+      expect(getByText(articleScreenTestMocks.comments[0].body)).toBeTruthy();
+      expect(getByText(articleScreenTestMocks.comments[1].body)).toBeTruthy();
 
-      expect(mockArticleService.getArticle).toHaveBeenCalledWith(
-        'test-article-slug'
+      expect(mockServices.mockArticleService.getArticle).toHaveBeenCalledWith(
+        articleScreenTestMocks.route.params.slug
       );
-      expect(mockArticleService.getComments).toHaveBeenCalledWith(
-        'test-article-slug'
+      expect(mockServices.mockArticleService.getComments).toHaveBeenCalledWith(
+        articleScreenTestMocks.route.params.slug
       );
     });
 
@@ -126,7 +56,9 @@ describe('Article Screen Tests', () => {
         expect(getByTestId(TEST_IDS.ARTICLE_SCREEN)).toBeTruthy();
       });
 
-      expect(getByText('testauthor')).toBeTruthy();
+      expect(
+        getByText(articleScreenTestMocks.article.author.username)
+      ).toBeTruthy();
     });
   });
 
@@ -153,18 +85,20 @@ describe('Article Screen Tests', () => {
       });
 
       const commentInput = getByPlaceholderText('Add a comment...');
-      fireEvent.changeText(commentInput, 'New test comment');
+      fireEvent.changeText(
+        commentInput,
+        articleScreenTestMocks.newComment.body
+      );
 
       const postButton = getByText('Post');
       fireEvent.press(postButton);
 
       await waitFor(() => {
-        expect(mockArticleService.createComment).toHaveBeenCalledWith(
-          'test-article-slug',
-          {
-            body: 'New test comment',
-          }
-        );
+        expect(
+          mockServices.mockArticleService.createComment
+        ).toHaveBeenCalledWith(articleScreenTestMocks.route.params.slug, {
+          body: articleScreenTestMocks.newComment.body,
+        });
       });
     });
 
@@ -182,14 +116,20 @@ describe('Article Screen Tests', () => {
       const postButton = getByText('Post');
       fireEvent.press(postButton);
 
-      expect(mockArticleService.createComment).not.toHaveBeenCalled();
+      expect(
+        mockServices.mockArticleService.createComment
+      ).not.toHaveBeenCalled();
     });
   });
 
   describe('Author Actions', () => {
     it('shows edit and delete buttons when user is the author', async () => {
       await act(async () => {
-        userStore.setUser(createMockUser({ username: 'testauthor' }));
+        userStore.setUser(
+          createMockUser({
+            username: articleScreenTestMocks.article.author.username,
+          })
+        );
       });
 
       const { getByTestId } = renderArticleScreen();
@@ -219,7 +159,11 @@ describe('Article Screen Tests', () => {
 
     it('calls navigation service when edit button is pressed', async () => {
       await act(async () => {
-        userStore.setUser(createMockUser({ username: 'testauthor' }));
+        userStore.setUser(
+          createMockUser({
+            username: articleScreenTestMocks.article.author.username,
+          })
+        );
       });
 
       const { getByTestId } = renderArticleScreen();
@@ -230,14 +174,18 @@ describe('Article Screen Tests', () => {
 
       fireEvent.press(getByTestId(TEST_IDS.EDIT_ARTICLE_BUTTON));
 
-      expect(mockNavigationService.navigateToArticleForm).toHaveBeenCalledWith(
-        'test-article-slug'
-      );
+      expect(
+        mockServices.mockNavigationService.navigateToArticleForm
+      ).toHaveBeenCalledWith(articleScreenTestMocks.route.params.slug);
     });
 
     it('calls delete service when delete button is pressed', async () => {
       await act(async () => {
-        userStore.setUser(createMockUser({ username: 'testauthor' }));
+        userStore.setUser(
+          createMockUser({
+            username: articleScreenTestMocks.article.author.username,
+          })
+        );
       });
 
       const { getByTestId } = renderArticleScreen();
@@ -249,11 +197,13 @@ describe('Article Screen Tests', () => {
       fireEvent.press(getByTestId(TEST_IDS.DELETE_ARTICLE_BUTTON));
 
       await waitFor(() => {
-        expect(mockArticleService.deleteArticle).toHaveBeenCalledWith(
-          'test-article-slug'
+        expect(
+          mockServices.mockArticleService.deleteArticle
+        ).toHaveBeenCalledWith(articleScreenTestMocks.route.params.slug);
+        expect(mockRemoveArticle).toHaveBeenCalledWith(
+          articleScreenTestMocks.route.params.slug
         );
-        expect(mockRemoveArticle).toHaveBeenCalledWith('test-article-slug');
-        expect(mockNavigationService.goBack).toHaveBeenCalled();
+        expect(mockServices.mockNavigationService.goBack).toHaveBeenCalled();
       });
     });
   });
@@ -263,14 +213,18 @@ describe('Article Screen Tests', () => {
       const { getByText } = renderArticleScreen();
 
       await waitFor(() => {
-        expect(getByText('testauthor')).toBeTruthy();
+        expect(
+          getByText(articleScreenTestMocks.article.author.username)
+        ).toBeTruthy();
       });
 
-      fireEvent.press(getByText('testauthor'));
+      fireEvent.press(
+        getByText(articleScreenTestMocks.article.author.username)
+      );
 
       expect(
-        mockNavigationService.navigateToAuthorProfile
-      ).toHaveBeenCalledWith('testauthor');
+        mockServices.mockNavigationService.navigateToAuthorProfile
+      ).toHaveBeenCalledWith(articleScreenTestMocks.article.author.username);
     });
   });
 
@@ -278,7 +232,9 @@ describe('Article Screen Tests', () => {
     it('shows loading state while fetching article', async () => {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       const unresolvePromise: any = () => new Promise(() => {});
-      mockArticleService.getArticle.mockImplementation(unresolvePromise);
+      mockServices.mockArticleService.getArticle.mockImplementation(
+        unresolvePromise
+      );
 
       const { queryByTestId } = renderArticleScreen();
 
@@ -286,10 +242,10 @@ describe('Article Screen Tests', () => {
     });
 
     it('handles service errors gracefully', async () => {
-      mockArticleService.getArticle.mockRejectedValue(
+      mockServices.mockArticleService.getArticle.mockRejectedValue(
         new Error('Network error')
       );
-      mockArticleService.getComments.mockRejectedValue(
+      mockServices.mockArticleService.getComments.mockRejectedValue(
         new Error('Network error')
       );
 

@@ -14,6 +14,7 @@ import {
   mockArticles,
   createMockComment,
   mockComments,
+  articleScreenTestMocks,
 } from './data';
 
 interface INavigationService {
@@ -131,3 +132,28 @@ export const setupServiceMocks = () => {
 };
 
 setupServiceMocks();
+
+// Article Screen Test Specific Mock Setup
+export const setupArticleScreenMocks = () => {
+  const mockArticleService = getMockArticleService();
+  const mockNavigationService = getMockNavigationService();
+
+  mockArticleService.getArticle.mockResolvedValue({
+    article: articleScreenTestMocks.article,
+  });
+  mockArticleService.getComments.mockResolvedValue({
+    comments: articleScreenTestMocks.comments,
+  });
+  mockArticleService.createComment.mockResolvedValue({
+    comment: articleScreenTestMocks.newComment,
+  });
+  mockArticleService.deleteArticle.mockResolvedValue(undefined);
+
+  return {
+    mockArticleService,
+    mockNavigationService,
+  };
+};
+
+export const getMockArticleService = (): MockProxy<IArticleService> =>
+  mockArticleService;

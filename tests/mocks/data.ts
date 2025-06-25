@@ -452,3 +452,34 @@ export const mockComments = [
     }),
   }),
 ];
+
+// Article Screen Test Specific Mocks
+export const articleScreenTestMocks = {
+  article: createMockArticle({
+    slug: 'test-article-slug',
+    title: 'Test Article Title',
+    body: 'This is the test article body content.',
+    author: createMockAuthor({ username: 'testauthor' }),
+  }),
+  comments: [
+    createMockComment({
+      id: 1,
+      body: 'Great article! Thanks for sharing.',
+      author: createMockAuthor({ username: 'commenter1' }),
+    }),
+    createMockComment({
+      id: 2,
+      body: 'I disagree with some points but overall good read.',
+      author: createMockAuthor({ username: 'commenter2' }),
+    }),
+  ],
+  newComment: createMockComment({
+    body: 'New test comment',
+    id: 3,
+  }),
+  route: {
+    key: 'Article',
+    name: 'Article' as const,
+    params: { slug: 'test-article-slug' },
+  },
+};
