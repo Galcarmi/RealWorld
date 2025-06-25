@@ -4,34 +4,58 @@ import { TYPOGRAPHY } from '../constants/styles';
 
 import { loadFoundationPresets } from './loadFoundationPresets';
 
-export const configureTextDefaults = () => {
-  ThemeManager.setComponentTheme('Text', {
-    style: {
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-    },
-  });
-};
+class ComponentsConfigurator {
+  private _isInitialized: boolean = false;
+  private _configuredComponents: Set<string> = new Set();
 
-export const configureButtonDefaults = () => {
-  ThemeManager.setComponentTheme('Button', {
-    style: {
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-    },
-  });
-};
+  public initializeComponentThemes(): void {
+    if (this._isInitialized) {
+      return;
+    }
 
-export const configureTextFieldDefaults = () => {
-  ThemeManager.setComponentTheme('TextField', {
-    style: {
-      fontFamily: TYPOGRAPHY.BODY.fontFamily,
-    },
-  });
-};
+    loadFoundationPresets();
 
-export const initializeComponentThemes = () => {
-  loadFoundationPresets();
+    this.configureTextDefaults();
+    this.configureButtonDefaults();
+    this.configureTextFieldDefaults();
 
-  configureTextDefaults();
-  configureButtonDefaults();
-  configureTextFieldDefaults();
-};
+    this._isInitialized = true;
+  }
+
+  public get isInitialized(): boolean {
+    return this._isInitialized;
+  }
+
+  public get configuredComponents(): string[] {
+    return Array.from(this._configuredComponents);
+  }
+
+  public configureTextDefaults(): void {
+    ThemeManager.setComponentTheme('Text', {
+      style: {
+        fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+      },
+    });
+    this._configuredComponents.add('Text');
+  }
+
+  public configureButtonDefaults(): void {
+    ThemeManager.setComponentTheme('Button', {
+      style: {
+        fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+      },
+    });
+    this._configuredComponents.add('Button');
+  }
+
+  public configureTextFieldDefaults(): void {
+    ThemeManager.setComponentTheme('TextField', {
+      style: {
+        fontFamily: TYPOGRAPHY.BODY.fontFamily,
+      },
+    });
+    this._configuredComponents.add('TextField');
+  }
+}
+
+export const componentsConfigurator = new ComponentsConfigurator();

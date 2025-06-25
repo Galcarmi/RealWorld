@@ -16,17 +16,11 @@ export type {
   SingleCommentResponse,
   CreateCommentRequest,
   ApiErrorResponse,
-  LogLevel,
-  LogArgument,
-  ApiResponse,
-  ServiceConfig,
   PaginationParams,
   ArticleFilters,
   IAuthService,
   IProfileService,
   IArticleService,
-  ILogger,
-  INavigationService,
 } from './common/types';
 
 export { BaseService } from './common';

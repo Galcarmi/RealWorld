@@ -9,23 +9,3 @@ export const showErrorAlert = (
 ) => {
   Alert.alert(title || ERROR_TYPES.GENERIC, message || '', buttons);
 };
-
-export const showInfoAlert = (title: string, message: string) => {
-  Alert.alert(title, message, [{ text: ALERT_BUTTONS.OK }]);
-};
-
-export const showConfirmAlert = (
-  title: string,
-  message: string,
-  onConfirm: () => void,
-  onCancel?: () => void
-) => {
-  Alert.alert(title, message, [
-    {
-      text: ALERT_BUTTONS.CANCEL,
-      onPress: onCancel,
-      style: 'cancel',
-    },
-    { text: ALERT_BUTTONS.OK, onPress: onConfirm },
-  ]);
-};

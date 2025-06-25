@@ -11,7 +11,3 @@ export const getInitials = (name: string, count: number): string => {
 
   return initials;
 };
-
-export const getUserInitial = (username: string): string => {
-  return getInitials(username, 1);
-};
