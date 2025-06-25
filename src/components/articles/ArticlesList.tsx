@@ -23,6 +23,7 @@ interface ArticlesListProps {
   onRefresh: () => void;
   onLoadMore: () => void;
   onArticlePress?: (slug: string) => void;
+  onAuthorPress?: (username: string) => void;
   onFavoritePress?: (slug: string, favorited: boolean) => void;
   emptyMessage?: string;
   contextKey: string;
@@ -35,6 +36,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   onRefresh,
   onLoadMore,
   onArticlePress,
+  onAuthorPress,
   onFavoritePress,
   emptyMessage,
   contextKey,
@@ -45,29 +47,36 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 
   const createArticleHandlers = useCallback(
     (item: Article) => {
-      const handlePress = () => {
-        onArticlePress?.(item.slug);
+      const handleAuthorPress = () => {
+        onAuthorPress?.(item.author.username);
       };
 
       const handleFavorite = () => {
         onFavoritePress?.(item.slug, item.favorited);
       };
 
-      return { handlePress, handleFavorite };
+      const handleContentPress = () => {
+        onArticlePress?.(item.slug);
+      };
+
+      return { handleAuthorPress, handleFavorite, handleContentPress };
     },
-    [onArticlePress, onFavoritePress]
+
+    [onArticlePress, onAuthorPress, onFavoritePress]
   );
 
   const renderArticle = useCallback(
     ({ item }: { item: Article }) => {
-      const { handlePress, handleFavorite } = createArticleHandlers(item);
+      const { handleAuthorPress, handleFavorite, handleContentPress } =
+        createArticleHandlers(item);
 
       return (
         <ArticleCard
           article={item}
-          onPress={handlePress}
+          onAuthorPress={handleAuthorPress}
           onFavorite={handleFavorite}
           containerStyle={styles.articleCard}
+          onContentPress={handleContentPress}
         />
       );
     },

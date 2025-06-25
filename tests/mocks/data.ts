@@ -2,13 +2,62 @@ import { Profile, Article } from '../../src/services';
 import { User } from '../../src/store/types';
 import { MockApiResponse } from '../visual/config/puppeteerConfig';
 
+// =============================================================================
+// SHARED CONSTANTS - Common values used across mocks
+// =============================================================================
+
+const COMMON_VALUES = {
+  dates: {
+    default: '2024-01-01T00:00:00.000Z',
+    secondary: '2024-01-02T00:00:00.000Z',
+  },
+  tokens: {
+    default: 'mock-jwt-token',
+    test: 'test-token',
+  },
+  users: {
+    testUserId: '1',
+    defaultUserId: '123',
+  },
+  images: {
+    defaultAvatar: 'https://example.com/avatar.jpg',
+    authorAvatar: 'https://example.com/author.jpg',
+  },
+} as const;
+
+// Common author profiles to reuse
+const COMMON_AUTHORS = {
+  testuser1: {
+    username: 'testuser1',
+    bio: 'Author bio',
+    image: null,
+    following: false,
+  },
+  testuser2: {
+    username: 'testuser2',
+    bio: 'Another user bio',
+    image: null,
+    following: true,
+  },
+  testuser: {
+    username: 'testuser',
+    bio: 'Test bio',
+    image: null,
+    following: false,
+  },
+} as const;
+
+// =============================================================================
+// MOCK CREATORS - Basic functions to create mock data
+// =============================================================================
+
 export const createMockUser = (overrides: Partial<User> = {}): User => ({
-  id: '123',
+  id: COMMON_VALUES.users.defaultUserId,
   email: 'test@example.com',
   username: 'testuser',
   bio: 'Test bio for user',
-  image: 'https://example.com/avatar.jpg',
-  token: 'test-token',
+  image: COMMON_VALUES.images.defaultAvatar,
+  token: COMMON_VALUES.tokens.test,
   ...overrides,
 });
 
@@ -17,10 +66,14 @@ export const createMockAuthor = (
 ): Profile => ({
   username: 'testauthor',
   bio: 'Test author bio',
-  image: 'https://example.com/author.jpg',
+  image: COMMON_VALUES.images.authorAvatar,
   following: false,
   ...overrides,
 });
+
+// Helper to create common authors
+export const createCommonAuthor = (authorKey: keyof typeof COMMON_AUTHORS) =>
+  createMockAuthor(COMMON_AUTHORS[authorKey]);
 
 export const createMockArticle = (
   overrides: Partial<Article> = {}
@@ -30,50 +83,30 @@ export const createMockArticle = (
   description: 'Test article description',
   body: 'Test article body content',
   tagList: ['test', 'article'],
-  createdAt: '2024-01-01T00:00:00.000Z',
-  updatedAt: '2024-01-01T00:00:00.000Z',
+  createdAt: COMMON_VALUES.dates.default,
+  updatedAt: COMMON_VALUES.dates.default,
   favorited: false,
   favoritesCount: 0,
   author: createMockAuthor(),
   ...overrides,
 });
 
-export const mockUser = createMockUser();
-export const mockUserMinimal = createMockUser({ bio: '', image: '' });
-export const mockArticle = createMockArticle();
-
-export const mockArticles = [
-  createMockArticle({
-    slug: 'test-article-1',
-    title: 'Test Article 1',
-    description: 'This is a test article description',
-    body: 'Test article body content',
-    tagList: ['test', 'demo'],
-    favoritesCount: 5,
-    author: createMockAuthor({
-      username: 'testuser1',
-      bio: 'Author bio',
-      image: null,
-    }),
-  }),
-  createMockArticle({
-    slug: 'test-article-2',
-    title: 'Test Article 2',
-    description: 'Another test article',
-    body: 'Another test article body',
-    tagList: ['test', 'example'],
-    createdAt: '2024-01-02T00:00:00.000Z',
-    updatedAt: '2024-01-02T00:00:00.000Z',
-    favorited: true,
-    favoritesCount: 8,
-    author: createMockAuthor({
-      username: 'testuser2',
-      bio: 'Another user bio',
-      image: null,
-      following: true,
-    }),
-  }),
-];
+export const createMockComment = (
+  overrides: Partial<{
+    id: number;
+    body: string;
+    createdAt: string;
+    updatedAt: string;
+    author: Profile;
+  }> = {}
+) => ({
+  id: 1,
+  body: 'This is a test comment',
+  createdAt: COMMON_VALUES.dates.default,
+  updatedAt: COMMON_VALUES.dates.default,
+  author: createMockAuthor(),
+  ...overrides,
+});
 
 export const createMockApiResponse = (
   overrides: Partial<{ user: User; message: string }> = {}
@@ -94,39 +127,102 @@ export const createMockApiError = (errors: Record<string, string[]> = {}) => ({
   },
 });
 
-export interface VisualTestMockConfig {
-  url: RegExp;
-  method: string;
-  status: number;
-  contentType: string;
-  body: Record<string, any>;
-  delay: number;
-}
+// Helper for creating consistent authenticated user
+export const createAuthenticatedUser = (overrides: Partial<User> = {}) =>
+  createMockUser({
+    id: COMMON_VALUES.users.testUserId,
+    bio: 'Test bio',
+    image: undefined,
+    token: COMMON_VALUES.tokens.default,
+    ...overrides,
+  });
+
+// =============================================================================
+// BASIC MOCK INSTANCES - Commonly used mock data
+// =============================================================================
+
+export const mockUser = createMockUser();
+export const mockUserMinimal = createMockUser({ bio: '', image: '' });
+export const mockArticle = createMockArticle();
+
+// Reusable authors
+export const commonAuthors = {
+  testuser1: createCommonAuthor('testuser1'),
+  testuser2: createCommonAuthor('testuser2'),
+  testuser: createCommonAuthor('testuser'),
+};
+
+export const mockArticles = [
+  createMockArticle({
+    slug: 'test-article-1',
+    title: 'Test Article 1',
+    description: 'This is a test article description',
+    body: 'Test article body content',
+    tagList: ['test', 'demo'],
+    favoritesCount: 5,
+    author: commonAuthors.testuser1,
+  }),
+  createMockArticle({
+    slug: 'test-article-2',
+    title: 'Test Article 2',
+    description: 'Another test article',
+    body: 'Another test article body',
+    tagList: ['test', 'example'],
+    createdAt: COMMON_VALUES.dates.secondary,
+    updatedAt: COMMON_VALUES.dates.secondary,
+    favorited: true,
+    favoritesCount: 8,
+    author: commonAuthors.testuser2,
+  }),
+];
+
+export const mockComments = [
+  createMockComment({
+    id: 1,
+    body: 'Great article! Thanks for sharing.',
+    author: createMockAuthor({
+      username: 'commenter1',
+      bio: 'First commenter',
+      image: null,
+    }),
+  }),
+  createMockComment({
+    id: 2,
+    body: 'I disagree with some points but overall good read.',
+    createdAt: COMMON_VALUES.dates.secondary,
+    updatedAt: COMMON_VALUES.dates.secondary,
+    author: createMockAuthor({
+      username: 'commenter2',
+      bio: 'Second commenter',
+      image: null,
+    }),
+  }),
+];
+
+// =============================================================================
+// API MOCKS - Organized by domain
+// =============================================================================
+
+// Common authenticated user response
+const authenticatedUserResponse = {
+  user: createAuthenticatedUser(),
+};
 
 export const authMocks = {
   login: {
     url: /node-express-conduit\.appspot\.com\/api\/users\/login$/,
     method: 'POST',
     status: 200,
-    body: {
-      user: createMockUser({
-        id: '1',
-        bio: 'Test bio',
-        image: undefined,
-        token: 'mock-jwt-token',
-      }),
-    },
+    body: authenticatedUserResponse,
   },
   register: {
     url: /node-express-conduit\.appspot\.com\/api\/users$/,
     method: 'POST',
     status: 200,
     body: {
-      user: createMockUser({
-        id: '1',
+      user: createAuthenticatedUser({
         bio: undefined,
         image: undefined,
-        token: 'mock-jwt-token',
       }),
     },
   },
@@ -134,27 +230,18 @@ export const authMocks = {
     url: /node-express-conduit\.appspot\.com\/api\/user$/,
     method: 'GET',
     status: 200,
-    body: {
-      user: createMockUser({
-        id: '1',
-        bio: 'Test bio',
-        image: undefined,
-        token: 'mock-jwt-token',
-      }),
-    },
+    body: authenticatedUserResponse,
   },
   updateUser: {
     url: /node-express-conduit\.appspot\.com\/api\/user$/,
     method: 'PUT',
     status: 200,
     body: {
-      user: createMockUser({
-        id: '1',
+      user: createAuthenticatedUser({
         email: 'updated@example.com',
         username: 'updateduser',
         bio: 'Updated bio',
-        image: 'https://example.com/avatar.jpg',
-        token: 'mock-jwt-token',
+        image: COMMON_VALUES.images.defaultAvatar,
       }),
     },
   },
@@ -192,11 +279,7 @@ export const articleMocks = {
           body: 'Article content here',
           tagList: ['personal', 'first'],
           favoritesCount: 2,
-          author: createMockAuthor({
-            username: 'testuser',
-            bio: 'Test bio',
-            image: null,
-          }),
+          author: commonAuthors.testuser,
         }),
       ],
       articlesCount: 1,
@@ -224,11 +307,7 @@ export const articleMocks = {
           body: 'Author article content',
           tagList: ['author', 'content'],
           favoritesCount: 3,
-          author: createMockAuthor({
-            username: 'testuser1',
-            bio: 'Author bio',
-            image: null,
-          }),
+          author: commonAuthors.testuser1,
         }),
       ],
       articlesCount: 1,
@@ -246,11 +325,7 @@ export const articleMocks = {
         body: 'Article body content here',
         tagList: ['new', 'test'],
         favoritesCount: 0,
-        author: createMockAuthor({
-          username: 'testuser',
-          bio: 'Test bio',
-          image: null,
-        }),
+        author: commonAuthors.testuser,
       }),
     },
   },
@@ -286,11 +361,7 @@ export const profileMocks = {
     method: 'GET',
     status: 200,
     body: {
-      profile: createMockAuthor({
-        username: 'testuser1',
-        bio: 'Author bio',
-        image: null,
-      }),
+      profile: commonAuthors.testuser1,
     },
   },
   followAuthor: {
@@ -298,15 +369,80 @@ export const profileMocks = {
     method: 'POST',
     status: 200,
     body: {
-      profile: createMockAuthor({
-        username: 'testuser1',
-        bio: 'Author bio',
-        image: null,
+      profile: {
+        ...commonAuthors.testuser1,
         following: true,
-      }),
+      },
     },
   },
 } as const;
+
+// =============================================================================
+// VISUAL TEST MOCKS - For visual regression testing
+// =============================================================================
+
+export const visualTestMocks = {
+  article: createMockArticle({
+    slug: 'visual-test-article',
+    title: 'Visual Test Article',
+    description: 'This is a test article for visual testing',
+    body: 'This is the main content of the test article. It contains enough text to demonstrate how the article screen looks when displaying content.',
+    tagList: ['visual', 'test', 'demo'],
+    favoritesCount: 3,
+    author: createMockAuthor({
+      username: 'visualtestauthor',
+      bio: 'Author for visual test',
+      image: null,
+    }),
+  }),
+  comment: createMockComment({
+    id: 1,
+    body: 'This is a test comment for the visual test. It demonstrates how comments appear on the article screen.',
+    author: createMockAuthor({
+      username: 'testcommenter',
+      bio: 'Test commenter for visual tests',
+      image: null,
+    }),
+  }),
+} as const;
+
+export const visualTestApiMocks = {
+  homeArticles: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles(\?.*)?$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      articles: [visualTestMocks.article],
+      articlesCount: 1,
+    },
+  } as MockApiResponse,
+  individualArticle: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/visual-test-article$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      article: visualTestMocks.article,
+    },
+  } as MockApiResponse,
+  articleComments: {
+    url: /node-express-conduit\.appspot\.com\/api\/articles\/visual-test-article\/comments$/,
+    method: 'GET',
+    status: 200,
+    body: {
+      comments: [visualTestMocks.comment],
+    },
+  } as MockApiResponse,
+} as const;
+
+// Visual test configurations for different screen types
+export interface VisualTestMockConfig {
+  url: RegExp;
+  method: string;
+  status: number;
+  contentType: string;
+  body: Record<string, any>;
+  delay: number;
+}
 
 export const homeScreenVisualMocks: VisualTestMockConfig[] = [
   {
@@ -333,55 +469,101 @@ export const homeScreenVisualMocks: VisualTestMockConfig[] = [
   },
 ];
 
-export const mockCollections = {
-  auth: [authMocks.login, authMocks.getCurrentUser] as MockApiResponse[],
-  authWithRegistration: [authMocks.register] as MockApiResponse[],
+// =============================================================================
+// SPECIALIZED TEST MOCKS
+// =============================================================================
+
+// Article Screen Test Specific Mocks
+export const articleScreenTestMocks = {
+  article: createMockArticle({
+    slug: 'test-article-slug',
+    title: 'Test Article Title',
+    body: 'This is the test article body content.',
+    author: createMockAuthor({ username: 'testauthor' }),
+  }),
+  comments: [
+    createMockComment({
+      id: 1,
+      body: 'Great article! Thanks for sharing.',
+      author: createMockAuthor({ username: 'commenter1' }),
+    }),
+    createMockComment({
+      id: 2,
+      body: 'I disagree with some points but overall good read.',
+      author: createMockAuthor({ username: 'commenter2' }),
+    }),
+  ],
+  newComment: createMockComment({
+    body: 'New test comment',
+    id: 3,
+  }),
+  route: {
+    key: 'Article',
+    name: 'Article' as const,
+    params: { slug: 'test-article-slug' },
+  },
+};
+
+export const articleScreenVisualMocks: MockApiResponse[] = [
+  authMocks.login,
+  authMocks.getCurrentUser,
+  visualTestApiMocks.homeArticles,
+  visualTestApiMocks.individualArticle,
+  visualTestApiMocks.articleComments,
+];
+
+// =============================================================================
+// MOCK COLLECTION HELPERS
+// =============================================================================
+
+// Common auth pattern used in most collections
+const getBaseAuthMocks = (): MockApiResponse[] => [
+  authMocks.login,
+  authMocks.getCurrentUser,
+];
+
+export const mockCollections: Record<string, MockApiResponse[]> = {
+  auth: getBaseAuthMocks(),
+  authWithRegistration: [authMocks.register],
   basicApp: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.getArticles,
     articleMocks.getUserArticlesEmpty,
-  ] as MockApiResponse[],
+  ],
   authorProfile: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.getArticles,
     profileMocks.getAuthorProfile,
     articleMocks.getAuthorArticles,
     profileMocks.followAuthor,
-  ] as MockApiResponse[],
+  ],
   favorites: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.getArticles,
     articleMocks.getFavoriteArticles,
     articleMocks.favoriteArticle1,
     articleMocks.unfavoriteArticle2,
-  ] as MockApiResponse[],
+  ],
   userProfile: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.getArticles,
     articleMocks.getUserArticles,
-  ] as MockApiResponse[],
+  ],
   editProfile: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     authMocks.updateUser,
     articleMocks.getUserArticlesEmpty,
-  ] as MockApiResponse[],
+  ],
   newArticle: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.createArticle,
     articleMocks.getUserArticlesEmpty,
     articleMocks.getArticles,
     profileMocks.getAuthorProfile,
     articleMocks.getAuthorArticles,
-  ] as MockApiResponse[],
+  ],
   completeIntegration: [
-    authMocks.login,
-    authMocks.getCurrentUser,
+    ...getBaseAuthMocks(),
     articleMocks.getArticles,
     profileMocks.getAuthorProfile,
     articleMocks.getAuthorArticles,
@@ -389,7 +571,13 @@ export const mockCollections = {
     articleMocks.unfavoriteArticle2,
     articleMocks.getUserArticlesEmpty,
     articleMocks.createArticle,
-  ] as MockApiResponse[],
+  ],
+  articleScreenVisual: [
+    ...getBaseAuthMocks(),
+    visualTestApiMocks.homeArticles,
+    visualTestApiMocks.individualArticle,
+    visualTestApiMocks.articleComments,
+  ],
   allMocks: [
     authMocks.login,
     authMocks.register,
@@ -405,10 +593,11 @@ export const mockCollections = {
     articleMocks.unfavoriteArticle2,
     profileMocks.getAuthorProfile,
     profileMocks.followAuthor,
-  ] as MockApiResponse[],
+  ],
 } as const;
 
 export const visualTestMockCollections = {
   homeScreen: homeScreenVisualMocks,
+  articleScreen: articleScreenVisualMocks,
   emptyMocks: [] as VisualTestMockConfig[],
 } as const;

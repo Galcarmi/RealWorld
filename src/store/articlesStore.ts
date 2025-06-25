@@ -142,6 +142,15 @@ class ArticlesStore implements IArticlesStore {
     this.favoritesErrors = undefined;
   }
 
+  public removeArticle(slug: string) {
+    this.homeArticles = this.homeArticles.filter(
+      article => article.slug !== slug
+    );
+    this.favoriteArticles = this.favoriteArticles.filter(
+      article => article.slug !== slug
+    );
+  }
+
   private _setFeedTypeAndReset(feedType: FeedType): void {
     this.feedType = feedType;
     this.homeCurrentOffset = 0;

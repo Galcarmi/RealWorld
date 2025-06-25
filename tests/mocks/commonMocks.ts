@@ -50,39 +50,49 @@ jest.mock('react-native-ui-lib', () => {
   };
 });
 
+// Create stable references for translation functions
+const translations: Record<string, string> = {
+  'empty.noFavoriteArticles': 'No favorite articles yet',
+  'empty.noArticlesFound': 'No articles found',
+  'empty.followUsersMessage': 'Follow some users to see their articles here',
+  'empty.noArticlesAvailable': 'No articles available',
+  'empty.noUserArticles':
+    "No articles yet. Tap 'New Article' to create your first post",
+  'common.back': 'Back',
+  'common.loading': 'Loading...',
+  'common.publish': 'Publish',
+  'feed.forYou': 'For You',
+  'feed.following': 'Following',
+  'feed.global': 'Global',
+  'navigation.profile': 'Profile',
+  'navigation.newArticle': 'New Article',
+  'placeholders.username': 'Username',
+  'placeholders.email': 'Email',
+  'placeholders.password': 'Password',
+  'placeholders.title': 'Article Title',
+  'placeholders.description': 'Article Description',
+  'placeholders.articleText': 'Write your article content...',
+  'auth.signIn': 'Sign In',
+  'auth.signUp': 'Sign Up',
+  'auth.submit': 'Submit',
+  'errors.failedToFetchArticles': 'Failed to fetch articles',
+  'errors.failedToCreateArticle': 'Failed to create article',
+  'errors.failedToFetchArticle': 'Failed to fetch article',
+  'errors.failedToFetchComments': 'Failed to fetch comments',
+  'errors.failedToCreateComment': 'Failed to create comment',
+  'errors.failedToUpdateFavorite': 'Failed to update favorite',
+  'errors.failedToDeleteArticle': 'Failed to delete article',
+  'comments.addComment': 'Add a comment...',
+  'comments.post': 'Post',
+  'common.edit': 'Edit',
+  'common.delete': 'Delete',
+};
+
+const stableTranslationFunction = (key: string) => translations[key] || key;
+
 jest.mock('../../src/hooks/useTranslation', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'empty.noFavoriteArticles': 'No favorite articles yet',
-        'empty.noArticlesFound': 'No articles found',
-        'empty.followUsersMessage':
-          'Follow some users to see their articles here',
-        'empty.noArticlesAvailable': 'No articles available',
-        'empty.noUserArticles':
-          "No articles yet. Tap 'New Article' to create your first post",
-        'common.back': 'Back',
-        'common.loading': 'Loading...',
-        'common.publish': 'Publish',
-        'feed.forYou': 'For You',
-        'feed.following': 'Following',
-        'feed.global': 'Global',
-        'navigation.profile': 'Profile',
-        'navigation.newArticle': 'New Article',
-        'placeholders.username': 'Username',
-        'placeholders.email': 'Email',
-        'placeholders.password': 'Password',
-        'placeholders.title': 'Article Title',
-        'placeholders.description': 'Article Description',
-        'placeholders.articleText': 'Write your article content...',
-        'auth.signIn': 'Sign In',
-        'auth.signUp': 'Sign Up',
-        'auth.submit': 'Submit',
-        'errors.failedToFetchArticles': 'Failed to fetch articles',
-        'errors.failedToCreateArticle': 'Failed to create article',
-      };
-      return translations[key] || key;
-    },
+    t: stableTranslationFunction,
   }),
 }));
 
@@ -92,7 +102,7 @@ jest.mock('../../src/services', () => ({
     navigateToAuthTabs: jest.fn(),
     navigateToLoginScreen: jest.fn(),
     navigateToSignUpScreen: jest.fn(),
-    navigateToNewArticle: jest.fn(),
+    navigateToArticleForm: jest.fn(),
     navigateToEditProfile: jest.fn(),
     navigateToAuthorProfile: jest.fn(),
     goBack: jest.fn(),

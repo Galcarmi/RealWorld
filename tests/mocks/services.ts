@@ -8,7 +8,14 @@ import {
 } from '../../src/services';
 import { StorageUtils } from '../../src/utils/storageUtils';
 
-import { mockUser, mockArticle, mockArticles } from './data';
+import {
+  mockUser,
+  mockArticle,
+  mockArticles,
+  createMockComment,
+  mockComments,
+  articleScreenTestMocks,
+} from './data';
 
 interface INavigationService {
   setNavioInstance: (navioInstance: NavioInstance) => void;
@@ -17,9 +24,10 @@ interface INavigationService {
   navigateToAuthTabs: () => void;
   navigateToLoginScreen: () => void;
   navigateToSignUpScreen: () => void;
-  navigateToNewArticle: () => void;
+  navigateToArticleForm: (slug?: string) => void;
   navigateToEditProfile: () => void;
   navigateToAuthorProfile: (username: string) => void;
+  navigateToArticle: (slug: string) => void;
   goBack: () => void;
 }
 
@@ -101,9 +109,51 @@ export const setupServiceMocks = () => {
     },
   });
 
+  mockArticleService.getArticle.mockResolvedValue({
+    article: mockArticle,
+  });
+  mockArticleService.getComments.mockResolvedValue({
+    comments: mockComments,
+  });
+  mockArticleService.createComment.mockResolvedValue({
+    comment: createMockComment({
+      id: 3,
+      body: 'New test comment',
+    }),
+  });
+  mockArticleService.deleteArticle.mockResolvedValue();
+  mockArticleService.updateArticle.mockResolvedValue({
+    article: mockArticle,
+  });
+
   jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();
   jest.spyOn(StorageUtils, 'getUserData').mockResolvedValue(mockUser);
   jest.spyOn(StorageUtils, 'clearUserData').mockResolvedValue();
 };
 
 setupServiceMocks();
+
+// Article Screen Test Specific Mock Setup
+export const setupArticleScreenMocks = () => {
+  const mockArticleService = getMockArticleService();
+  const mockNavigationService = getMockNavigationService();
+
+  mockArticleService.getArticle.mockResolvedValue({
+    article: articleScreenTestMocks.article,
+  });
+  mockArticleService.getComments.mockResolvedValue({
+    comments: articleScreenTestMocks.comments,
+  });
+  mockArticleService.createComment.mockResolvedValue({
+    comment: articleScreenTestMocks.newComment,
+  });
+  mockArticleService.deleteArticle.mockResolvedValue(undefined);
+
+  return {
+    mockArticleService,
+    mockNavigationService,
+  };
+};
+
+export const getMockArticleService = (): MockProxy<IArticleService> =>
+  mockArticleService;

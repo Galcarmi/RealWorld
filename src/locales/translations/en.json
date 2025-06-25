@@ -73,15 +73,20 @@
     "somethingWentWrong": "Something went wrong",
     "somethingWentWrongTryAgain": "Something went wrong, please try again",
     "failedToFetchArticles": "Failed to fetch articles",
+    "failedToFetchArticle": "Failed to fetch article",
+    "failedToFetchComments": "Failed to fetch comments",
+    "failedToCreateComment": "Failed to create comment",
     "failedToCreateArticle": "Failed to create article",
     "failedToUpdateArticle": "Failed to update article",
+    "failedToUpdateFavorite": "Failed to update favorite",
     "failedToLoadArticles": "Failed to load articles",
     "failedToLoadFavoriteArticles": "Failed to load favorite articles",
     "failedToFetchUserArticles": "Failed to fetch user articles",
     "failedToFetchAuthorProfile": "Failed to fetch author profile",
     "failedToLoadAuthorArticles": "Failed to load author articles",
     "failedToToggleFollowStatus": "Failed to toggle follow status",
-    "failedToUpdateProfile": "Failed to update profile"
+    "failedToUpdateProfile": "Failed to update profile",
+    "failedToDeleteArticle": "Failed to delete article"
   },
   "empty": {
     "noArticlesFound": "No articles found",
@@ -96,5 +101,9 @@
   },
   "tags": {
     "more": "more"
+  },
+  "comments": {
+    "addComment": "Add a comment...",
+    "post": "Post"
   }
 } 

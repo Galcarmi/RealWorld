@@ -39,8 +39,8 @@ export const TagsList: React.FC<TagsListProps> = observer(
 
     return (
       <View style={styles.container}>
-        {visibleTags.map((tag, index) => (
-          <View key={index} style={styles.tag}>
+        {visibleTags.map(tag => (
+          <View key={tag} style={styles.tag}>
             <Text style={styles.tagText}>{tag}</Text>
           </View>
         ))}

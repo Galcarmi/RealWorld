@@ -6,9 +6,10 @@ interface NavigationServiceType {
   setRoot: (rootType: 'stacks' | 'tabs' | 'drawers', rootName: string) => void;
   navigateToMainTabs: () => void;
   navigateToAuthTabs: () => void;
-  navigateToNewArticle: () => void;
+  navigateToArticleForm: (slug?: string) => void;
   navigateToEditProfile: () => void;
   navigateToAuthorProfile: (username: string) => void;
+  navigateToArticle: (slug: string) => void;
   goBack: () => void;
 }
 
@@ -41,9 +42,9 @@ class NavigationService implements NavigationServiceType {
     this.setRoot(NAVIGATION_ROOT_TYPES.STACKS, 'SignUpStack');
   }
 
-  public navigateToNewArticle() {
+  public navigateToArticleForm(slug?: string) {
     if (this._navioInstance) {
-      this._navioInstance.push('NewArticle');
+      this._navioInstance.push('ArticleForm', slug ? { slug } : undefined);
     }
   }
 
@@ -56,6 +57,12 @@ class NavigationService implements NavigationServiceType {
   public navigateToAuthorProfile(username: string) {
     if (this._navioInstance) {
       this._navioInstance.push('AuthorProfile', { username });
+    }
+  }
+
+  public navigateToArticle(slug: string) {
+    if (this._navioInstance) {
+      this._navioInstance.push('Article', { slug });
     }
   }
 

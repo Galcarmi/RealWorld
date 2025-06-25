@@ -34,7 +34,7 @@ export const useProfile = () => {
   }, [currentUser?.username, t]);
 
   const onCreateNewArticle = useCallback(() => {
-    navigationService.navigateToNewArticle();
+    navigationService.navigateToArticleForm();
   }, []);
 
   const onEditProfile = useCallback(() => {
@@ -49,6 +49,14 @@ export const useProfile = () => {
     [fetchUserArticles]
   );
 
+  const onArticlePress = useCallback((slug: string) => {
+    navigationService.navigateToArticle(slug);
+  }, []);
+
+  const onAuthorPress = useCallback((username: string) => {
+    navigationService.navigateToAuthorProfile(username);
+  }, []);
+
   useEffect(() => {
     fetchUserArticles();
   }, [currentUser?.username, fetchUserArticles]);
@@ -60,6 +68,8 @@ export const useProfile = () => {
     onCreateNewArticle,
     onEditProfile,
     onToggleFavorite,
+    onArticlePress,
+    onAuthorPress,
     refreshUserArticles: fetchUserArticles,
   };
 };

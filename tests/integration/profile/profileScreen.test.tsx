@@ -71,7 +71,7 @@ describe('Profile Screen Tests', () => {
       );
       const newArticleSpy = jest.spyOn(
         navigationService,
-        'navigateToNewArticle'
+        'navigateToArticleForm'
       );
 
       const { getByTestId } = renderProfileScreen();

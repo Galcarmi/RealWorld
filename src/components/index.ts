@@ -10,9 +10,12 @@ export {
   ArticlesList,
   ArticleCard,
   ArticleContent,
-  NewArticleForm,
+  ArticleHeader,
+  ArticleForm,
   NewArticleButton,
   TagsList,
 } from './articles';
 
 export { ProfileHeader, AuthorProfileHeader, AuthorHeader } from './profile';
+
+export { CommentItem } from './comments';

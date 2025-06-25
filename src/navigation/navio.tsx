@@ -5,13 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Navio } from 'rn-navio';
 
 import { COLORS } from '../constants/styles';
+import { ArticleScreen } from '../screens/article/articleScreen';
+import { ArticleFormScreen } from '../screens/articleForm/articleFormScreen';
 import { AuthorProfileScreen } from '../screens/authorProfile/authorProfileScreen';
 import { EditProfileScreen } from '../screens/editProfile/editProfileScreen';
 import { FavoritesScreen } from '../screens/favoritesScreen/favoritesScreen';
 import { HomeScreen } from '../screens/homeScreen/homeScreen';
 import { SignInScreen } from '../screens/login/signInScreen';
 import { SignUpScreen } from '../screens/login/signUpScreen';
-import { NewArticleScreen } from '../screens/newArticle/newArticleScreen';
 import { ProfileScreen } from '../screens/profileScreen/profileScreen';
 import { navigationService } from '../services/navigation/NavigationService';
 
@@ -100,17 +101,30 @@ const navio = Navio.build({
         ...headerOptions,
       }),
     },
-    NewArticle: {
-      component: NewArticleScreen,
+    ArticleForm: {
+      component: ArticleFormScreen,
+      options: () => ({
+        ...headerOptions,
+        title: '',
+      }),
+    },
+    Article: {
+      component: ArticleScreen,
       options: () => ({
         ...headerOptions,
       }),
     },
   },
   stacks: {
-    HomeStack: ['Home', 'AuthorProfile', 'Favorites'],
-    FavoritesStack: ['Favorites', 'AuthorProfile'],
-    ProfileStack: ['Profile', 'EditProfile', 'NewArticle', 'AuthorProfile'],
+    HomeStack: ['Home', 'AuthorProfile', 'Favorites', 'Article', 'ArticleForm'],
+    FavoritesStack: ['Favorites', 'AuthorProfile', 'Article', 'ArticleForm'],
+    ProfileStack: [
+      'Profile',
+      'EditProfile',
+      'ArticleForm',
+      'AuthorProfile',
+      'Article',
+    ],
     SignInStack: ['SignIn'],
     SignUpStack: ['SignUp'],
   },

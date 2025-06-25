@@ -1,8 +1,14 @@
 import React from 'react';
 
-import { render } from '@testing-library/react-native';
+import { render, act } from '@testing-library/react-native';
 
-import { mockUser } from '../mocks/data';
+import {
+  mockUser,
+  createMockUser,
+  articleScreenTestMocks,
+} from '../mocks/data';
+import { setMockRoute } from '../mocks/navigation';
+import * as storeMocks from '../mocks/stores';
 import {
   ValidationFunction,
   TestingLibraryQueries,
@@ -129,4 +135,25 @@ export const renderProfileScreen = () => {
     ProfileScreen,
   } = require('../../src/screens/profileScreen/profileScreen');
   return render(React.createElement(ProfileScreen));
+};
+
+// Article Screen Test Helpers
+export const renderArticleScreen = () => {
+  const { ArticleScreen } = require('../../src/screens/article/articleScreen');
+  return render(React.createElement(ArticleScreen));
+};
+
+export const setupAuthenticatedUser = async (userOverrides = {}) => {
+  const userStore = storeMocks.getUserStore();
+  const user = createMockUser(userOverrides);
+  await act(async () => {
+    userStore.setUser(user);
+  });
+  return user;
+};
+
+export const setupArticleScreenTest = async (userOverrides = {}) => {
+  setMockRoute(articleScreenTestMocks.route);
+  const user = await setupAuthenticatedUser(userOverrides);
+  return { user };
 };

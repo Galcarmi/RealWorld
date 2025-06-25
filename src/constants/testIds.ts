@@ -37,11 +37,15 @@ export const TEST_IDS = {
 
   // Articles
   NEW_ARTICLE_SCREEN: 'new-article-screen',
+  ARTICLE_SCREEN: 'article-screen',
+  EDIT_ARTICLE_BUTTON: 'edit-article-button',
+  FAVORITE_ARTICLE_BUTTON: 'favorite-article-button',
   ARTICLE_TITLE_INPUT: 'article-title-input',
   ARTICLE_DESCRIPTION_INPUT: 'article-description-input',
   ARTICLE_BODY_INPUT: 'article-body-input',
   PUBLISH_ARTICLE_BUTTON: 'publish-article-button',
   NEW_ARTICLE_BUTTON: 'new-article-button',
+  DELETE_ARTICLE_BUTTON: 'delete-article-button',
 
   // Dynamic TestIDs (functions to generate)
   ARTICLE_CARD: (slug: string) => `article-card-${slug}`,

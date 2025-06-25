@@ -4,7 +4,7 @@ import '../../mocks';
 import { fillArticleForm } from '../../utils/formHelpers';
 
 import { TEST_IDS } from '../../../src/constants/testIds';
-import { NewArticleScreen } from '../../../src/screens/newArticle/newArticleScreen';
+import { ArticleFormScreen } from '../../../src/screens/articleForm/articleFormScreen';
 import { createMockUser, createMockArticle } from '../../mocks/data';
 import * as storeMocks from '../../mocks/stores';
 
@@ -12,7 +12,7 @@ const articlesStore = storeMocks.getArticlesStore();
 const userStore = storeMocks.getUserStore();
 
 const renderNewArticleScreen = () => {
-  return render(<NewArticleScreen />);
+  return render(<ArticleFormScreen />);
 };
 
 describe('Article Creation Tests', () => {

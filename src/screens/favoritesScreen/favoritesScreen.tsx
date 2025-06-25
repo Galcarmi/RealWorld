@@ -22,6 +22,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
     refreshArticles,
     handleFavoritePress,
     handleArticlePress,
+    handleAuthorPress,
   } = useFavoriteArticles();
 
   const styles = useMemo(() => createStyles(), []);
@@ -35,6 +36,7 @@ export const FavoritesScreen: NavioScreen = observer(() => {
           onRefresh={refreshArticles}
           onLoadMore={loadMoreArticles}
           onArticlePress={handleArticlePress}
+          onAuthorPress={handleAuthorPress}
           onFavoritePress={handleFavoritePress}
           emptyMessage={t('empty.noFavoriteArticles')}
           contextKey='favorites'

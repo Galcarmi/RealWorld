@@ -29,6 +29,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     onCreateNewArticle,
     onEditProfile,
     onToggleFavorite,
+    onArticlePress,
+    onAuthorPress,
     refreshUserArticles,
   } = useProfile();
 
@@ -51,7 +53,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
         isLoading={isLoading}
         onRefresh={refreshUserArticles}
         onLoadMore={noop}
-        onArticlePress={noop}
+        onArticlePress={onArticlePress}
+        onAuthorPress={onAuthorPress}
         onFavoritePress={onToggleFavorite}
         emptyMessage={t('empty.noUserArticles')}
         contextKey='profile'

@@ -28,6 +28,7 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
     handleUserFeedPress,
     handleFavoritePress,
     handleArticlePress,
+    handleAuthorPress,
   } = useArticles();
 
   const styles = useMemo(() => createStyles(), []);
@@ -51,6 +52,7 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
         onRefresh={refreshArticles}
         onLoadMore={loadMoreArticles}
         onArticlePress={handleArticlePress}
+        onAuthorPress={handleAuthorPress}
         onFavoritePress={handleFavoritePress}
         emptyMessage={
           feedType === FEED_TYPES.FEED
