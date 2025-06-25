@@ -17,3 +17,5 @@ export {
 } from './articles';
 
 export { ProfileHeader, AuthorProfileHeader, AuthorHeader } from './profile';
+
+export { CommentItem } from './comments';

@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { TextField, View, Text, Button } from 'react-native-ui-lib';
+import { TextField, View, Button } from 'react-native-ui-lib';
 
 import { useRoute, RouteProp } from '@react-navigation/native';
 
@@ -11,7 +11,7 @@ import { COLORS, DIMENSIONS, SPACINGS } from '../../constants/styles';
 
 import { RootStackParamList } from '../../navigation/types';
 
-import { ArticleHeader, ArticleContent } from '../../components';
+import { ArticleHeader, ArticleContent, CommentItem } from '../../components';
 import { TEST_IDS } from '../../constants';
 import { useTranslation } from '../../hooks/useTranslation';
 import { userStore } from '../../store';
@@ -72,35 +72,39 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
             />
           </View>
 
-          <View style={styles.contentSection}>
-            <ArticleContent body={article.body} tags={article.tagList} />
-          </View>
-          <View style={styles.commentSection}>
-            <FlatList
-              data={comments}
-              renderItem={({ item }) => <Text>{item.body}</Text>}
-            />
-          </View>
-          <View style={styles.commentInputSection}>
-            <TextField
-              placeholder={t('comments.addComment')}
-              multiline
-              value={commentText}
-              onChangeText={setCommentText}
-              containerStyle={styles.commentInputContainer}
-              fieldStyle={styles.commentInput}
-            />
-            <View style={styles.commentInputButtonContainer}>
-              <Button
-                label={t('comments.post')}
-                onPress={handlePostComment}
-                disabled={!commentText.trim() || isCreatingComment}
-                backgroundColor={COLORS.SECONDARY}
-                outlineColor={COLORS.PRIMARY}
-                color={COLORS.PRIMARY}
-                borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
-                size={'small'}
+          <View style={styles.bodySection}>
+            <View style={styles.contentSection}>
+              <ArticleContent body={article.body} tags={article.tagList} />
+            </View>
+            <View style={styles.commentSection}>
+              <FlatList
+                data={comments}
+                renderItem={({ item }) => <CommentItem comment={item} />}
+                keyExtractor={item => item.id.toString()}
+                showsVerticalScrollIndicator={false}
               />
+            </View>
+            <View style={styles.commentInputSection}>
+              <TextField
+                placeholder={t('comments.addComment')}
+                multiline
+                value={commentText}
+                onChangeText={setCommentText}
+                containerStyle={styles.commentInputContainer}
+                fieldStyle={styles.commentInput}
+              />
+              <View style={styles.commentInputButtonContainer}>
+                <Button
+                  label={t('comments.post')}
+                  onPress={handlePostComment}
+                  disabled={!commentText.trim() || isCreatingComment}
+                  backgroundColor={COLORS.SECONDARY}
+                  outlineColor={COLORS.PRIMARY}
+                  color={COLORS.PRIMARY}
+                  borderRadius={DIMENSIONS.BORDER_RADIUS_LARGE}
+                  size={'small'}
+                />
+              </View>
             </View>
           </View>
         </>
@@ -126,16 +130,25 @@ const createStyles = () =>
       backgroundColor: COLORS.SECONDARY,
       flexShrink: 0,
     },
-    contentSection: {
+    bodySection: {
       flex: 1,
+    },
+    contentSection: {
+      flex: 0.7,
       padding: SPACINGS.LARGE,
     },
     commentSection: {
-      padding: SPACINGS.LARGE,
+      flex: 0.3,
+      backgroundColor: COLORS.BACKGROUND,
+      shadowColor: 'rgba(0, 0, 0, 0.1)',
+      shadowOffset: {
+        width: 0,
+        height: -5,
+      },
+      shadowOpacity: 0.5,
     },
     commentInputSection: {
       padding: SPACINGS.LARGE,
-      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
     },
     commentInput: {
       borderWidth: 1,
