@@ -15,10 +15,10 @@ class LanguageStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.initializeLanguage();
+    this._initializeLanguage();
   }
 
-  private getDeviceLanguage(): SupportedLanguage {
+  private _getDeviceLanguage(): SupportedLanguage {
     const deviceLanguage = Localization.locale.split(
       '-'
     )[0] as SupportedLanguage;
@@ -30,9 +30,9 @@ class LanguageStore {
     return 'en';
   }
 
-  private async initializeLanguage() {
+  private async _initializeLanguage() {
     try {
-      const languageToUse = this.getDeviceLanguage();
+      const languageToUse = this._getDeviceLanguage();
 
       await i18n.changeLanguage(languageToUse);
 
@@ -52,24 +52,6 @@ class LanguageStore {
         this.isInitialized = true;
       });
     }
-  }
-
-  get supportedLanguages() {
-    return SUPPORTED_LANGUAGES;
-  }
-
-  get languageNames() {
-    return Object.entries(SUPPORTED_LANGUAGES).reduce(
-      (acc, [key, value]) => {
-        acc[key as SupportedLanguage] = value;
-        return acc;
-      },
-      {} as Record<SupportedLanguage, string>
-    );
-  }
-
-  get supportedLanguageKeys() {
-    return Object.keys(SUPPORTED_LANGUAGES) as SupportedLanguage[];
   }
 }
 

@@ -5,17 +5,11 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import {
-  API,
-  HTTP_STATUS,
-  AUTH,
-  HTTP_HEADERS,
-  ERROR_TYPES,
-} from '../../constants/app';
+import { API, HTTP_STATUS, AUTH, HTTP_HEADERS } from '../../constants/app';
 import { appEventEmitter } from '../../utils/eventEmitter';
 import { getToken } from '../../utils/tokenProvider';
 
-import { Logger, showErrorAlert } from '../../utils';
+import { Logger } from '../../utils';
 
 import { ApiErrorResponse } from './types';
 
@@ -40,12 +34,6 @@ export abstract class BaseService {
     throw errorResponse;
   }
 
-  protected _logErrorAndShowAlert(errorResponse: ApiErrorResponse): never {
-    this._logApiError(errorResponse);
-    this._showErrorAlert(errorResponse);
-    throw errorResponse;
-  }
-
   private _logApiError(errorResponse: ApiErrorResponse): void {
     Logger.log('🔴 API Error:', {
       status: errorResponse?.response?.status,
@@ -55,17 +43,6 @@ export abstract class BaseService {
       method: errorResponse?.config?.method,
       timestamp: new Date().toISOString(),
     });
-  }
-
-  private _showErrorAlert(errorResponse: ApiErrorResponse): void {
-    if (errorResponse?.response?.data?.errors) {
-      showErrorAlert(
-        ERROR_TYPES.GENERIC,
-        JSON.stringify(errorResponse.response.data.errors.message)
-      );
-    } else {
-      showErrorAlert();
-    }
   }
 
   private _logRequestDetails(config: InternalAxiosRequestConfig): void {
