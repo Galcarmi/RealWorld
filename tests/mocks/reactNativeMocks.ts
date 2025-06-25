@@ -24,9 +24,3 @@ jest.mock('react-native-ui-lib', () => {
     Typography: { loadTypographies: jest.fn() },
   };
 });
-
-jest.mock('../../src/hooks/useTranslation', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
