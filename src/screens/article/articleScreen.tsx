@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -25,21 +25,9 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
   const route = useRoute<ArticleScreenRouteProp>();
   const slug = route.params?.slug;
 
-  const { article, isLoading, onAuthorPress, onDelete, onEdit } =
-    useArticle(slug);
+  const { article, onAuthorPress, onDelete, onEdit } = useArticle(slug);
 
   const styles = useMemo(() => createStyles(), []);
-
-  const refreshControl = useMemo(
-    () => (
-      <RefreshControl
-        refreshing={isLoading}
-        colors={[COLORS.PRIMARY]}
-        tintColor={COLORS.PRIMARY}
-      />
-    ),
-    [isLoading]
-  );
 
   const isAuthor = useMemo(() => {
     return article?.author?.username === userStore.user?.username;
@@ -47,28 +35,23 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
 
   return (
     <View style={styles.container} testID={TEST_IDS.ARTICLE_SCREEN}>
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        refreshControl={refreshControl}
-      >
-        {article && (
-          <>
+      {article && (
+        <>
+          <View style={styles.headerSection}>
             <ArticleHeader
               article={article}
               onAuthorPress={onAuthorPress}
               onDelete={onDelete}
               onEdit={onEdit}
-              containerStyle={styles.headerSection}
               isAuthor={isAuthor}
             />
+          </View>
 
-            <View style={styles.contentSection}>
-              <ArticleContent body={article.body} tags={article.tagList} />
-            </View>
-          </>
-        )}
-      </ScrollView>
+          <View style={styles.contentSection}>
+            <ArticleContent body={article.body} tags={article.tagList} />
+          </View>
+        </>
+      )}
     </View>
   );
 });
@@ -79,12 +62,11 @@ const createStyles = () =>
       flex: 1,
       backgroundColor: COLORS.BACKGROUND,
     },
-    scrollView: {
-      flex: 1,
-    },
     headerSection: {
-      padding: SPACINGS.LARGE,
+      paddingHorizontal: SPACINGS.LARGE,
+      paddingVertical: SPACINGS.EXTRA_LARGE,
       backgroundColor: COLORS.SECONDARY,
+      flexShrink: 0,
     },
     contentSection: {
       flex: 1,

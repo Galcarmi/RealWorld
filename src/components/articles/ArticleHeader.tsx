@@ -62,7 +62,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
     }, []);
 
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View style={containerStyle}>
         <Text style={styles.title}>{article.title}</Text>
 
         <View style={styles.authorSection}>
@@ -122,28 +122,21 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
 
 const createStyles = () =>
   StyleSheet.create({
-    container: {
-      paddingBottom: SPACINGS.HEADER_BOTTOM,
-      paddingTop: SPACINGS.HEADER_TOP,
-    },
     title: {
       fontSize: FONT_SIZES.EXTRA_LARGE,
       fontWeight: FONT_WEIGHTS.BOLD,
       textAlign: 'left',
-      flex: 1,
+      marginBottom: SPACINGS.MEDIUM,
     },
     authorSection: {
-      paddingTop: SPACINGS.MEDIUM,
-      flex: 1,
+      justifyContent: 'center',
     },
     authorInfo: {
       flexDirection: 'row',
       alignItems: 'center',
-      flex: 1,
     },
     authorTextInfo: {
       marginLeft: SPACINGS.MEDIUM,
-      flex: 1,
     },
     authorName: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
@@ -153,14 +146,11 @@ const createStyles = () =>
     createdAt: {
       fontSize: TYPOGRAPHY.BODY.fontSize,
       color: COLORS.PLACEHOLDER,
-      marginTop: 2,
     },
     actionButtons: {
       paddingTop: SPACINGS.MEDIUM,
-      alignItems: 'center',
       flexDirection: 'row',
       gap: SPACINGS.SMALL,
-      flex: 1,
     },
     actionButton: {
       paddingHorizontal: SPACINGS.MEDIUM,

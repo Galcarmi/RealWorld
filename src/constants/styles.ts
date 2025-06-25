@@ -69,6 +69,7 @@ export const SPACINGS = {
 
 export const DIMENSIONS = {
   SCREEN_WIDTH: Dimensions.get('window').width,
+  SCREEN_HEIGHT: Dimensions.get('window').height,
   // Common percentages
   WIDTH_FULL: '100%',
   WIDTH_80_PERCENT: '80%',
