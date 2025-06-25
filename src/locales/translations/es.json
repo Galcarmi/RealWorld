@@ -96,5 +96,9 @@
   },
   "tags": {
     "more": "más"
+  },
+  "comments": {
+    "addComment": "Agregar un comentario...",
+    "post": "Publicar"
   }
 } 

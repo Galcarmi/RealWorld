@@ -98,5 +98,9 @@
   },
   "tags": {
     "more": "more"
+  },
+  "comments": {
+    "addComment": "Add a comment...",
+    "post": "Post"
   }
 } 

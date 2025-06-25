@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from '../../hooks/useTranslation';
 import { Article, articleService, navigationService } from '../../services';
@@ -61,6 +61,8 @@ export const useArticle = (slug?: string) => {
     }
   }, [article]);
 
+  const comments = useMemo(() => [], []);
+
   useEffect(() => {
     fetchArticle();
   }, [fetchArticle]);
@@ -72,5 +74,6 @@ export const useArticle = (slug?: string) => {
     onAuthorPress,
     onDelete,
     onEdit,
+    comments,
   };
 };
