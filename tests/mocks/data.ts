@@ -517,9 +517,12 @@ export const articleScreenVisualMocks: MockApiResponse[] = [
 // =============================================================================
 
 // Common auth pattern used in most collections
-const getBaseAuthMocks = () => [authMocks.login, authMocks.getCurrentUser];
+const getBaseAuthMocks = (): MockApiResponse[] => [
+  authMocks.login,
+  authMocks.getCurrentUser,
+];
 
-export const mockCollections = {
+export const mockCollections: Record<string, MockApiResponse[]> = {
   auth: getBaseAuthMocks(),
   authWithRegistration: [authMocks.register],
   basicApp: [
