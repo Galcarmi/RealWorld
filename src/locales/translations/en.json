@@ -1,0 +1,109 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "retry": "Retry",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "or": "Or",
+    "update": "Update",
+    "publish": "Publish",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Log out",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "newPassword": "New password",
+    "username": "Username",
+    "forgotPassword": "Forgot Password?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "welcome": "Welcome"
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "editProfile": "Edit Profile",
+    "newArticle": "New Article",
+    "settings": "Settings",
+    "about": "About",
+    "favorites": "Favorites"
+  },
+  "placeholders": {
+    "email": "Email",
+    "password": "Password",
+    "newPassword": "New password",
+    "username": "Username",
+    "yourName": "Your name",
+    "profilePictureUrl": "URL of profile picture",
+    "shortBio": "A short bio about you",
+    "yourEmail": "Your email",
+    "title": "Title",
+    "description": "Description",
+    "articleText": "Article text"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Not a valid email",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password is too short",
+    "usernameRequired": "Username is required",
+    "usernameTooShort": "Username is too short",
+    "titleRequired": "Title is required",
+    "descriptionRequired": "Description is required",
+    "articleTextRequired": "Article text is required"
+  },
+  "errors": {
+    "networkError": "Network error occurred",
+    "invalidCredentials": "Invalid credentials",
+    "somethingWentWrong": "Something went wrong",
+    "somethingWentWrongTryAgain": "Something went wrong, please try again",
+    "failedToFetchArticles": "Failed to fetch articles",
+    "failedToFetchArticle": "Failed to fetch article",
+    "failedToFetchComments": "Failed to fetch comments",
+    "failedToCreateComment": "Failed to create comment",
+    "failedToCreateArticle": "Failed to create article",
+    "failedToUpdateArticle": "Failed to update article",
+    "failedToUpdateFavorite": "Failed to update favorite",
+    "failedToLoadArticles": "Failed to load articles",
+    "failedToLoadFavoriteArticles": "Failed to load favorite articles",
+    "failedToFetchUserArticles": "Failed to fetch user articles",
+    "failedToFetchAuthorProfile": "Failed to fetch author profile",
+    "failedToLoadAuthorArticles": "Failed to load author articles",
+    "failedToToggleFollowStatus": "Failed to toggle follow status",
+    "failedToUpdateProfile": "Failed to update profile",
+    "failedToDeleteArticle": "Failed to delete article"
+  },
+  "empty": {
+    "noArticlesFound": "No articles found",
+    "noFavoriteArticles": "No favorite articles yet",
+    "noArticlesAvailable": "No articles available",
+    "followUsersMessage": "Follow some users to see their articles here",
+    "noUserArticles": "No articles yet. Tap 'New Article' to create your first post"
+  },
+  "feed": {
+    "forYou": "For You",
+    "following": "Following"
+  },
+  "tags": {
+    "more": "more"
+  },
+  "comments": {
+    "addComment": "Add a comment...",
+    "post": "Post"
+  }
+} 

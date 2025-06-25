@@ -1,0 +1,109 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Terminé",
+    "retry": "Réessayer",
+    "ok": "OK",
+    "yes": "Oui",
+    "no": "Non",
+    "or": "Ou",
+    "update": "Mettre à jour",
+    "publish": "Publier",
+    "follow": "Suivre",
+    "unfollow": "Ne plus suivre"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "S'inscrire",
+    "email": "Email",
+    "password": "Mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "username": "Nom d'utilisateur",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "welcome": "Bienvenue"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "profile": "Profil",
+    "editProfile": "Modifier le profil",
+    "newArticle": "Nouvel article",
+    "settings": "Paramètres",
+    "about": "À propos",
+    "favorites": "Favoris"
+  },
+  "placeholders": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "username": "Nom d'utilisateur",
+    "yourName": "Votre nom",
+    "profilePictureUrl": "URL de la photo de profil",
+    "shortBio": "Une courte biographie sur vous",
+    "yourEmail": "Votre email",
+    "title": "Titre",
+    "description": "Description",
+    "articleText": "Texte de l'article"
+  },
+  "validation": {
+    "emailRequired": "L'email est requis",
+    "emailInvalid": "Email non valide",
+    "passwordRequired": "Le mot de passe est requis",
+    "passwordTooShort": "Le mot de passe est trop court",
+    "usernameRequired": "Le nom d'utilisateur est requis",
+    "usernameTooShort": "Le nom d'utilisateur est trop court",
+    "titleRequired": "Le titre est requis",
+    "descriptionRequired": "La description est requise",
+    "articleTextRequired": "Le texte de l'article est requis"
+  },
+  "errors": {
+    "networkError": "Erreur réseau",
+    "invalidCredentials": "Identifiants invalides",
+    "somethingWentWrong": "Quelque chose s'est mal passé",
+    "somethingWentWrongTryAgain": "Quelque chose s'est mal passé, veuillez réessayer",
+    "failedToFetchArticles": "Échec du chargement des articles",
+    "failedToFetchArticle": "Échec du chargement de l'article",
+    "failedToFetchComments": "Échec du chargement des commentaires",
+    "failedToCreateComment": "Échec de la création du commentaire",
+    "failedToCreateArticle": "Échec de la création de l'article",
+    "failedToUpdateArticle": "Échec de la mise à jour de l'article",
+    "failedToUpdateFavorite": "Échec de la mise à jour des favoris",
+    "failedToLoadArticles": "Échec du chargement des articles",
+    "failedToLoadFavoriteArticles": "Échec du chargement des articles favoris",
+    "failedToFetchUserArticles": "Échec du chargement des articles de l'utilisateur",
+    "failedToFetchAuthorProfile": "Échec du chargement du profil de l'auteur",
+    "failedToLoadAuthorArticles": "Échec du chargement des articles de l'auteur",
+    "failedToToggleFollowStatus": "Échec du changement du statut de suivi",
+    "failedToUpdateProfile": "Échec de la mise à jour du profil",
+    "failedToDeleteArticle": "Échec de la suppression de l'article"
+  },
+  "empty": {
+    "noArticlesFound": "Aucun article trouvé",
+    "noFavoriteArticles": "Aucun article favori pour le moment",
+    "noArticlesAvailable": "Aucun article disponible",
+    "followUsersMessage": "Suivez des utilisateurs pour voir leurs articles ici",
+    "noUserArticles": "Aucun article pour le moment. Appuyez sur 'Nouvel article' pour créer votre première publication"
+  },
+  "feed": {
+    "forYou": "Pour vous",
+    "following": "Suivi"
+  },
+  "tags": {
+    "more": "plus"
+  },
+  "comments": {
+    "addComment": "Ajouter un commentaire...",
+    "post": "Publier"
+  }
+} 
