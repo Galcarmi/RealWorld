@@ -5,9 +5,10 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
+import { userStore } from '../../store/userStore';
+
 import { API, HTTP_STATUS, AUTH, HTTP_HEADERS } from '../../constants/app';
 import { appEventEmitter } from '../../utils/eventEmitter';
-import { getToken } from '../../utils/tokenProvider';
 
 import { Logger } from '../../utils';
 
@@ -91,7 +92,7 @@ export abstract class BaseService {
   private _setupInterceptors(): void {
     this._api.interceptors.request.use(
       (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        const token = getToken();
+        const token = userStore.getToken();
         if (token) {
           config.headers[AUTH.HEADER_NAME] = `${AUTH.TOKEN_PREFIX}${token}`;
         }

@@ -6,4 +6,3 @@ export { emailValidation, lengthValidation } from './validation';
 export { getInitials } from './stringUtils';
 export * from './storageUtils';
 export * from './eventEmitter';
-export * from './tokenProvider';

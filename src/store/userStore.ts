@@ -3,7 +3,6 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { authService, navigationService } from '../services';
 import { StorageUtils } from '../utils';
 import { appEventEmitter, AuthErrorEvent } from '../utils/eventEmitter';
-import { setGlobalTokenProvider } from '../utils/tokenProvider';
 
 import { IUserStore, User } from './types';
 
@@ -18,7 +17,6 @@ class UserStore implements IUserStore {
     this._authErrorHandler = this._handleAuthError.bind(this);
     this._initializeFromStorage();
     this._setupEventListeners();
-    this._setupTokenProvider();
   }
 
   public get token(): string | null {
@@ -59,10 +57,6 @@ class UserStore implements IUserStore {
 
   private _setupEventListeners(): void {
     appEventEmitter.onAuthError(this._authErrorHandler);
-  }
-
-  private _setupTokenProvider(): void {
-    setGlobalTokenProvider(() => this.getToken());
   }
 
   private async _initializeFromStorage() {
