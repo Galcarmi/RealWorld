@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import * as SplashScreen from 'expo-splash-screen';
@@ -9,6 +9,7 @@ import { observer } from 'mobx-react';
 import './src/locales';
 import { COLORS } from './src/constants/styles';
 import { navio } from './src/navigation/navio';
+import { navigationService } from './src/services';
 import { userStore } from './src/store/userStore';
 import { useAppTheme } from './src/theme';
 
@@ -18,6 +19,7 @@ const AppWrapper = observer(() => {
   const isThemeReady = useAppTheme();
   const isUserStoreInitialized = userStore.isInitialized;
   const isAuthenticated = userStore.isAuthenticated();
+  const navigationHandledRef = useRef(false);
 
   const isAppReady = useMemo(
     () => isThemeReady && isUserStoreInitialized,
@@ -25,14 +27,20 @@ const AppWrapper = observer(() => {
   );
 
   useEffect(() => {
-    if (isAppReady) {
-      if (isAuthenticated) {
-        navio.setRoot('tabs', 'MainTabs');
-      } else {
-        navio.setRoot('tabs', 'AuthTabs');
-      }
+    if (isAppReady && !navigationHandledRef.current) {
+      const handleNavigation = () => {
+        navigationHandledRef.current = true;
 
-      SplashScreen.hideAsync();
+        if (isAuthenticated) {
+          navigationService.navigateToMainTabs();
+        } else {
+          navigationService.navigateToAuthTabs();
+        }
+
+        SplashScreen.hideAsync();
+      };
+
+      requestAnimationFrame(handleNavigation);
     }
   }, [isAppReady, isAuthenticated]);
 

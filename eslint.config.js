@@ -87,6 +87,7 @@ module.exports = [
         __filename: 'readonly',
         module: 'readonly',
         exports: 'readonly',
+        requestAnimationFrame: 'readonly',
       },
     },
     plugins: {
