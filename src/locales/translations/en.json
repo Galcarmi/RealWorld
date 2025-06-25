@@ -75,6 +75,7 @@
     "failedToFetchArticles": "Failed to fetch articles",
     "failedToFetchArticle": "Failed to fetch article",
     "failedToFetchComments": "Failed to fetch comments",
+    "failedToCreateComment": "Failed to create comment",
     "failedToCreateArticle": "Failed to create article",
     "failedToUpdateArticle": "Failed to update article",
     "failedToUpdateFavorite": "Failed to update favorite",

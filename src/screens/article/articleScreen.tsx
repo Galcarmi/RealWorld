@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { TextField, View, Text, Button } from 'react-native-ui-lib';
 
 import { useRoute, RouteProp } from '@react-navigation/native';
 
-import { noop } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { NavioScreen } from 'rn-navio';
 
@@ -27,8 +26,18 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
   const route = useRoute<ArticleScreenRouteProp>();
   const slug = route.params?.slug;
   const { t } = useTranslation();
-  const { article, onAuthorPress, onDelete, onEdit, comments } =
-    useArticle(slug);
+  const {
+    article,
+    onAuthorPress,
+    onDelete,
+    onEdit,
+    comments,
+    createComment,
+    isCreatingComment,
+    commentText,
+    setCommentText,
+    isLoading,
+  } = useArticle(slug);
 
   const styles = useMemo(() => createStyles(), []);
 
@@ -36,6 +45,19 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
     return article?.author?.username === userStore.user?.username;
   }, [article]);
 
+  const handlePostComment = useCallback(async () => {
+    if (!commentText.trim() || isCreatingComment) return;
+
+    await createComment(commentText);
+  }, [commentText, createComment, isCreatingComment]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color={COLORS.PRIMARY} />
+      </View>
+    );
+  }
   return (
     <View style={styles.container} testID={TEST_IDS.ARTICLE_SCREEN}>
       {article && (
@@ -56,20 +78,23 @@ export const ArticleScreen: NavioScreen<ArticleScreenProps> = observer(() => {
           <View style={styles.commentSection}>
             <FlatList
               data={comments}
-              renderItem={({ item }) => <Text>{item}</Text>}
+              renderItem={({ item }) => <Text>{item.body}</Text>}
             />
           </View>
           <View style={styles.commentInputSection}>
             <TextField
               placeholder={t('comments.addComment')}
               multiline
+              value={commentText}
+              onChangeText={setCommentText}
               containerStyle={styles.commentInputContainer}
               fieldStyle={styles.commentInput}
             />
             <View style={styles.commentInputButtonContainer}>
               <Button
                 label={t('comments.post')}
-                onPress={noop}
+                onPress={handlePostComment}
+                disabled={!commentText.trim() || isCreatingComment}
                 backgroundColor={COLORS.SECONDARY}
                 outlineColor={COLORS.PRIMARY}
                 color={COLORS.PRIMARY}
@@ -89,6 +114,11 @@ const createStyles = () =>
     container: {
       flex: 1,
       backgroundColor: COLORS.BACKGROUND,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     headerSection: {
       paddingHorizontal: SPACINGS.LARGE,

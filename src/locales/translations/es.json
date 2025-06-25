@@ -75,6 +75,7 @@
     "failedToFetchArticles": "Error al obtener artículos",
     "failedToFetchArticle": "Error al obtener artículo",
     "failedToFetchComments": "Error al obtener comentarios",
+    "failedToCreateComment": "Error al crear comentario",
     "failedToCreateArticle": "Error al crear artículo",
     "failedToUpdateArticle": "Error al actualizar artículo",
     "failedToUpdateFavorite": "Error al actualizar favorito",

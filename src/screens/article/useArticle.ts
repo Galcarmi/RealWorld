@@ -16,6 +16,8 @@ export const useArticle = (slug?: string) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [isLoadingArticle, setIsLoadingArticle] = useState(false);
+  const [isCreatingComment, setIsCreatingComment] = useState(false);
+  const [commentText, setCommentText] = useState('');
 
   const fetchArticle = useCallback(async () => {
     if (!slug) return;
@@ -44,6 +46,26 @@ export const useArticle = (slug?: string) => {
       setIsLoadingComments(false);
     }
   }, [slug, t]);
+
+  const createComment = useCallback(
+    async (body: string) => {
+      if (!slug || !body.trim()) return;
+
+      setIsCreatingComment(true);
+      try {
+        const response = await articleService.createComment(slug, {
+          body: body.trim(),
+        });
+        setComments(prevComments => [...prevComments, response.comment]);
+        setCommentText('');
+      } catch {
+        showErrorAlert(t('errors.failedToCreateComment'));
+      } finally {
+        setIsCreatingComment(false);
+      }
+    },
+    [slug, t]
+  );
 
   const isLoading = useMemo(() => {
     return isLoadingArticle || isLoadingComments;
@@ -96,9 +118,13 @@ export const useArticle = (slug?: string) => {
     comments,
     isLoading,
     isLoadingComments,
+    isCreatingComment,
+    createComment,
     onFavoriteToggle,
     onAuthorPress,
     onDelete,
     onEdit,
+    commentText,
+    setCommentText,
   };
 };

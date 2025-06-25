@@ -75,6 +75,7 @@
     "failedToFetchArticles": "Échec du chargement des articles",
     "failedToFetchArticle": "Échec du chargement de l'article",
     "failedToFetchComments": "Échec du chargement des commentaires",
+    "failedToCreateComment": "Échec de la création du commentaire",
     "failedToCreateArticle": "Échec de la création de l'article",
     "failedToUpdateArticle": "Échec de la mise à jour de l'article",
     "failedToUpdateFavorite": "Échec de la mise à jour des favoris",
