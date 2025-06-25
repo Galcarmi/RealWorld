@@ -1,28 +1,53 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from '../../hooks/useTranslation';
-import { Article, articleService, navigationService } from '../../services';
+import {
+  Article,
+  Comment,
+  articleService,
+  navigationService,
+} from '../../services';
 import { articlesStore } from '../../store';
 import { showErrorAlert } from '../../utils';
 
 export const useArticle = (slug?: string) => {
   const { t } = useTranslation();
   const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
+  const [isLoadingArticle, setIsLoadingArticle] = useState(false);
 
   const fetchArticle = useCallback(async () => {
     if (!slug) return;
 
-    setIsLoading(true);
+    setIsLoadingArticle(true);
     try {
       const response = await articleService.getArticle(slug);
       setArticle(response.article);
     } catch {
       showErrorAlert(t('errors.failedToFetchArticle'));
     } finally {
-      setIsLoading(false);
+      setIsLoadingArticle(false);
     }
   }, [slug, t]);
+
+  const fetchComments = useCallback(async () => {
+    if (!slug) return;
+
+    setIsLoadingComments(true);
+    try {
+      const response = await articleService.getComments(slug);
+      setComments(response.comments);
+    } catch {
+      showErrorAlert(t('errors.failedToFetchComments'));
+    } finally {
+      setIsLoadingComments(false);
+    }
+  }, [slug, t]);
+
+  const isLoading = useMemo(() => {
+    return isLoadingArticle || isLoadingComments;
+  }, [isLoadingArticle, isLoadingComments]);
 
   const onFavoriteToggle = useCallback(async () => {
     if (!article) return;
@@ -61,19 +86,19 @@ export const useArticle = (slug?: string) => {
     }
   }, [article]);
 
-  const comments = useMemo(() => [], []);
-
   useEffect(() => {
     fetchArticle();
-  }, [fetchArticle]);
+    fetchComments();
+  }, [fetchArticle, fetchComments]);
 
   return {
     article,
+    comments,
     isLoading,
+    isLoadingComments,
     onFavoriteToggle,
     onAuthorPress,
     onDelete,
     onEdit,
-    comments,
   };
 };

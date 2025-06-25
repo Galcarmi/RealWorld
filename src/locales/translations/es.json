@@ -71,17 +71,21 @@
     "networkError": "Error de red",
     "invalidCredentials": "Credenciales inválidas",
     "somethingWentWrong": "Algo salió mal",
-    "somethingWentWrongTryAgain": "Algo salió mal, por favor intenta de nuevo",
+    "somethingWentWrongTryAgain": "Algo salió mal, por favor intente de nuevo",
     "failedToFetchArticles": "Error al obtener artículos",
+    "failedToFetchArticle": "Error al obtener artículo",
+    "failedToFetchComments": "Error al obtener comentarios",
     "failedToCreateArticle": "Error al crear artículo",
     "failedToUpdateArticle": "Error al actualizar artículo",
+    "failedToUpdateFavorite": "Error al actualizar favorito",
     "failedToLoadArticles": "Error al cargar artículos",
     "failedToLoadFavoriteArticles": "Error al cargar artículos favoritos",
     "failedToFetchUserArticles": "Error al obtener artículos del usuario",
     "failedToFetchAuthorProfile": "Error al obtener perfil del autor",
     "failedToLoadAuthorArticles": "Error al cargar artículos del autor",
     "failedToToggleFollowStatus": "Error al cambiar estado de seguimiento",
-    "failedToUpdateProfile": "Error al actualizar perfil"
+    "failedToUpdateProfile": "Error al actualizar perfil",
+    "failedToDeleteArticle": "Error al eliminar artículo"
   },
   "empty": {
     "noArticlesFound": "No se encontraron artículos",

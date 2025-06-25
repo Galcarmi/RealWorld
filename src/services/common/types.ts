@@ -38,6 +38,26 @@ export type Profile = {
   following: boolean;
 };
 
+export type Comment = {
+  id: number;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+  author: Profile;
+};
+
+export type CommentsResponse = {
+  comments: Comment[];
+};
+
+export type SingleCommentResponse = {
+  comment: Comment;
+};
+
+export type CreateCommentRequest = {
+  body: string;
+};
+
 export type ProfileResponse = {
   profile: Profile;
 };
@@ -98,6 +118,12 @@ export interface IArticleService {
     article: CreateArticleRequest
   ): Promise<SingleArticleResponse>;
   deleteArticle(slug: string): Promise<void>;
+  getComments(slug: string): Promise<CommentsResponse>;
+  createComment(
+    slug: string,
+    comment: CreateCommentRequest
+  ): Promise<SingleCommentResponse>;
+  deleteComment(slug: string, commentId: number): Promise<void>;
 }
 
 export type ApiErrorResponse = AxiosError & {

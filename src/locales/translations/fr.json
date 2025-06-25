@@ -73,15 +73,19 @@
     "somethingWentWrong": "Quelque chose s'est mal passé",
     "somethingWentWrongTryAgain": "Quelque chose s'est mal passé, veuillez réessayer",
     "failedToFetchArticles": "Échec du chargement des articles",
+    "failedToFetchArticle": "Échec du chargement de l'article",
+    "failedToFetchComments": "Échec du chargement des commentaires",
     "failedToCreateArticle": "Échec de la création de l'article",
     "failedToUpdateArticle": "Échec de la mise à jour de l'article",
+    "failedToUpdateFavorite": "Échec de la mise à jour des favoris",
     "failedToLoadArticles": "Échec du chargement des articles",
     "failedToLoadFavoriteArticles": "Échec du chargement des articles favoris",
     "failedToFetchUserArticles": "Échec du chargement des articles de l'utilisateur",
     "failedToFetchAuthorProfile": "Échec du chargement du profil de l'auteur",
     "failedToLoadAuthorArticles": "Échec du chargement des articles de l'auteur",
-    "failedToToggleFollowStatus": "Échec du changement de statut de suivi",
-    "failedToUpdateProfile": "Échec de la mise à jour du profil"
+    "failedToToggleFollowStatus": "Échec du changement du statut de suivi",
+    "failedToUpdateProfile": "Échec de la mise à jour du profil",
+    "failedToDeleteArticle": "Échec de la suppression de l'article"
   },
   "empty": {
     "noArticlesFound": "Aucun article trouvé",

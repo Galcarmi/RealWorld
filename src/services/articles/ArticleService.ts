@@ -7,6 +7,9 @@ import {
   CreateArticleRequest,
   ArticleFilters,
   PaginationParams,
+  CommentsResponse,
+  SingleCommentResponse,
+  CreateCommentRequest,
 } from '../common/types';
 
 class ArticleService extends BaseService implements IArticleService {
@@ -103,6 +106,40 @@ class ArticleService extends BaseService implements IArticleService {
   public async deleteArticle(slug: string): Promise<void> {
     try {
       await this._api.delete(`/articles/${slug}`);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
+  public async getComments(slug: string): Promise<CommentsResponse> {
+    try {
+      const response = await this._api.get<CommentsResponse>(
+        `/articles/${slug}/comments`
+      );
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
+  public async createComment(
+    slug: string,
+    comment: CreateCommentRequest
+  ): Promise<SingleCommentResponse> {
+    try {
+      const response = await this._api.post<SingleCommentResponse>(
+        `/articles/${slug}/comments`,
+        { comment }
+      );
+      return this._responseBody(response);
+    } catch (error) {
+      return this._logError(error as ApiErrorResponse);
+    }
+  }
+
+  public async deleteComment(slug: string, commentId: number): Promise<void> {
+    try {
+      await this._api.delete(`/articles/${slug}/comments/${commentId}`);
     } catch (error) {
       return this._logError(error as ApiErrorResponse);
     }
