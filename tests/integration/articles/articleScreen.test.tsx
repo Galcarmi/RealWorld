@@ -44,7 +44,7 @@ const mockNavigationService = navigationService as jest.Mocked<
 mockArticleService.getArticle.mockResolvedValue({ article: mockArticle });
 mockArticleService.getComments.mockResolvedValue({ comments: mockComments });
 mockArticleService.createComment.mockResolvedValue({
-  comment: createMockComment({ body: 'New test comment' }),
+  comment: createMockComment({ body: 'New test comment', id: 3 }),
 });
 mockArticleService.deleteArticle.mockResolvedValue(undefined);
 
@@ -89,7 +89,7 @@ describe('Article Screen Tests', () => {
       comments: mockComments,
     });
     mockArticleService.createComment.mockResolvedValue({
-      comment: createMockComment({ body: 'New test comment' }),
+      comment: createMockComment({ body: 'New test comment', id: 3 }),
     });
     mockArticleService.deleteArticle.mockResolvedValue(undefined);
     mockToggleFavorite.mockResolvedValue(undefined);
