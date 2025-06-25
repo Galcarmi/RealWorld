@@ -9,7 +9,7 @@ import {
 
 createVisualTestSuite(
   'Complete User Flow Integration Tests',
-  { mockApis: mockCollections.completeIntegration },
+  { mockApis: mockCollections.completeIntegration as any },
   suite => {
     it('should complete flow: login -> articles -> click article -> author profile screenshot', async () => {
       const testHelper = suite.getTestHelper();
@@ -19,7 +19,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        TEST_IDS.ARTICLE_CARD('test-article-1'),
+        `${TEST_IDS.ARTICLE_CARD('test-article-1')}-author`,
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
 

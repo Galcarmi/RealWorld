@@ -86,6 +86,7 @@ export const TEST_IDS = {
   PROFILE_SCREEN: 'profile-screen',
   FAVORITES_SCREEN: 'favorites-screen',
   AUTHOR_PROFILE_SCREEN: 'author-profile-screen',
+  ARTICLE_SCREEN: 'article-screen',
 
   // Profile Management
   EDIT_PROFILE_SCREEN: 'edit-profile-screen',

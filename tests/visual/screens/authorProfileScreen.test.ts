@@ -8,7 +8,7 @@ import {
 
 createVisualTestSuite(
   'Author Profile Screen - Visual Regression Test',
-  { mockApis: mockCollections.authorProfile },
+  { mockApis: mockCollections.authorProfile as any },
   suite => {
     it('should navigate to author profile from article and take screenshot', async () => {
       const testHelper = suite.getTestHelper();
@@ -18,7 +18,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        TEST_IDS.ARTICLE_CARD('test-article-1'),
+        `${TEST_IDS.ARTICLE_CARD('test-article-1')}-author`,
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
 
@@ -33,7 +33,7 @@ createVisualTestSuite(
 
       await commonTestActions.clickAndNavigateToScreen(
         testHelper,
-        TEST_IDS.ARTICLE_CARD('test-article-1'),
+        `${TEST_IDS.ARTICLE_CARD('test-article-1')}-author`,
         TEST_IDS.AUTHOR_PROFILE_SCREEN
       );
       await testHelper.waitForTestId(TEST_IDS.FOLLOW_BUTTON, 5000);

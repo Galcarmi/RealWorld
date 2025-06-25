@@ -31,7 +31,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       testID={TEST_IDS.ARTICLE_CARD(article.slug)}
       containerStyle={containerStyle}
     >
-      <TouchableOpacity onPress={onAuthorPress} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={onAuthorPress}
+        activeOpacity={0.7}
+        testID={`${TEST_IDS.ARTICLE_CARD(article.slug)}-author`}
+      >
         <AuthorHeader
           author={article.author}
           createdAt={article.createdAt}
@@ -39,7 +43,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           onFavorite={onFavorite}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={onContentPress} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={onContentPress}
+        activeOpacity={0.7}
+        testID={`${TEST_IDS.ARTICLE_CARD(article.slug)}-content`}
+      >
         <ArticleCardContent
           title={article.title}
           description={article.description}
