@@ -1,12 +1,16 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 
 import '../../mocks';
 import { TEST_IDS } from '../../../src/constants/testIds';
 import { AuthorProfileScreen } from '../../../src/screens/authorProfile/authorProfileScreen';
-import { createMockUser, createMockArticle, createMockAuthor } from '../../mocks/data';
+import {
+  createMockUser,
+  createMockArticle,
+  createMockAuthor,
+} from '../../mocks/data';
 import { setMockRoute, mockAuthorProfileRoute } from '../../mocks/navigation';
-import * as storeMocks from '../../mocks/stores';
 import * as mockServices from '../../mocks/services';
+import * as storeMocks from '../../mocks/stores';
 
 const userStore = storeMocks.getUserStore();
 const articlesStore = storeMocks.getArticlesStore();
@@ -24,14 +28,14 @@ describe('Author Profile Screen Tests', () => {
   });
 
   const mockArticles = [
-    createMockArticle({ 
-      slug: 'test-article-1', 
+    createMockArticle({
+      slug: 'test-article-1',
       title: 'First Article',
       author: mockAuthor,
       favorited: false,
     }),
-    createMockArticle({ 
-      slug: 'test-article-2', 
+    createMockArticle({
+      slug: 'test-article-2',
       title: 'Second Article',
       author: mockAuthor,
       favorited: true,
@@ -42,14 +46,16 @@ describe('Author Profile Screen Tests', () => {
     jest.clearAllMocks();
     setMockRoute(mockAuthorProfileRoute);
     userStore.setUser(createMockUser());
-    
+
     mockServices.setupServiceMocks();
-    
+
     articlesStore.getUserArticles = jest.fn().mockResolvedValue({
       articles: mockArticles,
       articlesCount: mockArticles.length,
     });
-    articlesStore.toggleArticleFavoriteStatus = jest.fn().mockResolvedValue(undefined);
+    articlesStore.toggleArticleFavoriteStatus = jest
+      .fn()
+      .mockResolvedValue(undefined);
   });
 
   describe('Profile Display', () => {
@@ -102,7 +108,9 @@ describe('Author Profile Screen Tests', () => {
 
   describe('Error Handling', () => {
     it('handles articles loading errors gracefully', async () => {
-      articlesStore.getUserArticles = jest.fn().mockRejectedValue(new Error('Network error'));
+      articlesStore.getUserArticles = jest
+        .fn()
+        .mockRejectedValue(new Error('Network error'));
 
       const { getByTestId } = renderAuthorProfileScreen();
 
