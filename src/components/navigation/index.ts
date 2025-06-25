@@ -1,1 +1,0 @@
-export { FeedTabs } from './FeedTabs';
