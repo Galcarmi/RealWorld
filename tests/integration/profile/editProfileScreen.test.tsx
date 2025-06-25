@@ -11,14 +11,6 @@ import * as storeMocks from '../../mocks/stores';
 const userStore = storeMocks.getUserStore();
 const authStore = storeMocks.getAuthStore();
 
-const mockGoBack = jest.fn();
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
-  useNavigation: () => ({
-    goBack: mockGoBack,
-  }),
-}));
-
 const renderEditProfileScreen = () => {
   return render(<EditProfileScreen />);
 };
@@ -34,7 +26,6 @@ describe('Edit Profile Screen Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     userStore.setUser(mockUser);
-    mockGoBack.mockClear();
   });
 
   describe('Profile Management', () => {

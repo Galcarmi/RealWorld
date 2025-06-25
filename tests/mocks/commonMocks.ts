@@ -90,10 +90,28 @@ const translations: Record<string, string> = {
 
 const stableTranslationFunction = (key: string) => translations[key] || key;
 
-jest.mock('../../src/hooks/useTranslation', () => ({
+jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: stableTranslationFunction,
+    i18n: {
+      dir: () => 'ltr',
+      changeLanguage: jest.fn(),
+    },
   }),
+}));
+
+jest.mock('../../src/store/languageStore', () => ({
+  languageStore: {
+    currentLanguage: 'en',
+    isLoading: false,
+    isInitialized: true,
+    supportedLanguageKeys: ['en', 'es', 'fr'],
+    languageNames: {
+      en: 'English',
+      es: 'Español',
+      fr: 'Français',
+    },
+  },
 }));
 
 jest.mock('../../src/services', () => ({
