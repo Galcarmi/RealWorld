@@ -140,12 +140,14 @@ const createStyles = () =>
     commentSection: {
       flex: 0.3,
       backgroundColor: COLORS.BACKGROUND,
+      elevation: DIMENSIONS.ELEVATION_LOW,
       shadowColor: 'rgba(0, 0, 0, 0.1)',
       shadowOffset: {
         width: 0,
-        height: -5,
+        height: -2,
       },
-      shadowOpacity: 0.5,
+      shadowOpacity: 0.7,
+      shadowRadius: 4,
     },
     commentInputSection: {
       padding: SPACINGS.LARGE,
