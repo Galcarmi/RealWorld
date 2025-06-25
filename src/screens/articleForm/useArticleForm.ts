@@ -70,19 +70,27 @@ export const useArticleForm = (slug?: string) => {
   }, []);
 
   const handleArticleCreation = useCallback(async () => {
-    const articleData = createArticleData();
-    await articlesStore.createArticle(articleData);
-    resetArticleForm();
-    navigationService.navigateToMainTabs();
-  }, [createArticleData, resetArticleForm]);
+    try {
+      const articleData = createArticleData();
+      await articlesStore.createArticle(articleData);
+      resetArticleForm();
+      navigationService.navigateToMainTabs();
+    } catch {
+      showErrorAlert(t('errors.failedToCreateArticle'));
+    }
+  }, [createArticleData, resetArticleForm, t]);
 
   const handleArticleUpdate = useCallback(async () => {
     if (!slug) return;
 
-    const articleData = createArticleData();
-    await articleService.updateArticle(slug, articleData);
-    navigationService.goBack();
-  }, [slug, createArticleData]);
+    try {
+      const articleData = createArticleData();
+      await articleService.updateArticle(slug, articleData);
+      navigationService.goBack();
+    } catch {
+      showErrorAlert(t('errors.failedToCreateArticle'));
+    }
+  }, [slug, createArticleData, t]);
 
   const onGoBack = useCallback(() => {
     navigationService.navigateToMainTabs();

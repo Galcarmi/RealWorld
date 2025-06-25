@@ -8,7 +8,13 @@ import {
 } from '../../src/services';
 import { StorageUtils } from '../../src/utils/storageUtils';
 
-import { mockUser, mockArticle, mockArticles } from './data';
+import {
+  mockUser,
+  mockArticle,
+  mockArticles,
+  createMockComment,
+  mockComments,
+} from './data';
 
 interface INavigationService {
   setNavioInstance: (navioInstance: NavioInstance) => void;
@@ -20,6 +26,7 @@ interface INavigationService {
   navigateToArticleForm: (slug?: string) => void;
   navigateToEditProfile: () => void;
   navigateToAuthorProfile: (username: string) => void;
+  navigateToArticle: (slug: string) => void;
   goBack: () => void;
 }
 
@@ -99,6 +106,23 @@ export const setupServiceMocks = () => {
       ...mockArticle.author,
       following: false,
     },
+  });
+
+  mockArticleService.getArticle.mockResolvedValue({
+    article: mockArticle,
+  });
+  mockArticleService.getComments.mockResolvedValue({
+    comments: mockComments,
+  });
+  mockArticleService.createComment.mockResolvedValue({
+    comment: createMockComment({
+      id: 3,
+      body: 'New test comment',
+    }),
+  });
+  mockArticleService.deleteArticle.mockResolvedValue();
+  mockArticleService.updateArticle.mockResolvedValue({
+    article: mockArticle,
   });
 
   jest.spyOn(StorageUtils, 'setUserData').mockResolvedValue();

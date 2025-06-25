@@ -412,3 +412,43 @@ export const visualTestMockCollections = {
   homeScreen: homeScreenVisualMocks,
   emptyMocks: [] as VisualTestMockConfig[],
 } as const;
+
+export const createMockComment = (
+  overrides: Partial<{
+    id: number;
+    body: string;
+    createdAt: string;
+    updatedAt: string;
+    author: Profile;
+  }> = {}
+) => ({
+  id: 1,
+  body: 'This is a test comment',
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+  author: createMockAuthor(),
+  ...overrides,
+});
+
+export const mockComments = [
+  createMockComment({
+    id: 1,
+    body: 'Great article! Thanks for sharing.',
+    author: createMockAuthor({
+      username: 'commenter1',
+      bio: 'First commenter',
+      image: null,
+    }),
+  }),
+  createMockComment({
+    id: 2,
+    body: 'I disagree with some points but overall good read.',
+    createdAt: '2024-01-02T00:00:00.000Z',
+    updatedAt: '2024-01-02T00:00:00.000Z',
+    author: createMockAuthor({
+      username: 'commenter2',
+      bio: 'Second commenter',
+      image: null,
+    }),
+  }),
+];

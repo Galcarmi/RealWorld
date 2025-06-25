@@ -66,6 +66,7 @@ const setupArticlesStoreSpies = () => {
     articlesStore,
     'toggleArticleFavoriteStatus'
   );
+  articlesStoreSpies.removeArticle = jest.spyOn(articlesStore, 'removeArticle');
 };
 
 setupAuthStoreSpies();
