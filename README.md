@@ -255,6 +255,18 @@ This project is open source and available under the [MIT License](LICENSE).
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [Expo Documentation](https://docs.expo.dev/)
 
+## 🌐 API & Design References
+
+### Swagger API
+This application uses the RealWorld API hosted at:
+- **[Swagger API Documentation](https://node-express-conduit.appspot.com/)** - Complete API reference and testing interface
+
+### Design Reference
+The UI design is based on the following Figma mockup:
+- **[Figma Design](https://www.figma.com/design/oDDztENWIXmbeR82VEWCwS/Realworld-Blog-Application?node-id=5-2845&t=ISWKdfHBCixWF5vi-0)** - RealWorld Blog Application design
+
+*Note: This is not my original design, but I've made every effort to stay faithful to the Figma specifications while adapting it for React Native mobile interfaces.*
+
 ---
 
 **Happy coding! 🚀** 
