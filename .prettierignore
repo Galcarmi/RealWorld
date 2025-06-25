@@ -21,3 +21,5 @@ coverage/
 
 # Locale files
 src/locales/**/*.json 
+
+README.md
