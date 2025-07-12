@@ -43,65 +43,49 @@ export const ArticleForm: React.FC<ArticleFormProps> = observer(
       return canPublish ? COLORS.PRIMARY : COLORS.GREY;
     };
 
-    const createTitleInputField = () => (
-      <InputField
-        placeholder={t('placeholders.title')}
-        value={title}
-        maxLength={FORM_LIMITS.ARTICLE_TITLE_MAX}
-        minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
-        validationMessage={[t('validation.titleRequired')]}
-        onChangeText={onTitleChange}
-        containerStyle={styles.titleInput}
-        testID={TEST_IDS.ARTICLE_TITLE_INPUT}
-      />
-    );
-
-    const createDescriptionInputField = () => (
-      <InputField
-        placeholder={t('placeholders.description')}
-        value={description}
-        maxLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MAX}
-        minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
-        validationMessage={[t('validation.descriptionRequired')]}
-        onChangeText={onDescriptionChange}
-        containerStyle={styles.descriptionInput}
-        testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
-      />
-    );
-
-    const createBodyInputField = () => (
-      <InputField
-        placeholder={t('placeholders.articleText')}
-        value={body}
-        maxLength={FORM_LIMITS.ARTICLE_BODY_MAX}
-        minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
-        validationMessage={[t('validation.articleTextRequired')]}
-        onChangeText={onBodyChange}
-        containerStyle={styles.bodyInput}
-        testID={TEST_IDS.ARTICLE_BODY_INPUT}
-      />
-    );
-
-    const createPublishButton = () => (
-      <Button
-        label={t('common.publish')}
-        backgroundColor={determineButtonBackgroundColor()}
-        color={COLORS.BACKGROUND}
-        borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
-        paddingV-15
-        disabled={!canPublish || isLoading}
-        onPress={onFormSubmit}
-        style={styles.publishButton}
-        testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
-      />
-    );
-
     return (
       <View style={[styles.container, containerStyle]}>
-        {createTitleInputField()}
-        {createDescriptionInputField()}
-        {createBodyInputField()}
-        {createPublishButton()}
+        <InputField
+          placeholder={t('placeholders.title')}
+          value={title}
+          maxLength={FORM_LIMITS.ARTICLE_TITLE_MAX}
+          minLength={FORM_LIMITS.ARTICLE_TITLE_MIN}
+          validationMessage={[t('validation.titleRequired')]}
+          onChangeText={onTitleChange}
+          containerStyle={styles.titleInput}
+          testID={TEST_IDS.ARTICLE_TITLE_INPUT}
+        />
+        <InputField
+          placeholder={t('placeholders.description')}
+          value={description}
+          maxLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MAX}
+          minLength={FORM_LIMITS.ARTICLE_DESCRIPTION_MIN}
+          validationMessage={[t('validation.descriptionRequired')]}
+          onChangeText={onDescriptionChange}
+          containerStyle={styles.descriptionInput}
+          testID={TEST_IDS.ARTICLE_DESCRIPTION_INPUT}
+        />
+        <InputField
+          placeholder={t('placeholders.articleText')}
+          value={body}
+          maxLength={FORM_LIMITS.ARTICLE_BODY_MAX}
+          minLength={FORM_LIMITS.ARTICLE_BODY_MIN}
+          validationMessage={[t('validation.articleTextRequired')]}
+          onChangeText={onBodyChange}
+          containerStyle={styles.bodyInput}
+          testID={TEST_IDS.ARTICLE_BODY_INPUT}
+        />
+        <Button
+          label={t('common.publish')}
+          backgroundColor={determineButtonBackgroundColor()}
+          color={COLORS.BACKGROUND}
+          borderRadius={DIMENSIONS.BORDER_RADIUS_SMALL}
+          paddingV-15
+          disabled={!canPublish || isLoading}
+          onPress={onFormSubmit}
+          style={styles.publishButton}
+          testID={TEST_IDS.PUBLISH_ARTICLE_BUTTON}
+        />
       </View>
     );
   }
