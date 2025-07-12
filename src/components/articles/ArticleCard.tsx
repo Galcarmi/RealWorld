@@ -26,7 +26,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => {
   return (
     <Card
-      enableShadow={true}
+      enableShadow
       elevation={DIMENSIONS.ELEVATION_LOW}
       testID={TEST_IDS.ARTICLE_CARD(article.slug)}
       containerStyle={containerStyle}

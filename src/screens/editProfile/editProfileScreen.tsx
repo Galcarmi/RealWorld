@@ -77,7 +77,6 @@ export const EditProfileScreen: NavioScreen = observer(() => {
             value={profileFormValues.password}
             onChangeText={onPasswordChange}
             validationMessage={[]}
-            secureTextEntry={true}
             minLength={0}
             testID={TEST_IDS.EDIT_PROFILE_PASSWORD_INPUT}
           />
