@@ -10,7 +10,7 @@ import { userStore } from '../../store/userStore';
 import { RootStackParamList } from '../../navigation/types';
 
 import { authService, ResponseErrors } from '../../services';
-import { showErrorModals } from '../../utils';
+import { showErrorModals, validateProfileForm } from '../../utils';
 
 type NavigationProps = NavigationProp<RootStackParamList>;
 
@@ -51,17 +51,7 @@ const useEditProfile = () => {
   });
 
   const isFormValid = useMemo(() => {
-    const { username, email, password } = profileFormValues;
-    const trimmedUsername = username.trim();
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
-
-    const isUsernameValid = trimmedUsername.length > 0;
-    const isEmailValid = trimmedEmail.length > 0;
-
-    const isPasswordValid = trimmedPassword.length === 0;
-
-    return isUsernameValid && isEmailValid && isPasswordValid;
+    return validateProfileForm(profileFormValues);
   }, [profileFormValues]);
 
   const hasChanges = useMemo(() => {
