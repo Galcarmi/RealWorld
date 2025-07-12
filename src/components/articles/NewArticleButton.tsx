@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 import { COLORS, DIMENSIONS } from '../../constants/styles';
@@ -15,8 +15,6 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
   onPress,
   containerStyle,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={containerStyle}>
       <CustomButton
@@ -33,13 +31,12 @@ export const NewArticleButton: React.FC<NewArticleButtonProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    button: {
-      width: DIMENSIONS.WIDTH_150,
-      height: DIMENSIONS.HEIGHT_45,
-    },
-    buttonContainer: {
-      height: DIMENSIONS.HEIGHT_30,
-    },
-  });
+const styles = StyleSheet.create({
+  button: {
+    width: DIMENSIONS.WIDTH_150,
+    height: DIMENSIONS.HEIGHT_45,
+  },
+  buttonContainer: {
+    height: DIMENSIONS.HEIGHT_30,
+  },
+});

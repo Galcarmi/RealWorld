@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { TextField, TextFieldProps } from 'react-native-ui-lib';
 
@@ -39,8 +39,6 @@ export const InputField: React.FC<InputFieldProps> = ({
   testID,
   keyboardType = KEYBOARD_TYPES.DEFAULT,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <TextField
       containerStyle={containerStyle}
@@ -65,12 +63,11 @@ export const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    floatingPlaceholder: {
-      color: COLORS.PLACEHOLDER,
-    },
-    inputField: {
-      fontSize: FONT_SIZES.MEDIUM,
-    },
-  });
+const styles = StyleSheet.create({
+  floatingPlaceholder: {
+    color: COLORS.PLACEHOLDER,
+  },
+  inputField: {
+    fontSize: FONT_SIZES.MEDIUM,
+  },
+});

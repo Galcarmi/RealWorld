@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native-ui-lib';
@@ -32,8 +32,6 @@ export const createAuthScreen: (screenType: AUTH_SCREEN_TYPE) => React.FC = (
       onSignUp,
       onNavigateToLogin,
     } = useAuth();
-
-    const screenStyles = useMemo(() => createScreenStyles(), []);
 
     const screenTestId =
       screenType === AUTH_SCREEN_TYPE.SIGN_IN
@@ -77,32 +75,31 @@ export const createAuthScreen: (screenType: AUTH_SCREEN_TYPE) => React.FC = (
     );
   });
 
-const createScreenStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    topSpacer: {
-      flex: 0.2,
-    },
-    bottomSpacer: {
-      flex: 0.2,
-    },
-    middleSpacer: {
-      flex: 0.6,
-    },
-    headerContainer: {
-      marginBottom: SPACINGS.GIGANTIC,
-    },
-    formContainer: {
-      alignItems: 'center',
-    },
-    actionsContainer: {
-      flex: 1,
-      alignItems: 'center',
-      gap: SPACINGS.LARGE,
-      paddingVertical: SPACINGS['2_EXTRA_LARGE'],
-      marginTop: SPACINGS.MASSIVE,
-    },
-  });
+const screenStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  topSpacer: {
+    flex: 0.2,
+  },
+  bottomSpacer: {
+    flex: 0.2,
+  },
+  middleSpacer: {
+    flex: 0.6,
+  },
+  headerContainer: {
+    marginBottom: SPACINGS.GIGANTIC,
+  },
+  formContainer: {
+    alignItems: 'center',
+  },
+  actionsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    gap: SPACINGS.LARGE,
+    paddingVertical: SPACINGS['2_EXTRA_LARGE'],
+    marginTop: SPACINGS.MASSIVE,
+  },
+});

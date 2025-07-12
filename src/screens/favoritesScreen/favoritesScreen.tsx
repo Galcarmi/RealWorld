@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
@@ -25,8 +25,6 @@ export const FavoritesScreen: NavioScreen = observer(() => {
     handleAuthorPress,
   } = useFavoriteArticles();
 
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container} testID={TEST_IDS.FAVORITES_SCREEN}>
       <View flex backgroundColor={COLORS.BACKGROUND}>
@@ -46,10 +44,9 @@ export const FavoritesScreen: NavioScreen = observer(() => {
   );
 });
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+});

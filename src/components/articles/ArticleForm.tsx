@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
@@ -37,7 +37,6 @@ export const ArticleForm: React.FC<ArticleFormProps> = observer(
     containerStyle,
   }) => {
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(), []);
 
     const determineButtonBackgroundColor = () => {
       return canPublish ? COLORS.PRIMARY : COLORS.GREY;
@@ -91,28 +90,27 @@ export const ArticleForm: React.FC<ArticleFormProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    contentContainer: {
-      flexGrow: 1,
-      padding: SPACINGS.EXTRA_LARGE,
-    },
-    titleInput: {
-      marginBottom: SPACINGS.FORM,
-    },
-    descriptionInput: {
-      marginBottom: SPACINGS.FORM,
-    },
-    bodyInput: {
-      marginBottom: SPACINGS['2_EXTRA_LARGE'],
-      flex: 1,
-    },
-    publishButton: {
-      marginTop: 'auto',
-      marginBottom: SPACINGS.EXTRA_LARGE,
-      borderRadius: 0,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    padding: SPACINGS.EXTRA_LARGE,
+  },
+  titleInput: {
+    marginBottom: SPACINGS.FORM,
+  },
+  descriptionInput: {
+    marginBottom: SPACINGS.FORM,
+  },
+  bodyInput: {
+    marginBottom: SPACINGS['2_EXTRA_LARGE'],
+    flex: 1,
+  },
+  publishButton: {
+    marginTop: 'auto',
+    marginBottom: SPACINGS.EXTRA_LARGE,
+    borderRadius: 0,
+  },
+});

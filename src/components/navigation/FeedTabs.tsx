@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -45,7 +45,6 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
     containerStyle,
   }) => {
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(), []);
 
     const tabs: Tab[] = [
       {
@@ -90,31 +89,30 @@ export const FeedTabs: React.FC<FeedTabsProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      backgroundColor: COLORS.BACKGROUND,
-      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
-      borderBottomColor: COLORS.TAB_BAR_BORDER,
-    },
-    tab: {
-      flex: 1,
-      alignItems: 'center',
-      paddingVertical: SPACINGS.TAB_VERTICAL,
-      borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
-      borderBottomColor: 'transparent',
-    },
-    activeTab: {
-      borderBottomColor: COLORS.PRIMARY,
-    },
-    inactiveTab: {
-      borderBottomWidth: 0,
-      marginRight: SPACINGS.TAB,
-      marginLeft: SPACINGS.TAB,
-    },
-    tabText: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.PLACEHOLDER,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.BACKGROUND,
+    borderBottomWidth: DIMENSIONS.BORDER_WIDTH_THIN,
+    borderBottomColor: COLORS.TAB_BAR_BORDER,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: SPACINGS.TAB_VERTICAL,
+    borderBottomWidth: DIMENSIONS.BORDER_WIDTH_MEDIUM,
+    borderBottomColor: 'transparent',
+  },
+  activeTab: {
+    borderBottomColor: COLORS.PRIMARY,
+  },
+  inactiveTab: {
+    borderBottomWidth: 0,
+    marginRight: SPACINGS.TAB,
+    marginLeft: SPACINGS.TAB,
+  },
+  tabText: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.PLACEHOLDER,
+  },
+});

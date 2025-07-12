@@ -24,8 +24,6 @@ export const TagsList: React.FC<TagsListProps> = observer(
     const { t } = useTranslation();
     const tagList = useMemo(() => tags || [], [tags]);
 
-    const styles = useMemo(() => createStyles(), []);
-
     const visibleTags = useMemo(
       () => tagList.slice(0, maxVisible),
       [tagList, maxVisible]
@@ -55,27 +53,26 @@ export const TagsList: React.FC<TagsListProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: SPACINGS.MEDIUM,
-    },
-    tag: {
-      paddingVertical: SPACINGS.SMALL,
-      paddingHorizontal: SPACINGS.MEDIUM,
-      marginRight: SPACINGS.SMALL,
-      backgroundColor: COLORS.SECONDARY,
-      borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
-    },
-    tagText: {
-      fontSize: FONT_SIZES.X_SMALL,
-      color: COLORS.PRIMARY,
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-    },
-    moreText: {
-      fontSize: FONT_SIZES.X_SMALL,
-      color: COLORS.PLACEHOLDER,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: SPACINGS.MEDIUM,
+  },
+  tag: {
+    paddingVertical: SPACINGS.SMALL,
+    paddingHorizontal: SPACINGS.MEDIUM,
+    marginRight: SPACINGS.SMALL,
+    backgroundColor: COLORS.SECONDARY,
+    borderRadius: DIMENSIONS.BORDER_RADIUS_MEDIUM,
+  },
+  tagText: {
+    fontSize: FONT_SIZES.X_SMALL,
+    color: COLORS.PRIMARY,
+    fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+  },
+  moreText: {
+    fontSize: FONT_SIZES.X_SMALL,
+    color: COLORS.PLACEHOLDER,
+  },
+});

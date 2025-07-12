@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   Text,
@@ -39,7 +39,6 @@ interface ArticleHeaderProps {
 export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
   ({ article, onAuthorPress, onDelete, onEdit, containerStyle, isAuthor }) => {
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(), []);
 
     const getDeleteButtonIcon = useCallback(() => {
       return (
@@ -120,40 +119,39 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    title: {
-      fontSize: FONT_SIZES.EXTRA_LARGE,
-      fontWeight: FONT_WEIGHTS.BOLD,
-      textAlign: 'left',
-      marginBottom: SPACINGS.MEDIUM,
-    },
-    authorSection: {
-      justifyContent: 'center',
-    },
-    authorInfo: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    authorTextInfo: {
-      marginLeft: SPACINGS.MEDIUM,
-    },
-    authorName: {
-      fontSize: TYPOGRAPHY.BODY.fontSize,
-      fontWeight: FONT_WEIGHTS.BOLD,
-      color: COLORS.BLACK,
-    },
-    createdAt: {
-      fontSize: TYPOGRAPHY.BODY.fontSize,
-      color: COLORS.PLACEHOLDER,
-    },
-    actionButtons: {
-      paddingTop: SPACINGS.MEDIUM,
-      flexDirection: 'row',
-      gap: SPACINGS.SMALL,
-    },
-    actionButton: {
-      paddingHorizontal: SPACINGS.MEDIUM,
-      gap: SPACINGS.EXTRA_SMALL,
-    },
-  });
+const styles = StyleSheet.create({
+  title: {
+    fontSize: FONT_SIZES.EXTRA_LARGE,
+    fontWeight: FONT_WEIGHTS.BOLD,
+    textAlign: 'left',
+    marginBottom: SPACINGS.MEDIUM,
+  },
+  authorSection: {
+    justifyContent: 'center',
+  },
+  authorInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  authorTextInfo: {
+    marginLeft: SPACINGS.MEDIUM,
+  },
+  authorName: {
+    fontSize: TYPOGRAPHY.BODY.fontSize,
+    fontWeight: FONT_WEIGHTS.BOLD,
+    color: COLORS.BLACK,
+  },
+  createdAt: {
+    fontSize: TYPOGRAPHY.BODY.fontSize,
+    color: COLORS.PLACEHOLDER,
+  },
+  actionButtons: {
+    paddingTop: SPACINGS.MEDIUM,
+    flexDirection: 'row',
+    gap: SPACINGS.SMALL,
+  },
+  actionButton: {
+    paddingHorizontal: SPACINGS.MEDIUM,
+    gap: SPACINGS.EXTRA_SMALL,
+  },
+});

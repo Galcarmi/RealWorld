@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { View, Button, Text } from 'react-native-ui-lib';
 
@@ -24,8 +24,6 @@ export const EditProfileScreen: NavioScreen = observer(() => {
     onUpdateProfile,
     onLogout,
   } = useEditProfile();
-
-  const styles = useMemo(() => createStyles(canUpdate), [canUpdate]);
 
   return (
     <View style={styles.container} testID={TEST_IDS.EDIT_PROFILE_SCREEN}>
@@ -86,7 +84,7 @@ export const EditProfileScreen: NavioScreen = observer(() => {
               label={t('common.update')}
               onPress={onUpdateProfile}
               fullWidth
-              backgroundColor={styles.updateButton.backgroundColor}
+              backgroundColor={canUpdate ? COLORS.PRIMARY : COLORS.GREY}
               disabled={!canUpdate}
               testID={TEST_IDS.EDIT_PROFILE_UPDATE_BUTTON}
             />
@@ -109,16 +107,12 @@ export const EditProfileScreen: NavioScreen = observer(() => {
   );
 });
 
-const createStyles = (canUpdate: boolean) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    scrollView: {
-      width: '100%',
-    },
-    updateButton: {
-      backgroundColor: canUpdate ? COLORS.PRIMARY : COLORS.GREY,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  scrollView: {
+    width: '100%',
+  },
+});

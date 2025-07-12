@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-ui-lib';
 
@@ -18,8 +18,6 @@ interface CommentItemProps {
 }
 
 export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container}>
       <Avatar
@@ -40,36 +38,35 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      paddingVertical: SPACINGS.MEDIUM,
-      paddingHorizontal: SPACINGS.LARGE,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    contentContainer: {
-      flex: 1,
-      marginLeft: SPACINGS.MEDIUM,
-    },
-    headerContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: SPACINGS.SMALL,
-    },
-    username: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.TEXT,
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-      marginRight: SPACINGS.MEDIUM,
-    },
-    date: {
-      fontSize: FONT_SIZES.SMALL,
-      color: COLORS.PLACEHOLDER,
-    },
-    body: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.TEXT,
-      lineHeight: FONT_SIZES.MEDIUM,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingVertical: SPACINGS.MEDIUM,
+    paddingHorizontal: SPACINGS.LARGE,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  contentContainer: {
+    flex: 1,
+    marginLeft: SPACINGS.MEDIUM,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACINGS.SMALL,
+  },
+  username: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.TEXT,
+    fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+    marginRight: SPACINGS.MEDIUM,
+  },
+  date: {
+    fontSize: FONT_SIZES.SMALL,
+    color: COLORS.PLACEHOLDER,
+  },
+  body: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.TEXT,
+    lineHeight: FONT_SIZES.MEDIUM,
+  },
+});

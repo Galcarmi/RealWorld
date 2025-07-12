@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
@@ -30,8 +30,6 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
     handleArticlePress,
     handleAuthorPress,
   } = useArticles();
-
-  const styles = useMemo(() => createStyles(), []);
 
   const renderFeedTabs = () =>
     userStore.isAuthenticated() ? (
@@ -65,10 +63,9 @@ export const HomeScreen: NavioScreen<HomeScreenProps> = observer(() => {
   );
 });
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+});

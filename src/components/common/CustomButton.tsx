@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   View,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
-  TextStyle,
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -25,11 +24,9 @@ interface CustomButtonProps {
   iconSize?: number;
   iconColor?: string;
   containerStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
   buttonContentStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
   testID?: string;
-  iconTextGap?: number;
 }
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
@@ -39,20 +36,17 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   iconSize = 18,
   iconColor = COLORS.PRIMARY,
   containerStyle,
-  textStyle,
   buttonContentStyle,
   disabled = false,
   testID,
-  iconTextGap,
 }) => {
-  const styles = useMemo(
-    () => createStyles(disabled, iconTextGap),
-    [disabled, iconTextGap]
-  );
-
   return (
     <TouchableOpacity
-      style={[styles.container, containerStyle]}
+      style={[
+        styles.container,
+        disabled && styles.disabledContainer,
+        containerStyle,
+      ]}
       onPress={onPress}
       disabled={disabled}
       testID={testID}
@@ -65,31 +59,38 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
             color={disabled ? COLORS.GREY : iconColor}
           />
         )}
-        <Text style={[styles.text, textStyle]}>{title}</Text>
+        <Text style={[styles.text, disabled && styles.disabledText]}>
+          {title}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-const createStyles = (disabled?: boolean, iconTextGap?: number) =>
-  StyleSheet.create({
-    container: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: disabled ? COLORS.GREY : COLORS.BACKGROUND,
-      borderColor: disabled ? COLORS.GREY : COLORS.PRIMARY,
-      borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
-      borderRadius: DIMENSIONS.BORDER_RADIUS_LARGE,
-    },
-    buttonContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: iconTextGap,
-    },
-    text: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: disabled ? COLORS.GREY : COLORS.PRIMARY,
-      fontWeight: FONT_WEIGHTS.MEDIUM,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.BACKGROUND,
+    borderColor: COLORS.PRIMARY,
+    borderWidth: DIMENSIONS.BORDER_WIDTH_THIN,
+    borderRadius: DIMENSIONS.BORDER_RADIUS_LARGE,
+  },
+  disabledContainer: {
+    backgroundColor: COLORS.GREY,
+    borderColor: COLORS.GREY,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.PRIMARY,
+    fontWeight: FONT_WEIGHTS.MEDIUM,
+  },
+  disabledText: {
+    color: COLORS.GREY,
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-ui-lib';
 
@@ -28,8 +28,6 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
   favorited,
   onFavorite,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container}>
       <Avatar
@@ -69,45 +67,44 @@ export const AuthorHeader: React.FC<AuthorHeaderProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: SPACINGS.MEDIUM,
-    },
-    authorInfo: {
-      flex: 1,
-      marginLeft: SPACINGS.MEDIUM,
-    },
-    usernameRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    username: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.TEXT,
-      marginBottom: SPACINGS['2_EXTRA_SMALL'],
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-    },
-    followingIcon: {
-      marginLeft: SPACINGS.SMALL,
-      marginBottom: SPACINGS['2_EXTRA_SMALL'],
-      textShadowColor: COLORS.PRIMARY,
-      textShadowOffset: { width: 0, height: 0.2 },
-      textShadowRadius: 0,
-    },
-    createdAt: {
-      fontSize: FONT_SIZES.SMALL,
-      color: COLORS.PLACEHOLDER,
-    },
-    favoriteContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    favoritesCount: {
-      fontSize: FONT_SIZES.SMALL,
-      color: COLORS.PLACEHOLDER,
-      marginLeft: SPACINGS.EXTRA_SMALL,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACINGS.MEDIUM,
+  },
+  authorInfo: {
+    flex: 1,
+    marginLeft: SPACINGS.MEDIUM,
+  },
+  usernameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  username: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.TEXT,
+    marginBottom: SPACINGS['2_EXTRA_SMALL'],
+    fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+  },
+  followingIcon: {
+    marginLeft: SPACINGS.SMALL,
+    marginBottom: SPACINGS['2_EXTRA_SMALL'],
+    textShadowColor: COLORS.PRIMARY,
+    textShadowOffset: { width: 0, height: 0.2 },
+    textShadowRadius: 0,
+  },
+  createdAt: {
+    fontSize: FONT_SIZES.SMALL,
+    color: COLORS.PLACEHOLDER,
+  },
+  favoriteContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  favoritesCount: {
+    fontSize: FONT_SIZES.SMALL,
+    color: COLORS.PLACEHOLDER,
+    marginLeft: SPACINGS.EXTRA_SMALL,
+  },
+});

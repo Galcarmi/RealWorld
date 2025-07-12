@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   View,
@@ -37,8 +37,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   usernameStyle,
   containerStyle,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.editButtonContainer}>
@@ -70,27 +68,26 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    editButtonContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      marginBottom: SPACINGS.LARGE,
-    },
-    editButton: {
-      padding: SPACINGS.SMALL,
-    },
-    profileInfo: {
-      alignItems: 'center',
-    },
-    username: {
-      fontSize: FONT_SIZES.EXTRA_LARGE,
-      color: COLORS.BLACK,
-      fontFamily: TYPOGRAPHY.BOLD.fontFamily,
-      textAlign: 'center',
-    },
-    container: {
-      padding: SPACINGS.LARGE,
-    },
-  });
+const styles = StyleSheet.create({
+  editButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: SPACINGS.LARGE,
+  },
+  editButton: {
+    padding: SPACINGS.SMALL,
+  },
+  profileInfo: {
+    alignItems: 'center',
+  },
+  username: {
+    fontSize: FONT_SIZES.EXTRA_LARGE,
+    color: COLORS.BLACK,
+    fontFamily: TYPOGRAPHY.BOLD.fontFamily,
+    textAlign: 'center',
+  },
+  container: {
+    padding: SPACINGS.LARGE,
+  },
+});

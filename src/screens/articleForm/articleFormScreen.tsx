@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
@@ -37,8 +37,6 @@ export const ArticleFormScreen: NavioScreen<ArticleFormScreenProps> = observer(
       onFormSubmit,
     } = useArticleForm(slug);
 
-    const styles = useMemo(() => createStyles(), []);
-
     return (
       <View style={styles.container} testID={TEST_IDS.NEW_ARTICLE_SCREEN}>
         {isLoading ? (
@@ -64,19 +62,18 @@ export const ArticleFormScreen: NavioScreen<ArticleFormScreenProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    loadingContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    formContainer: {
-      flex: 1,
-      padding: SPACINGS.LARGE,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  formContainer: {
+    flex: 1,
+    padding: SPACINGS.LARGE,
+  },
+});

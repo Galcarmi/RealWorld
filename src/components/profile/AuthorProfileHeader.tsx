@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-ui-lib';
 
@@ -27,7 +27,6 @@ interface AuthorProfileHeaderProps {
 export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = observer(
   ({ profile, onFollowToggle }) => {
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(), []);
 
     const getFollowButtonIcon = useCallback(() => {
       return (
@@ -80,26 +79,25 @@ export const AuthorProfileHeader: React.FC<AuthorProfileHeaderProps> = observer(
   }
 );
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: SPACINGS.HEADER_BOTTOM,
-      paddingTop: SPACINGS.HEADER_TOP,
-    },
-    profileInfo: {
-      alignItems: 'center',
-    },
-    username: {
-      fontSize: TYPOGRAPHY.HEADING.fontSize,
-      color: COLORS.BLACK,
-      textAlign: 'center',
-      marginBottom: SPACINGS.LARGE,
-    },
-    followButton: {
-      paddingHorizontal: SPACINGS.LARGE,
-      gap: SPACINGS.SMALL,
-    },
-    followButtonText: {
-      fontWeight: FONT_WEIGHTS.BOLD,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: SPACINGS.HEADER_BOTTOM,
+    paddingTop: SPACINGS.HEADER_TOP,
+  },
+  profileInfo: {
+    alignItems: 'center',
+  },
+  username: {
+    fontSize: TYPOGRAPHY.HEADING.fontSize,
+    color: COLORS.BLACK,
+    textAlign: 'center',
+    marginBottom: SPACINGS.LARGE,
+  },
+  followButton: {
+    paddingHorizontal: SPACINGS.LARGE,
+    gap: SPACINGS.SMALL,
+  },
+  followButtonText: {
+    fontWeight: FONT_WEIGHTS.BOLD,
+  },
+});

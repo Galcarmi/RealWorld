@@ -42,7 +42,6 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   contextKey,
   containerStyle,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
   const { t } = useTranslation();
 
   const createArticleHandlers = useCallback(
@@ -80,7 +79,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         />
       );
     },
-    [createArticleHandlers, styles.articleCard]
+    [createArticleHandlers]
   );
 
   const renderFooter = useCallback(() => {
@@ -90,7 +89,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         <ActivityIndicator size='small' color={COLORS.PRIMARY} />
       </View>
     );
-  }, [isLoading, styles.loadingFooter]);
+  }, [isLoading]);
 
   const renderEmpty = useCallback(() => {
     const message = emptyMessage || t('empty.noArticlesFound');
@@ -102,14 +101,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       );
     }
     return null;
-  }, [
-    articles.length,
-    isLoading,
-    emptyMessage,
-    styles.centerContainer,
-    styles.emptyText,
-    t,
-  ]);
+  }, [articles.length, isLoading, emptyMessage, t]);
 
   const refreshControl = useMemo(
     () => (
@@ -140,26 +132,25 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    loadingFooter: {
-      padding: SPACINGS.LARGE,
-      alignItems: 'center',
-    },
-    centerContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: SPACINGS.LIST_CONTENT,
-    },
-    emptyText: {
-      fontSize: TYPOGRAPHY.BODY.fontSize,
-      color: COLORS.PLACEHOLDER,
-      textAlign: 'center',
-    },
-    articleCard: {
-      marginBottom: SPACINGS['2_EXTRA_SMALL'],
-      borderRadius: 0,
-      padding: SPACINGS.LARGE,
-    },
-  });
+const styles = StyleSheet.create({
+  loadingFooter: {
+    padding: SPACINGS.LARGE,
+    alignItems: 'center',
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: SPACINGS.LIST_CONTENT,
+  },
+  emptyText: {
+    fontSize: TYPOGRAPHY.BODY.fontSize,
+    color: COLORS.PLACEHOLDER,
+    textAlign: 'center',
+  },
+  articleCard: {
+    marginBottom: SPACINGS['2_EXTRA_SMALL'],
+    borderRadius: 0,
+    padding: SPACINGS.LARGE,
+  },
+});

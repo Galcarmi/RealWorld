@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
@@ -38,8 +38,6 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
       refreshAuthorArticles,
     } = useAuthorProfile(username);
 
-    const styles = useMemo(() => createStyles(), []);
-
     if (!authorProfile) {
       return (
         <View style={styles.container} testID={TEST_IDS.AUTHOR_PROFILE_SCREEN}>
@@ -76,16 +74,15 @@ export const AuthorProfileScreen: NavioScreen<AuthorProfileScreenProps> =
     );
   });
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    headerSection: {
-      flex: 0.32,
-    },
-    articlesSection: {
-      flex: 0.68,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  headerSection: {
+    flex: 0.32,
+  },
+  articlesSection: {
+    flex: 0.68,
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 
@@ -34,8 +34,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
     refreshUserArticles,
   } = useProfile();
 
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container} testID={TEST_IDS.PROFILE_SCREEN}>
       <ProfileHeader
@@ -64,27 +62,26 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = observer(() => {
   );
 });
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.BACKGROUND,
-    },
-    headerSection: {
-      flex: 0.3,
-      backgroundColor: COLORS.SECONDARY,
-      marginBottom: DIMENSIONS.SMALL,
-    },
-    middleSection: {
-      flex: 0.1,
-      alignSelf: 'center',
-      justifyContent: 'center',
-    },
-    articlesSection: {
-      flex: 0.57,
-    },
-    username: {
-      fontSize: TYPOGRAPHY.TITLE.fontSize,
-      color: COLORS.PRIMARY,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND,
+  },
+  headerSection: {
+    flex: 0.3,
+    backgroundColor: COLORS.SECONDARY,
+    marginBottom: DIMENSIONS.SMALL,
+  },
+  middleSection: {
+    flex: 0.1,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  articlesSection: {
+    flex: 0.57,
+  },
+  username: {
+    fontSize: TYPOGRAPHY.TITLE.fontSize,
+    color: COLORS.PRIMARY,
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import {
@@ -17,8 +17,6 @@ export const ArticleCardContent: React.FC<ArticleCardContentProps> = ({
   title,
   description,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -29,16 +27,15 @@ export const ArticleCardContent: React.FC<ArticleCardContentProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {},
-    title: {
-      color: COLORS.TEXT,
-      marginBottom: SPACINGS.SMALL,
-      ...TYPOGRAPHY.BOLD,
-    },
-    description: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.PLACEHOLDER,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {},
+  title: {
+    color: COLORS.TEXT,
+    marginBottom: SPACINGS.SMALL,
+    ...TYPOGRAPHY.BOLD,
+  },
+  description: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.PLACEHOLDER,
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import { SPACINGS, FONT_SIZES, COLORS } from '../../constants/styles';
@@ -14,8 +14,6 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
   body,
   tags,
 }) => {
-  const styles = useMemo(() => createStyles(), []);
-
   return (
     <View style={styles.container}>
       <Text style={styles.body}>{body}</Text>
@@ -29,18 +27,17 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    body: {
-      fontSize: FONT_SIZES.MEDIUM,
-      color: COLORS.TEXT,
-      lineHeight: 22,
-      marginBottom: SPACINGS.LARGE,
-    },
-    tagsSection: {
-      marginTop: SPACINGS.MEDIUM,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  body: {
+    fontSize: FONT_SIZES.MEDIUM,
+    color: COLORS.TEXT,
+    lineHeight: 22,
+    marginBottom: SPACINGS.LARGE,
+  },
+  tagsSection: {
+    marginTop: SPACINGS.MEDIUM,
+  },
+});

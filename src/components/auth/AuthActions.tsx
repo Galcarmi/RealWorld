@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { Button, Text, View } from 'react-native-ui-lib';
 
@@ -30,8 +30,6 @@ export const AuthActions = ({
   onSignUp,
   onNavigateToLogin,
 }: AuthActionsProps) => {
-  const styles = useMemo(() => createStyles(), []);
-
   const isSignIn = screenType === AUTH_SCREEN_TYPE.SIGN_IN;
 
   const buttonLabel = isSignIn ? BUTTON_LABELS.SIGN_IN : BUTTON_LABELS.SIGN_UP;
@@ -77,13 +75,12 @@ export const AuthActions = ({
   );
 };
 
-const createStyles = () =>
-  StyleSheet.create({
-    submitButton: {
-      width: DIMENSIONS.WIDTH_80_PERCENT,
-      padding: SPACINGS.SMALL,
-    },
-    otherAuthScreenButton: {
-      width: DIMENSIONS.WIDTH_80_PERCENT,
-    },
-  });
+const styles = StyleSheet.create({
+  submitButton: {
+    width: DIMENSIONS.WIDTH_80_PERCENT,
+    padding: SPACINGS.SMALL,
+  },
+  otherAuthScreenButton: {
+    width: DIMENSIONS.WIDTH_80_PERCENT,
+  },
+});
